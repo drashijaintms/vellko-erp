@@ -622,38 +622,67 @@ button {
   box-sizing: border-box;
 }
 
+.split-comp-header-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 4.5rem;
+}
+
 .split-comp-header {
   text-align: center;
-  margin-bottom: 4.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-sizing: border-box;
+}
+
+.split-comp-header.left-side {
+  position: relative;
+  z-index: 2;
+  clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+}
+
+.split-comp-header.right-side {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
+  pointer-events: none;
 }
 
 .split-comp-title {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 850;
   margin-bottom: 1.25rem;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
 }
 
-.split-comp-title .text-white {
+.split-comp-header.left-side .split-comp-title {
   color: #ffffff;
 }
 
-.split-comp-title .text-black {
+.split-comp-header.right-side .split-comp-title {
   color: #000000;
 }
 
 .split-comp-desc {
+  font-family: var(--font-body);
   font-size: 1.15rem;
   font-weight: 500;
   max-width: 780px;
+  line-height: 1.5;
 }
 
-.split-comp-desc .text-light-gray {
+.split-comp-header.left-side .split-comp-desc {
   color: rgba(255, 255, 255, 0.9);
 }
 
-.split-comp-desc .text-dark-gray {
+.split-comp-header.right-side .split-comp-desc {
   color: #1f2937;
 }
 
@@ -1158,16 +1187,16 @@ button {
 }
 
 .industry-card-icon-circle {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: 1px solid #e5e7eb;
-  background: #f9fafb;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #4b5563;
-  margin-bottom: 1rem;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4b5563;
+    margin-bottom: 1rem;
 }
 
 .industry-card-icon-circle svg {
@@ -1176,8 +1205,8 @@ button {
 }
 
 .industry-gif-icon {
-  width: 28px;
-  height: 28px;
+  width: 50px;
+  height: 50px;
   object-fit: contain;
 }
 

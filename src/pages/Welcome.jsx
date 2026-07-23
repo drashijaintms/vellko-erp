@@ -643,16 +643,27 @@ export default function Welcome() {
       {/* Split Comparison Section */}
       <section className="split-comparison-section">
         
-        {/* Top Centered Heading */}
-        <div className="split-comp-header">
-          <h2 className="split-comp-title">
-            <span className="text-white">One Platform. </span>
-            <span className="text-black">Every Department.</span>
-          </h2>
-          <p className="split-comp-desc">
-            <span className="text-light-gray">Eliminate disconnected tools and manage your </span>
-            <span className="text-dark-gray">entire business from a single cloud-based platform.</span>
-          </p>
+        {/* Top Centered Layered Heading */}
+        <div className="split-comp-header-wrapper">
+          {/* Left Side (Clipped to left 50%, all text white) */}
+          <div className="split-comp-header left-side">
+            <h2 className="split-comp-title">
+              One Platform. Every Department.
+            </h2>
+            <p className="split-comp-desc">
+              Eliminate disconnected tools and manage your entire business from a single cloud-based platform.
+            </p>
+          </div>
+
+          {/* Right Side (Clipped to right 50%, all text black) */}
+          <div className="split-comp-header right-side" aria-hidden="true">
+            <h2 className="split-comp-title">
+              One Platform. Every Department.
+            </h2>
+            <p className="split-comp-desc">
+              Eliminate disconnected tools and manage your entire business from a single cloud-based platform.
+            </p>
+          </div>
         </div>
 
         {/* 3-Column Split Content Container */}
