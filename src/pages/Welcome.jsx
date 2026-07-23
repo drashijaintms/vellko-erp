@@ -25,6 +25,15 @@ import globeGif from '../assets/images/globe.gif';
 import splitIllustration from '../assets/images/split-illustration.png';
 import targetImg from '../assets/images/target.png';
 import howItWorksImg from '../assets/images/how-it-works.png';
+
+import manufacturingGif from '../assets/images/manufacturing.gif';
+import retailGif from '../assets/images/retail.gif';
+import distributionGif from '../assets/images/distribution.gif';
+import healthcareGif from '../assets/images/healthcare.gif';
+import educationGif from '../assets/images/education.gif';
+import realEstateGif from '../assets/images/real-estate.gif';
+import servicesGif from '../assets/images/services.gif';
+import ecommerceGif from '../assets/images/ecommerce.gif';
 import testimonial1 from '../assets/images/testimonial-1.png';
 import testimonial2 from '../assets/images/testimonial-2.png';
 import testimonial3 from '../assets/images/testimonial-3.png';
@@ -171,42 +180,42 @@ const industriesData = [
   {
     title: "Manufacturing",
     desc: "Optimize production planning, procurement, inventory and shop-floor operations.",
-    icon: <Cpu strokeWidth={1.5} />
+    icon: <img src={manufacturingGif} alt="Manufacturing" className="industry-gif-icon" />
   },
   {
     title: "Retail",
     desc: "Unify inventory, billing, customer management and multi-store operations.",
-    icon: <Store strokeWidth={1.5} />
+    icon: <img src={retailGif} alt="Retail" className="industry-gif-icon" />
   },
   {
     title: "Distribution",
     desc: "Streamline logistics, warehouse management, procurement and stock movement.",
-    icon: <TrendingUp strokeWidth={1.5} />
+    icon: <img src={distributionGif} alt="Distribution" className="industry-gif-icon" />
   },
   {
     title: "Healthcare",
     desc: "Simplify administration, finance, inventory, HR and operational workflows.",
-    icon: <Activity strokeWidth={1.5} />
+    icon: <img src={healthcareGif} alt="Healthcare" className="industry-gif-icon" />
   },
   {
     title: "Education",
     desc: "Manage admissions, attendance, payroll, fees and administrative processes.",
-    icon: <GraduationCap strokeWidth={1.5} />
+    icon: <img src={educationGif} alt="Education" className="industry-gif-icon" />
   },
   {
     title: "Real Estate",
     desc: "Track projects, finances, resources and customer relationships in one place.",
-    icon: <Building2 strokeWidth={1.5} />
+    icon: <img src={realEstateGif} alt="Real Estate" className="industry-gif-icon" />
   },
   {
     title: "Professional Services",
     desc: "Improve project delivery, resource utilization and team collaboration.",
-    icon: <Users strokeWidth={1.5} />
+    icon: <img src={servicesGif} alt="Professional Services" className="industry-gif-icon" />
   },
   {
     title: "E-Commerce",
     desc: "Synchronize orders, inventory, customers and business operations seamlessly.",
-    icon: <ShoppingCart strokeWidth={1.5} />
+    icon: <img src={ecommerceGif} alt="E-Commerce" className="industry-gif-icon" />
   }
 ];
 
@@ -727,7 +736,7 @@ export default function Welcome() {
               <h3 className="module-card-title">{activeData.title}</h3>
             </div>
 
-            <p className="module-card-subtitle">{activeData.subtitle}</p>
+            <p className="module-card-desc">{activeData.subtitle}</p>
             <p className="module-card-desc">{activeData.desc}</p>
 
             {activeModule === 4 ? (
@@ -782,7 +791,7 @@ export default function Welcome() {
                 <div className="module-features-title-row">
                   Inventory Management
                 </div>
-                <p className="module-card-subtitle" style={{ color: '#111827', fontStyle: 'italic', marginTop: '0.75rem', marginBottom: '0.75rem' }}>
+                <p className="module-card-desc" style={{ color: '#111827', fontStyle: 'italic', marginTop: '0.75rem', marginBottom: '0.75rem' }}>
                   Know What's in Stock Before It Becomes a Problem.
                 </p>
                 <p className="module-card-desc" style={{ fontSize: '0.88rem', marginBottom: '1.5rem' }}>
