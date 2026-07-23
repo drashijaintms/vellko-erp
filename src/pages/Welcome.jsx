@@ -643,21 +643,12 @@ export default function Welcome() {
       {/* Split Comparison Section */}
       <section className="split-comparison-section">
         
-        {/* Top Centered Layered Heading */}
+        {/* Top Centered Split Heading */}
         <div className="split-comp-header-wrapper">
-          {/* Left Side (Clipped to left 50%, all text white) */}
-          <div className="split-comp-header left-side">
-            <h2 className="split-comp-title">
-              One Platform. Every Department.
-            </h2>
-          </div>
-
-          {/* Right Side (Clipped to right 50%, all text black) */}
-          <div className="split-comp-header right-side" aria-hidden="true">
-            <h2 className="split-comp-title">
-              One Platform. Every Department.
-            </h2>
-          </div>
+          <h2 className="split-comp-title">
+            <span className="split-title-left">One Platform.</span>
+            <span className="split-title-right">Every Department.</span>
+          </h2>
         </div>
 
         {/* Left-aligned Description paragraph on the grey side */}
