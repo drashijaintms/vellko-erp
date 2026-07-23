@@ -28,6 +28,7 @@ import howItWorksImg from '../assets/images/how-it-works.png';
 import testimonial1 from '../assets/images/testimonial-1.png';
 import testimonial2 from '../assets/images/testimonial-2.png';
 import testimonial3 from '../assets/images/testimonial-3.png';
+import dashboardMonitor from '../assets/images/dashboard-monitor.png';
 
 const modulesData = [
   {
@@ -250,13 +251,13 @@ const testimonialData = [
 ];
 
 const sectorAngles = [
-  { start: 316.57, end: 352 },    // CRM to HRMS
-  { start: 8,      end: 43.43 },  // HRMS to Biometric
-  { start: 59.43,  end: 94.86 },  // Biometric to Work
-  { start: 110.86, end: 146.29 }, // Work to Finance
-  { start: 162.29, end: 197.71 }, // Finance to Service
-  { start: 213.71, end: 249.14 }, // Service to BI
-  { start: 265.14, end: 300.57 }  // BI to CRM
+  { start: 321, end: 348, side: 'left' },  // CRM to HRMS
+  { start: 12,  end: 39,  side: 'right' }, // HRMS to Biometric
+  { start: 64,  end: 91,  side: 'right' }, // Biometric to Work
+  { start: 115, end: 142, side: 'right' }, // Work to Finance
+  { start: 166, end: 194, side: 'right' }, // Finance to Service
+  { start: 218, end: 245, side: 'left' },  // Service to BI
+  { start: 269, end: 296, side: 'left' }   // BI to CRM
 ];
 
 const getArcPath = (startAngle, endAngle, radius) => {
@@ -289,6 +290,98 @@ export default function Welcome() {
 
   const statsSectionRef = useRef(null);
   const statsRefs = useRef([]);
+
+  const featuresSectionRef = useRef(null);
+  const scrollIndexRef = useRef(0);
+  const isLockedRef = useRef(false);
+  const hasCompletedRef = useRef(false);
+  const lastScrollTime = useRef(0);
+
+  useEffect(() => {
+    const handleWheel = (e) => {
+      const section = featuresSectionRef.current;
+      if (!section) return;
+
+      const rect = section.getBoundingClientRect();
+      const sectionOffsetTop = section.offsetTop;
+      const isScrollingDown = e.deltaY > 0;
+
+      // Lock if section's top is at viewport top, and it hasn't completed the cycle
+      const inLockRange = rect.top <= 40 && rect.bottom >= window.innerHeight - 40;
+
+      if (inLockRange && !hasCompletedRef.current) {
+        if (!isLockedRef.current) {
+          isLockedRef.current = true;
+          if (isScrollingDown) {
+            scrollIndexRef.current = 0;
+            setActiveModule(0);
+          } else {
+            scrollIndexRef.current = 6;
+            setActiveModule(6);
+          }
+          window.scrollTo({ top: sectionOffsetTop, behavior: 'auto' });
+          e.preventDefault();
+          return;
+        }
+      }
+
+      if (isLockedRef.current) {
+        e.preventDefault();
+        
+        // Pin section to top of viewport
+        window.scrollTo({ top: sectionOffsetTop, behavior: 'auto' });
+
+        const now = Date.now();
+        if (now - lastScrollTime.current < 600) {
+          return;
+        }
+        lastScrollTime.current = now;
+
+        if (isScrollingDown) {
+          if (scrollIndexRef.current < 6) {
+            scrollIndexRef.current += 1;
+            setActiveModule(scrollIndexRef.current);
+          } else {
+            isLockedRef.current = false;
+            hasCompletedRef.current = true;
+            window.scrollBy({ top: 120, behavior: 'smooth' });
+          }
+        } else {
+          if (scrollIndexRef.current > 0) {
+            scrollIndexRef.current -= 1;
+            setActiveModule(scrollIndexRef.current);
+          } else {
+            isLockedRef.current = false;
+            hasCompletedRef.current = true;
+            window.scrollBy({ top: -120, behavior: 'smooth' });
+          }
+        }
+      }
+    };
+
+    const handleScroll = () => {
+      const section = featuresSectionRef.current;
+      if (!section) return;
+
+      const rect = section.getBoundingClientRect();
+      // If the section is scrolled out of viewport, reset completion status
+      if (rect.bottom < 0 || rect.top > window.innerHeight) {
+        hasCompletedRef.current = false;
+        isLockedRef.current = false;
+      }
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    scrollIndexRef.current = activeModule;
+  }, [activeModule]);
 
   useEffect(() => {
     const section = statsSectionRef.current;
@@ -689,7 +782,7 @@ export default function Welcome() {
       </section>
 
       {/* Everything Your Business Needs (Interactive Modules Loop) */}
-      <section className="all-in-one-section">
+      <section className="all-in-one-section" ref={featuresSectionRef}>
         <div className="all-in-one-text">
           <h2 className="all-in-one-title">
             Everything Your Business Needs,
@@ -718,11 +811,13 @@ export default function Welcome() {
 
         <div className="all-in-one-layout">
           <div className="module-details-card">
-            <div className="module-card-icon-container">
-              {activeData.iconSvg}
+            <div className="module-card-header">
+              <div className="module-card-icon-container">
+                {activeData.iconSvg}
+              </div>
+              <h3 className="module-card-title">{activeData.title}</h3>
             </div>
 
-            <h3 className="module-card-title">{activeData.title}</h3>
             <p className="module-card-subtitle">{activeData.subtitle}</p>
             <p className="module-card-desc">{activeData.desc}</p>
 
@@ -744,8 +839,8 @@ export default function Welcome() {
                   ].map((feature, idx) => (
                     <li key={idx} className="module-feature-item">
                       <svg className="feature-checkbox-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="3" y="3" width="18" height="18" rx="3.5" stroke="#1f2937" strokeWidth="2.25" />
-                        <path d="M9 12l2 2 4-4" stroke="#1f2937" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+                        <rect x="3" y="3" width="18" height="18" rx="4" stroke="#111827" strokeWidth="2" fill="none" />
+                        <path d="M7 11.5L10.5 15L17 7.5" stroke="#111827" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                       <span>{feature}</span>
                     </li>
@@ -766,8 +861,8 @@ export default function Welcome() {
                   ].map((feature, idx) => (
                     <li key={idx} className="module-feature-item">
                       <svg className="feature-checkbox-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="3" y="3" width="18" height="18" rx="3.5" stroke="#1f2937" strokeWidth="2.25" />
-                        <path d="M9 12l2 2 4-4" stroke="#1f2937" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+                        <rect x="3" y="3" width="18" height="18" rx="4" stroke="#111827" strokeWidth="2" fill="none" />
+                        <path d="M7 11.5L10.5 15L17 7.5" stroke="#111827" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                       <span>{feature}</span>
                     </li>
@@ -799,8 +894,8 @@ export default function Welcome() {
                   ].map((feature, idx) => (
                     <li key={idx} className="module-feature-item">
                       <svg className="feature-checkbox-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="3" y="3" width="18" height="18" rx="3.5" stroke="#1f2937" strokeWidth="2.25" />
-                        <path d="M9 12l2 2 4-4" stroke="#1f2937" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+                        <rect x="3" y="3" width="18" height="18" rx="4" stroke="#111827" strokeWidth="2" fill="none" />
+                        <path d="M7 11.5L10.5 15L17 7.5" stroke="#111827" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                       <span>{feature}</span>
                     </li>
@@ -817,8 +912,8 @@ export default function Welcome() {
                   {activeData.features.map((feature, idx) => (
                     <li key={idx} className="module-feature-item">
                       <svg className="feature-checkbox-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="3" y="3" width="18" height="18" rx="3.5" stroke="#1f2937" strokeWidth="2.25" />
-                        <path d="M9 12l2 2 4-4" stroke="#1f2937" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+                        <rect x="3" y="3" width="18" height="18" rx="4" stroke="#111827" strokeWidth="2" fill="none" />
+                        <path d="M7 11.5L10.5 15L17 7.5" stroke="#111827" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                       <span>{feature}</span>
                     </li>
@@ -832,16 +927,9 @@ export default function Welcome() {
             {/* SVG containing the concentric rings and split alternating arcs */}
             <svg className="circular-ring-svg" viewBox="0 0 440 440" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }}>
               {sectorAngles.map((sector, index) => {
-                const isActive = isSectorActive(index, activeModule);
-                
-                // Color assignments: outer line is grey, inner line is pink
-                let outerColor = '#cbd5e1';
-                let innerColor = '#fca5a5';
-                
-                if (isActive) {
-                  outerColor = '#DC1436';
-                  innerColor = '#DC1436';
-                }
+                // Static color assignments: outer line is grey, inner line is crimson
+                const outerColor = '#cbd5e1';
+                const innerColor = '#DC1436';
                 
                 return (
                   <g key={index}>
@@ -849,19 +937,17 @@ export default function Welcome() {
                     <path
                       d={getArcPath(sector.start, sector.end, 160)}
                       stroke={outerColor}
-                      strokeWidth={isActive ? 2.5 : 1.5}
+                      strokeWidth={1.5}
                       strokeLinecap="round"
                       fill="none"
-                      style={{ transition: 'stroke 0.3s ease, stroke-width 0.3s ease' }}
                     />
                     {/* Inner Arc */}
                     <path
-                      d={getArcPath(sector.start, sector.end, 136)}
+                      d={getArcPath(sector.start, sector.end, 148)}
                       stroke={innerColor}
-                      strokeWidth={isActive ? 2.5 : 1.5}
+                      strokeWidth={1.5}
                       strokeLinecap="round"
                       fill="none"
-                      style={{ transition: 'stroke 0.3s ease, stroke-width 0.3s ease' }}
                     />
                   </g>
                 );
@@ -870,13 +956,13 @@ export default function Welcome() {
 
             {/* Feature Labels */}
             {[
-              { title: "CRM\n& Lead\nManagement", x: 12.5, y: 20, moduleId: 0 },
-              { title: "HRMS &\nWorkforce\nManagement", x: 50, y: 2, moduleId: 1 },
-              { title: "Biometric\nAttendance\nIntegration", x: 87.5, y: 20, moduleId: 2 },
-              { title: "Work & Project\nManagement", x: 96.5, y: 60.5, moduleId: 3 },
-              { title: "Finance &\nPurchase\nManagement", x: 70.8, y: 93.2, moduleId: 4 },
-              { title: "Service\nManagement &\nCustomer Support", x: 29.2, y: 93.2, moduleId: 5 },
-              { title: "Business\nIntelligence &\nAnalytics", x: 3.5, y: 60.5, moduleId: 6 }
+              { title: "CRM\n& Lead\nManagement", x: 22.6, y: 28.2, moduleId: 0 },
+              { title: "HRMS &\nWorkforce\nManagement", x: 50.0, y: 15.0, moduleId: 1 },
+              { title: "Biometric\nAttendance\nIntegration", x: 77.4, y: 28.2, moduleId: 2 },
+              { title: "Work & Project\nManagement", x: 84.1, y: 57.8, moduleId: 3 },
+              { title: "Finance &\nPurchase\nManagement", x: 65.2, y: 81.5, moduleId: 4 },
+              { title: "Service\nManagement &\nCustomer Support", x: 34.8, y: 81.5, moduleId: 5 },
+              { title: "Business\nIntelligence &\nAnalytics", x: 15.9, y: 57.8, moduleId: 6 }
             ].map((item, index) => {
               const isLabelActive = activeModule === item.moduleId;
               return (
@@ -895,44 +981,9 @@ export default function Welcome() {
               );
             })}
 
-            {/* CSS Monitor in the center */}
-            <div className="css-monitor-wrapper-absolute">
-              <div className="css-monitor">
-                <div className="css-monitor-screen">
-                  <div className="monitor-dashboard">
-                    <div className="monitor-dash-sidebar">
-                      <div className="monitor-dash-sidebar-dot active"></div>
-                      <div className="monitor-dash-sidebar-dot"></div>
-                      <div className="monitor-dash-sidebar-dot"></div>
-                    </div>
-                    <div className="monitor-dash-main">
-                      <div className="monitor-dash-left">
-                        <div className="monitor-dash-title">See Everything.</div>
-                        <div className="monitor-dash-title-red">Do Everything.</div>
-                        <div className="monitor-dash-btn"></div>
-                      </div>
-                      <div className="monitor-dash-right">
-                        <div className="monitor-dash-chart">
-                          <svg viewBox="0 0 100 40" className="monitor-chart-svg">
-                            <path d="M0,35 Q15,5 30,25 T60,5 T90,15 L100,35 Z" fill="rgba(220, 20, 54, 0.04)" />
-                            <path d="M0,35 Q15,5 30,25 T60,5 T90,15" fill="none" stroke="#DC1436" strokeWidth="2" />
-                          </svg>
-                        </div>
-                        <div className="monitor-dash-widgets">
-                          <div className="monitor-dash-widget-card">
-                            <div className="monitor-dash-widget-circle"></div>
-                          </div>
-                          <div className="monitor-dash-widget-card">
-                            <div style={{ width: '12px', height: '2px', backgroundColor: '#d1d5db', margin: '0 auto' }}></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="css-monitor-stand"></div>
-                <div className="css-monitor-base"></div>
-              </div>
+            {/* Dashboard Monitor Image in the center */}
+            <div className="dashboard-monitor-wrapper-absolute">
+              <img src={dashboardMonitor} alt="Vellko ERP Dashboard Mockup" className="dashboard-monitor-img" />
             </div>
 
           </div>
@@ -1135,8 +1186,8 @@ export default function Welcome() {
               </div>
 
               <div className="step-arrow-container">
-                <svg className="step-arrow-svg" viewBox="0 0 24 24" fill="none" stroke="#DC1436" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="6 9 12 15 18 9" />
+                <svg className="step-arrow-svg" viewBox="0 0 24 24" fill="none" stroke="#DC1436" strokeWidth="5.5" strokeLinecap="square" strokeLinejoin="miter">
+                  <polyline points="4 7 12 16 20 7" />
                 </svg>
               </div>
 
@@ -1150,8 +1201,8 @@ export default function Welcome() {
               </div>
 
               <div className="step-arrow-container">
-                <svg className="step-arrow-svg" viewBox="0 0 24 24" fill="none" stroke="#DC1436" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="6 9 12 15 18 9" />
+                <svg className="step-arrow-svg" viewBox="0 0 24 24" fill="none" stroke="#DC1436" strokeWidth="5.5" strokeLinecap="square" strokeLinejoin="miter">
+                  <polyline points="4 7 12 16 20 7" />
                 </svg>
               </div>
 
@@ -1165,8 +1216,8 @@ export default function Welcome() {
               </div>
 
               <div className="step-arrow-container">
-                <svg className="step-arrow-svg" viewBox="0 0 24 24" fill="none" stroke="#DC1436" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="6 9 12 15 18 9" />
+                <svg className="step-arrow-svg" viewBox="0 0 24 24" fill="none" stroke="#DC1436" strokeWidth="5.5" strokeLinecap="square" strokeLinejoin="miter">
+                  <polyline points="4 7 12 16 20 7" />
                 </svg>
               </div>
 
