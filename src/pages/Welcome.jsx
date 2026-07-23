@@ -650,9 +650,6 @@ export default function Welcome() {
             <h2 className="split-comp-title">
               One Platform. Every Department.
             </h2>
-            <p className="split-comp-desc">
-              Eliminate disconnected tools and manage your entire business from a single cloud-based platform.
-            </p>
           </div>
 
           {/* Right Side (Clipped to right 50%, all text black) */}
@@ -660,10 +657,14 @@ export default function Welcome() {
             <h2 className="split-comp-title">
               One Platform. Every Department.
             </h2>
-            <p className="split-comp-desc">
-              Eliminate disconnected tools and manage your entire business from a single cloud-based platform.
-            </p>
           </div>
+        </div>
+
+        {/* Left-aligned Description paragraph on the grey side */}
+        <div className="split-comp-desc-container">
+          <p className="split-comp-desc">
+            Eliminate disconnected tools and manage your entire business from a single cloud-based platform.
+          </p>
         </div>
 
         {/* 3-Column Split Content Container */}

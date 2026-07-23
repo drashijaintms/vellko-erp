@@ -625,7 +625,7 @@ button {
 .split-comp-header-wrapper {
   position: relative;
   width: 100%;
-  margin-bottom: 4.5rem;
+  margin-bottom: 2rem;
 }
 
 .split-comp-header {
@@ -654,12 +654,12 @@ button {
 }
 
 .split-comp-title {
-  font-family: var(--font-heading);
-  font-size: 2.5rem;
-  font-weight: 850;
-  margin-bottom: 1.25rem;
+  font-family: Georgia, serif;
+  font-size: 3.5rem;
+  font-weight: 750;
+  margin-bottom: 0;
   letter-spacing: -0.015em;
-  line-height: 1.2;
+  line-height: 1.25;
 }
 
 .split-comp-header.left-side .split-comp-title {
@@ -670,20 +670,24 @@ button {
   color: #000000;
 }
 
+.split-comp-desc-container {
+  max-width: 1340px;
+  margin: 0 auto 3rem auto;
+  padding: 0 4rem;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+}
+
 .split-comp-desc {
   font-family: var(--font-body);
-  font-size: 1.15rem;
-  font-weight: 500;
-  max-width: 780px;
-  line-height: 1.5;
-}
-
-.split-comp-header.left-side .split-comp-desc {
+  font-size: 1.12rem;
+  font-weight: 700;
   color: rgba(255, 255, 255, 0.9);
-}
-
-.split-comp-header.right-side .split-comp-desc {
-  color: #1f2937;
+  line-height: 1.5;
+  max-width: 440px;
+  text-align: left;
 }
 
 .split-comp-container {
