@@ -291,97 +291,6 @@ export default function Welcome() {
   const statsSectionRef = useRef(null);
   const statsRefs = useRef([]);
 
-  const featuresSectionRef = useRef(null);
-  const scrollIndexRef = useRef(0);
-  const isLockedRef = useRef(false);
-  const hasCompletedRef = useRef(false);
-  const lastScrollTime = useRef(0);
-
-  useEffect(() => {
-    const handleWheel = (e) => {
-      const section = featuresSectionRef.current;
-      if (!section) return;
-
-      const rect = section.getBoundingClientRect();
-      const sectionOffsetTop = section.offsetTop;
-      const isScrollingDown = e.deltaY > 0;
-
-      // Lock if section's top is at viewport top, and it hasn't completed the cycle
-      const inLockRange = rect.top <= 40 && rect.bottom >= window.innerHeight - 40;
-
-      if (inLockRange && !hasCompletedRef.current) {
-        if (!isLockedRef.current) {
-          isLockedRef.current = true;
-          if (isScrollingDown) {
-            scrollIndexRef.current = 0;
-            setActiveModule(0);
-          } else {
-            scrollIndexRef.current = 6;
-            setActiveModule(6);
-          }
-          window.scrollTo({ top: sectionOffsetTop, behavior: 'auto' });
-          e.preventDefault();
-          return;
-        }
-      }
-
-      if (isLockedRef.current) {
-        e.preventDefault();
-        
-        // Pin section to top of viewport
-        window.scrollTo({ top: sectionOffsetTop, behavior: 'auto' });
-
-        const now = Date.now();
-        if (now - lastScrollTime.current < 600) {
-          return;
-        }
-        lastScrollTime.current = now;
-
-        if (isScrollingDown) {
-          if (scrollIndexRef.current < 6) {
-            scrollIndexRef.current += 1;
-            setActiveModule(scrollIndexRef.current);
-          } else {
-            isLockedRef.current = false;
-            hasCompletedRef.current = true;
-            window.scrollBy({ top: 120, behavior: 'smooth' });
-          }
-        } else {
-          if (scrollIndexRef.current > 0) {
-            scrollIndexRef.current -= 1;
-            setActiveModule(scrollIndexRef.current);
-          } else {
-            isLockedRef.current = false;
-            hasCompletedRef.current = true;
-            window.scrollBy({ top: -120, behavior: 'smooth' });
-          }
-        }
-      }
-    };
-
-    const handleScroll = () => {
-      const section = featuresSectionRef.current;
-      if (!section) return;
-
-      const rect = section.getBoundingClientRect();
-      // If the section is scrolled out of viewport, reset completion status
-      if (rect.bottom < 0 || rect.top > window.innerHeight) {
-        hasCompletedRef.current = false;
-        isLockedRef.current = false;
-      }
-    };
-
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener('wheel', handleWheel);
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-  useEffect(() => {
-    scrollIndexRef.current = activeModule;
-  }, [activeModule]);
 
   useEffect(() => {
     const section = statsSectionRef.current;
@@ -782,7 +691,7 @@ export default function Welcome() {
       </section>
 
       {/* Everything Your Business Needs (Interactive Modules Loop) */}
-      <section className="all-in-one-section" ref={featuresSectionRef}>
+      <section className="all-in-one-section">
         <div className="all-in-one-text">
           <h2 className="all-in-one-title">
             Everything Your Business Needs,
