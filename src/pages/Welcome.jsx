@@ -351,7 +351,6 @@ export default function Welcome() {
   const [activeModule, setActiveModule] = useState(0);
   const [activeTestimonial, setActiveTestimonial] = useState(1);
   const [activeSupportStep, setActiveSupportStep] = useState(-1);
-  const [isTestimonialPaused, setIsTestimonialPaused] = useState(false);
   const [testimonialResetTrigger, setTestimonialResetTrigger] = useState(0);
   const activeData = modulesData[activeModule];
   const activeTesti = testimonialData[activeTestimonial];
@@ -361,14 +360,12 @@ export default function Welcome() {
   const supportSectionRef = useRef(null);
 
   useEffect(() => {
-    if (isTestimonialPaused) return;
-
     const interval = setInterval(() => {
       setActiveTestimonial((prev) => (prev - 1 + 3) % 3);
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [isTestimonialPaused, testimonialResetTrigger]);
+  }, [testimonialResetTrigger]);
 
   const handleStepComplete = (stepIdx) => {
     if (stepIdx === activeSupportStep) {
@@ -1439,11 +1436,7 @@ export default function Welcome() {
       </section>
 
       {/* Customer Experiences / Testimonials Section */}
-      <section 
-        className="testimonials-section"
-        onMouseEnter={() => setIsTestimonialPaused(true)}
-        onMouseLeave={() => setIsTestimonialPaused(false)}
-      >
+      <section className="testimonials-section">
         <div className="testimonials-container">
           <h2 className="testimonials-title">
             Customer Experiences That Speak for <span className="red-highlight">Themselves</span>
