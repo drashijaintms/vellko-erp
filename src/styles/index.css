@@ -1816,6 +1816,25 @@ button {
   font-size: 1.08rem;
 }
 
+/* Typewriter Cursor Styling */
+.typewriter-container {
+  display: inline-flex;
+  align-items: center;
+}
+
+.typewriter-cursor {
+  color: var(--primary);
+  margin-left: 2px;
+  font-weight: 300;
+  display: inline-block;
+  animation: typewriter-blink 0.75s step-end infinite;
+}
+
+@keyframes typewriter-blink {
+  from, to { border-color: transparent }
+  50% { color: transparent }
+}
+
 /* Partnership CTA Section */
 .cta-partnership-section {
   width: 100%;
