@@ -1573,63 +1573,55 @@ button {
 }
 
 .step-card {
+  background: url('/src/assets/images/step-card-bg.png') no-repeat;
+  background-size: 100% 100%;
+  padding: 1.5rem 2rem 2.8rem 2rem;
+  text-align: left;
+  transition: var(--transition-smooth);
+  border: none;
+  box-shadow: none;
+}
+
+.step-card.last-step {
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.05);
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
-  border-radius: 12px;
-  padding: 1.25rem 1.75rem;
-  text-align: left;
-  transition: var(--transition-smooth);
-  max-width: 520px;
-  width: 100%;
+  border-radius: 4px;
+  padding: 1.5rem 2rem;
 }
 
 .step-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
 }
 
 .step-card-header {
-  font-family: var(--font-heading);
-  font-size: 1.2rem;
+  font-family: Georgia, serif;
+  font-size: 1.45rem;
   font-weight: 700;
-  color: #4b5563;
-  margin-bottom: 0.5rem;
+  color: #707070;
+  margin-bottom: 0.65rem;
 }
 
 .step-card-header .red-highlight {
-  font-family: var(--font-heading);
+  font-family: Georgia, serif;
   color: var(--primary);
   font-weight: 700;
 }
 
 .step-card-desc {
   font-family: var(--font-body);
-  font-size: 0.9rem;
-  color: #1f2937;
-  line-height: 1.5;
-  font-weight: 500;
+  font-size: 1rem;
+  color: #000000;
+  line-height: 1.45;
+  font-weight: 600;
 }
 
 .step-arrow-container {
-  display: flex !important;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  max-width: 520px;
-  margin: 0.75rem 0;
+  display: none !important;
 }
 
 .step-arrow-svg {
-  display: block !important;
-  width: 32px;
-  height: 32px;
-  animation: bounce-subtle 2s infinite ease-in-out;
-}
-
-@keyframes bounce-subtle {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(3px); }
+  display: none;
 }
 
 .works-image-col {
