@@ -299,50 +299,50 @@ const isSectorActive = (index, active) => {
 };
 
 function TypewriterText({ text, active, onComplete }) {
-  const [displayText, setDisplayText] = useState('');
+  const [index, setIndex] = useState(0);
   const [showCursor, setShowCursor] = useState(false);
 
   useEffect(() => {
     if (!active) {
-      setDisplayText('');
+      setIndex(0);
       setShowCursor(false);
       return;
     }
 
     setShowCursor(true);
-    let currentText = '';
-    let index = 0;
-
-    // Set first character immediately to prevent missing first letter visibility
-    currentText = text.charAt(0);
-    setDisplayText(currentText);
-    index = 1;
-
-    if (index >= text.length) {
-      setShowCursor(false);
-      if (onComplete) onComplete();
-      return;
-    }
+    setIndex(1); // Start with first character immediately
 
     const interval = setInterval(() => {
-      currentText += text.charAt(index);
-      setDisplayText(currentText);
-      index++;
-
-      if (index >= text.length) {
-        clearInterval(interval);
-        setShowCursor(false);
-        if (onComplete) onComplete();
-      }
+      setIndex((prev) => {
+        if (prev >= text.length) {
+          clearInterval(interval);
+          setShowCursor(false);
+          if (onComplete) onComplete();
+          return prev;
+        }
+        return prev + 1;
+      });
     }, 35);
 
     return () => clearInterval(interval);
   }, [active, text]);
 
+  if (!active) {
+    return <span style={{ visibility: 'hidden' }}>{text}</span>;
+  }
+
+  const typedText = text.substring(0, index);
+  const remainingText = text.substring(index);
+
   return (
     <span className="typewriter-container">
-      {displayText}
-      {showCursor && <span className="typewriter-cursor">|</span>}
+      <span className="typewriter-typed">
+        {typedText}
+        {showCursor && <span className="typewriter-cursor">|</span>}
+      </span>
+      <span className="typewriter-remaining" style={{ visibility: 'hidden' }}>
+        {remainingText}
+      </span>
     </span>
   );
 }

@@ -1782,8 +1782,8 @@ button {
 
 .timeline-icon-box svg,
 .support-png-icon {
-  width: 24px;
-  height: 24px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
   filter: grayscale(1) opacity(0.35); /* Make icons dull grey by default */
   transition: var(--transition-smooth);
@@ -1798,7 +1798,7 @@ button {
 
 .timeline-icon-box.active svg,
 .timeline-icon-box.active .support-png-icon {
-  filter: none; /* Restore original color when active */
+  filter: invert(15%) sepia(95%) saturate(4529%) hue-rotate(341deg) brightness(87%) contrast(92%); /* Change black PNG to pink #DC1436 on visible */
 }
 
 /* Timeline text label styles */
