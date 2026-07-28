@@ -39,6 +39,12 @@ import testimonial2 from '../assets/images/testimonial-2.png';
 import testimonial3 from '../assets/images/testimonial-3.png';
 import dashboardMonitor from '../assets/images/dashboard-monitor.png';
 
+import supportHandshake from '../assets/icons/support-handshake.png';
+import supportCog from '../assets/icons/support-cog.png';
+import supportUsers from '../assets/icons/support-users.png';
+import supportWrench from '../assets/icons/support-wrench.png';
+import supportTrendingUp from '../assets/icons/support-trending-up.png';
+
 const modulesData = [
   {
     title: "CRM & Lead Management",
@@ -1183,7 +1189,7 @@ export default function Welcome() {
             <div className="timeline-step-row">
               <div className="timeline-col left-align">
                 <div className="timeline-icon-box">
-                  <Handshake strokeWidth={1.5} />
+                  <img src={supportHandshake} alt="Handshake" className="support-png-icon" />
                 </div>
               </div>
               <div className="timeline-center-node">
@@ -1204,7 +1210,7 @@ export default function Welcome() {
               </div>
               <div className="timeline-col right-align">
                 <div className="timeline-icon-box active">
-                  <Cog strokeWidth={1.5} />
+                  <img src={supportCog} alt="Cog" className="support-png-icon" />
                 </div>
               </div>
             </div>
@@ -1213,7 +1219,7 @@ export default function Welcome() {
             <div className="timeline-step-row">
               <div className="timeline-col left-align">
                 <div className="timeline-icon-box">
-                  <Users strokeWidth={1.5} />
+                  <img src={supportUsers} alt="Users" className="support-png-icon" />
                 </div>
               </div>
               <div className="timeline-center-node">
@@ -1234,7 +1240,7 @@ export default function Welcome() {
               </div>
               <div className="timeline-col right-align">
                 <div className="timeline-icon-box">
-                  <Wrench strokeWidth={1.5} />
+                  <img src={supportWrench} alt="Wrench" className="support-png-icon" />
                 </div>
               </div>
             </div>
@@ -1243,7 +1249,7 @@ export default function Welcome() {
             <div className="timeline-step-row">
               <div className="timeline-col left-align">
                 <div className="timeline-icon-box">
-                  <TrendingUp strokeWidth={1.5} />
+                  <img src={supportTrendingUp} alt="Trending Up" className="support-png-icon" />
                 </div>
               </div>
               <div className="timeline-center-node">
@@ -1264,7 +1270,7 @@ export default function Welcome() {
               </div>
               <div className="timeline-col right-align">
                 <div className="timeline-icon-box">
-                  <UserCheck strokeWidth={1.5} />
+                  <img src={supportUsers} alt="Users" className="support-png-icon" />
                 </div>
               </div>
             </div>

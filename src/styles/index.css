@@ -786,10 +786,6 @@ button {
     margin: 0 auto;
 }
 
-.all-in-one-title {
-  letter-spacing: -0.02em;
-}
-
 .all-in-one-title .red-highlight {
   color: var(--primary);
   display: block;
@@ -807,28 +803,28 @@ button {
 
 
 .all-in-one-layout {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 4rem;
-  width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 0rem;
+    width: 100%;
 }
 
 .module-details-card {
-  width: 100%;
-  max-width: 440px;
-  background: #ffffff;
-  border: 1.5px solid #DC1436;
-  border-radius: 20px;
-  padding: 2rem 2rem;
-  box-shadow: 0 10px 30px rgba(220, 20, 54, 0.01);
-  text-align: left;
-  height: 520px;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(220, 20, 54, 0.25) transparent;
+    width: 100%;
+    max-width: 440px;
+    background: #ffffff;
+    border: 1.5px solid #DC1436;
+    border-radius: 20px;
+    padding: 1.5rem 1.5rem;
+    box-shadow: 0 10px 30px rgba(220, 20, 54, 0.01);
+    text-align: left;
+    height: 520px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(220, 20, 54, 0.25) transparent;
 }
 
 .module-card-header {
@@ -1313,11 +1309,11 @@ button {
 }
 
 .need-centered-title {
-  font-family: var(--font-heading);
-  font-weight: 850;
-  color: #000000;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
+    font-family: var(--font-heading);
+    font-weight: 800;
+    color: #000000;
+    line-height: 1.15;
+    /* letter-spacing: -0.01em; */
 }
 
 .need-centered-title .red-highlight {
@@ -1783,9 +1779,11 @@ button {
   transition: var(--transition-smooth);
 }
 
-.timeline-icon-box svg {
+.timeline-icon-box svg,
+.support-png-icon {
   width: 24px;
   height: 24px;
+  object-fit: contain;
 }
 
 .timeline-icon-box.active {
