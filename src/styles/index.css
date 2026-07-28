@@ -15,8 +15,8 @@
   /* Fonts */
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-nav: 'Montserrat', system-ui, -apple-system, sans-serif;
-  --font-heading: 'Montserrat', sans-serif;
-  --font-body: 'Montserrat', sans-serif;
+  --font-heading: 'Roboto Serif', Georgia, serif;
+  --font-body: 'Roboto', sans-serif;
   
   --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   --border-radius-lg: 12px;
