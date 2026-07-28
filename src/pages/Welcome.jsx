@@ -44,6 +44,7 @@ import supportCog from '../assets/icons/support-cog.png';
 import supportUsers from '../assets/icons/support-users.png';
 import supportWrench from '../assets/icons/support-wrench.png';
 import supportTrendingUp from '../assets/icons/support-trending-up.png';
+import supportExperts from '../assets/icons/support-dedicated-experts.png'; 
 
 const modulesData = [
   {
@@ -297,14 +298,71 @@ const isSectorActive = (index, active) => {
   return false;
 };
 
+function TypewriterText({ text, active }) {
+  const [displayText, setDisplayText] = useState('');
+
+  useEffect(() => {
+    if (!active) {
+      setDisplayText(text);
+      return;
+    }
+
+    let index = 0;
+    setDisplayText('');
+    const interval = setInterval(() => {
+      setDisplayText((prev) => prev + text.charAt(index));
+      index++;
+      if (index >= text.length) {
+        clearInterval(interval);
+      }
+    }, 30);
+
+    return () => clearInterval(interval);
+  }, [active, text]);
+
+  return <span>{displayText}</span>;
+}
+
 export default function Welcome() {
   const [activeModule, setActiveModule] = useState(0);
   const [activeTestimonial, setActiveTestimonial] = useState(1);
+  const [activeSupportStep, setActiveSupportStep] = useState(-1);
   const activeData = modulesData[activeModule];
   const activeTesti = testimonialData[activeTestimonial];
 
   const statsSectionRef = useRef(null);
   const statsRefs = useRef([]);
+  const supportSectionRef = useRef(null);
+
+  useEffect(() => {
+    const section = supportSectionRef.current;
+    if (!section) return;
+
+    let intervalId;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setActiveSupportStep(0);
+          clearInterval(intervalId);
+          intervalId = setInterval(() => {
+            setActiveSupportStep((prev) => (prev + 1) % 6);
+          }, 3500);
+        } else {
+          setActiveSupportStep(-1);
+          clearInterval(intervalId);
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(section);
+
+    return () => {
+      observer.disconnect();
+      clearInterval(intervalId);
+    };
+  }, []);
 
 
   useEffect(() => {
@@ -1169,7 +1227,7 @@ export default function Welcome() {
       </section>
 
       {/* Dedicated Support Section */}
-      <section className="support-section">
+      <section className="support-section" ref={supportSectionRef}>
         <div className="support-container">
           <h2 className="support-title">
             Dedicated Support at <span className="red-highlight">Every Step</span>
@@ -1186,91 +1244,103 @@ export default function Welcome() {
           <div className="support-timeline-wrapper">
             
             {/* Step 1 (Odd) */}
-            <div className="timeline-step-row">
+            <div className={`timeline-step-row ${activeSupportStep === 0 ? 'active' : ''}`}>
               <div className="timeline-col left-align">
-                <div className="timeline-icon-box">
+                <div className={`timeline-icon-box ${activeSupportStep === 0 ? 'active' : ''}`}>
                   <img src={supportHandshake} alt="Handshake" className="support-png-icon" />
                 </div>
               </div>
               <div className="timeline-center-node">
-                <div className="timeline-marker-square"></div>
+                <div className={`timeline-marker-square ${activeSupportStep === 0 ? 'active' : ''}`}></div>
               </div>
               <div className="timeline-col right-align">
-                <span className="timeline-label-text">Faster onboarding with expert guidance</span>
+                <span className={`timeline-label-text ${activeSupportStep === 0 ? 'active' : ''}`}>
+                  <TypewriterText text="Faster onboarding with expert guidance" active={activeSupportStep === 0} />
+                </span>
               </div>
             </div>
 
-            {/* Step 2 (Even) - Active */}
-            <div className="timeline-step-row">
+            {/* Step 2 (Even) */}
+            <div className={`timeline-step-row ${activeSupportStep === 1 ? 'active' : ''}`}>
               <div className="timeline-col left-align">
-                <span className="timeline-label-text active">Hassle-free implementation and migration</span>
+                <span className={`timeline-label-text ${activeSupportStep === 1 ? 'active' : ''}`}>
+                  <TypewriterText text="Hassle-free implementation and migration" active={activeSupportStep === 1} />
+                </span>
               </div>
               <div className="timeline-center-node">
-                <div className="timeline-marker-square active"></div>
+                <div className={`timeline-marker-square ${activeSupportStep === 1 ? 'active' : ''}`}></div>
               </div>
               <div className="timeline-col right-align">
-                <div className="timeline-icon-box active">
+                <div className={`timeline-icon-box ${activeSupportStep === 1 ? 'active' : ''}`}>
                   <img src={supportCog} alt="Cog" className="support-png-icon" />
                 </div>
               </div>
             </div>
 
             {/* Step 3 (Odd) */}
-            <div className="timeline-step-row">
+            <div className={`timeline-step-row ${activeSupportStep === 2 ? 'active' : ''}`}>
               <div className="timeline-col left-align">
-                <div className="timeline-icon-box">
+                <div className={`timeline-icon-box ${activeSupportStep === 2 ? 'active' : ''}`}>
                   <img src={supportUsers} alt="Users" className="support-png-icon" />
                 </div>
               </div>
               <div className="timeline-center-node">
-                <div className="timeline-marker-square"></div>
+                <div className={`timeline-marker-square ${activeSupportStep === 2 ? 'active' : ''}`}></div>
               </div>
               <div className="timeline-col right-align">
-                <span className="timeline-label-text">Quick user adoption through hands-on training</span>
+                <span className={`timeline-label-text ${activeSupportStep === 2 ? 'active' : ''}`}>
+                  <TypewriterText text="Quick user adoption through hands-on training" active={activeSupportStep === 2} />
+                </span>
               </div>
             </div>
 
             {/* Step 4 (Even) */}
-            <div className="timeline-step-row">
+            <div className={`timeline-step-row ${activeSupportStep === 3 ? 'active' : ''}`}>
               <div className="timeline-col left-align">
-                <span className="timeline-label-text">Reliable support when you need it most</span>
+                <span className={`timeline-label-text ${activeSupportStep === 3 ? 'active' : ''}`}>
+                  <TypewriterText text="Reliable support when you need it most" active={activeSupportStep === 3} />
+                </span>
               </div>
               <div className="timeline-center-node">
-                <div className="timeline-marker-square"></div>
+                <div className={`timeline-marker-square ${activeSupportStep === 3 ? 'active' : ''}`}></div>
               </div>
               <div className="timeline-col right-align">
-                <div className="timeline-icon-box">
+                <div className={`timeline-icon-box ${activeSupportStep === 3 ? 'active' : ''}`}>
                   <img src={supportWrench} alt="Wrench" className="support-png-icon" />
                 </div>
               </div>
             </div>
 
             {/* Step 5 (Odd) */}
-            <div className="timeline-step-row">
+            <div className={`timeline-step-row ${activeSupportStep === 4 ? 'active' : ''}`}>
               <div className="timeline-col left-align">
-                <div className="timeline-icon-box">
+                <div className={`timeline-icon-box ${activeSupportStep === 4 ? 'active' : ''}`}>
                   <img src={supportTrendingUp} alt="Trending Up" className="support-png-icon" />
                 </div>
               </div>
               <div className="timeline-center-node">
-                <div className="timeline-marker-square"></div>
+                <div className={`timeline-marker-square ${activeSupportStep === 4 ? 'active' : ''}`}></div>
               </div>
               <div className="timeline-col right-align">
-                <span className="timeline-label-text">Continuous improvements as you grow</span>
+                <span className={`timeline-label-text ${activeSupportStep === 4 ? 'active' : ''}`}>
+                  <TypewriterText text="Continuous improvements as you grow" active={activeSupportStep === 4} />
+                </span>
               </div>
             </div>
 
             {/* Step 6 (Even) */}
-            <div className="timeline-step-row">
+            <div className={`timeline-step-row ${activeSupportStep === 5 ? 'active' : ''}`}>
               <div className="timeline-col left-align">
-                <span className="timeline-label-text">Dedicated experts invested in your success</span>
+                <span className={`timeline-label-text ${activeSupportStep === 5 ? 'active' : ''}`}>
+                  <TypewriterText text="Dedicated experts invested in your success" active={activeSupportStep === 5} />
+                </span>
               </div>
               <div className="timeline-center-node">
-                <div className="timeline-marker-square"></div>
+                <div className={`timeline-marker-square ${activeSupportStep === 5 ? 'active' : ''}`}></div>
               </div>
               <div className="timeline-col right-align">
-                <div className="timeline-icon-box">
-                  <img src={supportUsers} alt="Users" className="support-png-icon" />
+                <div className={`timeline-icon-box ${activeSupportStep === 5 ? 'active' : ''}`}>
+                  <img src={supportExperts} alt="Users" className="support-png-icon" />
                 </div>
               </div>
             </div>
