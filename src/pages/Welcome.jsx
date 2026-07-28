@@ -351,12 +351,24 @@ export default function Welcome() {
   const [activeModule, setActiveModule] = useState(0);
   const [activeTestimonial, setActiveTestimonial] = useState(1);
   const [activeSupportStep, setActiveSupportStep] = useState(-1);
+  const [isTestimonialPaused, setIsTestimonialPaused] = useState(false);
+  const [testimonialResetTrigger, setTestimonialResetTrigger] = useState(0);
   const activeData = modulesData[activeModule];
   const activeTesti = testimonialData[activeTestimonial];
 
   const statsSectionRef = useRef(null);
   const statsRefs = useRef([]);
   const supportSectionRef = useRef(null);
+
+  useEffect(() => {
+    if (isTestimonialPaused) return;
+
+    const interval = setInterval(() => {
+      setActiveTestimonial((prev) => (prev - 1 + 3) % 3);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [isTestimonialPaused, testimonialResetTrigger]);
 
   const handleStepComplete = (stepIdx) => {
     if (stepIdx === activeSupportStep) {
@@ -1427,7 +1439,11 @@ export default function Welcome() {
       </section>
 
       {/* Customer Experiences / Testimonials Section */}
-      <section className="testimonials-section">
+      <section 
+        className="testimonials-section"
+        onMouseEnter={() => setIsTestimonialPaused(true)}
+        onMouseLeave={() => setIsTestimonialPaused(false)}
+      >
         <div className="testimonials-container">
           <h2 className="testimonials-title">
             Customer Experiences That Speak for <span className="red-highlight">Themselves</span>
@@ -1438,16 +1454,29 @@ export default function Welcome() {
 
             {/* Left: Avatar Stack */}
             <div className="testimonials-avatars-col">
-              {testimonialData.map((t, idx) => (
-                <button
-                  key={idx}
-                  className={`testimonial-avatar-btn ${activeTestimonial === idx ? 'active' : ''}`}
-                  onClick={() => setActiveTestimonial(idx)}
-                  aria-label={`View testimonial from ${t.name}`}
-                >
-                  <img src={t.img} alt={t.name} />
-                </button>
-              ))}
+              {testimonialData.map((t, idx) => {
+                let slotClass = '';
+                if (idx === activeTestimonial) {
+                  slotClass = 'slot-middle active';
+                } else if (idx === (activeTestimonial - 1 + 3) % 3) {
+                  slotClass = 'slot-top';
+                } else {
+                  slotClass = 'slot-bottom';
+                }
+                return (
+                  <button
+                    key={idx}
+                    className={`testimonial-avatar-btn ${slotClass}`}
+                    onClick={() => {
+                      setActiveTestimonial(idx);
+                      setTestimonialResetTrigger((prev) => prev + 1);
+                    }}
+                    aria-label={`View testimonial from ${t.name}`}
+                  >
+                    <img src={t.img} alt={t.name} />
+                  </button>
+                );
+              })}
             </div>
 
             {/* Thin vertical divider */}
