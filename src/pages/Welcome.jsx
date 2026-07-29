@@ -21,6 +21,12 @@ import cloudErpIcon from '../assets/icons/cloud-erp.png';
 import multiLocationIcon from '../assets/icons/multi-location.png';
 import securityIcon from '../assets/icons/security.png';
 import aiWorkflowIcon from '../assets/icons/ai-workflow.png';
+import singleplatform from '../assets/icons/single-platform.png';
+import useraccess from '../assets/icons/user-access-control.png';
+import businessinte from '../assets/icons/business-intelligence.png';
+import gst from '../assets/icons/gst.png';
+
+
 import globeGif from '../assets/images/globe.gif';
 import splitIllustration from '../assets/images/split-illustration.png';
 import targetImg from '../assets/images/target.png';
@@ -234,9 +240,7 @@ const needErpData = [
   { challenge: "Duplicate entries and human errors", solution: "Creates a single source of truth across the organization" },
   { challenge: "Poor collaboration between teams", solution: "Connects departments through streamlined workflows" },
   { challenge: "Data security and access concerns", solution: "Protects information with enterprise-grade security and role-based access" },
-  { challenge: "Difficulty managing remote teams", solution: "Enables secure cloud access from anywhere" },
-  { challenge: "Business growth creating operational complexity", solution: "Scales effortlessly as your business expands" },
-  { challenge: "Unique business requirements", solution: "Customizes workflows and modules to fit your processes" }
+  { challenge: "Difficulty managing remote teams", solution: "Enables secure cloud access from anywhere" }
 ];
 
 const testimonialData = [
@@ -632,49 +636,25 @@ export default function Welcome() {
           {/* ROW 2 */}
           <div className="offset-cell empty"></div>
           <div className="offset-cell">
-            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="offset-icon-svg">
-              <path d="M10 38V12C10 10.8954 10.8954 10 12 10H36C37.1046 10 38 10.8954 38 12V38L32 35L24 38L16 35L10 38Z" stroke="#4b5563" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-              <rect x="16" y="16" width="16" height="12" rx="2" stroke="#4b5563" strokeWidth="2" />
-              <text x="18" y="24" fontFamily="var(--font-body)" fontSize="6" fontWeight="bold" fill="#4b5563">GST</text>
-            </svg>
+            <img src={gst} alt="GST Compliance" className="offset-icon-img" />
           </div>
           <div className="offset-cell">
             <span className="offset-text">End-to-End GST Compliance</span>
           </div>
           <div className="offset-cell">
-            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="offset-icon-svg">
-              <rect x="6" y="8" width="36" height="24" rx="3" stroke="#4b5563" strokeWidth="2.5" />
-              <path d="M16 32V38H32V32" stroke="#4b5563" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M12 38H36" stroke="#4b5563" strokeWidth="2.5" strokeLinecap="round" />
-              <circle cx="18" cy="20" r="6" stroke="#4b5563" strokeWidth="2" />
-              <path d="M18 14V20H24" stroke="#4b5563" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-              <line x1="28" y1="16" x2="36" y2="16" stroke="#4b5563" strokeWidth="2" strokeLinecap="round" />
-              <line x1="28" y1="22" x2="34" y2="22" stroke="#4b5563" strokeWidth="2" strokeLinecap="round" />
-            </svg>
+            <img src={businessinte} alt="Live Business Intelligence" className="offset-icon-img" />
           </div>
           <div className="offset-cell">
             <span className="offset-text">Live Business Intelligence</span>
           </div>
           <div className="offset-cell">
-            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="offset-icon-svg">
-              <rect x="8" y="20" width="16" height="14" rx="2" stroke="#4b5563" strokeWidth="2.5" />
-              <path d="M12 20V15C12 12.7909 13.7909 11 16 11C18.2091 11 20 12.7909 20 15V20" stroke="#4b5563" strokeWidth="2.5" />
-              <circle cx="34" cy="20" r="5" stroke="#4b5563" strokeWidth="2.5" />
-              <path d="M26 33C26 29.134 29.5817 26 34 26C38.4183 26 42 29.134 42 33" stroke="#4b5563" strokeWidth="2.5" strokeLinecap="round" />
-            </svg>
+            <img src={useraccess} alt="Granular User Access Control" className="offset-icon-img" />
           </div>
           <div className="offset-cell">
             <span className="offset-text">Granular User Access Control</span>
           </div>
           <div className="offset-cell">
-            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="offset-icon-svg">
-              <rect x="6" y="10" width="28" height="20" rx="2" stroke="#4b5563" strokeWidth="2.5" />
-              <path d="M4 30H36" stroke="#4b5563" strokeWidth="2.5" strokeLinecap="round" />
-              <rect x="32" y="16" width="10" height="18" rx="2" fill="#ffffff" stroke="#4b5563" strokeWidth="2" />
-              <circle cx="37" cy="31" r="1" fill="#4b5563" />
-              <path d="M12 30V34H28V30" stroke="#4b5563" strokeWidth="2.5" strokeLinecap="round" />
-              <line x1="8" y1="34" x2="32" y2="34" stroke="#4b5563" strokeWidth="2" strokeLinecap="round" />
-            </svg>
+            <img src={singleplatform} alt="Single Platform for All Operations" className="offset-icon-img" />
           </div>
           <div className="offset-cell">
             <span className="offset-text">Single Platform for All Operations</span>
@@ -700,43 +680,19 @@ export default function Welcome() {
             <span className="mobile-feature-title">AI-Powered Workflow Automation</span>
           </div>
           <div className="mobile-feature-card">
-            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="offset-icon-svg">
-              <path d="M10 38V12C10 10.8954 10.8954 10 12 10H36C37.1046 10 38 10.8954 38 12V38L32 35L24 38L16 35L10 38Z" stroke="#4b5563" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-              <rect x="16" y="16" width="16" height="12" rx="2" stroke="#4b5563" strokeWidth="2" />
-              <text x="18" y="24" fontFamily="var(--font-body)" fontSize="6" fontWeight="bold" fill="#4b5563">GST</text>
-            </svg>
+            <img src={gst} alt="GST Compliance" className="offset-icon-img" />
             <span className="mobile-feature-title">End-to-End GST Compliance</span>
           </div>
           <div className="mobile-feature-card">
-            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="offset-icon-svg">
-              <rect x="6" y="8" width="36" height="24" rx="3" stroke="#4b5563" strokeWidth="2.5" />
-              <path d="M16 32V38H32V32" stroke="#4b5563" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M12 38H36" stroke="#4b5563" strokeWidth="2.5" strokeLinecap="round" />
-              <circle cx="18" cy="20" r="6" stroke="#4b5563" strokeWidth="2" />
-              <path d="M18 14V20H24" stroke="#4b5563" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-              <line x1="28" y1="16" x2="36" y2="16" stroke="#4b5563" strokeWidth="2" strokeLinecap="round" />
-              <line x1="28" y1="22" x2="34" y2="22" stroke="#4b5563" strokeWidth="2" strokeLinecap="round" />
-            </svg>
+            <img src={businessinte} alt="Live Business Intelligence" className="offset-icon-img" />
             <span className="mobile-feature-title">Live Business Intelligence</span>
           </div>
           <div className="mobile-feature-card">
-            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="offset-icon-svg">
-              <rect x="8" y="20" width="16" height="14" rx="2" stroke="#4b5563" strokeWidth="2.5" />
-              <path d="M12 20V15C12 12.7909 13.7909 11 16 11C18.2091 11 20 12.7909 20 15V20" stroke="#4b5563" strokeWidth="2.5" />
-              <circle cx="34" cy="20" r="5" stroke="#4b5563" strokeWidth="2.5" />
-              <path d="M26 33C26 29.134 29.5817 26 34 26C38.4183 26 42 29.134 42 33" stroke="#4b5563" strokeWidth="2.5" />
-            </svg>
+            <img src={useraccess} alt="Granular User Access Control" className="offset-icon-img" />
             <span className="mobile-feature-title">Granular User Access Control</span>
           </div>
           <div className="mobile-feature-card">
-            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="offset-icon-svg">
-              <rect x="6" y="10" width="28" height="20" rx="2" stroke="#4b5563" strokeWidth="2.5" />
-              <path d="M4 30H36" stroke="#4b5563" strokeWidth="2.5" strokeLinecap="round" />
-              <rect x="32" y="16" width="10" height="18" rx="2" fill="#ffffff" stroke="#4b5563" strokeWidth="2" />
-              <circle cx="37" cy="31" r="1" fill="#4b5563" />
-              <path d="M12 30V34H28V30" stroke="#4b5563" strokeWidth="2.5" strokeLinecap="round" />
-              <line x1="8" y1="34" x2="32" y2="34" stroke="#4b5563" strokeWidth="2" strokeLinecap="round" />
-            </svg>
+            <img src={singleplatform} alt="Single Platform for All Operations" className="offset-icon-img" />
             <span className="mobile-feature-title">Single Platform for All Operations</span>
           </div>
         </div>
@@ -751,12 +707,9 @@ export default function Welcome() {
             <span className="split-title-left">One Platform.</span>
             <span className="split-title-right">Every Department.</span>
           </h2>
-        </div>
-
-        {/* Left-aligned Description paragraph on the grey side */}
-        <div className="split-comp-desc-container">
-          <p className="split-comp-desc">
-            Eliminate disconnected tools and manage your entire business from a single cloud-based platform.
+          <p className="split-comp-desc-row">
+            <span className="split-desc-left">Eliminate disconnected tools and manage</span>
+            <span className="split-desc-right">your entire business from a single cloud-based platform.</span>
           </p>
         </div>
 
@@ -1105,100 +1058,20 @@ export default function Welcome() {
           </table>
         </div>
 
-        {/* Bottom Centered Paragraphs */}
-        <div className="need-bottom-block">
-          <p className="need-bottom-p1">
-            As your business grows, managing operations through spreadsheets, emails and disconnected software becomes inefficient, expensive and difficult to scale.
-          </p>
-          <p className="need-bottom-p1">
-            An ERP system brings every department together giving your teams one centralized platform to manage operations, automate workflows and access real-time business data.
-          </p>
-          <p className="need-bottom-p1">
-            With <span className="red-highlight">Vellko ERP</span>, you can eliminate operational bottlenecks, reduce manual work and gain complete visibility across your business.
-          </p>
-        </div>
-
-      </section>
-
-      {/* The Result Section */}
-      <section className="result-section">
-        <div className="result-container">
-          
-          <div className="result-split-layout">
-            
-            {/* Left side target image */}
-            <div className="result-image-area">
-              <img src={targetImg} alt="Target Bullseye and Arrow" className="result-target-img" />
-            </div>
-
-            {/* Right side bullets info list */}
-            <div className="result-info-area">
-              <h2 className="result-heading">The Result?</h2>
-              
-              <ul className="result-bullets-list">
-                <li className="result-bullet-item">
-                  <div className="result-check-circle">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  </div>
-                  <span className="result-bullet-text">Save time by automating daily operations</span>
-                </li>
-
-                <li className="result-bullet-item">
-                  <div className="result-check-circle">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  </div>
-                  <span className="result-bullet-text">Reduce operational costs and manual errors</span>
-                </li>
-
-                <li className="result-bullet-item">
-                  <div className="result-check-circle">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  </div>
-                  <span className="result-bullet-text">Increase team productivity and accountability</span>
-                </li>
-
-                <li className="result-bullet-item">
-                  <div className="result-check-circle">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  </div>
-                  <span className="result-bullet-text">Make faster, data-driven decisions</span>
-                </li>
-
-                <li className="result-bullet-item">
-                  <div className="result-check-circle">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  </div>
-                  <span className="result-bullet-text">Scale your business without adding complexity</span>
-                </li>
-              </ul>
-            </div>
-
-          </div>
-        </div>
       </section>
 
       {/* How Vellko ERP Works Section */}
       <section className="works-section">
         <div className="works-container">
           <h2 className="works-title">
-            How Vellko ERP <span className="red-highlight">Works</span>
+            How Vellko <span className="red-highlight">ERP Works</span>
           </h2>
 
           <div className="works-split-layout">
             
             {/* Steps Column */}
             <div className="works-steps-col">
-              
+
               <div className="step-card">
                 <h3 className="step-card-header">
                   Step 1: <span className="red-highlight">Book a Free Demo</span>
@@ -1206,12 +1079,6 @@ export default function Welcome() {
                 <p className="step-card-desc">
                   See how Vellko ERP works and how it can be applied to your business.
                 </p>
-              </div>
-
-              <div className="step-arrow-container">
-                <svg className="step-arrow-svg" viewBox="0 0 24 24" fill="none" stroke="#DC1436" strokeWidth="5.5" strokeLinecap="square" strokeLinejoin="miter">
-                  <polyline points="4 7 12 16 20 7" />
-                </svg>
               </div>
 
               <div className="step-card">
@@ -1223,12 +1090,6 @@ export default function Welcome() {
                 </p>
               </div>
 
-              <div className="step-arrow-container">
-                <svg className="step-arrow-svg" viewBox="0 0 24 24" fill="none" stroke="#DC1436" strokeWidth="5.5" strokeLinecap="square" strokeLinejoin="miter">
-                  <polyline points="4 7 12 16 20 7" />
-                </svg>
-              </div>
-
               <div className="step-card">
                 <h3 className="step-card-header">
                   Step 3: <span className="red-highlight">Configure & Migrate Data</span>
@@ -1238,13 +1099,7 @@ export default function Welcome() {
                 </p>
               </div>
 
-              <div className="step-arrow-container">
-                <svg className="step-arrow-svg" viewBox="0 0 24 24" fill="none" stroke="#DC1436" strokeWidth="5.5" strokeLinecap="square" strokeLinejoin="miter">
-                  <polyline points="4 7 12 16 20 7" />
-                </svg>
-              </div>
-
-              <div className="step-card">
+              <div className="step-card last-step">
                 <h3 className="step-card-header">
                   Step 4: <span className="red-highlight">Train Your Team & Go Live</span>
                 </h3>
@@ -1427,7 +1282,7 @@ export default function Welcome() {
       <section className="cta-partnership-section">
         <div className="cta-partnership-container">
           <h2 className="cta-partnership-heading">
-            <span className="red-highlight">At Vellko,</span> we don't just deliver software we build long-term partnerships that help your business grow with confidence.
+            At Vellko, we don't just deliver software we build long-term partnerships that help your business grow with confidence.
           </h2>
           <button className="cta-partnership-btn">
             Discover How Vellko ERP works for your Business
@@ -1504,7 +1359,7 @@ export default function Welcome() {
       <section className="final-cta-section">
         <div className="final-cta-container">
           <h2 className="final-cta-heading">
-            Ready to simplify operations and accelerate growth with <span className="red-highlight">Vellko ERP?</span>
+            Ready to simplify operations and accelerate growth with Vellko ERP?
           </h2>
           <div className="final-cta-buttons">
             <button className="final-cta-btn-primary">Request a Demo</button>
