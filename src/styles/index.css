@@ -312,10 +312,16 @@ button {
 }
 
 /* Exact Hero Section Styles */
+.hero-stats-wrapper {
+  position: relative;
+  background: url('/src/assets/images/hero-bg.png') no-repeat center top;
+  background-size: cover;
+  width: 100%;
+}
+
 .hero-section {
   position: relative;
-  background: url('/src/assets/images/hero-bg.png') no-repeat center center;
-  background-size: cover;
+  background: transparent;
   padding: 2rem 2.5rem 2rem;
   width: 100%;
 }
@@ -437,7 +443,7 @@ button {
   max-width: 1340px;
   margin: 0 auto;
   width: 100%;
-  background-color: #ffffff;
+  background-color: transparent;
   padding: 0 2.5rem;
 }
 
@@ -446,9 +452,23 @@ button {
   grid-template-columns: repeat(8, minmax(0, 1fr));
   grid-template-rows: 1fr 1fr;
   width: 100%;
-  background: url('../assets/images/stats-bg.png') no-repeat center center;
-  background-size: 100% 100%;
   box-sizing: border-box;
+}
+
+/* Vertical dividers between stats columns */
+.stats-desktop-grid .stats-cell:nth-child(2),
+.stats-desktop-grid .stats-cell:nth-child(3),
+.stats-desktop-grid .stats-cell:nth-child(4),
+.stats-desktop-grid .stats-cell:nth-child(5),
+.stats-desktop-grid .stats-cell:nth-child(6),
+.stats-desktop-grid .stats-cell:nth-child(7),
+.stats-desktop-grid .stats-cell:nth-child(10),
+.stats-desktop-grid .stats-cell:nth-child(11),
+.stats-desktop-grid .stats-cell:nth-child(12),
+.stats-desktop-grid .stats-cell:nth-child(13),
+.stats-desktop-grid .stats-cell:nth-child(14),
+.stats-desktop-grid .stats-cell:nth-child(15) {
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .stats-cell {
@@ -2605,7 +2625,7 @@ button {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
     padding: 3rem 1.5rem;
-    background-color: #ffffff;
+    background-color: transparent;
     width: 100%;
     border-top: 1px solid rgba(0, 0, 0, 0.08);
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
@@ -2617,9 +2637,10 @@ button {
     justify-content: center;
     text-align: center;
     padding: 1.25rem;
-    background: #f9fafb;
+    background: rgba(255, 255, 255, 0.6);
     border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: 8px;
+    backdrop-filter: blur(4px);
   }
   .stats-mobile-num {
     font-size: 2.2rem;

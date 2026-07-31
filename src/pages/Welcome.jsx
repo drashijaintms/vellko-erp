@@ -484,8 +484,9 @@ export default function Welcome() {
 
   return (
     <>
-      {/* Hero Banner Section */}
-      <section className="hero-section">
+      <div className="hero-stats-wrapper">
+        {/* Hero Banner Section */}
+        <section className="hero-section">
         <div className="hero-container">
           <h1 className="hero-heading">
             Run Your Entire Business with
@@ -586,6 +587,7 @@ export default function Welcome() {
           </div>
         </div>
       </section>
+    </div>
 
       {/* Move Beyond Traditional ERP Section */}
       <section className="beyond-section">
