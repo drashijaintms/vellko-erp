@@ -1,0 +1,374 @@
+import { useState } from 'react';
+import dashboardMonitor from '../../assets/images/dashboard-monitor.png';
+
+const modulesData = [
+  {
+    title: "CRM & Lead Management",
+    subtitle: "Never Lose Sight of an Opportunity.",
+    desc: "Every customer interaction tells a story. Vellko ERP keeps every lead, quotation, conversation and follow-up connected in one place, so your sales team always knows what happened, what's next and where the next opportunity lies.",
+    features: [
+      "Lead Tracking",
+      "Opportunity Management",
+      "Customer Database",
+      "Quotation Management",
+      "Follow-Up Automation",
+      "Communication History",
+      "Sales Forecasting"
+    ],
+    iconSvg: (
+      <svg className="module-card-icon-svg" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+    )
+  },
+  {
+    title: "HRMS & Workforce Management",
+    subtitle: "Know Your Workforce Better.",
+    desc: "From recruitment to payroll, every employee record, attendance update, leave request and performance review is organized in one place- giving HR teams the information they need without searching through multiple systems.",
+    features: [
+      "Payroll Management",
+      "Attendance Tracking",
+      "Leave Management",
+      "Employee Self-Service",
+      "Centralized Employee Records",
+      "Workforce Analytics",
+      "Performance Tracking"
+    ],
+    iconSvg: (
+      <svg className="module-card-icon-svg" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <polyline points="16 11 18 13 22 9" />
+      </svg>
+    )
+  },
+  {
+    title: "Biometric Attendance Integration",
+    subtitle: "Accurate Attendance. Automated Payroll.",
+    desc: "Connect your biometric devices directly with Vellko ERP to capture attendance data in real time. Automatically sync attendance records with payroll, shift schedules, and workforce reports reducing manual work and improving accuracy across your HR operations.",
+    featuresTitle: "Key Benefits",
+    features: [
+      "Real-Time Attendance Tracking",
+      "Automated Payroll Integration",
+      "Employee Time Monitoring",
+      "Reduced Manual Errors",
+      "Improved Workforce Accountability"
+    ],
+    iconSvg: (
+      <svg className="module-card-icon-svg" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2a5 5 0 0 0-5 5v3a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5z" />
+        <path d="M19 10v1a7 7 0 0 1-14 0v-1" />
+        <line x1="12" y1="19" x2="12" y2="22" />
+      </svg>
+    )
+  },
+  {
+    title: "Work & Project Management",
+    subtitle: "Plan Better. Execute Faster.",
+    desc: "Manage projects, tasks, resources and teams from one centralized workspace. Vellko ERP helps you streamline project execution with real-time visibility into progress, deadlines, and team performance keeping every project on track and every team aligned.",
+    features: [
+      "Project Creation & Tracking",
+      "Task Assignment",
+      "Deadline Management",
+      "Resource Planning",
+      "Team Collaboration",
+      "Productivity Monitoring"
+    ],
+    iconSvg: (
+      <svg className="module-card-icon-svg" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+        <line x1="16" y1="2" x2="16" y2="6" />
+        <line x1="8" y1="2" x2="8" y2="6" />
+        <line x1="3" y1="10" x2="21" y2="10" />
+      </svg>
+    )
+  },
+  {
+    title: "Finance & Purchase Management",
+    subtitle: "Gain Complete Financial Control",
+    desc: "Financial decisions shouldn't depend on outdated reports. Vellko ERP gives you real-time access to cash flow, payables, receivables, purchases and GST-compliant accounting, so you always know where your business stands.",
+    features: [],
+    iconSvg: (
+      <svg className="module-card-icon-svg" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="12" y1="1" x2="12" y2="23" />
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+      </svg>
+    )
+  },
+  {
+    title: "Service Management & Customer Support",
+    subtitle: "Deliver Exceptional Customer Experiences",
+    desc: "Manage customer inquiries, service requests and support tickets from a single platform. Vellko ERP helps your teams resolve issues faster, track service performance, and maintain SLA compliance ensuring every customer interaction is seamless and measurable.",
+    features: [
+      "Ticket & Service Request Management",
+      "SLA Monitoring",
+      "Issue Resolution Tracking",
+      "Customer Support Analytics",
+      "Service Performance Reports"
+    ],
+    iconSvg: (
+      <svg className="module-card-icon-svg" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+      </svg>
+    )
+  },
+  {
+    title: "Business Intelligence & Analytics",
+    subtitle: "Turn Data into Smarter Decisions",
+    desc: "Stop searching for reports across different systems. Vellko ERP transforms business data into live dashboards that help leaders understand performance, identify opportunities, and act faster.",
+    features: [
+      "KPI & Executive Dashboards",
+      "Real-Time Reporting",
+      "Revenue Analytics",
+      "Inventory Insights",
+      "HR Analytics",
+      "Sales Performance Reports",
+      "Financial Reporting"
+    ],
+    iconSvg: (
+      <svg className="module-card-icon-svg" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="18" y1="20" x2="18" y2="10" />
+        <line x1="12" y1="20" x2="12" y2="4" />
+        <line x1="6" y1="20" x2="6" y2="14" />
+      </svg>
+    )
+  }
+];
+
+const sectorAngles = [
+  { start: 321, end: 348, side: 'left' },  // CRM to HRMS
+  { start: 12,  end: 39,  side: 'right' }, // HRMS to Biometric
+  { start: 64,  end: 91,  side: 'right' }, // Biometric to Work
+  { start: 115, end: 142, side: 'right' }, // Work to Finance
+  { start: 166, end: 194, side: 'right' }, // Finance to Service
+  { start: 218, end: 245, side: 'left' },  // Service to BI
+  { start: 269, end: 296, side: 'left' }   // BI to CRM
+];
+
+const getArcPath = (startAngle, endAngle, radius) => {
+  const startRad = ((startAngle - 90) * Math.PI) / 180;
+  const endRad = ((endAngle - 90) * Math.PI) / 180;
+  const x1 = 220 + radius * Math.cos(startRad);
+  const y1 = 220 + radius * Math.sin(startRad);
+  const x2 = 220 + radius * Math.cos(endRad);
+  const y2 = 220 + radius * Math.sin(endRad);
+  const largeArcFlag = endAngle - startAngle <= 180 ? 0 : 1;
+  return `M ${x1},${y1} A ${radius},${radius} 0 ${largeArcFlag},1 ${x2},${y2}`;
+};
+
+export default function AllInOneSection() {
+  const [activeModule, setActiveModule] = useState(0);
+  const activeData = modulesData[activeModule];
+
+  return (
+    <section className="all-in-one-section">
+      <div className="all-in-one-text">
+        <h2 className="all-in-one-title">
+          Everything Your Business Needs,
+          <span className="red-highlight">All in One Place</span>
+        </h2>
+        <p className="all-in-one-p1">
+          Modern businesses need more than disconnected tools and scattered data.
+        </p>
+        <p className="all-in-one-p2">
+          Vellko ERP brings sales, finance, HR, operations, inventory and customer management and business insights together in one intelligent platform giving you complete visibility and control from a single dashboard.
+        </p>
+      </div>
+
+      {/* Mobile Horizontal Tab Scroller */}
+      <div className="mobile-modules-scroller">
+        {modulesData.map((item, idx) => (
+          <button 
+            key={idx} 
+            className={`mobile-module-tab ${activeModule === idx ? 'active' : ''}`}
+            onClick={() => setActiveModule(idx)}
+          >
+            {item.title.split(' & ')[0]}
+          </button>
+        ))}
+      </div>
+
+      <div className="all-in-one-layout">
+        <div className="module-details-card">
+          <div className="module-card-header">
+            <div className="module-card-icon-container">
+              {activeData.iconSvg}
+            </div>
+            <h3 className="module-card-title">{activeData.title}</h3>
+          </div>
+
+          <p className="module-card-desc">{activeData.subtitle}</p>
+          <p className="module-card-desc">{activeData.desc}</p>
+
+          {activeModule === 4 ? (
+            <div className="finance-nested-sections">
+              {/* Financial Management Sub-section */}
+              <div className="module-features-title-row">
+                Financial Management
+              </div>
+              <ul className="module-features-list" style={{ marginBottom: '2rem' }}>
+                {[
+                  "General Ledger",
+                  "Accounts Payable & Receivable",
+                  "Cash Flow Management",
+                  "Budget Planning",
+                  "GST Billing & Compliance",
+                  "E-Invoicing",
+                  "Profit & Loss Reporting"
+                ].map((feature, idx) => (
+                  <li key={idx} className="module-feature-item">
+                    <svg className="feature-checkbox-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="3" y="3" width="18" height="18" rx="4" stroke="#111827" strokeWidth="2" fill="none" />
+                      <path d="M7 11.5L10.5 15L17 7.5" stroke="#111827" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Purchase Management Sub-section */}
+              <div className="module-features-title-row">
+                Purchase Management
+              </div>
+              <ul className="module-features-list" style={{ marginBottom: '2.5rem' }}>
+                {[
+                  "Vendor Management",
+                  "Purchase Requisitions",
+                  "Purchase Orders",
+                  "Approval Workflows",
+                  "Supplier Performance Tracking"
+                ].map((feature, idx) => (
+                  <li key={idx} className="module-feature-item">
+                    <svg className="feature-checkbox-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="3" y="3" width="18" height="18" rx="4" stroke="#111827" strokeWidth="2" fill="none" />
+                      <path d="M7 11.5L10.5 15L17 7.5" stroke="#111827" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Inventory Management Sub-section */}
+              <div className="module-features-title-row">
+                Inventory Management
+              </div>
+              <p className="module-card-desc" style={{ color: '#111827', fontStyle: 'italic', marginTop: '0.75rem', marginBottom: '0.75rem' }}>
+                Know What's in Stock Before It Becomes a Problem.
+              </p>
+              <p className="module-card-desc" style={{ fontSize: '0.88rem', marginBottom: '1.5rem' }}>
+                Manage inventory seamlessly across warehouses, branches and locations from a single platform. Vellko ERP provides real-time stock visibility, streamlined warehouse operations and accurate inventory tracking helping you reduce stockouts, prevent overstocking and improve operational efficiency.
+              </p>
+              <div className="module-features-title-row">
+                Key Features
+              </div>
+              <ul className="module-features-list">
+                {[
+                  "Real-Time Stock Tracking",
+                  "Multi-Warehouse Management",
+                  "Stock Transfers",
+                  "Batch & Lot Tracking",
+                  "Inventory Valuation",
+                  "Purchase Integration",
+                  "Sales Integration"
+                ].map((feature, idx) => (
+                  <li key={idx} className="module-feature-item">
+                    <svg className="feature-checkbox-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="3" y="3" width="18" height="18" rx="4" stroke="#111827" strokeWidth="2" fill="none" />
+                      <path d="M7 11.5L10.5 15L17 7.5" stroke="#111827" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <>
+              <div className="module-features-title-row">
+                {activeData.featuresTitle || "Key Features"}
+              </div>
+
+              <ul className="module-features-list">
+                {activeData.features.map((feature, idx) => (
+                  <li key={idx} className="module-feature-item">
+                    <svg className="feature-checkbox-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="3" y="3" width="18" height="18" rx="4" stroke="#111827" strokeWidth="2" fill="none" />
+                      <path d="M7 11.5L10.5 15L17 7.5" stroke="#111827" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </div>
+
+        <div className="circular-graphic-container">
+          {/* SVG containing concentric rings and split alternating arcs */}
+          <svg className="circular-ring-svg" viewBox="0 0 440 440" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }}>
+            {sectorAngles.map((sector, index) => {
+              const outerColor = '#cbd5e1';
+              const innerColor = '#DC1436';
+              
+              return (
+                <g key={index}>
+                  {/* Outer Arc */}
+                  <path
+                    d={getArcPath(sector.start, sector.end, 160)}
+                    stroke={outerColor}
+                    strokeWidth={1.5}
+                    strokeLinecap="round"
+                    fill="none"
+                  />
+                  {/* Inner Arc */}
+                  <path
+                    d={getArcPath(sector.start, sector.end, 148)}
+                    stroke={innerColor}
+                    strokeWidth={1.5}
+                    strokeLinecap="round"
+                    fill="none"
+                  />
+                </g>
+              );
+            })}
+          </svg>
+
+          {/* Feature Labels */}
+          {[
+            { title: "CRM\n& Lead\nManagement", x: 22.6, y: 28.2, moduleId: 0 },
+            { title: "HRMS &\nWorkforce\nManagement", x: 50.0, y: 15.0, moduleId: 1 },
+            { title: "Biometric\nAttendance\nIntegration", x: 77.4, y: 28.2, moduleId: 2 },
+            { title: "Work & Project\nManagement", x: 84.1, y: 57.8, moduleId: 3 },
+            { title: "Finance &\nPurchase\nManagement", x: 65.2, y: 81.5, moduleId: 4 },
+            { title: "Service\nManagement &\nCustomer Support", x: 34.8, y: 81.5, moduleId: 5 },
+            { title: "Business\nIntelligence &\nAnalytics", x: 15.9, y: 57.8, moduleId: 6 }
+          ].map((item, index) => {
+            const isLabelActive = activeModule === item.moduleId;
+            return (
+              <button
+                key={index}
+                className={`circular-label-button ${isLabelActive ? 'active' : ''}`}
+                style={{
+                  left: `${item.x}%`,
+                  top: `${item.y}%`,
+                  transform: "translate(-50%, -50%)"
+                }}
+                onClick={() => setActiveModule(item.moduleId)}
+              >
+                {item.title}
+              </button>
+            );
+          })}
+
+          {/* Dashboard Monitor Image in center */}
+          <div className="dashboard-monitor-wrapper-absolute">
+            <img src={dashboardMonitor} alt="Vellko ERP Dashboard Mockup" className="dashboard-monitor-img" />
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
+}
