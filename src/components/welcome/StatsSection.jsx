@@ -75,66 +75,23 @@ export default function StatsSection() {
     <section className="stats-section" ref={statsSectionRef}>
       {/* Desktop Grid Layout */}
       <div className="stats-desktop-grid">
-        {/* Cell 1: Label */}
-        <div className="stats-cell text-left justify-start">
-          <div className="stats-text-label">Users<br />Empowered</div>
-        </div>
-        {/* Cell 2: Number */}
-        <div className="stats-cell text-center justify-center">
-          <div className="stats-text-num" ref={(el) => (statsRefs.current[0] = el)}>0+</div>
-        </div>
+        <div className="stats-cell empty"></div>
+        <div className="stats-cell num-cell" ref={(el) => (statsRefs.current[0] = el)}>0+</div>
+        <div className="stats-cell num-cell" ref={(el) => (statsRefs.current[1] = el)}>0.0%</div>
+        <div className="stats-cell num-cell" ref={(el) => (statsRefs.current[2] = el)}>0/7</div>
+        <div className="stats-cell num-cell" ref={(el) => (statsRefs.current[3] = el)}>0+</div>
+        <div className="stats-cell num-cell" ref={(el) => (statsRefs.current[4] = el)}>0%</div>
+        <div className="stats-cell num-cell" ref={(el) => (statsRefs.current[5] = el)}>0%</div>
+        <div className="stats-cell empty"></div>
 
-        {/* Cell 3: Label */}
-        <div className="stats-cell text-left justify-start">
-          <div className="stats-text-label">System<br />Uptime</div>
-        </div>
-        {/* Cell 4: Number */}
-        <div className="stats-cell text-center justify-center">
-          <div className="stats-text-num" ref={(el) => (statsRefs.current[1] = el)}>0.0%</div>
-        </div>
-
-        {/* Cell 5: Label */}
-        <div className="stats-cell text-left justify-start">
-          <div className="stats-text-label">Customer<br />Support</div>
-        </div>
-        {/* Cell 6: Number */}
-        <div className="stats-cell text-center justify-center">
-          <div className="stats-text-num" ref={(el) => (statsRefs.current[2] = el)}>0/7</div>
-        </div>
-
-        {/* Cell 7: Label */}
-        <div className="stats-cell text-left justify-start">
-          <div className="stats-text-label">Successful ERP<br />Implementations</div>
-        </div>
-        {/* Cell 8: Number */}
-        <div className="stats-cell text-center justify-center">
-          <div className="stats-text-num" ref={(el) => (statsRefs.current[3] = el)}>0+</div>
-        </div>
-
-        {/* Row 2 */}
-        {/* Cell 9: Label */}
-        <div className="stats-cell text-left justify-start">
-          <div className="stats-text-label">Client<br />Retention Rate</div>
-        </div>
-        {/* Cell 10: Number */}
-        <div className="stats-cell text-center justify-center">
-          <div className="stats-text-num" ref={(el) => (statsRefs.current[4] = el)}>0%</div>
-        </div>
-
-        {/* Cell 11: Label */}
-        <div className="stats-cell text-left justify-start">
-          <div className="stats-text-label">Faster Business<br />Processes</div>
-        </div>
-        {/* Cell 12: Number */}
-        <div className="stats-cell text-center justify-center">
-          <div className="stats-text-num" ref={(el) => (statsRefs.current[5] = el)}>0%</div>
-        </div>
-
-        {/* Blank spacer cells in desktop grid */}
-        <div className="stats-cell"></div>
-        <div className="stats-cell"></div>
-        <div className="stats-cell"></div>
-        <div className="stats-cell"></div>
+        <div className="stats-cell empty"></div>
+        <div className="stats-cell label-cell">Users<br />Empowered</div>
+        <div className="stats-cell label-cell">System<br />Uptime</div>
+        <div className="stats-cell label-cell">Customer<br />Support</div>
+        <div className="stats-cell label-cell">Successful ERP<br />Implementations</div>
+        <div className="stats-cell label-cell">Client<br />Retention Rate</div>
+        <div className="stats-cell label-cell">Faster Business<br />Processes</div>
+        <div className="stats-cell empty"></div>
       </div>
 
       {/* Mobile Grid Layout (Translucent Glass Cards) */}
