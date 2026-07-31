@@ -459,25 +459,17 @@ export default function Welcome() {
           if (entry.isIntersecting) {
             startTime = null;
             animationFrameId = requestAnimationFrame(animate);
-          } else {
-            cancelAnimationFrame(animationFrameId);
-            targets.forEach((_, idx) => {
-              const formatted = formats[idx](0);
-              const desktopEl = statsRefs.current[idx];
-              if (desktopEl) desktopEl.textContent = formatted;
-              const mobileEl = statsRefs.current[idx + 6];
-              if (mobileEl) mobileEl.textContent = formatted;
-            });
+            observer.unobserve(section);
           }
         });
       },
-      { threshold: 0.15 }
+      { threshold: 0.02 }
     );
 
     observer.observe(section);
 
     return () => {
-      observer.unobserve(section);
+      observer.disconnect();
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
