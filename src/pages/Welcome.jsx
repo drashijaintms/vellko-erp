@@ -962,53 +962,45 @@ export default function Welcome() {
 
       {/* Every Industry Has Different Challenges Section */}
       <section className="industry-section">
-        <div className="industry-container">
-          
-          {/* Left Column: Heading, 8 Cards Grid, and bottom subtitle */}
-          <div className="industry-left-col">
-            <h2 className="industry-title">
-              Every Industry Has Different Challenges. <span className="red-highlight">Every Business Deserves the Same Visibility.</span>
-            </h2>
+        {/* Globe is absolutely positioned in the background */}
+        <div className="industry-globe-wrapper">
+          <img src={globeGif} alt="Rotating Globe" className="industry-globe-img" />
+        </div>
 
-            <div className="industry-cards-grid">
-              {industriesData.map((item, idx) => (
-                <div className="industry-card" key={idx}>
-                  <div className="industry-card-icon-circle">
-                    {item.icon}
-                  </div>
-                  <h3 className="industry-card-title">{item.title}</h3>
-                  <p className="industry-card-desc">{item.desc}</p>
+        <div className="industry-container-centered">
+          <h2 className="industry-title-centered">
+            Every Industry Has Different Challenges. <span className="red-highlight">Every Business Deserves the Same Visibility.</span>
+          </h2>
+
+          <p className="industry-subtitle-centered">
+            Synchronize orders, inventory, customers and business operations seamlessly. Your business is unique. Your ERP should be too.
+          </p>
+
+          <div className="industry-cards-grid-centered">
+            {industriesData.map((item, idx) => (
+              <div className="industry-card" key={idx}>
+                <div className="industry-card-icon-circle">
+                  {item.icon}
                 </div>
-              ))}
-            </div>
-
-            <p className="industry-bottom-highlight">
-              Synchronize orders, inventory, customers and business operations seamlessly.<br />
-              Your business is unique. Your ERP should be too.
-            </p>
-          </div>
-
-          {/* Right Column: Globe, Description Paragraphs, and Action buttons */}
-          <div className="industry-right-col">
-            <div className="industry-globe-wrapper">
-              <img src={globeGif} alt="Rotating Globe" className="industry-globe-img" />
-            </div>
-
-            <div className="industry-right-content">
-              <p className="industry-bottom-p1">
-                Businesses rarely struggle because they lack information. They struggle because information is scattered across different tools, departments and people. When nobody sees the complete picture, decisions become slower, errors increase and growth becomes difficult to manage.
-              </p>
-              <p className="industry-bottom-p2">
-                <span className="red-highlight">Vellko ERP</span> creates a single source of truth, giving every department access to the same accurate information at the right time.
-              </p>
-
-              <div className="industry-bottom-actions">
-                <button className="industry-btn-filled">Explore Your Industry Solution</button>
-                <button className="industry-btn-outline">Get Started</button>
+                <h3 className="industry-card-title">{item.title}</h3>
+                <p className="industry-card-desc">{item.desc}</p>
               </div>
-            </div>
+            ))}
           </div>
 
+          <div className="industry-bottom-content-centered">
+            <p className="industry-bottom-p1-centered">
+              Businesses rarely struggle because they lack information. They struggle because information is scattered across different tools, departments and people. When nobody sees the complete picture, decisions become slower, errors increase and growth becomes difficult to manage.
+            </p>
+            <p className="industry-bottom-p2-centered">
+              <span className="red-highlight">Vellko ERP</span> creates a single source of truth, giving every department access to the same accurate information at the right time.
+            </p>
+
+            <div className="industry-bottom-actions-centered">
+              <button className="industry-btn-filled">Explore Your Industry Solution</button>
+              <button className="industry-btn-outline">Get Started</button>
+            </div>
+          </div>
         </div>
       </section>
 
