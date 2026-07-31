@@ -1121,7 +1121,7 @@ button {
 .industry-section {
   width: 100%;
   background-color: #000000;
-  padding: 6rem 4rem;
+  padding: 4rem 4rem;
   position: relative;
   overflow: hidden;
 }
@@ -1131,8 +1131,8 @@ button {
   right: -150px;
   top: 50%;
   transform: translateY(-50%);
-  width: 720px;
-  height: 720px;
+  width: 900px;
+  height: 900px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1168,7 +1168,7 @@ button {
   letter-spacing: -0.01em;
   margin-bottom: 1rem;
   margin-top: 0;
-  max-width: 950px;
+  max-width: 1080px;
   text-align: center;
 }
 
@@ -1185,7 +1185,7 @@ button {
   line-height: 1.5;
   margin-bottom: 3rem;
   margin-top: 0;
-  max-width: 850px;
+  max-width: 1080px;
   text-align: center;
 }
 
@@ -1258,11 +1258,11 @@ button {
 
 /* Lower Text Area (Centered) */
 .industry-bottom-content-centered {
-  max-width: 920px;
+  max-width: 1000px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
   text-align: center;
 }
 
