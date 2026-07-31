@@ -10,7 +10,7 @@
   --bg: #ffffff;
   --text-primary: #1f2937;
   --text-secondary: #4b5563;
-  --border-color: rgba(0, 0, 0, 0.18);
+  --border-color: rgba(0, 0, 0, 0.06);
   
   /* Fonts */
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
@@ -453,8 +453,6 @@ button {
   grid-template-rows: 1fr 1fr;
   width: 100%;
   box-sizing: border-box;
-  border-top: 1px solid rgba(0, 0, 0, 0.3);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 /* Vertical dividers between stats columns */
@@ -470,7 +468,7 @@ button {
 .stats-desktop-grid .stats-cell:nth-child(13),
 .stats-desktop-grid .stats-cell:nth-child(14),
 .stats-desktop-grid .stats-cell:nth-child(15) {
-  border-right: 1px solid rgba(0, 0, 0, 0.3);
+  border-right: 1px solid rgba(0, 0, 0, 0.22);
 }
 
 .stats-cell {
@@ -486,7 +484,6 @@ button {
 .stats-cell:nth-child(-n+8) {
   padding-top: 2rem;
   padding-bottom: 0.8rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 .stats-cell:nth-child(n+9) {
