@@ -525,7 +525,7 @@ button {
 .beyond-text-block {
   max-width: 950px;
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 3.5rem;
   margin-left: auto;
   margin-right: auto;
 }
@@ -537,34 +537,48 @@ button {
   color: #000000;
   line-height: 1.15;
   margin-bottom: 1.5rem;
+  margin-top: 0;
 }
 
 .beyond-title .red-highlight {
   color: var(--primary);
 }
 
-.beyond-paragraph-1 {
-  font-family: var(--font-body);
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #000000;
-  line-height: 1.5;
-  margin-bottom: 1.4rem;
+.beyond-compare-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 2.5rem;
+  width: 100%;
 }
 
-.beyond-subtitle {
+.beyond-compare-col {
   font-family: var(--font-body);
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 700;
   color: #000000;
-  line-height: 1.4;
-  margin-bottom: 1.25rem;
-  max-width: 720px;
-  margin-left: auto;
-  margin-right: auto;
+  line-height: 1.45;
+  width: 45%;
 }
 
-.beyond-subtitle .red-highlight {
+.beyond-compare-col.left {
+  text-align: right;
+}
+
+.beyond-compare-col.right {
+  text-align: left;
+}
+
+.beyond-compare-divider {
+  width: 1px;
+  height: 48px;
+  background-color: rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+}
+
+.beyond-compare-col .red-highlight {
   color: var(--primary);
 }
 
@@ -574,66 +588,61 @@ button {
   font-weight: 400;
   color: #374151;
   line-height: 1.6;
-  max-width: 780px;
+  max-width: 820px;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 3.5rem;
+  text-align: center;
 }
 
-/* Offset Checkerboard Features Grid */
-.features-offset-grid {
+/* Features 4x2 Grid Layout */
+.beyond-features-grid {
   display: grid;
-  grid-template-columns: repeat(9, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   width: 100%;
-  border-top: 1px solid var(--border-color);
-  border-bottom: 1px solid var(--border-color);
+  box-sizing: border-box;
 }
 
-.offset-cell {
+.beyond-feature-card {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
+  padding: 2.25rem 1.5rem;
   box-sizing: border-box;
-  border-right: 1px solid var(--border-color);
-  min-height: 135px;
-  padding: 1rem;
+  min-height: 170px;
+  border-right: 1px solid rgba(0, 0, 0, 0.15);
 }
 
-.offset-cell:nth-child(9n) {
+/* Row 1 cards: give them a bottom border */
+.beyond-features-grid .beyond-feature-card:nth-child(-n+4) {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+/* Remove right border on the last column (items 4 and 8) */
+.beyond-features-grid .beyond-feature-card:nth-child(4n) {
   border-right: none;
 }
 
-.offset-cell:nth-child(-n+9) {
-  border-bottom: 1px solid var(--border-color);
-}
-
-.offset-icon-img {
-  height: 50px;
+.beyond-feature-icon {
+  height: 52px;
   width: auto;
   object-fit: contain;
+  margin-bottom: 1.25rem;
+  transition: transform var(--transition-smooth);
 }
 
-.offset-icon-svg {
-  width: 38px;
-  height: 38px;
+.beyond-feature-card:hover .beyond-feature-icon {
+  transform: scale(1.08);
 }
 
-.offset-text {
+.beyond-feature-title {
   font-family: var(--font-body);
   font-size: 0.88rem;
   font-weight: 700;
   color: #000000;
-  line-height: 1.35;
-  max-width: 130px;
-}
-
-.offset-cell.empty {
-  background-color: transparent;
-}
-
-.features-mobile-grid {
-  display: none;
+  line-height: 1.38;
 }
 
 /* One Platform Every Department Split Comparison Section */
@@ -2716,41 +2725,52 @@ button {
     padding: 0 1.25rem;
   }
   
-  .features-mobile-grid {
-    display: flex;
+  .beyond-compare-row {
     flex-direction: column;
-    gap: 1rem;
-    padding: 2rem 0;
+    gap: 1.25rem;
+    text-align: center;
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .beyond-compare-col {
     width: 100%;
   }
-  
-  .mobile-feature-card {
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
-    background: #f9fafb;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+  .beyond-compare-col.left, .beyond-compare-col.right {
+    text-align: center;
+  }
+  .beyond-compare-divider {
+    display: none;
+  }
+  .beyond-features-grid {
+    grid-template-columns: 1fr;
+    border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 8px;
-    padding: 1rem 1.25rem;
+    overflow: hidden;
   }
-  
-  .mobile-feature-card .offset-icon-img {
-    width: 32px;
-    height: 32px;
+  .beyond-feature-card {
+    border-right: none !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+    padding: 1.5rem 1.25rem;
+    min-height: auto;
+    background: #f9fafb;
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    gap: 1.25rem;
+  }
+  .beyond-feature-card:last-child {
+    border-bottom: none !important;
+  }
+  .beyond-feature-icon {
+    width: 32px !important;
+    height: 32px !important;
+    margin-bottom: 0 !important;
     flex-shrink: 0;
   }
-  
-  .mobile-feature-card .offset-icon-svg {
-    width: 32px;
-    height: 32px;
-    flex-shrink: 0;
-  }
-  
-  .mobile-feature-title {
+  .beyond-feature-title {
     font-family: var(--font-body);
     font-size: 0.95rem;
     font-weight: 600;
     color: #1f2937;
-    text-align: left;
   }
 }
