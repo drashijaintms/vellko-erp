@@ -453,22 +453,8 @@ button {
   grid-template-rows: 1fr 1fr;
   width: 100%;
   box-sizing: border-box;
-}
-
-/* Vertical dividers between stats columns */
-.stats-desktop-grid .stats-cell:nth-child(2),
-.stats-desktop-grid .stats-cell:nth-child(3),
-.stats-desktop-grid .stats-cell:nth-child(4),
-.stats-desktop-grid .stats-cell:nth-child(5),
-.stats-desktop-grid .stats-cell:nth-child(6),
-.stats-desktop-grid .stats-cell:nth-child(7),
-.stats-desktop-grid .stats-cell:nth-child(10),
-.stats-desktop-grid .stats-cell:nth-child(11),
-.stats-desktop-grid .stats-cell:nth-child(12),
-.stats-desktop-grid .stats-cell:nth-child(13),
-.stats-desktop-grid .stats-cell:nth-child(14),
-.stats-desktop-grid .stats-cell:nth-child(15) {
-  border-right: 1px solid rgba(0, 0, 0, 0.22);
+  background: url('/src/assets/images/stats-bg.png') no-repeat center;
+  background-size: 100% 100%;
 }
 
 .stats-cell {
@@ -515,7 +501,7 @@ button {
 
 /* Move Beyond Traditional ERP Section */
 .beyond-section {
-  max-width: 1340px;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 4rem 2.5rem 4rem;
   background-color: #ffffff;
@@ -609,9 +595,9 @@ button {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 2.25rem 1.5rem;
+  padding: 1rem 1rem;
   box-sizing: border-box;
-  min-height: 170px;
+  min-height: 140px;
   border-right: 1px solid rgba(0, 0, 0, 0.15);
 }
 
@@ -817,6 +803,27 @@ button {
 
 
 /* All in One Section (Interactive circular modules section) */
+.all-in-one-scroll-wrapper {
+  position: relative;
+  background-color: #ffffff;
+  width: 100%;
+}
+
+@media (min-width: 1025px) {
+  .all-in-one-scroll-wrapper {
+    height: 350vh;
+  }
+  .all-in-one-layout {
+    position: sticky;
+    top: 90px;
+    height: calc(100vh - 110px);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    box-sizing: border-box;
+  }
+}
+
 .all-in-one-section {
   max-width: 1340px;
   margin: 0 auto;

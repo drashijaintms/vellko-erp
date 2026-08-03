@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import dashboardMonitor from '../../assets/images/dashboard-monitor.png';
 
 const modulesData = [
@@ -162,6 +162,46 @@ const getArcPath = (startAngle, endAngle, radius) => {
 export default function AllInOneSection() {
   const [activeModule, setActiveModule] = useState(0);
   const activeData = modulesData[activeModule];
+  const scrollWrapperRef = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.innerWidth <= 1024) return;
+      if (!scrollWrapperRef.current) return;
+      
+      const rect = scrollWrapperRef.current.getBoundingClientRect();
+      const stickyTop = 90;
+      const scrolled = stickyTop - rect.top;
+      const totalScrollable = rect.height - window.innerHeight;
+      
+      if (totalScrollable <= 0) return;
+      
+      const progress = Math.max(0, Math.min(1, scrolled / totalScrollable));
+      const index = Math.min(6, Math.floor(progress * 7));
+      setActiveModule(index);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleModuleClick = (idx) => {
+    if (window.innerWidth <= 1024 || !scrollWrapperRef.current) {
+      setActiveModule(idx);
+      return;
+    }
+    
+    const rect = scrollWrapperRef.current.getBoundingClientRect();
+    const totalScrollable = rect.height - window.innerHeight;
+    
+    const progress = (idx + 0.5) / 7;
+    const targetScrollY = window.scrollY + rect.top - 90 + (progress * totalScrollable);
+    
+    window.scrollTo({
+      top: targetScrollY,
+      behavior: 'smooth'
+    });
+  };
 
   return (
     <section className="all-in-one-section">
@@ -191,7 +231,8 @@ export default function AllInOneSection() {
         ))}
       </div>
 
-      <div className="all-in-one-layout">
+      <div className="all-in-one-scroll-wrapper" ref={scrollWrapperRef}>
+        <div className="all-in-one-layout">
         <div className="module-details-card">
           <div className="module-card-header">
             <div className="module-card-icon-container">
@@ -355,7 +396,7 @@ export default function AllInOneSection() {
                   top: `${item.y}%`,
                   transform: "translate(-50%, -50%)"
                 }}
-                onClick={() => setActiveModule(item.moduleId)}
+                onClick={() => handleModuleClick(item.moduleId)}
               >
                 {item.title}
               </button>
@@ -368,6 +409,7 @@ export default function AllInOneSection() {
           </div>
 
         </div>
+      </div>
       </div>
     </section>
   );
