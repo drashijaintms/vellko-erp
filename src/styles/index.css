@@ -2953,3 +2953,15 @@ button {
     color: #1f2937;
   }
 }
+
+/* Industry Hero Specific Styles */
+.industry-hero-tagline {
+  font-weight: 700 !important;
+  font-size: 1.25rem !important;
+  color: #111827 !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.industry-hero-desc {
+  margin-bottom: 2rem !important;
+}
