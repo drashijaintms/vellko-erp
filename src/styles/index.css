@@ -1875,12 +1875,9 @@ button {
 .support-section {
   width: 100%;
   background-color: #ffffff;
-  /* Faint grid lines matching the mockup */
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.035) 1px, transparent 1px);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.035) 1px, transparent 1px);
   background-size: 90px 90px;
-  padding: 8rem 2.5rem;
+  padding: 3.5rem 2.5rem;
   position: relative;
 }
 
@@ -1912,7 +1909,7 @@ button {
 
 .support-p2 {
   max-width: 680px;
-  margin-bottom: 5rem;
+  margin-bottom: 2rem;
 }
 
 /* Alternating Timeline wrapper */
@@ -1942,12 +1939,12 @@ button {
   width: 100%;
   align-items: center;
   min-height: 72px;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0px;
   position: relative;
 }
 
 .timeline-step-row:last-child {
-  margin-bottom: 0;
+  margin-bottom: 0px;
 }
 
 .timeline-col {
@@ -1985,9 +1982,18 @@ button {
   width: 15px;
   height: 15px;
   border: 1.5px solid #94a3b8;
-  background: linear-gradient(135deg, #cbd5e1 50%, #ffffff 50%);
   flex-shrink: 0;
   transition: var(--transition-smooth);
+}
+
+/* Odd markers: grey top-left, white bottom-right */
+.timeline-step-row:nth-child(odd) .timeline-marker-square {
+  background: linear-gradient(135deg, #cbd5e1 50%, #ffffff 50%);
+}
+
+/* Even markers: white top-left, grey bottom-right */
+.timeline-step-row:nth-child(even) .timeline-marker-square {
+  background: linear-gradient(135deg, #ffffff 50%, #cbd5e1 50%);
 }
 
 .timeline-marker-square.active {
