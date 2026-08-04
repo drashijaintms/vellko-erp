@@ -795,7 +795,7 @@ button {
   width: 100%;
   position: relative;
   /* Split background: left half matching the illustration gray, right half white */
-  background: linear-gradient(to right, #585c61 50%, #ffffff 50%);
+  background: linear-gradient(to right, #848385 50%, #ffffff 50%);
   padding: 4rem 4rem;
   box-sizing: border-box;
 }

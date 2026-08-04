@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Star } from 'lucide-react';
 import testimonial1 from '../../assets/images/testimonial-1.jpg';
 import testimonial2 from '../../assets/images/testimonial-2.jpg';
-import testimonial3 from '../../assets/images/testimonial-3.png';
+import testimonial3 from '../../assets/images/testimonial-3.jpg';
 
 const testimonialData = [
   {
@@ -15,20 +15,21 @@ const testimonialData = [
   },
   {
     img: testimonial2,
+    quote: "We tried three different ERP systems before Vellko. Nothing came close to the level of integration and simplicity.",
+    sub: "Our inventory, billing and customer data are now fully in sync — no more manual reconciliation.",
+    name: "Mehul Agrawal",
+    role: "Operations Head, Retail Chain",
+    stars: 5
+  },
+  {
+    img: testimonial3,
     quote: "Vellko ERP transformed the way we handle HR and payroll. What used to take days now takes minutes.",
     sub: "The onboarding was smooth, and the support team was always available to help us every step of the way.",
     name: "Priya Sharma",
     role: "HR Director, Manufacturing Group",
     stars: 5
   },
-  {
-    img: testimonial3,
-    quote: "We tried three different ERP systems before Vellko. Nothing came close to the level of integration and simplicity.",
-    sub: "Our inventory, billing and customer data are now fully in sync — no more manual reconciliation.",
-    name: "Mehul Agrawal",
-    role: "Operations Head, Retail Chain",
-    stars: 5
-  }
+
 ];
 
 export default function TestimonialsSection() {
