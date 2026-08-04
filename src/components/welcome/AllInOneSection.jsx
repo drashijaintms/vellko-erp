@@ -198,7 +198,8 @@ export default function AllInOneSection() {
       
       if (totalScrollable <= 0) return;
       
-      const progress = Math.max(0, Math.min(1, scrolled / totalScrollable));
+      // Scale down active scrollable area by 0.85 to trigger final active state before unpinning
+      const progress = Math.max(0, Math.min(1, scrolled / (totalScrollable * 0.85)));
       const index = Math.min(7, Math.floor(progress * 8));
       setActiveModule(index);
     };
@@ -217,7 +218,7 @@ export default function AllInOneSection() {
     const totalScrollable = rect.height - window.innerHeight;
     
     const progress = (idx + 0.5) / 8;
-    const targetScrollY = window.scrollY + rect.top - 90 + (progress * totalScrollable);
+    const targetScrollY = window.scrollY + rect.top - 90 + (progress * totalScrollable * 0.85);
     
     window.scrollTo({
       top: targetScrollY,
