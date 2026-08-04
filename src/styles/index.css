@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=Roboto+Serif:opsz,wght@8..144,400;500;600;700;850&family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=Roboto+Serif:opsz,wght@8..144,400;500;600;700;850&family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
 :root {
   /* Design Tokens - Crimson Theme */
@@ -16,7 +16,7 @@
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-nav: 'Montserrat', system-ui, -apple-system, sans-serif;
   --font-heading: 'Roboto Serif', Georgia, serif;
-  --font-body: 'Roboto', sans-serif;
+  --font-body: 'Poppins', sans-serif;
   
   --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   --border-radius-lg: 12px;
@@ -2456,7 +2456,7 @@ button {
   background-color: #0d0d0d;
   display: flex;
   flex-direction: column;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .site-footer-inner {
@@ -2486,7 +2486,7 @@ button {
 }
 
 .footer-brand-desc {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 0.85rem;
   font-weight: 700;
   color: #ffffff;
@@ -2501,7 +2501,7 @@ button {
 }
 
 .footer-col-heading {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 0.78rem;
   font-weight: 700;
   color: #ffffff;
@@ -2521,7 +2521,7 @@ button {
 }
 
 .footer-link {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 0.875rem;
   font-weight: 400;
   color: #ffffff;
@@ -2604,7 +2604,7 @@ button {
 }
 
 .footer-copyright-bar p {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 0.875rem;
   font-weight: 400;
   color: #ffffff;
