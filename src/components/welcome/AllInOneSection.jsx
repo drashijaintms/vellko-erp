@@ -99,6 +99,27 @@ const modulesData = [
     )
   },
   {
+    title: "Inventory Management",
+    subtitle: "Know What's in Stock Before It Becomes a Problem.",
+    desc: "Manage inventory seamlessly across warehouses, branches and locations from a single platform. Vellko ERP provides real-time stock visibility, streamlined warehouse operations and accurate inventory tracking helping you reduce stockouts, prevent overstocking and improve operational efficiency.",
+    features: [
+      "Real-Time Stock Tracking",
+      "Multi-Warehouse Management",
+      "Stock Transfers",
+      "Batch & Lot Tracking",
+      "Inventory Valuation",
+      "Purchase Integration",
+      "Sales Integration"
+    ],
+    iconSvg: (
+      <svg className="module-card-icon-svg" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+        <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+        <line x1="12" y1="22.08" x2="12" y2="12" />
+      </svg>
+    )
+  },
+  {
     title: "Service Management & Customer Support",
     subtitle: "Deliver Exceptional Customer Experiences",
     desc: "Manage customer inquiries, service requests and support tickets from a single platform. Vellko ERP helps your teams resolve issues faster, track service performance, and maintain SLA compliance ensuring every customer interaction is seamless and measurable.",
@@ -139,13 +160,14 @@ const modulesData = [
 ];
 
 const sectorAngles = [
-  { start: 321, end: 348, side: 'left' },  // CRM to HRMS
-  { start: 12,  end: 39,  side: 'right' }, // HRMS to Biometric
-  { start: 64,  end: 91,  side: 'right' }, // Biometric to Work
-  { start: 115, end: 142, side: 'right' }, // Work to Finance
-  { start: 166, end: 194, side: 'right' }, // Finance to Service
-  { start: 218, end: 245, side: 'left' },  // Service to BI
-  { start: 269, end: 296, side: 'left' }   // BI to CRM
+  { start: 324, end: 351, side: 'left' },  // CRM to HRMS
+  { start: 9,   end: 36,  side: 'right' }, // HRMS to Biometric
+  { start: 54,  end: 81,  side: 'right' }, // Biometric to Work
+  { start: 99,  end: 126, side: 'right' }, // Work to Finance
+  { start: 144, end: 171, side: 'right' }, // Finance to Inventory
+  { start: 189, end: 216, side: 'left' },  // Inventory to Service
+  { start: 234, end: 261, side: 'left' },  // Service to BI
+  { start: 279, end: 306, side: 'left' }   // BI to CRM
 ];
 
 const getArcPath = (startAngle, endAngle, radius) => {
@@ -177,7 +199,7 @@ export default function AllInOneSection() {
       if (totalScrollable <= 0) return;
       
       const progress = Math.max(0, Math.min(1, scrolled / totalScrollable));
-      const index = Math.min(6, Math.floor(progress * 7));
+      const index = Math.min(7, Math.floor(progress * 8));
       setActiveModule(index);
     };
 
@@ -194,7 +216,7 @@ export default function AllInOneSection() {
     const rect = scrollWrapperRef.current.getBoundingClientRect();
     const totalScrollable = rect.height - window.innerHeight;
     
-    const progress = (idx + 0.5) / 7;
+    const progress = (idx + 0.5) / 8;
     const targetScrollY = window.scrollY + rect.top - 90 + (progress * totalScrollable);
     
     window.scrollTo({
@@ -274,46 +296,13 @@ export default function AllInOneSection() {
               <div className="module-features-title-row">
                 Purchase Management
               </div>
-              <ul className="module-features-list" style={{ marginBottom: '2.5rem' }}>
+              <ul className="module-features-list">
                 {[
                   "Vendor Management",
                   "Purchase Requisitions",
                   "Purchase Orders",
                   "Approval Workflows",
                   "Supplier Performance Tracking"
-                ].map((feature, idx) => (
-                  <li key={idx} className="module-feature-item">
-                    <svg className="feature-checkbox-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <rect x="3" y="3" width="18" height="18" rx="4" stroke="#111827" strokeWidth="2" fill="none" />
-                      <path d="M7 11.5L10.5 15L17 7.5" stroke="#111827" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-
-              {/* Inventory Management Sub-section */}
-              <div className="module-features-title-row">
-                Inventory Management
-              </div>
-              <p className="module-card-desc" style={{ color: '#111827', fontStyle: 'italic', marginTop: '0.75rem', marginBottom: '0.75rem' }}>
-                Know What's in Stock Before It Becomes a Problem.
-              </p>
-              <p className="module-card-desc" style={{ fontSize: '0.88rem', marginBottom: '1.5rem' }}>
-                Manage inventory seamlessly across warehouses, branches and locations from a single platform. Vellko ERP provides real-time stock visibility, streamlined warehouse operations and accurate inventory tracking helping you reduce stockouts, prevent overstocking and improve operational efficiency.
-              </p>
-              <div className="module-features-title-row">
-                Key Features
-              </div>
-              <ul className="module-features-list">
-                {[
-                  "Real-Time Stock Tracking",
-                  "Multi-Warehouse Management",
-                  "Stock Transfers",
-                  "Batch & Lot Tracking",
-                  "Inventory Valuation",
-                  "Purchase Integration",
-                  "Sales Integration"
                 ].map((feature, idx) => (
                   <li key={idx} className="module-feature-item">
                     <svg className="feature-checkbox-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -378,13 +367,14 @@ export default function AllInOneSection() {
 
           {/* Feature Labels */}
           {[
-            { title: "CRM\n& Lead\nManagement", x: 22.6, y: 28.2, moduleId: 0 },
+            { title: "CRM\n& Lead\nManagement", x: 25.3, y: 25.3, moduleId: 0 },
             { title: "HRMS &\nWorkforce\nManagement", x: 50.0, y: 15.0, moduleId: 1 },
-            { title: "Biometric\nAttendance\nIntegration", x: 77.4, y: 28.2, moduleId: 2 },
-            { title: "Work & Project\nManagement", x: 84.1, y: 57.8, moduleId: 3 },
-            { title: "Finance &\nPurchase\nManagement", x: 65.2, y: 81.5, moduleId: 4 },
-            { title: "Service\nManagement &\nCustomer Support", x: 34.8, y: 81.5, moduleId: 5 },
-            { title: "Business\nIntelligence &\nAnalytics", x: 15.9, y: 57.8, moduleId: 6 }
+            { title: "Biometric\nAttendance\nIntegration", x: 74.7, y: 25.3, moduleId: 2 },
+            { title: "Work & Project\nManagement", x: 85.0, y: 50.0, moduleId: 3 },
+            { title: "Finance &\nPurchase\nManagement", x: 74.7, y: 74.7, moduleId: 4 },
+            { title: "Inventory\nManagement", x: 50.0, y: 85.0, moduleId: 5 },
+            { title: "Service\nManagement &\nCustomer Support", x: 25.3, y: 74.7, moduleId: 6 },
+            { title: "Business\nIntelligence &\nAnalytics", x: 15.0, y: 50.0, moduleId: 7 }
           ].map((item, index) => {
             const isLabelActive = activeModule === item.moduleId;
             return (

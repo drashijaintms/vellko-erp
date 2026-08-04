@@ -1257,10 +1257,15 @@ button {
   padding: 4px;
 }
 
-.circular-label-button:hover,
+.circular-label-button:hover {
+  color: var(--primary);
+  transform: translate(-50%, -50%) scale(1.08) !important;
+}
+
 .circular-label-button.active {
   color: var(--primary);
-  transform: translate(-50%, -50%) scale(1.05) !important;
+  transform: translate(-50%, -50%) scale(1.18) !important;
+  font-weight: 800;
 }
 
 .circular-label-button.header-label {
