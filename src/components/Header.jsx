@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { 
   Menu, X, ChevronDown, 
   Users, UserCheck, DollarSign, Boxes, Briefcase, LifeBuoy, Fingerprint,
@@ -98,7 +99,7 @@ const industries = [
     title: "E-Commerce ERP", 
     desc: "Synchronize orders & stocks across channels.", 
     icon: ShoppingCart,
-    href: "#"
+    href: "/ecommerce-erp"
   }
 ];
 
@@ -111,13 +112,13 @@ export default function Header() {
     <header className="glass-header">
       <div className="header-container">
         {/* Brand Logo */}
-        <div className="logo-area">
+        <Link to="/" className="logo-area">
           <img src={logoImg} className="logo-img" alt="VELLKO ERP" />
-        </div>
+        </Link>
 
         {/* Navigation Links (Desktop) */}
         <nav className="desktop-nav">
-          <a href="#" className="nav-link active">Home</a>
+          <Link to="/" className="nav-link active">Home</Link>
           
           <div className="nav-dropdown-item">
             <a href="#" className="nav-link">
@@ -127,6 +128,19 @@ export default function Header() {
               <div className="dropdown-grid">
                 {erpModules.map((item, idx) => {
                   const Icon = item.icon;
+                  if (item.href.startsWith('/')) {
+                    return (
+                      <Link key={idx} to={item.href} className="dropdown-link-card">
+                        <div className="dropdown-icon-box">
+                          <Icon size={18} />
+                        </div>
+                        <div className="dropdown-text-box">
+                          <span className="dropdown-link-title">{item.title}</span>
+                          <span className="dropdown-link-desc">{item.desc}</span>
+                        </div>
+                      </Link>
+                    );
+                  }
                   return (
                     <a key={idx} href={item.href} className="dropdown-link-card">
                       <div className="dropdown-icon-box">
@@ -151,6 +165,19 @@ export default function Header() {
               <div className="dropdown-grid">
                 {industries.map((item, idx) => {
                   const Icon = item.icon;
+                  if (item.href.startsWith('/')) {
+                    return (
+                      <Link key={idx} to={item.href} className="dropdown-link-card">
+                        <div className="dropdown-icon-box">
+                          <Icon size={18} />
+                        </div>
+                        <div className="dropdown-text-box">
+                          <span className="dropdown-link-title">{item.title}</span>
+                          <span className="dropdown-link-desc">{item.desc}</span>
+                        </div>
+                      </Link>
+                    );
+                  }
                   return (
                     <a key={idx} href={item.href} className="dropdown-link-card">
                       <div className="dropdown-icon-box">
@@ -200,9 +227,9 @@ export default function Header() {
       {mobileMenuOpen && (
         <div className="mobile-dropdown glass-card">
           <nav className="mobile-nav">
-            <a href="#" className="mobile-nav-link active" onClick={() => setMobileMenuOpen(false)}>
+            <Link to="/" className="mobile-nav-link active" onClick={() => setMobileMenuOpen(false)}>
               Home
-            </a>
+            </Link>
             
             <div className="mobile-nav-item">
               <button 
@@ -216,6 +243,14 @@ export default function Header() {
                 <div className="mobile-submenu">
                   {erpModules.map((item, idx) => {
                     const Icon = item.icon;
+                    if (item.href.startsWith('/')) {
+                      return (
+                        <Link key={idx} to={item.href} className="mobile-submenu-link" onClick={() => setMobileMenuOpen(false)}>
+                          <Icon size={14} className="submenu-icon" />
+                          <span>{item.title}</span>
+                        </Link>
+                      );
+                    }
                     return (
                       <a key={idx} href={item.href} className="mobile-submenu-link" onClick={() => setMobileMenuOpen(false)}>
                         <Icon size={14} className="submenu-icon" />
@@ -239,6 +274,14 @@ export default function Header() {
                 <div className="mobile-submenu">
                   {industries.map((item, idx) => {
                     const Icon = item.icon;
+                    if (item.href.startsWith('/')) {
+                      return (
+                        <Link key={idx} to={item.href} className="mobile-submenu-link" onClick={() => setMobileMenuOpen(false)}>
+                          <Icon size={14} className="submenu-icon" />
+                          <span>{item.title}</span>
+                        </Link>
+                      );
+                    }
                     return (
                       <a key={idx} href={item.href} className="mobile-submenu-link" onClick={() => setMobileMenuOpen(false)}>
                         <Icon size={14} className="submenu-icon" />
