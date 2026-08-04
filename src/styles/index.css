@@ -1039,10 +1039,12 @@ button {
 }
 
 .module-card-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    background: #dc14361f;
+    border-radius: 8px;
 }
 
 .module-card-icon-container {

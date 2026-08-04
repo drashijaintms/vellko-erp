@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Star } from 'lucide-react';
-import testimonial1 from '../../assets/images/testimonial-1.png';
-import testimonial2 from '../../assets/images/testimonial-2.png';
+import testimonial1 from '../../assets/images/testimonial-1.jpg';
+import testimonial2 from '../../assets/images/testimonial-2.jpg';
 import testimonial3 from '../../assets/images/testimonial-3.png';
 
 const testimonialData = [
@@ -9,7 +9,7 @@ const testimonialData = [
     img: testimonial1,
     quote: "Before Vellko ERP, our teams relied on spreadsheets and multiple tools to manage daily operations.",
     sub: "Now, everything is centralized, and we have complete visibility across departments.",
-    name: "Mathias Phelps",
+    name: "Rahul Gupta",
     role: "Finance Manager, Logistics Company",
     stars: 5
   },
@@ -25,7 +25,7 @@ const testimonialData = [
     img: testimonial3,
     quote: "We tried three different ERP systems before Vellko. Nothing came close to the level of integration and simplicity.",
     sub: "Our inventory, billing and customer data are now fully in sync — no more manual reconciliation.",
-    name: "Daniel Reeves",
+    name: "Mehul Agrawal",
     role: "Operations Head, Retail Chain",
     stars: 5
   }
