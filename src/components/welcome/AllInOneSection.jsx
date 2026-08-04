@@ -90,7 +90,13 @@ const modulesData = [
     title: "Finance & Purchase Management",
     subtitle: "Gain Complete Financial Control",
     desc: "Financial decisions shouldn't depend on outdated reports. Vellko ERP gives you real-time access to cash flow, payables, receivables, purchases and GST-compliant accounting, so you always know where your business stands.",
-    features: [],
+    features: [
+      "Financial Accounting",
+      "Cash Flow & Budgeting",
+      "GST & Compliance",
+      "Purchase Management",
+      "Vendor & Supplier Management"
+    ],
     iconSvg: (
       <svg className="module-card-icon-svg" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
         <line x1="12" y1="1" x2="12" y2="23" />
@@ -267,73 +273,21 @@ export default function AllInOneSection() {
           <p className="module-card-desc">{activeData.subtitle}</p>
           <p className="module-card-desc">{activeData.desc}</p>
 
-          {activeModule === 4 ? (
-            <div className="finance-nested-sections">
-              {/* Financial Management Sub-section */}
-              <div className="module-features-title-row">
-                Financial Management
-              </div>
-              <ul className="module-features-list" style={{ marginBottom: '2rem' }}>
-                {[
-                  "General Ledger",
-                  "Accounts Payable & Receivable",
-                  "Cash Flow Management",
-                  "Budget Planning",
-                  "GST Billing & Compliance",
-                  "E-Invoicing",
-                  "Profit & Loss Reporting"
-                ].map((feature, idx) => (
-                  <li key={idx} className="module-feature-item">
-                    <svg className="feature-checkbox-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <rect x="3" y="3" width="18" height="18" rx="4" stroke="#111827" strokeWidth="2" fill="none" />
-                      <path d="M7 11.5L10.5 15L17 7.5" stroke="#111827" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
+          <div className="module-features-title-row">
+            {activeData.featuresTitle || "Key Features"}
+          </div>
 
-              {/* Purchase Management Sub-section */}
-              <div className="module-features-title-row">
-                Purchase Management
-              </div>
-              <ul className="module-features-list">
-                {[
-                  "Vendor Management",
-                  "Purchase Requisitions",
-                  "Purchase Orders",
-                  "Approval Workflows",
-                  "Supplier Performance Tracking"
-                ].map((feature, idx) => (
-                  <li key={idx} className="module-feature-item">
-                    <svg className="feature-checkbox-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <rect x="3" y="3" width="18" height="18" rx="4" stroke="#111827" strokeWidth="2" fill="none" />
-                      <path d="M7 11.5L10.5 15L17 7.5" stroke="#111827" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : (
-            <>
-              <div className="module-features-title-row">
-                {activeData.featuresTitle || "Key Features"}
-              </div>
-
-              <ul className="module-features-list">
-                {activeData.features.map((feature, idx) => (
-                  <li key={idx} className="module-feature-item">
-                    <svg className="feature-checkbox-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <rect x="3" y="3" width="18" height="18" rx="4" stroke="#111827" strokeWidth="2" fill="none" />
-                      <path d="M7 11.5L10.5 15L17 7.5" stroke="#111827" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
+          <ul className="module-features-list">
+            {activeData.features.map((feature, idx) => (
+              <li key={idx} className="module-feature-item">
+                <svg className="feature-checkbox-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="3" y="3" width="18" height="18" rx="4" stroke="#111827" strokeWidth="2" fill="none" />
+                  <path d="M7 11.5L10.5 15L17 7.5" stroke="#111827" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div className="circular-graphic-container">

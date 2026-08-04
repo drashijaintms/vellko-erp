@@ -6,71 +6,9 @@ import supportWrench from '../../assets/icons/support-wrench.png';
 import supportTrendingUp from '../../assets/icons/support-trending-up.png';
 import supportExperts from '../../assets/icons/support-dedicated-experts.png';
 
-function TypewriterText({ text, active, onComplete }) {
-  const [index, setIndex] = useState(0);
-  const [showCursor, setShowCursor] = useState(false);
-
-  useEffect(() => {
-    if (!active) {
-      setIndex(0);
-      setShowCursor(false);
-      return;
-    }
-
-    setShowCursor(true);
-    setIndex(1); // Start with first character immediately
-
-    const interval = setInterval(() => {
-      setIndex((prev) => {
-        if (prev >= text.length) {
-          clearInterval(interval);
-          setShowCursor(false);
-          if (onComplete) onComplete();
-          return prev;
-        }
-        return prev + 1;
-      });
-    }, 35);
-
-    return () => clearInterval(interval);
-  }, [active, text]);
-
-  if (!active) {
-    return <span style={{ visibility: 'hidden' }}>{text}</span>;
-  }
-
-  const typedText = text.substring(0, index);
-  const remainingText = text.substring(index);
-
-  return (
-    <span className="typewriter-container">
-      <span className="typewriter-typed">
-        {typedText}
-        {showCursor && <span className="typewriter-cursor">|</span>}
-      </span>
-      <span className="typewriter-remaining" style={{ visibility: 'hidden' }}>
-        {remainingText}
-      </span>
-    </span>
-  );
-}
-
 export default function SupportSection() {
   const [activeSupportStep, setActiveSupportStep] = useState(-1);
   const supportSectionRef = useRef(null);
-
-  const handleStepComplete = (stepIdx) => {
-    if (stepIdx === activeSupportStep) {
-      setTimeout(() => {
-        setActiveSupportStep((prev) => {
-          if (prev === stepIdx && prev < 6) {
-            return prev + 1;
-          }
-          return prev;
-        });
-      }, 600);
-    }
-  };
 
   useEffect(() => {
     const section = supportSectionRef.current;
@@ -93,6 +31,15 @@ export default function SupportSection() {
       observer.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    if (activeSupportStep >= 0 && activeSupportStep < 5) {
+      const timer = setTimeout(() => {
+        setActiveSupportStep((prev) => prev + 1);
+      }, 800);
+      return () => clearTimeout(timer);
+    }
+  }, [activeSupportStep]);
 
   return (
     <section className="support-section" ref={supportSectionRef}>
@@ -123,13 +70,7 @@ export default function SupportSection() {
             </div>
             <div className="timeline-col right-align">
               <span className={`timeline-label-text ${activeSupportStep >= 0 ? 'active' : ''}`}>
-                {activeSupportStep > 0 ? (
-                  "Faster onboarding with expert guidance"
-                ) : activeSupportStep === 0 ? (
-                  <TypewriterText text="Faster onboarding with expert guidance" active={true} onComplete={() => handleStepComplete(0)} />
-                ) : (
-                  ""
-                )}
+                {activeSupportStep >= 0 ? "Faster onboarding with expert guidance" : ""}
               </span>
             </div>
           </div>
@@ -138,13 +79,7 @@ export default function SupportSection() {
           <div className={`timeline-step-row ${activeSupportStep >= 1 ? 'active' : ''}`}>
             <div className="timeline-col left-align">
               <span className={`timeline-label-text ${activeSupportStep >= 1 ? 'active' : ''}`}>
-                {activeSupportStep > 1 ? (
-                  "Hassle-free implementation and migration"
-                ) : activeSupportStep === 1 ? (
-                  <TypewriterText text="Hassle-free implementation and migration" active={true} onComplete={() => handleStepComplete(1)} />
-                ) : (
-                  ""
-                )}
+                {activeSupportStep >= 1 ? "Hassle-free implementation and migration" : ""}
               </span>
             </div>
             <div className="timeline-center-node">
@@ -169,13 +104,7 @@ export default function SupportSection() {
             </div>
             <div className="timeline-col right-align">
               <span className={`timeline-label-text ${activeSupportStep >= 2 ? 'active' : ''}`}>
-                {activeSupportStep > 2 ? (
-                  "Quick user adoption through hands-on training"
-                ) : activeSupportStep === 2 ? (
-                  <TypewriterText text="Quick user adoption through hands-on training" active={true} onComplete={() => handleStepComplete(2)} />
-                ) : (
-                  ""
-                )}
+                {activeSupportStep >= 2 ? "Quick user adoption through hands-on training" : ""}
               </span>
             </div>
           </div>
@@ -184,13 +113,7 @@ export default function SupportSection() {
           <div className={`timeline-step-row ${activeSupportStep >= 3 ? 'active' : ''}`}>
             <div className="timeline-col left-align">
               <span className={`timeline-label-text ${activeSupportStep >= 3 ? 'active' : ''}`}>
-                {activeSupportStep > 3 ? (
-                  "Reliable support when you need it most"
-                ) : activeSupportStep === 3 ? (
-                  <TypewriterText text="Reliable support when you need it most" active={true} onComplete={() => handleStepComplete(3)} />
-                ) : (
-                  ""
-                )}
+                {activeSupportStep >= 3 ? "Reliable support when you need it most" : ""}
               </span>
             </div>
             <div className="timeline-center-node">
@@ -215,13 +138,7 @@ export default function SupportSection() {
             </div>
             <div className="timeline-col right-align">
               <span className={`timeline-label-text ${activeSupportStep >= 4 ? 'active' : ''}`}>
-                {activeSupportStep > 4 ? (
-                  "Continuous improvements as you grow"
-                ) : activeSupportStep === 4 ? (
-                  <TypewriterText text="Continuous improvements as you grow" active={true} onComplete={() => handleStepComplete(4)} />
-                ) : (
-                  ""
-                )}
+                {activeSupportStep >= 4 ? "Continuous improvements as you grow" : ""}
               </span>
             </div>
           </div>
@@ -230,13 +147,7 @@ export default function SupportSection() {
           <div className={`timeline-step-row ${activeSupportStep >= 5 ? 'active' : ''}`}>
             <div className="timeline-col left-align">
               <span className={`timeline-label-text ${activeSupportStep >= 5 ? 'active' : ''}`}>
-                {activeSupportStep > 5 ? (
-                  "Dedicated experts invested in your success"
-                ) : activeSupportStep === 5 ? (
-                  <TypewriterText text="Dedicated experts invested in your success" active={true} onComplete={() => handleStepComplete(5)} />
-                ) : (
-                  ""
-                )}
+                {activeSupportStep >= 5 ? "Dedicated experts invested in your success" : ""}
               </span>
             </div>
             <div className="timeline-center-node">
