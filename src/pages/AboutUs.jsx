@@ -1,4 +1,4 @@
-import { Target, Eye, Shield, Users, Cpu, Award } from 'lucide-react';
+import { Cpu, Search, Sliders, CheckCircle2, Activity, HelpCircle } from 'lucide-react';
 import aboutPhilosophyLaptop from '../assets/images/about-philosophy-laptop.jpg';
 
 export default function AboutUs() {
@@ -9,49 +9,36 @@ export default function AboutUs() {
     { badge: "30%", label: "Faster Business Processes" }
   ];
 
-  const valuesList = [
-    {
-      icon: Shield,
-      title: "Unwavering Trust",
-      desc: "We prioritize security, transparency, and data integrity above all else. Your business information is completely secure with Vellko."
-    },
+  const beliefsList = [
     {
       icon: Cpu,
-      title: "Continuous Innovation",
-      desc: "Our platform evolves constantly to integrate the latest technology, ensuring your business stays ahead in a fast-changing market."
+      title: "We Don't Want to Build Just Another ERP.",
+      desc: "Businesses already have enough software. We want to create technology that genuinely earns its place - making work easier, decisions better, and growth less complicated."
     },
     {
-      icon: Award,
-      title: "Customer Excellence",
-      desc: "We focus on solving real operational challenges. Our dedicated success team ensures your ERP migration is simple and successful."
-    }
-  ];
-
-  const journeyList = [
-    {
-      year: "2021",
-      title: "The Genesis",
-      desc: "Vellko ERP was founded in India with a clear mission: to build a modern, high-visibility ERP system that removes operational complexity for growing businesses."
+      icon: Search,
+      title: "We Start With the Problem, Not the Feature.",
+      desc: "We don't believe in adding complexity just to make a product look bigger. We first ask what's actually getting in the way - and then figure out how technology can make it better."
     },
     {
-      year: "2022",
-      title: "Expanding Horizons",
-      desc: "Launched our specialized E-Commerce and Retail modules, allowing businesses to integrate multi-marketplace sales and active store locations."
+      icon: Sliders,
+      title: "Keep It Simple.",
+      desc: "The technology behind something can be incredibly complex. The experience of using it shouldn't be. That's a standard we hold ourselves to every day."
     },
     {
-      year: "2023",
-      title: "Manufacturing & Supply Chain Integration",
-      desc: "Rolled out comprehensive Manufacturing control, Warehouse, and Logistics pipelines, establishing Vellko as a true end-to-end ERP provider."
+      icon: CheckCircle2,
+      title: "Details Matter.",
+      desc: "A smoother process. A clearer screen. One less unnecessary step. The small things can make a surprisingly big difference."
     },
     {
-      year: "2024",
-      title: "Smarter Automation",
-      desc: "Integrated real-time biometric attendance pipelines, automated payroll compliance (GST, PF, ESIC), and consolidated multi-entity financial reporting."
+      icon: Activity,
+      title: "Keep Evolving.",
+      desc: "The moment we think we've figured everything out is probably the moment we stop growing. Businesses evolve. Technology evolves. So do we."
     },
     {
-      year: "2026",
-      title: "Trusted ERP Partner",
-      desc: "Powering hundreds of enterprises across 10+ industries in India with complete visibility, live analytics, and automated workflows."
+      icon: HelpCircle,
+      title: "Curiosity Keeps Us Moving.",
+      desc: "We won't always have the right answer. But we'll keep asking the right questions. We'll challenge what we know, change our minds when we need to, and stay open to what's next."
     }
   ];
 
@@ -126,90 +113,32 @@ export default function AboutUs() {
         </div>
       </section>
 
-      {/* Mission & Vision */}
-      <section className="about-mission-section">
-        <div className="about-mission-container">
-          <div className="about-mission-card">
-            <h2 className="about-mission-title">
-              <Target size={28} />
-              Our Mission
-            </h2>
-            <p className="about-mission-text">
-              To empower growing enterprises with complete operational visibility. We strive to replace scattered data, manual tracking, and disconnected systems with a single, intelligent source of truth that lets teams run with confidence.
-            </p>
-          </div>
-
-          <div className="about-mission-card">
-            <h2 className="about-mission-title">
-              <Eye size={28} />
-              Our Vision
-            </h2>
-            <p className="about-mission-text">
-              To become the world's most intuitive, reliable, and scalable cloud-based ERP ecosystem, helping businesses automate their workflows and drive sustainable growth without administrative headaches.
-            </p>
-          </div>
+      {/* Beliefs Section */}
+      <section className="about-belief-section">
+        <div className="about-belief-header animate-fade-in">
+          <h2 className="about-belief-heading">
+            What We <span className="red-highlight">Believe In</span>
+          </h2>
         </div>
-      </section>
 
-      {/* Core Values */}
-      <section className="about-values-section">
-        <div className="about-values-header animate-fade-in">
-          <h2 className="about-values-heading">Our Core Values</h2>
-          <p className="about-values-sub">
-            The principles that guide our product development, support services, and customer partnerships.
-          </p>
-        </div>
-        <div className="about-values-grid">
-          {valuesList.map((val, idx) => {
-            const IconComponent = val.icon;
+        <div className="about-belief-grid">
+          {beliefsList.map((item, idx) => {
+            const IconComponent = item.icon;
             return (
-              <div key={idx} className="about-value-card">
-                <div className="about-value-icon">
-                  <IconComponent size={24} />
+              <div key={idx} className="belief-card animate-fade-in">
+                <div className="belief-card-header-row">
+                  <div className="belief-icon-circle">
+                    <IconComponent size={24} strokeWidth={2} />
+                  </div>
+                  <div className="belief-header-line"></div>
                 </div>
-                <h3 className="about-value-title">{val.title}</h3>
-                <p className="about-value-desc">{val.desc}</p>
+                <div className="belief-card-content">
+                  <h3 className="belief-card-title">{item.title}</h3>
+                  <p className="belief-card-desc">{item.desc}</p>
+                </div>
               </div>
             );
           })}
-        </div>
-      </section>
-
-      {/* Journey Timeline */}
-      <section className="about-journey-section">
-        <div className="about-values-header">
-          <h2 className="about-values-heading">Our Journey</h2>
-          <p className="about-values-sub">
-            How we evolved into India's most trusted operational control platform.
-          </p>
-        </div>
-        <div className="about-journey-container">
-          {journeyList.map((item, idx) => (
-            <div key={idx} className="about-journey-item animate-fade-in">
-              <div className="about-journey-dot"></div>
-              <div className="about-journey-content">
-                <div className="about-journey-year">{item.year}</div>
-                <h3 className="about-journey-title">{item.title}</h3>
-                <p className="about-journey-desc">{item.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Final CTA Partnership Banner */}
-      <section className="industry-final-cta-section" style={{ background: '#f9fafb', borderTop: '1px solid #e5e7eb' }}>
-        <div className="cta-container" style={{ maxWidth: '980px', margin: '0 auto', textAlign: 'center', padding: '5rem 1.5rem' }}>
-          <h2 className="cta-heading" style={{ fontSize: '2.5rem', fontWeight: 800, color: '#111827', marginBottom: '1.25rem' }}>
-            Build a Smarter Business with Vellko ERP
-          </h2>
-          <p className="cta-description" style={{ fontSize: '1.1rem', color: '#4b5563', marginBottom: '2.5rem', lineHeight: '1.6', maxWidth: '700px', margin: '0 auto 2.5rem' }}>
-            Join hundreds of forward-thinking businesses that streamline their daily operations, align departments, and secure complete visibility.
-          </p>
-          <div className="hero-actions">
-            <button className="hero-btn-filled">Request a Demo</button>
-            <button className="hero-btn-outline" style={{ background: '#ffffff', border: '1.5px solid #111827' }}>Get Started</button>
-          </div>
         </div>
       </section>
     </div>
