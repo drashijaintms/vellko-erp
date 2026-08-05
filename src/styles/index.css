@@ -761,7 +761,7 @@ button {
 }
 
 /* Row 1 cards: give them a bottom border */
-.beyond-features-grid .beyond-feature-card:nth-child(-n+4) {
+.beyond-features-grid .beyond-feature-card:nth-last-child(n+5) {
   border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 }
 
@@ -3342,7 +3342,7 @@ button {
 }
 
 /* Row 1 cards: give them a bottom border */
-.beyond-features-grid .beyond-feature-card:nth-child(-n+4) {
+.beyond-features-grid .beyond-feature-card:nth-last-child(n+5) {
   border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 }
 

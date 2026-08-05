@@ -5,6 +5,7 @@ import EcommerceErp from './pages/EcommerceErp';
 import ManufacturingErp from './pages/ManufacturingErp';
 import RetailErp from './pages/RetailErp';
 import DistributionErp from './pages/DistributionErp';
+import EducationErp from './pages/EducationErp';
 import Footer from './components/Footer';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/manufacturing-erp" element={<ManufacturingErp />} />
         <Route path="/retail-erp" element={<RetailErp />} />
         <Route path="/distribution-erp" element={<DistributionErp />} />
+        <Route path="/education-erp" element={<EducationErp />} />
       </Routes>
       <Footer />
     </Router>

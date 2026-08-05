@@ -81,7 +81,7 @@ const industries = [
     title: "Education ERP", 
     desc: "Manage admissions, fees & staff records.", 
     icon: GraduationCap,
-    href: "#"
+    href: "/education-erp"
   },
   { 
     title: "Real Estate ERP", 
