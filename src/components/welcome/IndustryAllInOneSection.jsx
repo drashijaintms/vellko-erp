@@ -143,14 +143,11 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
               xmlns="http://www.w3.org/2000/svg"
               style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }}
             >
-              {/* Outer gray ring — auto-rotates CLOCKWISE */}
+              {/* Outer gray ring — continuous, rotates CLOCKWISE */}
               <circle
                 cx="220" cy="220" r="160"
                 stroke="#cbd5e1"
                 strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeDasharray="75.4 50.3"
-                strokeDashoffset={outerOffset}
                 fill="none"
                 style={{
                   transformOrigin: '220px 220px',
@@ -158,14 +155,11 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
                 }}
               />
 
-              {/* Inner red ring — auto-rotates ANTICLOCKWISE */}
+              {/* Inner red ring — continuous, rotates ANTICLOCKWISE */}
               <circle
                 cx="220" cy="220" r="148"
                 stroke="#DC1436"
                 strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeDasharray="69.7 46.5"
-                strokeDashoffset={innerOffset}
                 fill="none"
                 style={{
                   transformOrigin: '220px 220px',

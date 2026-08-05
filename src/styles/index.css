@@ -1245,7 +1245,7 @@ button {
 /* Circular Labels as Buttons */
 .circular-label-button {
   position: absolute;
-  background: transparent;
+  background: #ffffff;
   border: none;
   font-family: var(--font-body);
   font-size: 0.8rem;
@@ -1257,7 +1257,8 @@ button {
   cursor: pointer;
   z-index: 10;
   transition: var(--transition-smooth);
-  padding: 4px;
+  padding: 6px 10px;
+  border-radius: 4px;
 }
 
 .circular-label-button:hover {
@@ -3633,7 +3634,7 @@ button {
 
 
 /* Circular Labels as Buttons */
-.circular-label-button {
+.circular-label-button-industry {
   position: absolute;
   background: transparent;
   border: none;
