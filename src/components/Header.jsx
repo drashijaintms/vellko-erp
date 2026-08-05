@@ -36,7 +36,7 @@ const erpModules = [
     title: "Project Management", 
     desc: "Collaborate, track time & deliver projects.", 
     icon: Briefcase,
-    href: "#"
+    href: "/project-management"
   },
   { 
     title: "Service Management", 

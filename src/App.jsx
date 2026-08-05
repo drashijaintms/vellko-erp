@@ -10,6 +10,7 @@ import RealEstateErp from './pages/RealEstateErp';
 import HrmsPayroll from './pages/HrmsPayroll';
 import InventoryManagement from './pages/InventoryManagement';
 import FinanceAccounting from './pages/FinanceAccounting';
+import ProjectManagement from './pages/ProjectManagement';
 import Footer from './components/Footer';
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
         <Route path="/hrms-payroll" element={<HrmsPayroll />} />
         <Route path="/inventory-management" element={<InventoryManagement />} />
         <Route path="/finance-accounting" element={<FinanceAccounting />} />
+        <Route path="/project-management" element={<ProjectManagement />} />
       </Routes>
       <Footer />
     </Router>
