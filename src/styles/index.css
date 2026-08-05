@@ -726,8 +726,8 @@ button {
 }
 
 .beyond-desc-para .red-highlight {
-  color: var(--primary);
-  font-weight: 600;
+  color: inherit;
+  font-weight: inherit;
 }
 
 
