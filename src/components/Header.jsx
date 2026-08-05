@@ -69,7 +69,7 @@ const industries = [
     title: "Distribution ERP", 
     desc: "Logistics, purchase sync & stock movement.", 
     icon: Truck,
-    href: "#"
+    href: "/distribution-erp"
   },
   { 
     title: "Healthcare ERP", 
