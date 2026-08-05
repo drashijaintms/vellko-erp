@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Phone, Mail, MapPin, Globe, Facebook, Instagram, Linkedin } from 'lucide-react';
+import heroBg from '../assets/images/about-hero-bg.jpg';
 
 export default function ContactUs() {
   const [formData, setFormData] = useState({
@@ -32,7 +33,7 @@ export default function ContactUs() {
   };
 
   return (
-    <div className="contact-page-wrapper">
+    <div className="contact-page-wrapper" style={{ backgroundImage: `url(${heroBg})` }}>
       <div className="contact-overlay"></div>
       <div className="contact-page-container">
         <h1 className="contact-title animate-fade-in">Contact Us</h1>

@@ -5139,8 +5139,10 @@ button {
 /* Contact Us Page Styles */
 .contact-page-wrapper {
   position: relative;
-  background: url(/src/assets/images/about-hero-bg.jpg) no-repeat center center;
+  background-color: #f3f4f6;
   background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
   width: 100%;
   min-height: 90vh;
   padding: 6rem 1.5rem 8rem;
