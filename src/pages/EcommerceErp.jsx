@@ -178,6 +178,16 @@ export default function EcommerceErp() {
     }
   ];
 
+  const supportStepsList = [
+    "E-Commerce Workflow Setup",
+    "Secure Data Migration",
+    "Product & Inventory Configuration",
+    "Marketplace Integration Support",
+    "Team Training",
+    "Continuous Technical Support",
+    "Future Feature Enhancements"
+  ];
+
   return (
     <IndustryPage
       title="Manage Your E-Commerce Operations with"
@@ -218,6 +228,11 @@ export default function EcommerceErp() {
       worksTitle="How Vellko E-Commerce"
       worksHighlight="ERP Works"
       worksSteps={worksStepsList}
+      supportTitle="Dedicated E-Commerce"
+      supportHighlight="Implementation Support"
+      supportSub1="The process of implementing an ERP system isn't only about technology. It is about enhancing the way your company runs."
+      supportSub2="Our specialists assist you with setup and process migrations, modification and training as well as continuous assistance to ensure smooth transition"
+      supportSteps={supportStepsList}
     />
   );
 }
