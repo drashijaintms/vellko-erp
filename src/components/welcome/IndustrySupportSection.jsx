@@ -18,7 +18,7 @@ export default function IndustrySupportSection({ title, highlight, sub1, sub2, s
   if (!supportSteps || supportSteps.length === 0) return null;
 
   return (
-    <section className={`support-section ${customClass || ''}`}>
+    <section className={customClass || 'support-section'}>
       <div className="support-container">
         <h2 className="support-title">
           {title} {highlight && <span className="red-highlight">{highlight}</span>}

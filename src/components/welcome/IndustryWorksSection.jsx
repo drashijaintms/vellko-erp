@@ -4,7 +4,7 @@ export default function IndustryWorksSection({ title, highlight, steps, customCl
   if (!steps || steps.length === 0) return null;
 
   return (
-    <section className={`works-section ${customClass || ''}`}>
+    <section className={customClass || 'works-section'}>
       <div className="works-container">
         <h2 className="works-title">
           {title} {highlight && <span className="red-highlight">{highlight}</span>}

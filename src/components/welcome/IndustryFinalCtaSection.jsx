@@ -1,6 +1,6 @@
 export default function IndustryFinalCtaSection({ title, desc, customClass }) {
   return (
-    <section className={`final-cta-section ${customClass || ''}`}>
+    <section className={customClass || 'final-cta-section'}>
       <div className="final-cta-container">
         <h2 className="final-cta-heading">
           {title}

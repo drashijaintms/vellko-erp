@@ -22,7 +22,7 @@ export default function IndustryBeyondSection({ title, highlight, subCol1, subCo
   if (!features || features.length === 0) return null;
 
   return (
-    <section className={`beyond-section ${customClass || ''}`}>
+    <section className={customClass || 'beyond-section'}>
       <div className="beyond-text-block">
         <h2 className="beyond-title">
           {title} {highlight && <span className="red-highlight">{highlight}</span>}

@@ -2,7 +2,7 @@ export default function IndustryCompareSection({ title, highlight, sub1, sub2, h
   if (!rows || rows.length === 0) return null;
 
   return (
-    <section className={`need-erp-section ${customClass || ''}`}>
+    <section className={customClass || 'need-erp-section'}>
       <div className="need-centered-title-wrapper">
         <h2 className="need-centered-title">
           {title} {highlight && <span className="red-highlight">{highlight}</span>}

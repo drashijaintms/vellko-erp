@@ -11,7 +11,7 @@ export default function IndustryHeroSection({ title, highlight, tagline, desc, b
   const displayBadges = badges || defaultBadges;
 
   return (
-    <section className={`hero-section ${customClass || ''}`}>
+    <section className={customClass || 'hero-section'}>
       <div className="hero-container">
         <h1 className="hero-heading">
           {title} {highlight && <span className="red-highlight">{highlight}</span>}

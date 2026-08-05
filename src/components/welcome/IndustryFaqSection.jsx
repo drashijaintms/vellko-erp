@@ -11,7 +11,7 @@ export default function IndustryFaqSection({ title, highlight, introQ, introA, f
   if (!faqItems || faqItems.length === 0) return null;
 
   return (
-    <section className={`faq-section ${customClass || ''}`}>
+    <section className={customClass || 'faq-section'}>
       <div className="faq-container">
         {/* Title */}
         <h2 className="faq-title">

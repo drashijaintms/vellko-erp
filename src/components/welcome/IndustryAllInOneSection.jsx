@@ -97,7 +97,7 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
   const ActiveIcon = iconMap[activeModule % iconMap.length];
 
   return (
-    <section className={`all-in-one-section ${customClass || ''}`}>
+    <section className={customClass || 'all-in-one-section'}>
       <div className="all-in-one-text">
         <h2 className="all-in-one-title">
           {title} {highlight && <span className="red-highlight">{highlight}</span>}
