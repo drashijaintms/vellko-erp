@@ -6,6 +6,7 @@ import IndustryWorksSection from '../components/welcome/IndustryWorksSection';
 import IndustrySupportSection from '../components/welcome/IndustrySupportSection';
 import IndustryFaqSection from '../components/welcome/IndustryFaqSection';
 import IndustryFinalCtaSection from '../components/welcome/IndustryFinalCtaSection';
+import IndustrySplitCompareSection from '../components/welcome/IndustrySplitCompareSection';
 
 export default function IndustryPage({ 
   title, highlight, tagline, desc, badges,
@@ -17,6 +18,8 @@ export default function IndustryPage({
   supportTitle, supportHighlight, supportSub1, supportSub2, supportSteps,
   faqTitle, faqHighlight, faqIntroQ, faqIntroA, faqItems,
   ctaTitle, ctaDesc,
+  // Split compare section
+  splitTitleLeft, splitTitleRight, splitDescLeft, splitDescRight, splitHeaderLeft, splitHeaderRight, splitLeftList, splitRightList, splitClass,
   // Custom unique page classes modifiers
   heroClass, beyondClass, compareClass, allInOneClass, chooseClass, worksClass, supportClass, faqClass, ctaClass
 }) {
@@ -41,6 +44,19 @@ export default function IndustryPage({
           desc={beyondDesc}
           features={beyondFeatures}
           customClass={beyondClass}
+        />
+      )}
+      {splitLeftList && (
+        <IndustrySplitCompareSection 
+          titleLeft={splitTitleLeft}
+          titleRight={splitTitleRight}
+          descLeft={splitDescLeft}
+          descRight={splitDescRight}
+          headerLeft={splitHeaderLeft}
+          headerRight={splitHeaderRight}
+          leftList={splitLeftList}
+          rightList={splitRightList}
+          customClass={splitClass}
         />
       )}
       {compareRows && (

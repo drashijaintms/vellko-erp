@@ -12,15 +12,26 @@ export default function EcommerceErp() {
     "Reports & Business Analytics"
   ];
 
-  const compareRowsList = [
-    { left: "Product data managed manually", right: "Centralized product database" },
-    { left: "Inventory tracked through spreadsheets", right: "Real-time inventory management" },
-    { left: "Manual order processing", right: "Automated order workflows" },
-    { left: "Multiple marketplace management issues", right: "Unified marketplace management" },
-    { left: "Delayed sales reporting", right: "Live sales dashboards" },
-    { left: "Manual purchase tracking", right: "Automated procurement workflows" },
-    { left: "Poor customer visibility", right: "Complete customer insights" },
-    { left: "Difficult business scaling", right: "Scalable e-commerce operations" }
+  const splitLeftListItems = [
+    "Product data managed manually",
+    "Inventory tracked through spreadsheets",
+    "Manual order processing",
+    "Multiple marketplace management issues",
+    "Delayed sales reporting",
+    "Manual purchase tracking",
+    "Poor customer visibility",
+    "Difficult business scaling"
+  ];
+
+  const splitRightListItems = [
+    "Centralized product database",
+    "Real-time inventory management",
+    "Automated order workflows",
+    "Unified marketplace management",
+    "Live sales dashboards",
+    "Automated procurement workflows",
+    "Complete customer insights",
+    "Scalable e-commerce operations"
   ];
 
   const allInOneModulesList = [
@@ -235,11 +246,15 @@ export default function EcommerceErp() {
       }
       beyondDesc="Vellko E-Commerce ERP centralizes your entire online business, streamlines everyday operations, and gives immediate insights that assist you in making faster and more informed decisions."
       beyondFeatures={beyondFeaturesList}
-      compareTitle="Traditional E-Commerce vs"
-      compareHighlight="Vellko E-Commerce ERP"
-      compareHeaderLeft="Traditional E-Commerce"
-      compareHeaderRight="Vellko E-Commerce ERP"
-      compareRows={compareRowsList}
+      splitTitleLeft="Traditional E-Commerce"
+      splitTitleRight="Vellko E-Commerce ERP"
+      splitDescLeft="Eliminate manual data entries and scattered"
+      splitDescRight="store channels with a single cloud-based platform."
+      splitHeaderLeft="Traditional E-Commerce"
+      splitHeaderRight="Vellko E-Commerce ERP"
+      splitLeftList={splitLeftListItems}
+      splitRightList={splitRightListItems}
+      splitClass="industry-split-comparison-section"
       allInOneTitle="Everything Your E-Commerce Team Needs in"
       allInOneHighlight="One Platform"
       allInOneTagline="Modern e-commerce is more than selling products online."
