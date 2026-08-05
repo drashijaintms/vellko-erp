@@ -27,8 +27,11 @@ export default function IndustryBeyondSection({ title, highlight, subCol1, subCo
         </h2>
 
         <div className="beyond-desc-paras">
-          {subCol1 && <p className="beyond-desc-para">{subCol1}</p>}
-          {subCol2 && <p className="beyond-desc-para">{subCol2}</p>}
+          {(subCol1 || subCol2) && (
+            <p className="beyond-desc-para">
+              {subCol1}{subCol1 && subCol2 && ' '}{subCol2}
+            </p>
+          )}
         </div>
 
         {desc && (
