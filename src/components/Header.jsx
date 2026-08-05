@@ -18,7 +18,7 @@ const erpModules = [
     title: "HRMS & Payroll", 
     desc: "Manage workforce, attendance & salaries.", 
     icon: UserCheck,
-    href: "#"
+    href: "/hrms-payroll"
   },
   { 
     title: "Finance & Accounting", 
