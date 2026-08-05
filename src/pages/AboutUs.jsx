@@ -1,11 +1,12 @@
 import { Target, Eye, Shield, Users, Cpu, Award } from 'lucide-react';
+import aboutPhilosophyLaptop from '../assets/images/about-philosophy-laptop.jpg';
 
 export default function AboutUs() {
   const statsList = [
-    { number: "150+", label: "Businesses Powered" },
-    { number: "99.9%", label: "System Uptime" },
-    { number: "40%", label: "Operational Efficiency Boost" },
-    { number: "24/7", label: "Dedicated Support" }
+    { badge: "500+", label: "Users Empowered" },
+    { badge: "24/7", label: "Customer Support" },
+    { badge: "95%", label: "Client Retention Rate" },
+    { badge: "30%", label: "Faster Business Processes" }
   ];
 
   const valuesList = [
@@ -74,6 +75,57 @@ export default function AboutUs() {
         </div>
       </section>
 
+      {/* Philosophy Section */}
+      <section className="about-philosophy-section">
+        <div className="about-philosophy-container">
+          <div className="about-philosophy-left animate-fade-in">
+            <h2 className="about-philosophy-heading">
+              The Thinking Behind<br />
+              What <span className="red-highlight">We Build.</span>
+            </h2>
+            <p className="about-philosophy-lead">
+              Vellko is a technology company built around a simple idea: <strong>good technology should make things better, not more complicated.</strong>
+            </p>
+            <div className="about-philosophy-body">
+              <p>
+                Our journey began with a desire to understand the challenges businesses face as they grow - the increasing complexity, disconnected processes and need for better ways to manage everyday operations.
+              </p>
+              <p>
+                That thinking shaped Vellko ERP.
+              </p>
+              <p>
+                We bring together technology, business understanding, and a practical approach to create solutions that help businesses work more effectively and move forward with confidence.
+              </p>
+              <p>
+                But Vellko is more than what we build. It's the people behind it - their curiosity, ideas and willingness to keep learning and improving.
+              </p>
+              <p>
+                We believe in asking better questions, challenging the obvious and building with purpose.
+              </p>
+              <p style={{ fontWeight: 'bold', color: '#111827' }}>
+                That's who we are. And that's what keeps us moving forward.
+              </p>
+            </div>
+          </div>
+
+          <div className="about-philosophy-right animate-fade-in">
+            <img 
+              src={aboutPhilosophyLaptop} 
+              alt="Vellko Workspace Conference Table and SaaS Dashboard" 
+              className="about-philosophy-image" 
+            />
+            <div className="about-philosophy-stats-banner">
+              {statsList.map((stat, idx) => (
+                <div key={idx} className="about-philosophy-stat-item">
+                  <span className="about-philosophy-stat-badge">{stat.badge}</span>
+                  <span className="about-philosophy-stat-label">{stat.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Mission & Vision */}
       <section className="about-mission-section">
         <div className="about-mission-container">
@@ -96,18 +148,6 @@ export default function AboutUs() {
               To become the world's most intuitive, reliable, and scalable cloud-based ERP ecosystem, helping businesses automate their workflows and drive sustainable growth without administrative headaches.
             </p>
           </div>
-        </div>
-      </section>
-
-      {/* Stats Dashboard Banner */}
-      <section className="about-stats-section">
-        <div className="about-stats-container">
-          {statsList.map((stat, idx) => (
-            <div key={idx} className="about-stat-card">
-              <div className="about-stat-number">{stat.number}</div>
-              <div className="about-stat-label">{stat.label}</div>
-            </div>
-          ))}
         </div>
       </section>
 
