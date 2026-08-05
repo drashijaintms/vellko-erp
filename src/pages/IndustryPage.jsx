@@ -4,6 +4,7 @@ import IndustryCompareSection from '../components/welcome/IndustryCompareSection
 import IndustryAllInOneSection from '../components/welcome/IndustryAllInOneSection';
 import IndustryWorksSection from '../components/welcome/IndustryWorksSection';
 import IndustrySupportSection from '../components/welcome/IndustrySupportSection';
+import IndustryFaqSection from '../components/welcome/IndustryFaqSection';
 
 export default function IndustryPage({ 
   title, highlight, tagline, desc, badges,
@@ -12,7 +13,8 @@ export default function IndustryPage({
   allInOneTitle, allInOneHighlight, allInOneTagline, allInOneDesc, allInOneModules,
   chooseTitle, chooseHighlight, chooseSub1, chooseSub2, chooseHeaderLeft, chooseHeaderRight, chooseRows,
   worksTitle, worksHighlight, worksSteps,
-  supportTitle, supportHighlight, supportSub1, supportSub2, supportSteps
+  supportTitle, supportHighlight, supportSub1, supportSub2, supportSteps,
+  faqTitle, faqHighlight, faqIntroQ, faqIntroA, faqItems
 }) {
   return (
     <>
@@ -78,6 +80,15 @@ export default function IndustryPage({
           sub1={supportSub1}
           sub2={supportSub2}
           supportSteps={supportSteps}
+        />
+      )}
+      {faqItems && (
+        <IndustryFaqSection 
+          title={faqTitle}
+          highlight={faqHighlight}
+          introQ={faqIntroQ}
+          introA={faqIntroA}
+          faqItems={faqItems}
         />
       )}
     </>
