@@ -1,17 +1,6 @@
 import IndustryPage from './IndustryPage';
 
 export default function EcommerceErp() {
-  const beyondFeaturesList = [
-    "Product Information Management",
-    "Inventory & Warehouse Management",
-    "Order Management",
-    "Customer Management (CRM)",
-    "Sales & Payment Management",
-    "Purchase & Supplier Management",
-    "Marketplace Integration",
-    "Reports & Business Analytics"
-  ];
-
   const compareRowsList = [
     { left: "Product data managed manually", right: "Centralized product database" },
     { left: "Inventory tracked through spreadsheets", right: "Real-time inventory management" },
@@ -231,10 +220,8 @@ export default function EcommerceErp() {
       beyondSubCol2={
         <>
           <span className="red-highlight">Controlling inventory</span>, products, and orders, as well as suppliers, customers and sales by hand leads to delays, errors as well as missed chances.
-        </>
-      }
+        }
       beyondDesc="Vellko E-Commerce ERP centralizes your entire online business, streamlines everyday operations, and gives immediate insights that assist you in making faster and more informed decisions."
-      beyondFeatures={beyondFeaturesList}
       compareTitle="Traditional E-Commerce vs"
       compareHighlight="Vellko E-Commerce ERP"
       compareHeaderLeft="Traditional E-Commerce"

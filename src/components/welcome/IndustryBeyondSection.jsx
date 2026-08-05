@@ -19,11 +19,9 @@ const defaultIcons = [
 ];
 
 export default function IndustryBeyondSection({ title, highlight, subCol1, subCol2, desc, features, customClass }) {
-  if (!features || features.length === 0) return null;
-
   return (
     <section className={customClass || 'beyond-section'}>
-      <div className="beyond-text-block">
+      <div className="beyond-text-block" style={{ marginBottom: (!features || features.length === 0) ? '0' : '3.5rem' }}>
         <h2 className="beyond-title">
           {title} {highlight && <span className="red-highlight">{highlight}</span>}
         </h2>
@@ -39,25 +37,27 @@ export default function IndustryBeyondSection({ title, highlight, subCol1, subCo
         </div>
 
         {desc && (
-          <p className="beyond-paragraph-2">
+          <p className="beyond-paragraph-2" style={{ marginBottom: (!features || features.length === 0) ? '0' : '3.5rem' }}>
             {desc}
           </p>
         )}
       </div>
 
-      {/* 4x2 Responsive Feature Grid */}
-      <div className="beyond-features-grid">
-        {features.map((feat, idx) => {
-          const titleText = typeof feat === 'string' ? feat : feat.title;
-          const iconSrc = typeof feat === 'object' && feat.icon ? feat.icon : defaultIcons[idx % defaultIcons.length];
-          return (
-            <div key={idx} className="beyond-feature-card">
-              <img src={iconSrc} alt={titleText} className="beyond-feature-icon" />
-              <span className="beyond-feature-title">{titleText}</span>
-            </div>
-          );
-        })}
-      </div>
+      {/* 4x2 Responsive Feature Grid - rendered conditionally */}
+      {features && features.length > 0 && (
+        <div className="beyond-features-grid">
+          {features.map((feat, idx) => {
+            const titleText = typeof feat === 'string' ? feat : feat.title;
+            const iconSrc = typeof feat === 'object' && feat.icon ? feat.icon : defaultIcons[idx % defaultIcons.length];
+            return (
+              <div key={idx} className="beyond-feature-card">
+                <img src={iconSrc} alt={titleText} className="beyond-feature-icon" />
+                <span className="beyond-feature-title">{titleText}</span>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </section>
   );
 }

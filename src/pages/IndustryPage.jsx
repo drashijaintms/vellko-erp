@@ -32,7 +32,7 @@ export default function IndustryPage({
           customClass={heroClass}
         />
       </div>
-      {beyondFeatures && (
+      {beyondTitle && (
         <IndustryBeyondSection 
           title={beyondTitle}
           highlight={beyondHighlight}
