@@ -198,7 +198,7 @@ export default function Header() {
             Pricing
           </a>
           
-          <a href="#" className="nav-link">About Us</a>
+          <Link to="/about" className="nav-link">About Us</Link>
           <a href="#" className="nav-link">Contact</a>
         </nav>
 
@@ -297,9 +297,9 @@ export default function Header() {
               Pricing
             </a>
             
-            <a href="#" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>
+            <Link to="/about" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>
               About Us
-            </a>
+            </Link>
             <a href="#" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>
               Contact
             </a>

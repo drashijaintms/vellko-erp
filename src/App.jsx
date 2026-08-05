@@ -12,6 +12,7 @@ import InventoryManagement from './pages/InventoryManagement';
 import FinanceAccounting from './pages/FinanceAccounting';
 import ProjectManagement from './pages/ProjectManagement';
 import ServiceManagement from './pages/ServiceManagement';
+import AboutUs from './pages/AboutUs';
 import Footer from './components/Footer';
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
         <Route path="/finance-accounting" element={<FinanceAccounting />} />
         <Route path="/project-management" element={<ProjectManagement />} />
         <Route path="/service-management" element={<ServiceManagement />} />
+        <Route path="/about" element={<AboutUs />} />
       </Routes>
       <Footer />
     </Router>
