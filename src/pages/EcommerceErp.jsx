@@ -220,7 +220,8 @@ export default function EcommerceErp() {
       beyondSubCol2={
         <>
           <span className="red-highlight">Controlling inventory</span>, products, and orders, as well as suppliers, customers and sales by hand leads to delays, errors as well as missed chances.
-        }
+        </>
+      }
       beyondDesc="Vellko E-Commerce ERP centralizes your entire online business, streamlines everyday operations, and gives immediate insights that assist you in making faster and more informed decisions."
       compareTitle="Traditional E-Commerce vs"
       compareHighlight="Vellko E-Commerce ERP"
