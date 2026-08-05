@@ -30,7 +30,7 @@ const erpModules = [
     title: "Inventory Management", 
     desc: "Optimize stock levels & multi-warehouse sync.", 
     icon: Boxes,
-    href: "#"
+    href: "/inventory-management"
   },
   { 
     title: "Project Management", 

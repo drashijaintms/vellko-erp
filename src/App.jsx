@@ -8,6 +8,7 @@ import DistributionErp from './pages/DistributionErp';
 import EducationErp from './pages/EducationErp';
 import RealEstateErp from './pages/RealEstateErp';
 import HrmsPayroll from './pages/HrmsPayroll';
+import InventoryManagement from './pages/InventoryManagement';
 import Footer from './components/Footer';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route path="/education-erp" element={<EducationErp />} />
         <Route path="/real-estate-erp" element={<RealEstateErp />} />
         <Route path="/hrms-payroll" element={<HrmsPayroll />} />
+        <Route path="/inventory-management" element={<InventoryManagement />} />
       </Routes>
       <Footer />
     </Router>
