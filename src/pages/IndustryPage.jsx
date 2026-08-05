@@ -5,6 +5,7 @@ import IndustryAllInOneSection from '../components/welcome/IndustryAllInOneSecti
 import IndustryWorksSection from '../components/welcome/IndustryWorksSection';
 import IndustrySupportSection from '../components/welcome/IndustrySupportSection';
 import IndustryFaqSection from '../components/welcome/IndustryFaqSection';
+import IndustryFinalCtaSection from '../components/welcome/IndustryFinalCtaSection';
 
 export default function IndustryPage({ 
   title, highlight, tagline, desc, badges,
@@ -14,7 +15,8 @@ export default function IndustryPage({
   chooseTitle, chooseHighlight, chooseSub1, chooseSub2, chooseHeaderLeft, chooseHeaderRight, chooseRows,
   worksTitle, worksHighlight, worksSteps,
   supportTitle, supportHighlight, supportSub1, supportSub2, supportSteps,
-  faqTitle, faqHighlight, faqIntroQ, faqIntroA, faqItems
+  faqTitle, faqHighlight, faqIntroQ, faqIntroA, faqItems,
+  ctaTitle, ctaDesc
 }) {
   return (
     <>
@@ -89,6 +91,12 @@ export default function IndustryPage({
           introQ={faqIntroQ}
           introA={faqIntroA}
           faqItems={faqItems}
+        />
+      )}
+      {ctaTitle && (
+        <IndustryFinalCtaSection 
+          title={ctaTitle}
+          desc={ctaDesc}
         />
       )}
     </>

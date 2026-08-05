@@ -265,6 +265,8 @@ export default function EcommerceErp() {
       faqIntroQ="What is eCommerce ERP Software?"
       faqIntroA="eCommerce ERP Software is a centralized solution that helps businesses manage products, inventory, orders, customers, procurement, finance, shipping, and reporting from one integrated platform."
       faqItems={faqItemsList}
+      ctaTitle="Grow Your Online Business with Vellko E-Commerce ERP"
+      ctaDesc="Replace manual processes with an intelligent e-commerce management platform that helps you automate operations, improve efficiency, and make smarter business decisions."
     />
   );
 }
