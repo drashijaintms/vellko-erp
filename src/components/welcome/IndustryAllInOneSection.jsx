@@ -41,11 +41,21 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
   if (!modules || modules.length === 0) return null;
 
   const [activeModule, setActiveModule] = useState(0);
+  const [ringRotation, setRingRotation] = useState(0);
   const activeData = modules[activeModule];
   const scrollWrapperRef = useRef(null);
+  const lastScrollY = useRef(window.scrollY);
 
   useEffect(() => {
     const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const delta = currentScrollY - lastScrollY.current;
+      lastScrollY.current = currentScrollY;
+
+      // Update ring rotation based on scroll delta (1px scroll = 0.15deg rotation)
+      setRingRotation(prev => prev + delta * 0.15);
+
+      // Module switching via scroll progress
       if (window.innerWidth <= 1024) return;
       if (!scrollWrapperRef.current) return;
       
@@ -61,7 +71,7 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
       setActiveModule(index);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -158,25 +168,48 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
           </div>
 
           <div className="circular-graphic-container">
-            <svg className="circular-ring-svg" viewBox="0 0 440 440" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }}>
-              {sectorAngles.map((sector, index) => (
-                <g key={index}>
+            <svg
+              className="circular-ring-svg"
+              viewBox="0 0 440 440"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }}
+            >
+              {/* Outer gray ring — rotates CLOCKWISE on scroll */}
+              <g style={{
+                transformOrigin: '220px 220px',
+                transform: `rotate(${ringRotation}deg)`,
+                transition: 'transform 0.1s linear'
+              }}>
+                {sectorAngles.map((sector, index) => (
                   <path
+                    key={`outer-${index}`}
                     d={getArcPath(sector.start, sector.end, 160)}
                     stroke="#cbd5e1"
                     strokeWidth={1.5}
                     strokeLinecap="round"
                     fill="none"
                   />
+                ))}
+              </g>
+
+              {/* Inner red ring — rotates ANTICLOCKWISE on scroll */}
+              <g style={{
+                transformOrigin: '220px 220px',
+                transform: `rotate(${-ringRotation}deg)`,
+                transition: 'transform 0.1s linear'
+              }}>
+                {sectorAngles.map((sector, index) => (
                   <path
+                    key={`inner-${index}`}
                     d={getArcPath(sector.start, sector.end, 148)}
                     stroke="#DC1436"
                     strokeWidth={1.5}
                     strokeLinecap="round"
                     fill="none"
                   />
-                </g>
-              ))}
+                ))}
+              </g>
             </svg>
 
             {/* Circular Labels */}
