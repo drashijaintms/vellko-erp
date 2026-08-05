@@ -15,47 +15,15 @@ const iconMap = [
   BarChart3
 ];
 
-const sectorAngles = [
-  { start: 324, end: 351, side: 'left' },  
-  { start: 9,   end: 36,  side: 'right' }, 
-  { start: 54,  end: 81,  side: 'right' }, 
-  { start: 99,  end: 126, side: 'right' }, 
-  { start: 144, end: 171, side: 'right' }, 
-  { start: 189, end: 216, side: 'left' },  
-  { start: 234, end: 261, side: 'left' },  
-  { start: 279, end: 306, side: 'left' }   
-];
-
-const getArcPath = (startAngle, endAngle, radius) => {
-  const startRad = ((startAngle - 90) * Math.PI) / 180;
-  const endRad = ((endAngle - 90) * Math.PI) / 180;
-  const x1 = 220 + radius * Math.cos(startRad);
-  const y1 = 220 + radius * Math.sin(startRad);
-  const x2 = 220 + radius * Math.cos(endRad);
-  const y2 = 220 + radius * Math.sin(endRad);
-  const largeArcFlag = endAngle - startAngle <= 180 ? 0 : 1;
-  return `M ${x1},${y1} A ${radius},${radius} 0 ${largeArcFlag},1 ${x2},${y2}`;
-};
-
 export default function IndustryAllInOneSection({ title, highlight, tagline, desc, modules, customClass }) {
   if (!modules || modules.length === 0) return null;
 
   const [activeModule, setActiveModule] = useState(0);
-  const [ringRotation, setRingRotation] = useState(0);
   const activeData = modules[activeModule];
   const scrollWrapperRef = useRef(null);
-  const lastScrollY = useRef(window.scrollY);
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      const delta = currentScrollY - lastScrollY.current;
-      lastScrollY.current = currentScrollY;
-
-      // Update ring rotation based on scroll delta (1px scroll = 0.15deg rotation)
-      setRingRotation(prev => prev + delta * 0.15);
-
-      // Module switching via scroll progress
       if (window.innerWidth <= 1024) return;
       if (!scrollWrapperRef.current) return;
       
@@ -106,22 +74,24 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
 
   const ActiveIcon = iconMap[activeModule % iconMap.length];
 
+  // 8 arcs of 27° each, 8 gaps of 18° each
+  // Outer ring r=160, circumference=1005.3px: arc=75.4px gap=50.3px
+  // Inner ring r=148, circumference=929.9px:  arc=69.7px gap=46.5px
+  // Initial dashoffset aligns arcs with gaps between labels (labels at 0°,45°,...315° from top)
+  // Arcs should sit at 22.5°,67.5°,...337.5° (midpoints between labels)
+  // SVG circle starts stroke at 3-o'clock (90° from top)
+  // Offset needed: (90° - 22.5°)/360° × C = 67.5/360 × C
+  const outerOffset = (67.5 / 360) * 1005.3; // ≈188.5px — shifts arc start to 22.5° gap
+  const innerOffset = (67.5 / 360) * 929.9;  // ≈174.4px
+
   return (
     <section className={customClass || 'all-in-one-section'}>
       <div className="all-in-one-text">
         <h2 className="all-in-one-title">
           {title} {highlight && <span className="red-highlight">{highlight}</span>}
         </h2>
-        {tagline && (
-          <p className="all-in-one-p1">
-            {tagline}
-          </p>
-        )}
-        {desc && (
-          <p className="all-in-one-p2">
-            {desc}
-          </p>
-        )}
+        {tagline && <p className="all-in-one-p1">{tagline}</p>}
+        {desc && <p className="all-in-one-p2">{desc}</p>}
       </div>
 
       {/* Mobile Tab Scroller */}
@@ -150,9 +120,7 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
             <p className="module-card-desc" style={{ fontWeight: '700', color: '#111827' }}>{activeData.subtitle}</p>
             <p className="module-card-desc">{activeData.desc}</p>
 
-            <div className="module-features-title-row">
-              Key Features
-            </div>
+            <div className="module-features-title-row">Key Features</div>
 
             <ul className="module-features-list">
               {activeData.features.map((feature, idx) => (
@@ -175,35 +143,33 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
               xmlns="http://www.w3.org/2000/svg"
               style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }}
             >
-              {/* Outer gray ring — full dashed circle rotating CLOCKWISE */}
-              {/* r=160 → circumference≈1005.3px, arc=27°→75.4px, gap=18°→50.3px */}
+              {/* Outer gray ring — auto-rotates CLOCKWISE */}
               <circle
                 cx="220" cy="220" r="160"
                 stroke="#cbd5e1"
                 strokeWidth="1.5"
                 strokeLinecap="round"
                 strokeDasharray="75.4 50.3"
+                strokeDashoffset={outerOffset}
                 fill="none"
                 style={{
                   transformOrigin: '220px 220px',
-                  transform: `rotate(${ringRotation}deg)`,
-                  transition: 'transform 0.08s linear'
+                  animation: 'ring-spin-cw 18s linear infinite'
                 }}
               />
 
-              {/* Inner red ring — full dashed circle rotating ANTICLOCKWISE */}
-              {/* r=148 → circumference≈929.9px, arc=27°→69.7px, gap=18°→46.5px */}
+              {/* Inner red ring — auto-rotates ANTICLOCKWISE */}
               <circle
                 cx="220" cy="220" r="148"
                 stroke="#DC1436"
                 strokeWidth="1.5"
                 strokeLinecap="round"
                 strokeDasharray="69.7 46.5"
+                strokeDashoffset={innerOffset}
                 fill="none"
                 style={{
                   transformOrigin: '220px 220px',
-                  transform: `rotate(${-ringRotation}deg)`,
-                  transition: 'transform 0.08s linear'
+                  animation: 'ring-spin-ccw 18s linear infinite'
                 }}
               />
             </svg>
