@@ -12,6 +12,17 @@ export default function EcommerceErp() {
     "Reports & Business Analytics"
   ];
 
+  const compareRowsList = [
+    { left: "Product data managed manually", right: "Centralized product database" },
+    { left: "Inventory tracked through spreadsheets", right: "Real-time inventory management" },
+    { left: "Manual order processing", right: "Automated order workflows" },
+    { left: "Multiple marketplace management issues", right: "Unified marketplace management" },
+    { left: "Delayed sales reporting", right: "Live sales dashboards" },
+    { left: "Manual purchase tracking", right: "Automated procurement workflows" },
+    { left: "Poor customer visibility", right: "Complete customer insights" },
+    { left: "Difficult business scaling", right: "Scalable e-commerce operations" }
+  ];
+
   return (
     <IndustryPage
       title="Manage Your E-Commerce Operations with"
@@ -32,6 +43,11 @@ export default function EcommerceErp() {
       }
       beyondDesc="Vellko E-Commerce ERP centralizes your entire online business, streamlines everyday operations, and gives immediate insights that assist you in making faster and more informed decisions."
       beyondFeatures={beyondFeaturesList}
+      compareTitle="Traditional E-Commerce vs"
+      compareHighlight="Vellko E-Commerce ERP"
+      compareHeaderLeft="Traditional E-Commerce"
+      compareHeaderRight="Vellko E-Commerce ERP"
+      compareRows={compareRowsList}
     />
   );
 }

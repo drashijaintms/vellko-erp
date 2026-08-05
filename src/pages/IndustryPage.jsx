@@ -1,9 +1,11 @@
 import IndustryHeroSection from '../components/welcome/IndustryHeroSection';
 import IndustryBeyondSection from '../components/welcome/IndustryBeyondSection';
+import IndustryCompareSection from '../components/welcome/IndustryCompareSection';
 
 export default function IndustryPage({ 
   title, highlight, tagline, desc, badges,
-  beyondTitle, beyondHighlight, beyondSubCol1, beyondSubCol2, beyondDesc, beyondFeatures 
+  beyondTitle, beyondHighlight, beyondSubCol1, beyondSubCol2, beyondDesc, beyondFeatures,
+  compareTitle, compareHighlight, compareHeaderLeft, compareHeaderRight, compareRows
 }) {
   return (
     <>
@@ -24,6 +26,15 @@ export default function IndustryPage({
           subCol2={beyondSubCol2}
           desc={beyondDesc}
           features={beyondFeatures}
+        />
+      )}
+      {compareRows && (
+        <IndustryCompareSection 
+          title={compareTitle}
+          highlight={compareHighlight}
+          headerLeft={compareHeaderLeft}
+          headerRight={compareHeaderRight}
+          rows={compareRows}
         />
       )}
     </>
