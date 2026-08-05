@@ -19,20 +19,11 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
   if (!modules || modules.length === 0) return null;
 
   const [activeModule, setActiveModule] = useState(0);
-  const [ringRotation, setRingRotation] = useState(0);
   const activeData = modules[activeModule];
   const scrollWrapperRef = useRef(null);
-  const lastScrollY = useRef(typeof window !== 'undefined' ? window.scrollY : 0);
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      const delta = currentScrollY - lastScrollY.current;
-      lastScrollY.current = currentScrollY;
-
-      // Rotate rings on scroll (0.2deg per scrolled pixel)
-      setRingRotation(prev => prev + delta * 0.2);
-
       if (window.innerWidth <= 1024) return;
       if (!scrollWrapperRef.current) return;
       
@@ -142,33 +133,43 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
               xmlns="http://www.w3.org/2000/svg"
               style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }}
             >
-              {/* Outer gray ring — dashed, rotates CLOCKWISE on scroll */}
+              <defs>
+                <linearGradient id="outerRingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#94a3b8" stopOpacity="0.25" />
+                  <stop offset="35%" stopColor="#334155" stopOpacity="1" />
+                  <stop offset="70%" stopColor="#cbd5e1" stopOpacity="0.4" />
+                  <stop offset="100%" stopColor="#94a3b8" stopOpacity="0.25" />
+                </linearGradient>
+
+                <linearGradient id="innerRingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#DC1436" stopOpacity="0.2" />
+                  <stop offset="40%" stopColor="#DC1436" stopOpacity="1" />
+                  <stop offset="75%" stopColor="#ff4d6d" stopOpacity="0.6" />
+                  <stop offset="100%" stopColor="#DC1436" stopOpacity="0.2" />
+                </linearGradient>
+              </defs>
+
+              {/* Outer gray ring — continuous gradient, rotates CLOCKWISE non-stop */}
               <circle
                 cx="220" cy="220" r="160"
-                stroke="#cbd5e1"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeDasharray="75.4 50.3"
+                stroke="url(#outerRingGrad)"
+                strokeWidth="2"
                 fill="none"
                 style={{
                   transformOrigin: '220px 220px',
-                  transform: `rotate(${ringRotation}deg)`,
-                  transition: 'transform 0.05s ease-out'
+                  animation: 'ring-spin-cw 12s linear infinite'
                 }}
               />
 
-              {/* Inner red ring — dashed, rotates ANTICLOCKWISE on scroll */}
+              {/* Inner red ring — continuous gradient, rotates COUNTER-CLOCKWISE non-stop */}
               <circle
                 cx="220" cy="220" r="148"
-                stroke="#DC1436"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeDasharray="69.7 46.5"
+                stroke="url(#innerRingGrad)"
+                strokeWidth="2"
                 fill="none"
                 style={{
                   transformOrigin: '220px 220px',
-                  transform: `rotate(${-ringRotation}deg)`,
-                  transition: 'transform 0.05s ease-out'
+                  animation: 'ring-spin-ccw 12s linear infinite'
                 }}
               />
             </svg>
