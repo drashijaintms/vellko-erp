@@ -128,7 +128,7 @@ export default function AboutUs() {
               <div key={idx} className="belief-card animate-fade-in">
                 <div className="belief-card-header-row">
                   <div className="belief-icon-circle">
-                    <IconComponent size={24} strokeWidth={2} />
+                    <IconComponent size={32} strokeWidth={1.5} />
                   </div>
                   <div className="belief-header-line"></div>
                 </div>
