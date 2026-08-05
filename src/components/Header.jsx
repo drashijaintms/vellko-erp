@@ -24,7 +24,7 @@ const erpModules = [
     title: "Finance & Accounting", 
     desc: "Complete financial visibility & GST compliance.", 
     icon: DollarSign,
-    href: "#"
+    href: "/finance-accounting"
   },
   { 
     title: "Inventory Management", 
