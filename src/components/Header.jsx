@@ -199,7 +199,7 @@ export default function Header() {
           </a>
           
           <Link to="/about" className="nav-link">About Us</Link>
-          <a href="#" className="nav-link">Contact</a>
+          <Link to="/contact" className="nav-link">Contact</Link>
         </nav>
 
         {/* Action Controls */}
@@ -300,9 +300,9 @@ export default function Header() {
             <Link to="/about" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>
               About Us
             </Link>
-            <a href="#" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>
+            <Link to="/contact" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>
               Contact
-            </a>
+            </Link>
             <button className="mobile-cta-btn-outline" onClick={() => setMobileMenuOpen(false)}>
               Book Demo
             </button>

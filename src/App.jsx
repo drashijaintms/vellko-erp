@@ -13,6 +13,7 @@ import FinanceAccounting from './pages/FinanceAccounting';
 import ProjectManagement from './pages/ProjectManagement';
 import ServiceManagement from './pages/ServiceManagement';
 import AboutUs from './pages/AboutUs';
+import ContactUs from './pages/ContactUs';
 import Footer from './components/Footer';
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
         <Route path="/project-management" element={<ProjectManagement />} />
         <Route path="/service-management" element={<ServiceManagement />} />
         <Route path="/about" element={<AboutUs />} />
+        <Route path="/contact" element={<ContactUs />} />
       </Routes>
       <Footer />
     </Router>
