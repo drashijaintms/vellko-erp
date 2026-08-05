@@ -1,11 +1,13 @@
 import IndustryHeroSection from '../components/welcome/IndustryHeroSection';
 import IndustryBeyondSection from '../components/welcome/IndustryBeyondSection';
 import IndustryCompareSection from '../components/welcome/IndustryCompareSection';
+import IndustryAllInOneSection from '../components/welcome/IndustryAllInOneSection';
 
 export default function IndustryPage({ 
   title, highlight, tagline, desc, badges,
   beyondTitle, beyondHighlight, beyondSubCol1, beyondSubCol2, beyondDesc, beyondFeatures,
-  compareTitle, compareHighlight, compareHeaderLeft, compareHeaderRight, compareRows
+  compareTitle, compareHighlight, compareHeaderLeft, compareHeaderRight, compareRows,
+  allInOneTitle, allInOneHighlight, allInOneTagline, allInOneDesc, allInOneModules
 }) {
   return (
     <>
@@ -35,6 +37,15 @@ export default function IndustryPage({
           headerLeft={compareHeaderLeft}
           headerRight={compareHeaderRight}
           rows={compareRows}
+        />
+      )}
+      {allInOneModules && (
+        <IndustryAllInOneSection 
+          title={allInOneTitle}
+          highlight={allInOneHighlight}
+          tagline={allInOneTagline}
+          desc={allInOneDesc}
+          modules={allInOneModules}
         />
       )}
     </>

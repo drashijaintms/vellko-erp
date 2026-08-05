@@ -23,6 +23,128 @@ export default function EcommerceErp() {
     { left: "Difficult business scaling", right: "Scalable e-commerce operations" }
   ];
 
+  const allInOneModulesList = [
+    {
+      circleName: "Product\nInformation",
+      title: "Product Information Management",
+      subtitle: "Manage Every Product from One Secure Location",
+      desc: "Maintain all product information including pricing, categories Images, variants inventory information, as well as documentation of the product in one central system.",
+      features: [
+        "Centralized Product Catalog",
+        "Product Categories Management",
+        "Product Variants Management",
+        "Pricing Management",
+        "Product Images & Documents",
+        "SKU Management",
+        "Bulk Product Updates"
+      ]
+    },
+    {
+      circleName: "Inventory\n& Warehouse",
+      title: "Inventory & Warehouse Management",
+      subtitle: "Real-Time Inventory Without Manual Tracking",
+      desc: "Monitor inventory levels and warehouse operations, as well as movements of inventory, and product availability in real-time. Automate stock updates to prevent stock shortages or overstocking.",
+      features: [
+        "Real-Time Stock Tracking",
+        "Multi-Warehouse Management",
+        "Stock Alerts",
+        "Inventory Transfers",
+        "Barcode Integration",
+        "Stock Reports",
+        "Inventory Forecasting"
+      ]
+    },
+    {
+      circleName: "Order\nManagement",
+      title: "Order Management System",
+      subtitle: "Manage Orders Faster and Smarter",
+      desc: "Automate your entire order lifecycle from ordering to delivery by automating workflows. Keep track of every order's status to enhance customer satisfaction.",
+      features: [
+        "Order Processing Automation",
+        "Order Tracking",
+        "Invoice Generation",
+        "Returns & Refund Management",
+        "Shipping Management",
+        "Order Status Updates",
+        "Bulk Order Processing"
+      ]
+    },
+    {
+      circleName: "Customer\nCRM",
+      title: "Customer Relationship Management (CRM)",
+      subtitle: "Build Stronger Customer Relationships",
+      desc: "Control customer information such as purchase history, customer communications and engagement through one platform.",
+      features: [
+        "Customer Database",
+        "Customer Purchase History",
+        "Customer Segmentation",
+        "Communication Management",
+        "Loyalty Management",
+        "Customer Reports",
+        "Feedback Tracking"
+      ]
+    },
+    {
+      circleName: "Sales &\nPayment",
+      title: "Sales & Payment Management",
+      subtitle: "Simplify Your Sales Operations",
+      desc: "Keep track of your sales and transactions, payments, and sales performance using exact reports.",
+      features: [
+        "Sales Tracking",
+        "Payment Gateway Integration",
+        "Invoice Management",
+        "Revenue Reports",
+        "Tax Management",
+        "Transaction History",
+        "Sales Analytics"
+      ]
+    },
+    {
+      circleName: "Purchase &\nSupplier",
+      title: "Purchase & Supplier Management",
+      subtitle: "Manage Procurement Efficiently",
+      desc: "Automate the management of suppliers and purchasing procedures to ensure that inventory is in a steady flow.",
+      features: [
+        "Supplier Management",
+        "Purchase Orders",
+        "Vendor Tracking",
+        "Procurement Workflows",
+        "Purchase Reports",
+        "Cost Management",
+        "Supplier Performance Tracking"
+      ]
+    },
+    {
+      circleName: "Marketplace\nIntegration",
+      title: "Marketplace Integration",
+      subtitle: "Manage Multiple Sales Channels Easily",
+      desc: "Connect to multiple marketplaces online and manage inventory, products and orders on one dashboard.",
+      features: [
+        "Marketplace Integration",
+        "Multi-Channel Selling",
+        "Automated Inventory Sync",
+        "Order Synchronization",
+        "Product Listing Management",
+        "Sales Channel Reports"
+      ]
+    },
+    {
+      circleName: "Analytics\n& Reports",
+      title: "E-Commerce Analytics & Reports",
+      subtitle: "Make Better Business Decisions with Data",
+      desc: "Transform your company's data into valuable insights that will enhance sales performance and enhance customer satisfaction.",
+      features: [
+        "Sales Dashboard",
+        "Revenue Analytics",
+        "Product Performance Reports",
+        "Customer Analytics",
+        "Inventory Reports",
+        "Order Insights",
+        "Business KPI Reports"
+      ]
+    }
+  ];
+
   return (
     <IndustryPage
       title="Manage Your E-Commerce Operations with"
@@ -48,6 +170,11 @@ export default function EcommerceErp() {
       compareHeaderLeft="Traditional E-Commerce"
       compareHeaderRight="Vellko E-Commerce ERP"
       compareRows={compareRowsList}
+      allInOneTitle="Everything Your E-Commerce Team Needs in"
+      allInOneHighlight="One Platform"
+      allInOneTagline="Modern e-commerce is more than selling products online."
+      allInOneDesc="Vellko E-Commerce ERP integrates product management, inventory, orders, customers, sales, procurement, and analytics into one intelligent system, helping businesses reduce manual work and improve operational efficiency."
+      allInOneModules={allInOneModulesList}
     />
   );
 }
