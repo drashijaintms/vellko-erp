@@ -19,11 +19,20 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
   if (!modules || modules.length === 0) return null;
 
   const [activeModule, setActiveModule] = useState(0);
+  const [ringRotation, setRingRotation] = useState(0);
   const activeData = modules[activeModule];
   const scrollWrapperRef = useRef(null);
+  const lastScrollY = useRef(typeof window !== 'undefined' ? window.scrollY : 0);
 
   useEffect(() => {
     const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const delta = currentScrollY - lastScrollY.current;
+      lastScrollY.current = currentScrollY;
+
+      // Rotate rings on scroll (0.2deg per scrolled pixel)
+      setRingRotation(prev => prev + delta * 0.25);
+
       if (window.innerWidth <= 1024) return;
       if (!scrollWrapperRef.current) return;
       
@@ -133,36 +142,54 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
               xmlns="http://www.w3.org/2000/svg"
               style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }}
             >
-              {/* Outer gray ring group — solid continuous line + orbiting dots rotating CLOCKWISE */}
-              <g style={{
-                transformOrigin: '220px 220px',
-                animation: 'ring-spin-cw 16s linear infinite'
-              }}>
-                <circle
-                  cx="220" cy="220" r="160"
-                  stroke="#cbd5e1"
-                  strokeWidth="1.5"
-                  fill="none"
-                />
-                {/* Solid orbiting dots on outer ring */}
-                <circle cx="380" cy="220" r="4.5" fill="#64748b" />
-                <circle cx="60" cy="220" r="4.5" fill="#64748b" />
-              </g>
+              <defs>
+                {/* SVG Mask: Black areas set line opacity to 0 over all 8 text label regions */}
+                <mask id="textGapsMask">
+                  <rect x="0" y="0" width="440" height="440" fill="white" />
+                  <circle cx="111.3" cy="111.3" r="44" fill="black" />
+                  <circle cx="220.0" cy="66.0"   r="44" fill="black" />
+                  <circle cx="328.7" cy="111.3" r="44" fill="black" />
+                  <circle cx="374.0" cy="220.0" r="44" fill="black" />
+                  <circle cx="328.7" cy="328.7" r="44" fill="black" />
+                  <circle cx="220.0" cy="374.0" r="44" fill="black" />
+                  <circle cx="111.3" cy="328.7" r="44" fill="black" />
+                  <circle cx="66.0"  cy="220.0" r="44" fill="black" />
+                </mask>
+              </defs>
 
-              {/* Inner red ring group — solid continuous line + orbiting dots rotating COUNTER-CLOCKWISE */}
-              <g style={{
-                transformOrigin: '220px 220px',
-                animation: 'ring-spin-ccw 16s linear infinite'
-              }}>
-                <circle
-                  cx="220" cy="220" r="148"
-                  stroke="#DC1436"
-                  strokeWidth="1.5"
-                  fill="none"
-                />
-                {/* Solid orbiting dots on inner ring */}
-                <circle cx="220" cy="72" r="4.5" fill="#DC1436" />
-                <circle cx="220" cy="368" r="4.5" fill="#DC1436" />
+              {/* Group masked by textGapsMask so line opacity is 0 under all 8 text labels */}
+              <g mask="url(#textGapsMask)">
+                {/* Outer gray ring — rotates CLOCKWISE on scroll */}
+                <g style={{
+                  transformOrigin: '220px 220px',
+                  transform: `rotate(${ringRotation}deg)`,
+                  transition: 'transform 0.05s ease-out'
+                }}>
+                  <circle
+                    cx="220" cy="220" r="160"
+                    stroke="#cbd5e1"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeDasharray="80 30"
+                    fill="none"
+                  />
+                </g>
+
+                {/* Inner red ring — rotates COUNTER-CLOCKWISE on scroll */}
+                <g style={{
+                  transformOrigin: '220px 220px',
+                  transform: `rotate(${-ringRotation}deg)`,
+                  transition: 'transform 0.05s ease-out'
+                }}>
+                  <circle
+                    cx="220" cy="220" r="148"
+                    stroke="#DC1436"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeDasharray="70 25"
+                    fill="none"
+                  />
+                </g>
               </g>
             </svg>
 
