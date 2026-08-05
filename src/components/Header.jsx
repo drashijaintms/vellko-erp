@@ -87,7 +87,7 @@ const industries = [
     title: "Real Estate ERP", 
     desc: "Track construction projects, billing & CRM.", 
     icon: Building,
-    href: "#"
+    href: "/real-estate-erp"
   },
   { 
     title: "Service Business ERP", 

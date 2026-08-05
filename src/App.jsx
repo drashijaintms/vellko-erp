@@ -6,6 +6,7 @@ import ManufacturingErp from './pages/ManufacturingErp';
 import RetailErp from './pages/RetailErp';
 import DistributionErp from './pages/DistributionErp';
 import EducationErp from './pages/EducationErp';
+import RealEstateErp from './pages/RealEstateErp';
 import Footer from './components/Footer';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="/retail-erp" element={<RetailErp />} />
         <Route path="/distribution-erp" element={<DistributionErp />} />
         <Route path="/education-erp" element={<EducationErp />} />
+        <Route path="/real-estate-erp" element={<RealEstateErp />} />
       </Routes>
       <Footer />
     </Router>
