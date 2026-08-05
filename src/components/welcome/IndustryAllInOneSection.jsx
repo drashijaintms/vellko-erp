@@ -175,41 +175,37 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
               xmlns="http://www.w3.org/2000/svg"
               style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }}
             >
-              {/* Outer gray ring — rotates CLOCKWISE on scroll */}
-              <g style={{
-                transformOrigin: '220px 220px',
-                transform: `rotate(${ringRotation}deg)`,
-                transition: 'transform 0.1s linear'
-              }}>
-                {sectorAngles.map((sector, index) => (
-                  <path
-                    key={`outer-${index}`}
-                    d={getArcPath(sector.start, sector.end, 160)}
-                    stroke="#cbd5e1"
-                    strokeWidth={1.5}
-                    strokeLinecap="round"
-                    fill="none"
-                  />
-                ))}
-              </g>
+              {/* Outer gray ring — full dashed circle rotating CLOCKWISE */}
+              {/* r=160 → circumference≈1005.3px, arc=27°→75.4px, gap=18°→50.3px */}
+              <circle
+                cx="220" cy="220" r="160"
+                stroke="#cbd5e1"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeDasharray="75.4 50.3"
+                fill="none"
+                style={{
+                  transformOrigin: '220px 220px',
+                  transform: `rotate(${ringRotation}deg)`,
+                  transition: 'transform 0.08s linear'
+                }}
+              />
 
-              {/* Inner red ring — rotates ANTICLOCKWISE on scroll */}
-              <g style={{
-                transformOrigin: '220px 220px',
-                transform: `rotate(${-ringRotation}deg)`,
-                transition: 'transform 0.1s linear'
-              }}>
-                {sectorAngles.map((sector, index) => (
-                  <path
-                    key={`inner-${index}`}
-                    d={getArcPath(sector.start, sector.end, 148)}
-                    stroke="#DC1436"
-                    strokeWidth={1.5}
-                    strokeLinecap="round"
-                    fill="none"
-                  />
-                ))}
-              </g>
+              {/* Inner red ring — full dashed circle rotating ANTICLOCKWISE */}
+              {/* r=148 → circumference≈929.9px, arc=27°→69.7px, gap=18°→46.5px */}
+              <circle
+                cx="220" cy="220" r="148"
+                stroke="#DC1436"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeDasharray="69.7 46.5"
+                fill="none"
+                style={{
+                  transformOrigin: '220px 220px',
+                  transform: `rotate(${-ringRotation}deg)`,
+                  transition: 'transform 0.08s linear'
+                }}
+              />
             </svg>
 
             {/* Circular Labels */}
