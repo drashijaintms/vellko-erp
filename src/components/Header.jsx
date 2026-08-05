@@ -57,7 +57,7 @@ const industries = [
     title: "Manufacturing ERP", 
     desc: "Optimize production, BOM & shop-floor control.", 
     icon: Factory,
-    href: "#"
+    href: "/manufacturing-erp"
   },
   { 
     title: "Retail ERP", 
