@@ -1,8 +1,8 @@
-export default function IndustryCompareSection({ title, highlight, sub1, sub2, headerLeft, headerRight, rows }) {
+export default function IndustryCompareSection({ title, highlight, sub1, sub2, headerLeft, headerRight, rows, customClass }) {
   if (!rows || rows.length === 0) return null;
 
   return (
-    <section className="need-erp-section">
+    <section className={`need-erp-section ${customClass || ''}`}>
       <div className="need-centered-title-wrapper">
         <h2 className="need-centered-title">
           {title} {highlight && <span className="red-highlight">{highlight}</span>}

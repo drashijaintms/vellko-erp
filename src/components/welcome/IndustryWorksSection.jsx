@@ -1,10 +1,10 @@
 import howItWorksImg from '../../assets/images/how-it-works.png';
 
-export default function IndustryWorksSection({ title, highlight, steps }) {
+export default function IndustryWorksSection({ title, highlight, steps, customClass }) {
   if (!steps || steps.length === 0) return null;
 
   return (
-    <section className="works-section">
+    <section className={`works-section ${customClass || ''}`}>
       <div className="works-container">
         <h2 className="works-title">
           {title} {highlight && <span className="red-highlight">{highlight}</span>}

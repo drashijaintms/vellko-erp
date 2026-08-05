@@ -14,11 +14,11 @@ const defaultIcons = [
   supportExperts
 ];
 
-export default function IndustrySupportSection({ title, highlight, sub1, sub2, supportSteps }) {
+export default function IndustrySupportSection({ title, highlight, sub1, sub2, supportSteps, customClass }) {
   if (!supportSteps || supportSteps.length === 0) return null;
 
   return (
-    <section className="support-section">
+    <section className={`support-section ${customClass || ''}`}>
       <div className="support-container">
         <h2 className="support-title">
           {title} {highlight && <span className="red-highlight">{highlight}</span>}

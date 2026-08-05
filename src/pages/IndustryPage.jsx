@@ -16,7 +16,9 @@ export default function IndustryPage({
   worksTitle, worksHighlight, worksSteps,
   supportTitle, supportHighlight, supportSub1, supportSub2, supportSteps,
   faqTitle, faqHighlight, faqIntroQ, faqIntroA, faqItems,
-  ctaTitle, ctaDesc
+  ctaTitle, ctaDesc,
+  // Custom unique page classes modifiers
+  heroClass, beyondClass, compareClass, allInOneClass, chooseClass, worksClass, supportClass, faqClass, ctaClass
 }) {
   return (
     <>
@@ -27,6 +29,7 @@ export default function IndustryPage({
           tagline={tagline}
           desc={desc}
           badges={badges}
+          customClass={heroClass}
         />
       </div>
       {beyondFeatures && (
@@ -37,6 +40,7 @@ export default function IndustryPage({
           subCol2={beyondSubCol2}
           desc={beyondDesc}
           features={beyondFeatures}
+          customClass={beyondClass}
         />
       )}
       {compareRows && (
@@ -46,6 +50,7 @@ export default function IndustryPage({
           headerLeft={compareHeaderLeft}
           headerRight={compareHeaderRight}
           rows={compareRows}
+          customClass={compareClass}
         />
       )}
       {allInOneModules && (
@@ -55,6 +60,7 @@ export default function IndustryPage({
           tagline={allInOneTagline}
           desc={allInOneDesc}
           modules={allInOneModules}
+          customClass={allInOneClass}
         />
       )}
       {chooseRows && (
@@ -66,6 +72,7 @@ export default function IndustryPage({
           headerLeft={chooseHeaderLeft}
           headerRight={chooseHeaderRight}
           rows={chooseRows}
+          customClass={chooseClass}
         />
       )}
       {worksSteps && (
@@ -73,6 +80,7 @@ export default function IndustryPage({
           title={worksTitle}
           highlight={worksHighlight}
           steps={worksSteps}
+          customClass={worksClass}
         />
       )}
       {supportSteps && (
@@ -82,6 +90,7 @@ export default function IndustryPage({
           sub1={supportSub1}
           sub2={supportSub2}
           supportSteps={supportSteps}
+          customClass={supportClass}
         />
       )}
       {faqItems && (
@@ -91,12 +100,14 @@ export default function IndustryPage({
           introQ={faqIntroQ}
           introA={faqIntroA}
           faqItems={faqItems}
+          customClass={faqClass}
         />
       )}
       {ctaTitle && (
         <IndustryFinalCtaSection 
           title={ctaTitle}
           desc={ctaDesc}
+          customClass={ctaClass}
         />
       )}
     </>

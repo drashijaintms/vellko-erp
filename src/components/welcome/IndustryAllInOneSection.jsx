@@ -37,7 +37,7 @@ const getArcPath = (startAngle, endAngle, radius) => {
   return `M ${x1},${y1} A ${radius},${radius} 0 ${largeArcFlag},1 ${x2},${y2}`;
 };
 
-export default function IndustryAllInOneSection({ title, highlight, tagline, desc, modules }) {
+export default function IndustryAllInOneSection({ title, highlight, tagline, desc, modules, customClass }) {
   if (!modules || modules.length === 0) return null;
 
   const [activeModule, setActiveModule] = useState(0);
@@ -83,7 +83,6 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
     });
   };
 
-  // Positions on the circular diagram
   const circularPositions = [
     { x: 25.3, y: 25.3 },
     { x: 50.0, y: 15.0 },
@@ -98,7 +97,7 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
   const ActiveIcon = iconMap[activeModule % iconMap.length];
 
   return (
-    <section className="all-in-one-section">
+    <section className={`all-in-one-section ${customClass || ''}`}>
       <div className="all-in-one-text">
         <h2 className="all-in-one-title">
           {title} {highlight && <span className="red-highlight">{highlight}</span>}

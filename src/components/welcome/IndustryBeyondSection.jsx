@@ -18,11 +18,11 @@ const defaultIcons = [
   singleplatform
 ];
 
-export default function IndustryBeyondSection({ title, highlight, subCol1, subCol2, desc, features }) {
+export default function IndustryBeyondSection({ title, highlight, subCol1, subCol2, desc, features, customClass }) {
   if (!features || features.length === 0) return null;
 
   return (
-    <section className="beyond-section">
+    <section className={`beyond-section ${customClass || ''}`}>
       <div className="beyond-text-block">
         <h2 className="beyond-title">
           {title} {highlight && <span className="red-highlight">{highlight}</span>}

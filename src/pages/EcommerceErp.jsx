@@ -267,6 +267,16 @@ export default function EcommerceErp() {
       faqItems={faqItemsList}
       ctaTitle="Grow Your Online Business with Vellko E-Commerce ERP"
       ctaDesc="Replace manual processes with an intelligent e-commerce management platform that helps you automate operations, improve efficiency, and make smarter business decisions."
+      // Custom unique classes
+      heroClass="ecom-hero-section"
+      beyondClass="ecom-beyond-section"
+      compareClass="ecom-compare-section-1"
+      allInOneClass="ecom-all-in-one-section"
+      chooseClass="ecom-compare-section-2"
+      worksClass="ecom-works-section"
+      supportClass="ecom-support-section"
+      faqClass="ecom-faq-section"
+      ctaClass="ecom-final-cta-section"
     />
   );
 }

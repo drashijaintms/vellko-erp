@@ -1,7 +1,7 @@
 import onePlatformIcon from '../../assets/icons/one-platform.png';
 import unlimitedGrowthIcon from '../../assets/icons/unlimited-growth.png';
 
-export default function IndustryHeroSection({ title, highlight, tagline, desc, badges }) {
+export default function IndustryHeroSection({ title, highlight, tagline, desc, badges, customClass }) {
   const defaultBadges = [
     { type: 'img', src: onePlatformIcon, alt: 'One Platform', text: ['One', 'Platform'] },
     { type: 'svg', text: ['Complete', 'Control'] },
@@ -11,7 +11,7 @@ export default function IndustryHeroSection({ title, highlight, tagline, desc, b
   const displayBadges = badges || defaultBadges;
 
   return (
-    <section className="hero-section industry-hero-section">
+    <section className={`hero-section ${customClass || ''}`}>
       <div className="hero-container">
         <h1 className="hero-heading">
           {title} {highlight && <span className="red-highlight">{highlight}</span>}
