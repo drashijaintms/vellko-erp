@@ -155,6 +155,29 @@ export default function EcommerceErp() {
     { left: "Difficult scaling", right: "Flexible ERP infrastructure" }
   ];
 
+  const worksStepsList = [
+    {
+      stepNum: 1,
+      title: "Schedule a Free E-Commerce ERP Demo",
+      desc: "See how Vellko ERP can unify your online store, sales channels and inventory in a live demonstration."
+    },
+    {
+      stepNum: 2,
+      title: "Understand Your Business Requirements",
+      desc: "We analyze your e-commerce operations, store integrations and warehouse workflows to configure the system."
+    },
+    {
+      stepNum: 3,
+      title: "Configure Products, Inventory & Workflows",
+      desc: "We set up product database imports, synchronize your store channels, and configure automated fulfillment processes."
+    },
+    {
+      stepNum: 4,
+      title: "Train Your Team & Start Managing Operations",
+      desc: "Your e-commerce team is trained for smooth system adoption, allowing you to launch and run with complete visibility."
+    }
+  ];
+
   return (
     <IndustryPage
       title="Manage Your E-Commerce Operations with"
@@ -192,6 +215,9 @@ export default function EcommerceErp() {
       chooseHeaderLeft="E-Commerce Challenge"
       chooseHeaderRight="How Vellko ERP Solves It"
       chooseRows={chooseRowsList}
+      worksTitle="How Vellko E-Commerce"
+      worksHighlight="ERP Works"
+      worksSteps={worksStepsList}
     />
   );
 }

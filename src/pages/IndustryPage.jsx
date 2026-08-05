@@ -2,13 +2,15 @@ import IndustryHeroSection from '../components/welcome/IndustryHeroSection';
 import IndustryBeyondSection from '../components/welcome/IndustryBeyondSection';
 import IndustryCompareSection from '../components/welcome/IndustryCompareSection';
 import IndustryAllInOneSection from '../components/welcome/IndustryAllInOneSection';
+import IndustryWorksSection from '../components/welcome/IndustryWorksSection';
 
 export default function IndustryPage({ 
   title, highlight, tagline, desc, badges,
   beyondTitle, beyondHighlight, beyondSubCol1, beyondSubCol2, beyondDesc, beyondFeatures,
   compareTitle, compareHighlight, compareHeaderLeft, compareHeaderRight, compareRows,
   allInOneTitle, allInOneHighlight, allInOneTagline, allInOneDesc, allInOneModules,
-  chooseTitle, chooseHighlight, chooseSub1, chooseSub2, chooseHeaderLeft, chooseHeaderRight, chooseRows
+  chooseTitle, chooseHighlight, chooseSub1, chooseSub2, chooseHeaderLeft, chooseHeaderRight, chooseRows,
+  worksTitle, worksHighlight, worksSteps
 }) {
   return (
     <>
@@ -58,6 +60,13 @@ export default function IndustryPage({
           headerLeft={chooseHeaderLeft}
           headerRight={chooseHeaderRight}
           rows={chooseRows}
+        />
+      )}
+      {worksSteps && (
+        <IndustryWorksSection 
+          title={worksTitle}
+          highlight={worksHighlight}
+          steps={worksSteps}
         />
       )}
     </>
