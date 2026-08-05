@@ -476,6 +476,10 @@ button {
   background-size: cover;
   width: 100%;
   height: 93vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .hero-section {
@@ -689,7 +693,7 @@ button {
 
 .beyond-title {
   font-family: var(--font-heading);
-  font-size: 3.76rem;
+  font-size: 2.3rem;
   font-weight: 800;
   color: #000000;
   line-height: 1.15;
@@ -701,43 +705,31 @@ button {
   color: var(--primary);
 }
 
-.beyond-compare-row {
+.beyond-desc-paras {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
+  flex-direction: column;
+  gap: 1rem;
   margin-top: 2rem;
   margin-bottom: 2.5rem;
-  width: 100%;
+  max-width: 820px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.beyond-compare-col {
+.beyond-desc-para {
   font-family: var(--font-body);
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: #000000;
-  line-height: 1.45;
-  width: 45%;
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: #374151;
+  line-height: 1.75;
+  text-align: center;
 }
 
-.beyond-compare-col.left {
-  text-align: right;
-}
-
-.beyond-compare-col.right {
-  text-align: left;
-}
-
-.beyond-compare-divider {
-  width: 1px;
-  height: 48px;
-  background-color: rgba(0, 0, 0, 0.15);
-  flex-shrink: 0;
-}
-
-.beyond-compare-col .red-highlight {
+.beyond-desc-para .red-highlight {
   color: var(--primary);
+  font-weight: 600;
 }
+
 
 .beyond-paragraph-2 {
   font-family: var(--font-body);
@@ -3268,19 +3260,6 @@ button {
   margin-right: auto;
 }
 
-.beyond-title {
-  font-family: var(--font-heading);
-  font-size: 3.76rem;
-  font-weight: 800;
-  color: #000000;
-  line-height: 1.15;
-  margin-bottom: 1.5rem;
-  margin-top: 0;
-}
-
-.beyond-title .red-highlight {
-  color: var(--primary);
-}
 
 .beyond-compare-row {
   display: flex;
@@ -4573,7 +4552,7 @@ button {
 /* About Us Page Styles */
 .about-hero-section {
   position: relative;
-  background: url(/src/assets/images/about-hero-bg.jpg) no-repeat center center;
+  background: url(/src/assets/images/about-hero-bg.png) no-repeat center center;
   background-size: cover;
   width: 100%;
   min-height: 75vh;
@@ -4582,16 +4561,6 @@ button {
   justify-content: center;
   padding: 6rem 1.5rem;
   overflow: hidden;
-}
-
-.about-hero-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.85) 60%, #ffffff 100%);
-  z-index: 1;
 }
 
 .about-hero-content {

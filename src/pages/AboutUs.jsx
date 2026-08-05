@@ -46,7 +46,6 @@ export default function AboutUs() {
     <div className="about-us-page">
       {/* Hero Section */}
       <section className="about-hero-section">
-        <div className="about-hero-overlay"></div>
         <div className="about-hero-content animate-fade-in">
           <h1 className="about-hero-heading">
             Designed with Purpose.<br />

@@ -25,15 +25,10 @@ export default function IndustryBeyondSection({ title, highlight, subCol1, subCo
         <h2 className="beyond-title">
           {title} {highlight && <span className="red-highlight">{highlight}</span>}
         </h2>
-        
-        <div className="beyond-compare-row">
-          <div className="beyond-compare-col left">
-            {subCol1}
-          </div>
-          <div className="beyond-compare-divider"></div>
-          <div className="beyond-compare-col right">
-            {subCol2}
-          </div>
+
+        <div className="beyond-desc-paras">
+          {subCol1 && <p className="beyond-desc-para">{subCol1}</p>}
+          {subCol2 && <p className="beyond-desc-para">{subCol2}</p>}
         </div>
 
         {desc && (
