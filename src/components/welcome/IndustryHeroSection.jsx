@@ -17,7 +17,7 @@ export default function IndustryHeroSection({ title, highlight, tagline, desc, b
           {title} {highlight && <span className="red-highlight">{highlight}</span>}
         </h1>
 
-        {tagline && (
+        {tagline && !badges && (
           <p className="hero-paragraph-1 industry-hero-tagline">
             {tagline}
           </p>
@@ -34,7 +34,7 @@ export default function IndustryHeroSection({ title, highlight, tagline, desc, b
           {displayBadges.map((badge, idx) => (
             <div key={idx} className="feature-badge">
               {badge.type === 'img' ? (
-                <img src={badge.src} alt={badge.alt} className="feature-icon-img" />
+                <img src={badge.src || (idx === 0 ? onePlatformIcon : unlimitedGrowthIcon)} alt={badge.alt || badge.text.join(' ')} className="feature-icon-img" />
               ) : (
                 <svg className="feature-icon-svg" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M24 16C28.4183 16 32 19.5817 32 24C32 28.4183 28.4183 32 24 32C19.5817 32 16 28.4183 16 24C16 19.5817 19.5817 16 24 16Z" stroke="#DC1436" strokeWidth="2.5" strokeMiterlimit="10"/>

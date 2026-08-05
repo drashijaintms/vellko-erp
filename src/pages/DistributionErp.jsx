@@ -1,6 +1,11 @@
 import IndustryPage from './IndustryPage';
 
 export default function DistributionErp() {
+  const heroBadges = [
+    { type: 'img', text: ['One Distribution', 'Platform'] },
+    { type: 'svg', text: ['Smarter Supply Chain', 'Management'] }
+  ];
+
   const beyondFeaturesList = [
     "Inventory Management",
     "Warehouse Management",
@@ -281,6 +286,7 @@ export default function DistributionErp() {
       faqItems={faqItemsList}
       ctaTitle="Build a More Efficient Distribution Network with Vellko Distribution ERP"
       ctaDesc="Replace outdated systems and manual processes using one platform that lets you organize inventory, automate operations, increase visibility of the supply chain, and accelerate the growth of your business."
+      badges={heroBadges}
       // Common industry class names
       heroClass="industry-hero-section"
       beyondClass="industry-beyond-section"

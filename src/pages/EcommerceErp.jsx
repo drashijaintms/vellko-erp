@@ -1,6 +1,11 @@
 import IndustryPage from './IndustryPage';
 
 export default function EcommerceErp() {
+  const heroBadges = [
+    { type: 'img', text: ['One E-Commerce', 'Platform'] },
+    { type: 'svg', text: ['Smarter Business', 'Management'] }
+  ];
+
   const beyondFeaturesList = [
     "Product Information Management",
     "Inventory & Warehouse Management",
@@ -282,6 +287,7 @@ export default function EcommerceErp() {
       faqItems={faqItemsList}
       ctaTitle="Grow Your Online Business with Vellko E-Commerce ERP"
       ctaDesc="Replace manual processes with an intelligent e-commerce management platform that helps you automate operations, improve efficiency, and make smarter business decisions."
+      badges={heroBadges}
       // Common industry class names instead of page-specific ones
       heroClass="industry-hero-section"
       beyondClass="industry-beyond-section"

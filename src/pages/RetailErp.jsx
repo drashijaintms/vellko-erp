@@ -1,6 +1,11 @@
 import IndustryPage from './IndustryPage';
 
 export default function RetailErp() {
+  const heroBadges = [
+    { type: 'img', text: ['One Retail', 'Platform'] },
+    { type: 'svg', text: ['Smarter Business', 'Management'] }
+  ];
+
   const beyondFeaturesList = [
     "Inventory Management",
     "Multi-Store Management",
@@ -286,6 +291,7 @@ export default function RetailErp() {
       faqItems={faqItemsList}
       ctaTitle="Build a More Efficient Retail Business with Vellko Retail ERP"
       ctaDesc="Replace disconnected retail systems with one intelligent platform that helps you manage inventory, sales, purchasing, finance, and customer relationships while making smarter business decisions."
+      badges={heroBadges}
       // Common industry class names
       heroClass="industry-hero-section"
       beyondClass="industry-beyond-section"

@@ -1,6 +1,11 @@
 import IndustryPage from './IndustryPage';
 
 export default function RealEstateErp() {
+  const heroBadges = [
+    { type: 'img', text: ['One Real Estate', 'Platform'] },
+    { type: 'svg', text: ['Smarter Property', 'Management'] }
+  ];
+
   const beyondFeaturesList = [
     "Property Management",
     "Sales & Lead Management",
@@ -280,6 +285,7 @@ export default function RealEstateErp() {
       faqItems={faqItemsList}
       ctaTitle="Build a Smarter Real Estate Business with Vellko Real Estate ERP"
       ctaDesc="Replace disconnected systems with one intelligent platform that helps you manage properties, automate operations, improve customer experiences, and make better business decisions."
+      badges={heroBadges}
       // Common industry class names
       heroClass="industry-hero-section"
       beyondClass="industry-beyond-section"

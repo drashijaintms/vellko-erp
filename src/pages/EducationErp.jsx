@@ -1,6 +1,11 @@
 import IndustryPage from './IndustryPage';
 
 export default function EducationErp() {
+  const heroBadges = [
+    { type: 'img', text: ['One Education', 'Platform'] },
+    { type: 'svg', text: ['Smarter Institution', 'Management'] }
+  ];
+
   const beyondFeaturesList = [
     "Student Information Management",
     "Admissions Management",
@@ -282,6 +287,7 @@ export default function EducationErp() {
       faqItems={faqItemsList}
       ctaTitle="Build a Smarter Educational Institution with Vellko Education ERP"
       ctaDesc="Replace manual academic and administrative processes with one intelligent platform that helps you manage students, automate operations, improve learning outcomes, and make better institutional decisions."
+      badges={heroBadges}
       // Common industry class names
       heroClass="industry-hero-section"
       beyondClass="industry-beyond-section"

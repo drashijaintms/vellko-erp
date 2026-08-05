@@ -1,6 +1,11 @@
 import IndustryPage from './IndustryPage';
 
 export default function ManufacturingErp() {
+  const heroBadges = [
+    { type: 'img', text: ['One Manufacturing', 'Platform'] },
+    { type: 'svg', text: ['Smarter Production', 'Management'] }
+  ];
+
   const beyondFeaturesList = [
     "Production Planning & Scheduling",
     "Inventory Management",
@@ -284,6 +289,7 @@ export default function ManufacturingErp() {
       faqItems={faqItemsList}
       ctaTitle="Build a Smarter Manufacturing Business with Vellko Manufacturing ERP"
       ctaDesc="Replace outdated systems and manual processes by utilizing one platform that lets you control production and inventory, procurement, finance, quality, and supply chain operations all from one platform."
+      badges={heroBadges}
       // Common industry class names
       heroClass="industry-hero-section"
       beyondClass="industry-beyond-section"

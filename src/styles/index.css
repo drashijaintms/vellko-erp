@@ -493,14 +493,26 @@ button {
   align-items: center;
   text-align: center;
 }
-
+.industry-hero-section .hero-container {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
 .hero-heading {
   max-width: 920px;
   font-size: 2.85rem;
   margin-bottom: 1.1rem;
   line-height: 1.18;
 }
-
+.industry-hero-section .hero-heading {
+    max-width: 1080px;
+    font-size: 2.85rem;
+    margin-bottom: 1.1rem;
+    line-height: 1.18;
+}
 .hero-heading .red-highlight {
   color: var(--primary);
   display: block;
