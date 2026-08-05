@@ -133,45 +133,37 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
               xmlns="http://www.w3.org/2000/svg"
               style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }}
             >
-              <defs>
-                <linearGradient id="outerRingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#94a3b8" stopOpacity="0.25" />
-                  <stop offset="35%" stopColor="#334155" stopOpacity="1" />
-                  <stop offset="70%" stopColor="#cbd5e1" stopOpacity="0.4" />
-                  <stop offset="100%" stopColor="#94a3b8" stopOpacity="0.25" />
-                </linearGradient>
+              {/* Outer gray ring group — solid continuous line + orbiting dots rotating CLOCKWISE */}
+              <g style={{
+                transformOrigin: '220px 220px',
+                animation: 'ring-spin-cw 16s linear infinite'
+              }}>
+                <circle
+                  cx="220" cy="220" r="160"
+                  stroke="#cbd5e1"
+                  strokeWidth="1.5"
+                  fill="none"
+                />
+                {/* Solid orbiting dots on outer ring */}
+                <circle cx="380" cy="220" r="4.5" fill="#64748b" />
+                <circle cx="60" cy="220" r="4.5" fill="#64748b" />
+              </g>
 
-                <linearGradient id="innerRingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#DC1436" stopOpacity="0.2" />
-                  <stop offset="40%" stopColor="#DC1436" stopOpacity="1" />
-                  <stop offset="75%" stopColor="#ff4d6d" stopOpacity="0.6" />
-                  <stop offset="100%" stopColor="#DC1436" stopOpacity="0.2" />
-                </linearGradient>
-              </defs>
-
-              {/* Outer gray ring — continuous gradient, rotates CLOCKWISE non-stop */}
-              <circle
-                cx="220" cy="220" r="160"
-                stroke="url(#outerRingGrad)"
-                strokeWidth="2"
-                fill="none"
-                style={{
-                  transformOrigin: '220px 220px',
-                  animation: 'ring-spin-cw 12s linear infinite'
-                }}
-              />
-
-              {/* Inner red ring — continuous gradient, rotates COUNTER-CLOCKWISE non-stop */}
-              <circle
-                cx="220" cy="220" r="148"
-                stroke="url(#innerRingGrad)"
-                strokeWidth="2"
-                fill="none"
-                style={{
-                  transformOrigin: '220px 220px',
-                  animation: 'ring-spin-ccw 12s linear infinite'
-                }}
-              />
+              {/* Inner red ring group — solid continuous line + orbiting dots rotating COUNTER-CLOCKWISE */}
+              <g style={{
+                transformOrigin: '220px 220px',
+                animation: 'ring-spin-ccw 16s linear infinite'
+              }}>
+                <circle
+                  cx="220" cy="220" r="148"
+                  stroke="#DC1436"
+                  strokeWidth="1.5"
+                  fill="none"
+                />
+                {/* Solid orbiting dots on inner ring */}
+                <circle cx="220" cy="72" r="4.5" fill="#DC1436" />
+                <circle cx="220" cy="368" r="4.5" fill="#DC1436" />
+              </g>
             </svg>
 
             {/* Circular Labels */}
