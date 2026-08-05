@@ -7,7 +7,8 @@ export default function IndustryPage({
   title, highlight, tagline, desc, badges,
   beyondTitle, beyondHighlight, beyondSubCol1, beyondSubCol2, beyondDesc, beyondFeatures,
   compareTitle, compareHighlight, compareHeaderLeft, compareHeaderRight, compareRows,
-  allInOneTitle, allInOneHighlight, allInOneTagline, allInOneDesc, allInOneModules
+  allInOneTitle, allInOneHighlight, allInOneTagline, allInOneDesc, allInOneModules,
+  chooseTitle, chooseHighlight, chooseSub1, chooseSub2, chooseHeaderLeft, chooseHeaderRight, chooseRows
 }) {
   return (
     <>
@@ -46,6 +47,17 @@ export default function IndustryPage({
           tagline={allInOneTagline}
           desc={allInOneDesc}
           modules={allInOneModules}
+        />
+      )}
+      {chooseRows && (
+        <IndustryCompareSection 
+          title={chooseTitle}
+          highlight={chooseHighlight}
+          sub1={chooseSub1}
+          sub2={chooseSub2}
+          headerLeft={chooseHeaderLeft}
+          headerRight={chooseHeaderRight}
+          rows={chooseRows}
         />
       )}
     </>

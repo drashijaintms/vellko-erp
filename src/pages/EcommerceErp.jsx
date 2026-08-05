@@ -145,6 +145,16 @@ export default function EcommerceErp() {
     }
   ];
 
+  const chooseRowsList = [
+    { left: "Product data scattered across systems", right: "Centralized product management" },
+    { left: "Inventory mistakes", right: "Real-time inventory tracking" },
+    { left: "Manual order processing", right: "Automated order workflows" },
+    { left: "Poor sales visibility", right: "Live sales dashboards" },
+    { left: "Supplier management issues", right: "Integrated procurement system" },
+    { left: "Customer data scattered", right: "Centralized CRM" },
+    { left: "Difficult scaling", right: "Flexible ERP infrastructure" }
+  ];
+
   return (
     <IndustryPage
       title="Manage Your E-Commerce Operations with"
@@ -175,6 +185,13 @@ export default function EcommerceErp() {
       allInOneTagline="Modern e-commerce is more than selling products online."
       allInOneDesc="Vellko E-Commerce ERP integrates product management, inventory, orders, customers, sales, procurement, and analytics into one intelligent system, helping businesses reduce manual work and improve operational efficiency."
       allInOneModules={allInOneModulesList}
+      chooseTitle="Why Businesses Choose"
+      chooseHighlight="Vellko E-Commerce ERP"
+      chooseSub1="The manual management of e-commerce hinders growth of businesses."
+      chooseSub2="Vellko E-Commerce ERP can help businesses improve efficiency, decrease mistakes, enhance customer service and give them complete visibility into their online presence."
+      chooseHeaderLeft="E-Commerce Challenge"
+      chooseHeaderRight="How Vellko ERP Solves It"
+      chooseRows={chooseRowsList}
     />
   );
 }

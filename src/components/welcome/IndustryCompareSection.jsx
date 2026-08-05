@@ -1,4 +1,4 @@
-export default function IndustryCompareSection({ title, highlight, headerLeft, headerRight, rows }) {
+export default function IndustryCompareSection({ title, highlight, sub1, sub2, headerLeft, headerRight, rows }) {
   if (!rows || rows.length === 0) return null;
 
   return (
@@ -7,6 +7,16 @@ export default function IndustryCompareSection({ title, highlight, headerLeft, h
         <h2 className="need-centered-title">
           {title} {highlight && <span className="red-highlight">{highlight}</span>}
         </h2>
+        {sub1 && (
+          <p className="all-in-one-p1" style={{ maxWidth: '800px', margin: '1rem auto 0.5rem auto', textAlign: 'center' }}>
+            {sub1}
+          </p>
+        )}
+        {sub2 && (
+          <p className="all-in-one-p2" style={{ maxWidth: '800px', margin: '0 auto 2rem auto', textAlign: 'center' }}>
+            {sub2}
+          </p>
+        )}
       </div>
 
       {/* Table Card */}
