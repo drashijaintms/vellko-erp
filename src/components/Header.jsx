@@ -63,7 +63,7 @@ const industries = [
     title: "Retail ERP", 
     desc: "Billing, POS sync & multi-store operations.", 
     icon: ShoppingBag,
-    href: "#"
+    href: "/retail-erp"
   },
   { 
     title: "Distribution ERP", 
