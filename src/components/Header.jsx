@@ -42,7 +42,7 @@ const erpModules = [
     title: "Service Management", 
     desc: "Customer support, ticketing & SLA tracking.", 
     icon: LifeBuoy,
-    href: "#"
+    href: "/service-management"
   },
   { 
     title: "Biometric Attendance", 
