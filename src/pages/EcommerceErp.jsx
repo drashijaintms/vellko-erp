@@ -190,32 +190,28 @@ export default function EcommerceErp() {
 
   const faqItemsList = [
     {
-      question: "Can I manage multiple online stores?",
-      answer: "Yes, Vellko ERP supports multi-channel marketplace integrations, allowing you to centralize orders and inventory from Shopify, WooCommerce, Amazon, and other online stores on a single dashboard."
+      question: "Is Vellko E-Commerce ERP suitable for small businesses?",
+      answer: "Yes. Vellko ERP is designed to support startups, SMEs, and large enterprises with scalable e-commerce solutions."
     },
     {
-      question: "Can I track inventory in real time?",
-      answer: "Yes, our system automatically tracks stock levels in real time across multiple warehouses and branches, updating inventory instantly as sales occur to prevent stock shortages and overstocking."
+      question: "Can it manage multiple online stores?",
+      answer: "Yes. Companies are able to manage several stores, channels for sales and marketplaces on one central platform.."
     },
     {
-      question: "Does Vellko ERP support order management?",
-      answer: "Absolutely! Vellko automates your entire order fulfillment cycle—from checkout to payment processing, automated invoicing, order status updates, and shipping status tracking."
+      question: "Does it support inventory management?",
+      answer: "Yes. The system offers real-time inventory tracking and warehouse management, alerts for stock and reports."
     },
     {
-      question: "Is Vellko ERP cloud-based?",
-      answer: "Yes, Vellko ERP is a secure, cloud-based platform. You can access your dashboards, reports, and administrative tasks from any device with an internet connection, anywhere in the world."
+      question: "Can it integrate with marketplaces?",
+      answer: "Yes. Vellko ERP can integrate with marketplaces to allow synchronization of inventory, products as well as orders."
     },
     {
-      question: "Is my business data secure?",
-      answer: "Yes. We use enterprise-grade encryption, secure hosting architectures, and role-based user access permissions to ensure that your financial records, customer databases, and proprietary data are fully protected."
+      question: "Can businesses manage customer data?",
+      answer: "Yes. The integrated CRM can help businesses manage customer profiles as well as purchase history and engagement."
     },
     {
-      question: "Can multiple departments use the software?",
-      answer: "Yes, Vellko ERP unifies your sales, HR, operations, inventory, finance, and procurement departments into a single source of truth, facilitating seamless collaboration."
-    },
-    {
-      question: "Do you provide onboarding and customer support?",
-      answer: "Yes, our dedicated experts guide you through system setup, custom product imports, integration workflows, and comprehensive team training to ensure a completely smooth transition."
+      question: "Can the ERP be customized?",
+      answer: "Absolutely. Workflows, reports, integrations, and business processes can be customized according to your requirements."
     }
   ];
 
