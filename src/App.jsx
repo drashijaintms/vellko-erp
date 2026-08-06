@@ -12,6 +12,7 @@ import InventoryManagement from './pages/InventoryManagement';
 import FinanceAccounting from './pages/FinanceAccounting';
 import ProjectManagement from './pages/ProjectManagement';
 import ServiceManagement from './pages/ServiceManagement';
+import HealthcareErp from './pages/HealthcareErp';
 import AboutUs from './pages/AboutUs';
 import ContactUs from './pages/ContactUs';
 import Footer from './components/Footer';
@@ -33,6 +34,7 @@ function App() {
         <Route path="/finance-accounting" element={<FinanceAccounting />} />
         <Route path="/project-management" element={<ProjectManagement />} />
         <Route path="/service-management" element={<ServiceManagement />} />
+        <Route path="/healthcare-erp" element={<HealthcareErp />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/contact" element={<ContactUs />} />
       </Routes>

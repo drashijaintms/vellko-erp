@@ -75,7 +75,7 @@ const industries = [
     title: "Healthcare ERP", 
     desc: "Simplify clinical, admin & financial workflows.", 
     icon: Activity,
-    href: "#"
+    href: "/healthcare-erp"
   },
   { 
     title: "Education ERP", 
