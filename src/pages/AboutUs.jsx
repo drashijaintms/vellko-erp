@@ -88,7 +88,7 @@ export default function AboutUs() {
               <p>
                 We believe in asking better questions, challenging the obvious and building with purpose.
               </p>
-              <p style={{ fontWeight: 'bold', color: '#111827' }}>
+              <p className="about-philosophy-closing-p">
                 That's who we are. And that's what keeps us moving forward.
               </p>
             </div>

@@ -25,7 +25,7 @@ export default function IndustryPage({
 }) {
   return (
     <>
-      <div className="hero-stats-wrapper" style={{ height: 'auto', minHeight: '93vh' }}>
+      <div className="hero-stats-wrapper industry-hero-wrapper">
         <IndustryHeroSection 
           title={title}
           highlight={highlight}

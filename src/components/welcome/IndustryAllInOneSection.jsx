@@ -111,12 +111,12 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
           <div className="module-details-card">
             <div className="module-card-header">
               <div className="module-card-icon-container">
-                <ActiveIcon size={24} className="module-card-icon-svg" style={{ stroke: '#DC1436', strokeWidth: '2.5px' }} />
+                <ActiveIcon size={24} className="module-card-icon-svg" />
               </div>
               <h3 className="module-card-title">{activeData.title}</h3>
             </div>
 
-            <p className="module-card-desc" style={{ fontWeight: '700', color: '#111827' }}>{activeData.subtitle}</p>
+            <p className="module-card-subtitle">{activeData.subtitle}</p>
             <p className="module-card-desc">{activeData.desc}</p>
 
             <div className="module-features-title-row">Key Features</div>
@@ -140,7 +140,6 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
               viewBox="0 0 440 440"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }}
             >
               <defs>
                 {/* SVG Mask: Black areas set line opacity to 0 over all 8 text label regions */}

@@ -8,12 +8,12 @@ export default function IndustryCompareSection({ title, highlight, sub1, sub2, h
           {title} {highlight && <span className="red-highlight">{highlight}</span>}
         </h2>
         {sub1 && (
-          <p className="all-in-one-p1" style={{ maxWidth: '800px', margin: '1rem auto 0.5rem auto', textAlign: 'center' }}>
+          <p className="need-sub1">
             {sub1}
           </p>
         )}
         {sub2 && (
-          <p className="all-in-one-p2" style={{ maxWidth: '800px', margin: '0 auto 2rem auto', textAlign: 'center' }}>
+          <p className="need-sub2">
             {sub2}
           </p>
         )}

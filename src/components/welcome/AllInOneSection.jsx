@@ -292,7 +292,7 @@ export default function AllInOneSection() {
 
         <div className="circular-graphic-container">
           {/* SVG containing concentric rings and split alternating arcs */}
-          <svg className="circular-ring-svg" viewBox="0 0 440 440" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }}>
+          <svg className="circular-ring-svg" viewBox="0 0 440 440" fill="none" xmlns="http://www.w3.org/2000/svg">
             {sectorAngles.map((sector, index) => {
               const outerColor = '#cbd5e1';
               const innerColor = '#DC1436';

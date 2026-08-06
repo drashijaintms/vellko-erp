@@ -2411,6 +2411,15 @@ button {
   margin: 0;
 }
 
+.final-cta-desc {
+  color: #e5e7eb;
+  font-size: 1.15rem;
+  max-width: 750px;
+  margin: 1.25rem auto 2.25rem auto;
+  line-height: 1.6;
+  font-family: var(--font-body);
+}
+
 .final-cta-heading .red-highlight {
   color: #ffffff;
 }
@@ -5398,6 +5407,61 @@ button {
     gap: 3.5rem 1.5rem;
   }
 }
+
+/* Helper Classes replacing inline CSS */
+.need-sub1 {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #111827;
+  max-width: 800px;
+  margin: 1rem auto 0.5rem auto;
+  text-align: center;
+}
+
+.need-sub2 {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 400;
+  color: #374151;
+  max-width: 800px;
+  margin: 0 auto 2rem auto;
+  text-align: center;
+}
+
+.about-philosophy-closing-p {
+  font-weight: 700;
+  color: #111827;
+}
+
+.industry-hero-wrapper {
+  height: auto;
+  min-height: 93vh;
+}
+
+.module-card-icon-svg {
+  stroke: #DC1436;
+  stroke-width: 2.5px;
+}
+
+.module-card-subtitle {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.75rem;
+}
+
+.circular-ring-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
 
 
 

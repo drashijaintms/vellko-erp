@@ -6,14 +6,7 @@ export default function IndustryFinalCtaSection({ title, desc, customClass }) {
           {title}
         </h2>
         {desc && (
-          <p className="final-cta-desc" style={{ 
-            color: '#e5e7eb', 
-            fontSize: '1.15rem', 
-            maxWidth: '750px', 
-            margin: '1.25rem auto 2.25rem auto', 
-            lineHeight: '1.6',
-            fontFamily: 'var(--font-body)'
-          }}>
+          <p className="final-cta-desc">
             {desc}
           </p>
         )}

@@ -19,9 +19,11 @@ const defaultIcons = [
 ];
 
 export default function IndustryBeyondSection({ title, highlight, subCol1, subCol2, desc, features, customClass }) {
+  const hasFeatures = features && features.length > 0;
+
   return (
     <section className={customClass || 'beyond-section'}>
-      <div className="beyond-text-block" style={{ marginBottom: (!features || features.length === 0) ? '0' : '3.5rem' }}>
+      <div className={`beyond-text-block ${!hasFeatures ? 'no-features' : ''}`}>
         <h2 className="beyond-title">
           {title} {highlight && <span className="red-highlight">{highlight}</span>}
         </h2>
@@ -35,14 +37,14 @@ export default function IndustryBeyondSection({ title, highlight, subCol1, subCo
         </div>
 
         {desc && (
-          <p className="beyond-paragraph-2" style={{ marginBottom: (!features || features.length === 0) ? '0' : '3.5rem' }}>
+          <p className={`beyond-paragraph-2 ${!hasFeatures ? 'no-features' : ''}`}>
             {desc}
           </p>
         )}
       </div>
 
       {/* 4x2 Responsive Feature Grid - rendered conditionally */}
-      {features && features.length > 0 && (
+      {hasFeatures && (
         <div className="beyond-features-grid">
           {features.map((feat, idx) => {
             const titleText = typeof feat === 'string' ? feat : feat.title;
