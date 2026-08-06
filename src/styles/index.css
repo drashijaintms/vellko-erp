@@ -2393,13 +2393,13 @@ button {
 }
 
 .final-cta-container {
-  max-width: 900px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 2.25rem;
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
 }
 
 .final-cta-heading {
@@ -2414,9 +2414,6 @@ button {
 .final-cta-desc {
   color: #e5e7eb;
   font-size: 1.15rem;
-  max-width: 750px;
-  margin: 1.25rem auto 2.25rem auto;
-  line-height: 1.6;
   font-family: var(--font-body);
 }
 
@@ -4173,15 +4170,6 @@ button {
   align-items: center;
 }
 
-.final-cta-container {
-  max-width: 900px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 2.25rem;
-}
 
 .final-cta-heading {
   font-family: var(--font-heading);
