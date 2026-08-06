@@ -2092,6 +2092,16 @@ button {
   to   { transform: rotate(-360deg); }
 }
 
+.ring-spin-cw {
+  transform-origin: 220px 220px;
+  animation: ring-spin-cw 16s linear infinite;
+}
+
+.ring-spin-ccw {
+  transform-origin: 220px 220px;
+  animation: ring-spin-ccw 16s linear infinite;
+}
+
 /* Partnership CTA Section */
 .cta-partnership-section {
   width: 100%;
@@ -3164,10 +3174,10 @@ button {
   line-height: 1.18;
 }
 
-.hero-heading .red-highlight {
+.industry-hero-section .hero-heading .red-highlight {
   color: var(--primary);
-  display: block;
   margin-top: 0.2rem;
+  display: inline;
 }
 
 .hero-paragraph-1 {

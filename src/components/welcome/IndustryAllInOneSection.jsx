@@ -158,14 +158,10 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
 
               {/* Group masked by textGapsMask so line opacity is 0 under all 8 text labels */}
               <g mask="url(#textGapsMask)">
-                {/* Outer gray ring — rotates CLOCKWISE on scroll */}
-                <g style={{
-                  transformOrigin: '220px 220px',
-                  transform: `rotate(${ringRotation}deg)`,
-                  transition: 'transform 0.05s ease-out'
-                }}>
+                {/* Outer gray ring — continuously rotates CLOCKWISE non-stop */}
+                <g className="ring-spin-cw">
                   <circle
-                    cx="220" cy="220" r="160"
+                    cx="220" cy="220" r="156"
                     stroke="#cbd5e1"
                     strokeWidth="1.5"
                     strokeLinecap="round"
@@ -174,14 +170,10 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
                   />
                 </g>
 
-                {/* Inner red ring — rotates COUNTER-CLOCKWISE on scroll */}
-                <g style={{
-                  transformOrigin: '220px 220px',
-                  transform: `rotate(${-ringRotation}deg)`,
-                  transition: 'transform 0.05s ease-out'
-                }}>
+                {/* Inner red ring — continuously rotates COUNTER-CLOCKWISE non-stop */}
+                <g className="ring-spin-ccw">
                   <circle
-                    cx="220" cy="220" r="148"
+                    cx="220" cy="220" r="150"
                     stroke="#DC1436"
                     strokeWidth="1.5"
                     strokeLinecap="round"

@@ -301,7 +301,7 @@ export default function AllInOneSection() {
                 <g key={index}>
                   {/* Outer Arc */}
                   <path
-                    d={getArcPath(sector.start, sector.end, 160)}
+                    d={getArcPath(sector.start, sector.end, 156)}
                     stroke={outerColor}
                     strokeWidth={1.5}
                     strokeLinecap="round"
@@ -309,7 +309,7 @@ export default function AllInOneSection() {
                   />
                   {/* Inner Arc */}
                   <path
-                    d={getArcPath(sector.start, sector.end, 148)}
+                    d={getArcPath(sector.start, sector.end, 150)}
                     stroke={innerColor}
                     strokeWidth={1.5}
                     strokeLinecap="round"
