@@ -166,14 +166,14 @@ export default function HealthcareErp() {
   ];
 
   const chooseRowsList = [
-    { challenge: "Scattered patient records", solution: "Centralized EMR system" },
-    { challenge: "Manual appointments", solution: "Automated appointment scheduling" },
-    { challenge: "Billing delays", solution: "Integrated billing & insurance" },
-    { challenge: "Pharmacy stock issues", solution: "Real-time inventory management" },
-    { challenge: "Manual laboratory workflow", solution: "Digital laboratory management" },
-    { challenge: "Poor departmental coordination", solution: "Unified healthcare platform" },
-    { challenge: "Compliance challenges", solution: "Secure healthcare compliance" },
-    { challenge: "Limited operational visibility", solution: "Live dashboards & analytics" }
+    { left: "Scattered patient records", right: "Centralized EMR system" },
+    { left: "Manual appointments", right: "Automated appointment scheduling" },
+    { left: "Billing delays", right: "Integrated billing & insurance" },
+    { left: "Pharmacy stock issues", right: "Real-time inventory management" },
+    { left: "Manual laboratory workflow", right: "Digital laboratory management" },
+    { left: "Poor departmental coordination", right: "Unified healthcare platform" },
+    { left: "Compliance challenges", right: "Secure healthcare compliance" },
+    { left: "Limited operational visibility", right: "Live dashboards & analytics" }
   ];
 
   const worksStepsList = [

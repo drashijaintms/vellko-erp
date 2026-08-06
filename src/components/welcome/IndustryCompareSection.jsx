@@ -33,13 +33,13 @@ export default function IndustryCompareSection({ title, highlight, sub1, sub2, h
               <tr key={idx}>
                 <td>
                   <div className="need-cell-content">
-                    <span className="need-cell-text">{item.left}</span>
+                    <span className="need-cell-text">{item.left || item.challenge}</span>
                     <span className="need-icon-cross">✕</span>
                   </div>
                 </td>
                 <td>
                   <div className="need-cell-content">
-                    <span className="need-cell-text">{item.right}</span>
+                    <span className="need-cell-text">{item.right || item.solution}</span>
                     <span className="need-icon-check">✓</span>
                   </div>
                 </td>
