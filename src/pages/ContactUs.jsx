@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Phone, Mail, MapPin, Globe } from 'lucide-react';
-import heroBg from '../assets/images/about-hero-bg.png';
+import heroBg from '../assets/images/contact-hero-bg.png';
 
 const FacebookIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
