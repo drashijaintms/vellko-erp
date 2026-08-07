@@ -17,6 +17,7 @@
   --font-nav: 'Montserrat', system-ui, -apple-system, sans-serif;
   --font-heading: 'Roboto Serif', Georgia, serif;
   --font-body: 'Poppins', sans-serif;
+  --font-display: 'Roboto Serif', Georgia, serif;
   
   --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   --border-radius-lg: 12px;
@@ -5190,6 +5191,7 @@ button {
 }
 
 .contact-label {
+  font-family: var(--font-nav);
   font-size: 0.95rem;
   font-weight: 600;
   color: #1f2937;
@@ -5233,7 +5235,7 @@ button {
   background-color: var(--primary);
   border: 1.5px solid var(--primary);
   color: #ffffff;
-  font-family: var(--font-body);
+  font-family: var(--font-nav);
   font-weight: 600;
   font-size: 1rem;
   padding: 0.85rem 2rem;
@@ -5254,7 +5256,7 @@ button {
   background-color: #ffffff;
   border: 1.5px solid var(--primary);
   color: var(--primary);
-  font-family: var(--font-body);
+  font-family: var(--font-nav);
   font-weight: 600;
   font-size: 1rem;
   padding: 0.85rem 2rem;
