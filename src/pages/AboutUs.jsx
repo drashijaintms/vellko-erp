@@ -1,12 +1,49 @@
+import { useState, useEffect } from 'react';
 import { Cpu, Search, Sliders, CheckCircle2, Activity, HelpCircle } from 'lucide-react';
 import aboutPhilosophyLaptop from '../assets/images/about-philosophy-laptop.jpg';
 
+function AnimatedStatBadge({ target, suffix = '', isStatic = false, staticText = '' }) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (isStatic) return;
+    let start = 0;
+    const end = target;
+    const duration = 2000;
+    const incrementTime = 30;
+    const steps = Math.ceil(duration / incrementTime);
+    const stepValue = end / steps;
+
+    const timer = setInterval(() => {
+      start += stepValue;
+      if (start >= end) {
+        setCount(end);
+        clearInterval(timer);
+      } else {
+        setCount(Math.floor(start));
+      }
+    }, incrementTime);
+
+    return () => clearInterval(timer);
+  }, [target, isStatic]);
+
+  if (isStatic) {
+    return <span className="about-philosophy-stat-badge">{staticText}</span>;
+  }
+
+  return (
+    <span className="about-philosophy-stat-badge">
+      {count}{suffix}
+    </span>
+  );
+}
+
 export default function AboutUs() {
   const statsList = [
-    { badge: "500+", label: "Users Empowered" },
-    { badge: "24/7", label: "Customer Support" },
-    { badge: "95%", label: "Client Retention Rate" },
-    { badge: "30%", label: "Faster Business Processes" }
+    { target: 500, suffix: "+", label: "Users Empowered", isStatic: false },
+    { target: 24, suffix: "/7", label: "Customer Support", isStatic: true, staticText: "24/7" },
+    { target: 95, suffix: "%", label: "Client Retention Rate", isStatic: false },
+    { target: 30, suffix: "%", label: "Faster Business Processes", isStatic: false }
   ];
 
   const beliefsList = [
@@ -101,10 +138,15 @@ export default function AboutUs() {
               className="about-philosophy-image" 
             />
             <div className="about-philosophy-stats-banner">
-              <div className="about-philosophy-stats-track">
-                {[...statsList, ...statsList, ...statsList, ...statsList].map((stat, idx) => (
+              <div className="about-philosophy-stats-grid">
+                {statsList.map((stat, idx) => (
                   <div key={idx} className="about-philosophy-stat-item">
-                    <span className="about-philosophy-stat-badge">{stat.badge}</span>
+                    <AnimatedStatBadge 
+                      target={stat.target} 
+                      suffix={stat.suffix} 
+                      isStatic={stat.isStatic} 
+                      staticText={stat.staticText} 
+                    />
                     <span className="about-philosophy-stat-label">{stat.label}</span>
                   </div>
                 ))}

@@ -4939,7 +4939,7 @@ button {
   top: 0;
   left: 0;
   width: 100%;
-  height: calc(100% - 78px);
+  height: calc(100% - 84px);
   object-fit: cover;
   display: block;
 }
@@ -4949,34 +4949,36 @@ button {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 78px;
+  height: 84px;
   background-color: #111827;
   display: flex;
   align-items: center;
-  overflow: hidden;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   box-sizing: border-box;
+  padding: 0.5rem 0;
 }
 
-.about-philosophy-stats-track {
-  display: flex;
+.about-philosophy-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 100%;
+  height: 100%;
   align-items: center;
-  width: max-content;
-  animation: marqueeStats 18s linear infinite;
-}
-
-.about-philosophy-stats-track:hover {
-  animation-play-state: paused;
 }
 
 .about-philosophy-stat-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0 2rem;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0 0.5rem;
   border-right: 1px solid rgba(255, 255, 255, 0.15);
-  white-space: nowrap;
+  height: 100%;
+}
+
+.about-philosophy-stat-item:last-child {
+  border-right: none;
 }
 
 .about-philosophy-stat-badge {
@@ -4984,30 +4986,30 @@ button {
   color: #ffffff;
   font-family: var(--font-heading);
   font-weight: 800;
-  font-size: 1.15rem;
-  padding: 0.35rem 0.75rem;
-  border-radius: 6px;
+  font-size: 1.25rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 8px;
   min-width: 75px;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  box-shadow: 0 3px 8px rgba(220, 20, 54, 0.25);
+  box-shadow: 0 4px 10px rgba(220, 20, 54, 0.35);
+  transition: transform 0.2s ease;
+}
+
+.about-philosophy-stat-badge:hover {
+  transform: scale(1.05);
 }
 
 .about-philosophy-stat-label {
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 0.75rem;
-  font-weight: 600;
-  line-height: 1.25;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.72rem;
+  font-weight: 500;
+  font-family: var(--font-nav);
+  line-height: 1.2;
   text-align: center;
-}
-
-@keyframes marqueeStats {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+  max-width: 95px;
 }
 
 @media (max-width: 900px) {
