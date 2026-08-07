@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Cpu, Search, Sliders, CheckCircle2, Activity, HelpCircle } from 'lucide-react';
 import aboutPhilosophyLaptop from '../assets/images/about-philosophy-laptop.png';
+
+import beliefIcon1 from '../assets/images/belief-icon-1.png';
+import beliefIcon2 from '../assets/images/belief-icon-2.png';
+import beliefIcon3 from '../assets/images/belief-icon-3.png';
+import beliefIcon4 from '../assets/images/belief-icon-4.png';
+import beliefIcon5 from '../assets/images/belief-icon-5.png';
+import beliefIcon6 from '../assets/images/belief-icon-6.png';
 
 function AnimatedStatBadge({ target, suffix = '', isStatic = false, staticText = '' }) {
   const [count, setCount] = useState(0);
@@ -38,41 +44,6 @@ function AnimatedStatBadge({ target, suffix = '', isStatic = false, staticText =
   );
 }
 
-// Custom Red Icons matching user reference images exactly
-const TrendingBarIcon = ({ size = 34, className = "" }) => (
-  <svg width={size} height={size} viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <line x1="3" y1="32" x2="33" y2="32" />
-    <rect x="5" y="21" width="6" height="11" rx="1" />
-    <rect x="15" y="15" width="6" height="17" rx="1" />
-    <rect x="25" y="9" width="6" height="23" rx="1" />
-    <path d="M4 19C10 16 18 11 31 3" strokeWidth="2.5" />
-    <path d="M23 3h8v8" strokeWidth="2.5" />
-  </svg>
-);
-
-const SearchQuestionIcon = ({ size = 34, className = "" }) => (
-  <svg width={size} height={size} viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <circle cx="20" cy="16" r="10.5" />
-    <line x1="7" y1="5" x2="9" y2="7" />
-    <line x1="4" y1="11" x2="7" y2="11" />
-    <line x1="12" y1="4" x2="12" y2="7" />
-    <line x1="12" y1="24" x2="4" y2="32" strokeWidth="3" />
-    <path d="M17.5 13.5c0-1.5 1.2-2.3 2.5-2.3s2.5 0.8 2.5 2c0 1.5-2 1.8-2 3.2v0.6" />
-    <circle cx="20" cy="20.5" r="0.8" fill="currentColor" />
-  </svg>
-);
-
-const TouchGearIcon = ({ size = 34, className = "" }) => (
-  <svg width={size} height={size} viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M6 18A12 12 0 0 1 27 9.5" />
-    <path d="M27 5v4.5h-4.5" />
-    <path d="M30 18A12 12 0 0 1 9 26.5" />
-    <path d="M9 31v-4.5h4.5" />
-    <circle cx="18" cy="18" r="6" />
-    <path d="M15 16l4.5 9l-2 0.7l-2.2-4.2l-2 1.4v-6.9z" fill="none" />
-  </svg>
-);
-
 export default function AboutUs() {
   const statsList = [
     { target: 500, suffix: "+", label: "Users Empowered", isStatic: false },
@@ -83,32 +54,32 @@ export default function AboutUs() {
 
   const beliefsList = [
     {
-      icon: TrendingBarIcon,
+      iconImg: beliefIcon1,
       title: "We Don't Want to Build Just Another ERP.",
       desc: "Businesses already have enough software. We want to create technology that genuinely earns its place - making work easier, decisions better, and growth less complicated."
     },
     {
-      icon: SearchQuestionIcon,
+      iconImg: beliefIcon2,
       title: "We Start With the Problem, Not the Feature.",
       desc: "We don't believe in adding complexity just to make a product look bigger. We first ask what's actually getting in the way - and then figure out how technology can make it better."
     },
     {
-      icon: TouchGearIcon,
+      iconImg: beliefIcon3,
       title: "Keep It Simple.",
       desc: "The technology behind something can be incredibly complex. The experience of using it shouldn't be. That's a standard we hold ourselves to every day."
     },
     {
-      icon: CheckCircle2,
+      iconImg: beliefIcon4,
       title: "Details Matter.",
       desc: "A smoother process. A clearer screen. One less unnecessary step. The small things can make a surprisingly big difference."
     },
     {
-      icon: Activity,
+      iconImg: beliefIcon5,
       title: "Keep Evolving.",
       desc: "The moment we think we've figured everything out is probably the moment we stop growing. Businesses evolve. Technology evolves. So do we."
     },
     {
-      icon: HelpCircle,
+      iconImg: beliefIcon6,
       title: "Curiosity Keeps Us Moving.",
       desc: "We won't always have the right answer. But we'll keep asking the right questions. We'll challenge what we know, change our minds when we need to, and stay open to what's next."
     }
@@ -204,12 +175,11 @@ export default function AboutUs() {
 
         <div className="about-belief-grid">
           {beliefsList.map((item, idx) => {
-            const IconComponent = item.icon;
             return (
               <div key={idx} className="belief-card animate-fade-in">
                 <div className="belief-card-header-row">
                   <div className="belief-icon-circle">
-                    <IconComponent size={32} strokeWidth={1.5} />
+                    <img src={item.iconImg} alt={item.title} className="belief-icon-png" />
                   </div>
                   <div className="belief-header-line"></div>
                 </div>
