@@ -190,7 +190,6 @@ button {
   align-items: center;
   gap: 0.15rem;
   padding: 0.5rem 0;
-  letter-spacing: -0.01em;
 }
 
 .nav-link:hover {
@@ -325,7 +324,6 @@ button {
   padding: 0.55rem 1.45rem;
   border-radius: 9999px;
   transition: var(--transition-smooth);
-  letter-spacing: -0.01em;
 }
 
 .cta-btn-outline:hover {
@@ -342,7 +340,6 @@ button {
   padding: 0.55rem 1.45rem;
   border-radius: 9999px;
   transition: var(--transition-smooth);
-  letter-spacing: -0.01em;
 }
 
 .cta-btn-filled:hover {
@@ -907,7 +904,6 @@ button {
   font-weight: 800;
   margin-bottom: 2rem;
   margin-top: 0;
-  letter-spacing: -0.01em;
 }
 
 .split-comp-col .col-title.text-white {
@@ -1351,7 +1347,6 @@ button {
   font-size: 2.4rem;
   font-weight: 800;
   line-height: 1.25;
-  letter-spacing: -0.01em;
   margin-bottom: 1rem;
   margin-top: 0;
   max-width: 1080px;
@@ -1541,7 +1536,6 @@ button {
     font-weight: 800;
     color: #000000;
     line-height: 1.15;
-    /* letter-spacing: -0.01em; */
 }
 
 .need-centered-title .red-highlight {
@@ -2179,7 +2173,6 @@ button {
 .testimonials-title {
   text-align: center;
   margin-bottom: 4rem;
-  letter-spacing: -0.02em;
 }
 
 .testimonials-title .red-highlight {
@@ -2291,7 +2284,6 @@ button {
   color: #111827;
   line-height: 1.4;
   margin-bottom: 1.1rem;
-  letter-spacing: -0.01em;
 }
 
 .testimonial-quote-sub {
@@ -2642,7 +2634,6 @@ button {
   font-weight: 400;
   color: #ffffff;
   margin: 0;
-  letter-spacing: 0.01em;
 }
 
 /* Footer responsive */
@@ -3758,7 +3749,6 @@ button {
     font-weight: 800;
     color: #000000;
     line-height: 1.15;
-    /* letter-spacing: -0.01em; */
 }
 
 .need-centered-title .red-highlight {
@@ -4496,7 +4486,6 @@ button {
   font-weight: 800;
   margin-bottom: 2rem;
   margin-top: 0;
-  letter-spacing: -0.01em;
 }
 
 .split-comp-col .col-title.text-white {
@@ -4580,7 +4569,6 @@ button {
   line-height: 1.15;
   color: #111827;
   margin-bottom: 1.5rem;
-  letter-spacing: -0.5px;
 }
 
 .about-hero-heading .red-highlight {
@@ -4688,7 +4676,6 @@ button {
   font-size: 0.95rem;
   color: rgba(255, 255, 255, 0.75);
   text-transform: uppercase;
-  letter-spacing: 1.5px;
   font-weight: 600;
 }
 
@@ -4909,7 +4896,6 @@ button {
 .about-philosophy-left {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
   text-align: left;
 }
 
@@ -4919,7 +4905,6 @@ button {
   font-weight: 700;
   color: #111827;
   line-height: 1.2;
-  letter-spacing: -0.5px;
 }
 
 .about-philosophy-heading .red-highlight {
@@ -4927,10 +4912,16 @@ button {
 }
 
 .about-philosophy-lead {
+  font-family: var(--font-body);
   font-size: 1.25rem;
   color: #111827;
   line-height: 1.6;
   font-weight: 500;
+}
+
+.about-philosophy-lead strong {
+  font-family: var(--font-body);
+  font-weight: 700;
 }
 
 .about-philosophy-body {
@@ -5023,7 +5014,6 @@ button {
   font-size: 2.4rem;
   font-weight: 700;
   color: #111827;
-  letter-spacing: -0.5px;
 }
 
 .about-belief-heading .red-highlight {
@@ -5096,7 +5086,6 @@ button {
   color: #000000;
   margin-bottom: 0.85rem;
   line-height: 1.3;
-  letter-spacing: -0.2px;
 }
 
 .belief-card-desc {
@@ -5144,7 +5133,6 @@ button {
   color: #111827;
   text-align: center;
   margin-bottom: 4rem;
-  letter-spacing: -0.5px;
 }
 
 .contact-main-card {
