@@ -5059,13 +5059,14 @@ button {
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-right: 5px solid var(--primary);
-  border-radius: 8px;
-  padding: 2.25rem 2.25rem 2.25rem;
+  border-radius: 0px;
+  padding: 1rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
 }
+
 
 .belief-card:hover {
   transform: translateY(-5px);
@@ -5075,8 +5076,8 @@ button {
 .belief-card-header-row {
   display: flex;
   align-items: center;
-  margin-bottom: 1.75rem;
-  margin-right: -2.25rem;
+  margin-bottom: 1rem;
+  margin-right: -1rem;
 }
 
 .belief-icon-circle {
@@ -5095,7 +5096,7 @@ button {
 
 .belief-header-line {
   height: 1px;
-  background-color: #cbd5e1;
+  background-color: #545454c7;
   flex: 1;
 }
 
@@ -5114,11 +5115,7 @@ button {
 }
 
 .belief-card-desc {
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  color: #555555;
-  line-height: 1.6;
-  font-weight: 450;
+margin-bottom:0px;
 }
 
 /* Contact Us Page Styles */

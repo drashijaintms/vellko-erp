@@ -38,6 +38,41 @@ function AnimatedStatBadge({ target, suffix = '', isStatic = false, staticText =
   );
 }
 
+// Custom Red Icons matching user reference images exactly
+const TrendingBarIcon = ({ size = 34, className = "" }) => (
+  <svg width={size} height={size} viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <line x1="3" y1="32" x2="33" y2="32" />
+    <rect x="5" y="21" width="6" height="11" rx="1" />
+    <rect x="15" y="15" width="6" height="17" rx="1" />
+    <rect x="25" y="9" width="6" height="23" rx="1" />
+    <path d="M4 19C10 16 18 11 31 3" strokeWidth="2.5" />
+    <path d="M23 3h8v8" strokeWidth="2.5" />
+  </svg>
+);
+
+const SearchQuestionIcon = ({ size = 34, className = "" }) => (
+  <svg width={size} height={size} viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="20" cy="16" r="10.5" />
+    <line x1="7" y1="5" x2="9" y2="7" />
+    <line x1="4" y1="11" x2="7" y2="11" />
+    <line x1="12" y1="4" x2="12" y2="7" />
+    <line x1="12" y1="24" x2="4" y2="32" strokeWidth="3" />
+    <path d="M17.5 13.5c0-1.5 1.2-2.3 2.5-2.3s2.5 0.8 2.5 2c0 1.5-2 1.8-2 3.2v0.6" />
+    <circle cx="20" cy="20.5" r="0.8" fill="currentColor" />
+  </svg>
+);
+
+const TouchGearIcon = ({ size = 34, className = "" }) => (
+  <svg width={size} height={size} viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M6 18A12 12 0 0 1 27 9.5" />
+    <path d="M27 5v4.5h-4.5" />
+    <path d="M30 18A12 12 0 0 1 9 26.5" />
+    <path d="M9 31v-4.5h4.5" />
+    <circle cx="18" cy="18" r="6" />
+    <path d="M15 16l4.5 9l-2 0.7l-2.2-4.2l-2 1.4v-6.9z" fill="none" />
+  </svg>
+);
+
 export default function AboutUs() {
   const statsList = [
     { target: 500, suffix: "+", label: "Users Empowered", isStatic: false },
@@ -48,17 +83,17 @@ export default function AboutUs() {
 
   const beliefsList = [
     {
-      icon: Cpu,
+      icon: TrendingBarIcon,
       title: "We Don't Want to Build Just Another ERP.",
       desc: "Businesses already have enough software. We want to create technology that genuinely earns its place - making work easier, decisions better, and growth less complicated."
     },
     {
-      icon: Search,
+      icon: SearchQuestionIcon,
       title: "We Start With the Problem, Not the Feature.",
       desc: "We don't believe in adding complexity just to make a product look bigger. We first ask what's actually getting in the way - and then figure out how technology can make it better."
     },
     {
-      icon: Sliders,
+      icon: TouchGearIcon,
       title: "Keep It Simple.",
       desc: "The technology behind something can be incredibly complex. The experience of using it shouldn't be. That's a standard we hold ourselves to every day."
     },
