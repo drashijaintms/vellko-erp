@@ -101,12 +101,14 @@ export default function AboutUs() {
               className="about-philosophy-image" 
             />
             <div className="about-philosophy-stats-banner">
-              {statsList.map((stat, idx) => (
-                <div key={idx} className="about-philosophy-stat-item">
-                  <span className="about-philosophy-stat-badge">{stat.badge}</span>
-                  <span className="about-philosophy-stat-label">{stat.label}</span>
-                </div>
-              ))}
+              <div className="about-philosophy-stats-track">
+                {[...statsList, ...statsList, ...statsList, ...statsList].map((stat, idx) => (
+                  <div key={idx} className="about-philosophy-stat-item">
+                    <span className="about-philosophy-stat-badge">{stat.badge}</span>
+                    <span className="about-philosophy-stat-label">{stat.label}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

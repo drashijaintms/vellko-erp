@@ -4890,7 +4890,7 @@ button {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 4rem;
-  align-items: center;
+  align-items: stretch;
 }
 
 .about-philosophy-left {
@@ -4912,7 +4912,7 @@ button {
 }
 
 .about-philosophy-lead {
-  font-family: var(--font-body);
+  font-family: var(--font-heading);
   font-size: 1.25rem;
   color: #111827;
   line-height: 1.6;
@@ -4920,19 +4920,8 @@ button {
 }
 
 .about-philosophy-lead strong {
-  font-family: var(--font-body);
+  font-family: var(--font-heading);
   font-weight: 700;
-}
-
-.about-philosophy-body {
-  font-family: var(--font-body);
-  font-size: 1rem;
-  color: #4b5563;
-  line-height: 1.65;
-  font-weight: 450;
-  display: flex;
-  flex-direction: column;
-  gap: 1.15rem;
 }
 
 .about-philosophy-right {
@@ -4940,34 +4929,50 @@ button {
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
-  background: #ffffff;
+  background: #111827;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .about-philosophy-image {
   width: 100%;
-  height: auto;
+  height: 100%;
+  flex: 1;
+  min-height: 0;
+  object-fit: cover;
   display: block;
 }
 
 .about-philosophy-stats-banner {
   background-color: #111827;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  padding: 1.25rem 0.5rem;
-  text-align: center;
+  padding: 1.25rem 0;
+  overflow: hidden;
+  position: relative;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.about-philosophy-stats-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: marqueeStats 18s linear infinite;
+}
+
+.about-philosophy-stats-track:hover {
+  animation-play-state: paused;
 }
 
 .about-philosophy-stat-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  border-right: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.about-philosophy-stat-item:last-child {
-  border-right: none;
+  gap: 0.4rem;
+  padding: 0 2rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+  white-space: nowrap;
 }
 
 .about-philosophy-stat-badge {
@@ -4980,15 +4985,25 @@ button {
   border-radius: 6px;
   min-width: 75px;
   display: inline-block;
+  text-align: center;
   box-shadow: 0 3px 8px rgba(220, 20, 54, 0.25);
 }
 
 .about-philosophy-stat-label {
   color: rgba(255, 255, 255, 0.85);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 600;
   line-height: 1.25;
-  max-width: 95px;
+  text-align: center;
+}
+
+@keyframes marqueeStats {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 @media (max-width: 900px) {
