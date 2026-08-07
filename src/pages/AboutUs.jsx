@@ -132,11 +132,14 @@ export default function AboutUs() {
           </div>
 
           <div className="about-philosophy-right animate-fade-in">
-            <img 
-              src={aboutPhilosophyLaptop} 
-              alt="Vellko Workspace Conference Table and SaaS Dashboard" 
-              className="about-philosophy-image" 
-            />
+            <div className="about-philosophy-image-wrapper">
+              <img 
+                src={aboutPhilosophyLaptop} 
+                alt="Vellko Workspace Conference Table and SaaS Dashboard" 
+                className="about-philosophy-image" 
+              />
+              <div className="about-philosophy-image-overlay"></div>
+            </div>
             <div className="about-philosophy-stats-banner">
               <div className="about-philosophy-stats-grid">
                 {statsList.map((stat, idx) => (
