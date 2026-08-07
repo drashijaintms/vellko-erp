@@ -2,291 +2,319 @@ import IndustryPage from './IndustryPage';
 
 export default function ServiceManagement() {
   const heroBadges = [
-    { type: 'img', text: ['One Service', 'Platform'] },
-    { type: 'svg', text: ['Smarter Service', 'Management'] }
+    { type: 'img', text: ['One Platform', 'Smarter Service'] },
+    { type: 'svg', text: ['Complete Service', 'Operations'] }
   ];
 
   const beyondFeaturesList = [
+    "Customer Relationship Management",
     "Service Request Management",
     "Work Order Management",
-    "Field Service Management",
     "Technician Scheduling",
-    "Asset & Equipment Management",
-    "Preventive Maintenance",
-    "Customer Support Management",
-    "Service Analytics & Reports"
+    "Field Service Management",
+    "Inventory & Spare Parts Management",
+    "Billing & Invoicing",
+    "AMC & Contract Management",
+    "Finance & Accounting",
+    "Business Reports & Analytics"
   ];
 
   const splitLeftListItems = [
-    "Service requests tracked manually",
+    "Customer information scattered across systems",
+    "Manual service scheduling",
     "Paper-based work orders",
-    "Difficult technician scheduling",
-    "Reactive maintenance approach",
-    "Limited service visibility",
-    "Delayed customer updates",
-    "Disconnected service records",
-    "Manual reporting"
+    "Difficult technician tracking",
+    "Manual invoice generation",
+    "Poor inventory visibility",
+    "Limited business insights",
+    "Missed service contracts",
+    "Reactive service operations"
   ];
 
   const splitRightListItems = [
-    "Centralized service dashboard",
+    "Centralized customer database",
+    "Automated job scheduling",
     "Digital work order management",
-    "Automated technician assignment",
-    "Preventive maintenance scheduling",
-    "Real-time service tracking",
-    "Automated customer notifications",
-    "Complete service history",
-    "Live service analytics"
+    "Live technician tracking",
+    "Automated billing & invoicing",
+    "Real-time inventory management",
+    "Live business dashboards",
+    "Automated AMC reminders",
+    "Proactive service management"
   ];
 
   const allInOneModulesList = [
     {
-      circleName: "Request\nManagement",
-      title: "Service Request Management",
-      subtitle: "Track Every Service Request Efficiently.",
-      desc: "Track, assign, prioritize, and manage requests for service coming from various channels, while ensuring prompt resolution and satisfaction of the customer.",
+      circleName: "Customer\nCRM",
+      title: "Customer Relationship Management (CRM)",
+      subtitle: "Every Customer. One Complete Profile.",
+      desc: "Keep complete customer records, including contact information and service history, quotations invoicing, complaints contracts, and history of communications through a central database.",
       features: [
-        "Service Ticket Creation",
-        "Priority Management",
-        "Request Categorization",
-        "Service Status Tracking",
-        "Escalation Management",
-        "Customer Notifications",
-        "Service History Records"
+        "Customer Database",
+        "Contact Management",
+        "Service History",
+        "Lead Management",
+        "Quotation Management",
+        "Customer Communication",
+        "Customer Portal"
       ]
     },
     {
-      circleName: "Work Order\nManagement",
+      circleName: "Service\nRequests",
+      title: "Service Request Management",
+      subtitle: "Never Miss a Service Request.",
+      desc: "Make sure to capture service requests via email, phone calls websites, phone calls, or mobile apps and allocate them to the appropriate team.",
+      features: [
+        "Complaint Registration",
+        "Ticket Management",
+        "Service Categories",
+        "Priority Management",
+        "Customer Notifications",
+        "SLA Tracking",
+        "Request History"
+      ]
+    },
+    {
+      circleName: "Work Order\nControl",
       title: "Work Order Management",
-      subtitle: "Organize Service Work Without Confusion.",
-      desc: "Create, assign, and track work orders while keeping track of the progress of work, resources, and completion status in real time.",
+      subtitle: "Organize Every Service Job Efficiently.",
+      desc: "Design digitally-generated work order, assign technician to keep track of job progress, create service reports and close the job with customer approval.",
       features: [
         "Digital Work Orders",
-        "Task Assignment",
-        "Work Progress Tracking",
-        "Service Documentation",
-        "Labor Tracking",
-        "Material Consumption",
-        "Completion Verification"
-      ]
-    },
-    {
-      circleName: "Field Service\nManagement",
-      title: "Field Service Management",
-      subtitle: "Manage Field Teams More Effectively.",
-      desc: "Monitor field technicians' job progress and enhance the speed of response with real-time service access.",
-      features: [
         "Technician Assignment",
-        "Mobile Workforce Management",
+        "Job Status Tracking",
+        "Customer Signatures",
+        "Service Reports",
+        "Image Uploads",
+        "Work Order History"
+      ]
+    },
+    {
+      circleName: "Field &\nTechnicians",
+      title: "Technician & Field Service Management",
+      subtitle: "Manage Your Field Workforce Smarter.",
+      desc: "Track technician schedules, attendance, job locations, travel, and service completion in real time.",
+      features: [
+        "Technician Scheduling",
+        "Mobile App Access",
         "GPS Tracking",
-        "Job Status Updates",
-        "Route Optimization",
-        "Field Reporting",
-        "Real-Time Communication"
+        "Route Planning",
+        "Attendance Tracking",
+        "Job Completion Updates",
+        "Performance Monitoring"
       ]
     },
     {
-      circleName: "Technician\nScheduling",
-      title: "Technician Scheduling",
-      subtitle: "Put the Right Technician on the Right Job.",
-      desc: "Automate scheduling based on the technician's availability, skills, location, and workload.",
+      circleName: "Inventory &\nSpares",
+      title: "Inventory & Spare Parts Management",
+      subtitle: "Keep Every Spare Part Under Control.",
+      desc: "Keep track of the inventory of spare parts, movement of stock transfer to warehouses Purchase orders, material usage in service tasks.",
       features: [
-        "Shift Scheduling",
-        "Technician Availability",
-        "Skill-Based Assignment",
-        "Calendar Management",
-        "Emergency Dispatching",
-        "Resource Allocation",
-        "Schedule Optimization"
+        "Inventory Tracking",
+        "Spare Parts Management",
+        "Warehouse Management",
+        "Purchase Orders",
+        "Stock Alerts",
+        "Barcode Support",
+        "Vendor Management"
       ]
     },
     {
-      circleName: "Asset &\nEquipment",
-      title: "Asset & Equipment Management",
-      subtitle: "Maintain Complete Asset Visibility.",
-      desc: "Monitor equipment, machinery warranties, maintenance records, and service history using an online platform.",
+      circleName: "Billing &\nInvoicing",
+      title: "Billing & Invoicing",
+      subtitle: "Faster Billing. Faster Payments.",
+      desc: "Automatically generate invoices, quotations as well as GST-compliant bills, payments receipts and outstanding reports from completed service tasks.",
       features: [
-        "Asset Registry",
-        "Equipment Tracking",
-        "Warranty Management",
-        "Service History",
-        "Asset Lifecycle Management",
-        "Asset Documentation",
-        "Maintenance Records"
+        "GST Invoicing",
+        "Automated Billing",
+        "Payment Tracking",
+        "Outstanding Reports",
+        "Credit Notes",
+        "Online Payments",
+        "Invoice History"
       ]
     },
     {
-      circleName: "Preventive\nMaintenance",
-      title: "Preventive Maintenance Management",
-      subtitle: "Reduce Downtime with Scheduled Maintenance.",
-      desc: "Automatically plan maintenance tasks and inspections to avoid equipment failures and increase efficiency.",
+      circleName: "AMC &\nContracts",
+      title: "AMC & Contract Management",
+      subtitle: "Manage Service Contracts with Ease.",
+      desc: "Monitor annual maintenance contracts (AMC) and warranty terms and preventive maintenance schedules. renewals and customer service agreements.",
       features: [
-        "Maintenance Scheduling",
-        "Inspection Checklists",
-        "Recurring Service Plans",
-        "Automated Reminders",
-        "Maintenance Tracking",
-        "Compliance Monitoring",
-        "Downtime Analysis"
+        "AMC Management",
+        "Warranty Tracking",
+        "Renewal Reminders",
+        "Preventive Maintenance",
+        "Contract History",
+        "Service Scheduling",
+        "Customer Notifications"
       ]
     },
     {
-      circleName: "Customer\nSupport",
-      title: "Customer Support Management",
-      subtitle: "Deliver Better Customer Experiences.",
-      desc: "Handle customer complaints, inquiries, support tickets, customer inquiries and service requests all from one platform.",
+      circleName: "Finance &\nAccounting",
+      title: "Finance & Accounting",
+      subtitle: "Complete Financial Control.",
+      desc: "Manage your business's expenses purchase, vendor payments taxes, income and financial reports with an integrated accounting system.",
       features: [
-        "Customer Support Tickets",
-        "Complaint Management",
-        "Service Escalation",
-        "Customer Communication",
-        "SLA Tracking",
-        "Feedback Collection",
-        "Customer History"
+        "General Ledger",
+        "Accounts Payable",
+        "Accounts Receivable",
+        "Expense Tracking",
+        "GST Compliance",
+        "Financial Reports",
+        "Budget Management"
       ]
     },
     {
-      circleName: "Service Analytics\n& Reports",
-      title: "Service Analytics & Reporting",
-      subtitle: "Make Better Service Decisions.",
-      desc: "Get actionable insights on the efficiency of service, the productivity of technicians, customer satisfaction, and operational efficiency.",
+      circleName: "Reports &\nAnalytics",
+      title: "Reports & Business Analytics",
+      subtitle: "Make Better Business Decisions.",
+      desc: "Change operational data to valuable business insights that increase efficiency as well as satisfaction of customers, technician performance and profit.",
       features: [
         "Service Dashboard",
-        "Technician Performance Reports",
-        "SLA Reports",
-        "Maintenance Analytics",
-        "Customer Satisfaction Metrics",
-        "Service Cost Analysis",
-        "Custom Reports"
+        "Technician Performance",
+        "Revenue Reports",
+        "Customer Reports",
+        "Inventory Reports",
+        "AMC Reports",
+        "Business KPIs"
       ]
     }
   ];
 
   const chooseRowsList = [
-    { left: "Service requests scattered across systems", right: "Centralized service platform" },
-    { left: "Manual work order management", right: "Automated work order workflows" },
-    { left: "Scheduling conflicts", right: "Smart technician scheduling" },
-    { left: "Poor service visibility", right: "Real-time tracking dashboards" },
-    { left: "Equipment downtime", right: "Preventive maintenance planning" },
-    { left: "Delayed customer updates", right: "Automated notifications" },
-    { left: "Lack of service insights", right: "Advanced service analytics" },
-    { left: "Inefficient field operations", right: "Mobile field service tools" }
+    { left: "Customer data scattered", right: "Centralized customer records" },
+    { left: "Manual job scheduling", right: "Automated service scheduling" },
+    { left: "Delayed service delivery", right: "Real-time technician assignment" },
+    { left: "Inventory shortages", right: "Live inventory tracking" },
+    { left: "Billing delays", right: "Automated invoicing" },
+    { left: "Missed AMC renewals", right: "Automated reminders" },
+    { left: "Limited business visibility", right: "Live operational dashboards" },
+    { left: "Time-consuming administration", right: "Workflow automation" }
   ];
 
-  const worksStepsList = [
+  const workflowStepsList = [
     {
       stepNum: 1,
-      title: "Schedule a Free Demo",
-      desc: "See how Vellko Service ERP can connect and coordinate your tickets and field team in a live demonstration."
+      title: "Schedule a Free ERP Demo",
+      desc: "Connect with our service ERP experts to see how Vellko streamlines your field teams, work orders, and billing."
     },
     {
       stepNum: 2,
-      title: "Analyze Your Service Processes",
-      desc: "We analyze your dispatch flows, technician availability, customer SLAs, and equipment records."
+      title: "Understand Your Business Processes",
+      desc: "Analyze customer SLA expectations, technician dispatch workflows, spare parts tracking, and financial compliance."
     },
     {
       stepNum: 3,
-      title: "Configure Workflows & Import Data",
-      desc: "We configure your dispatch dashboard, upload technician skill profiles, and import asset details."
+      title: "Configure Workflows & Import Business Data",
+      desc: "Set up service categories, AMC renewal rules, inventory warehouses, and import existing customer and contract data."
     },
     {
       stepNum: 4,
       title: "Train Your Team & Go Live",
-      desc: "Your dispatch managers, field technicians, and customer service staff undergo training to launch live."
+      desc: "Train dispatch managers, field technicians, and accounting staff to launch full service management operations."
     }
   ];
 
-  const supportStepsList = [
-    "Service Workflow Configuration",
+  const supportIncludesList = [
+    "Business Process Consultation",
     "Secure Data Migration",
-    "Asset & Equipment Setup",
-    "Technician Training",
-    "Custom Process Configuration",
-    "Ongoing Product Support",
-    "Future Service Enhancements"
+    "Workflow Configuration",
+    "Inventory Setup",
+    "Finance & GST Configuration",
+    "User Training",
+    "Continuous Technical Support",
+    "Future ERP Enhancements"
   ];
 
   const faqItemsList = [
     {
-      question: "Is Vellko Service Management suitable for small businesses?",
-      answer: "Yes. The platform was created to cater to startups, small businesses, and large corporations that run service operations."
+      question: "Is Vellko Service Business ERP suitable for small businesses?",
+      answer: "Yes. It was designed specifically for small and medium-sized businesses, startups as well as large service companies and features that can be scaled to expand with your business."
     },
     {
-      question: "Can it manage field service technicians?",
-      answer: "Yes. It allows scheduling of technicians' tasks, assignment of tasks, mobile access, and real-time tracking of jobs."
+      question: "Can we manage field technicians?",
+      answer: "Yes. The ERP includes scheduling for technicians and mobile access. GPS monitoring, tracking attendance as well as job-status updates to ensure effective field management of service."
     },
     {
-      question: "Does it support preventive maintenance?",
-      answer: "Yes. The system lets businesses program regular maintenance tasks as well as inspections."
+      question: "Does it support AMC and warranty management?",
+      answer: "Yes. You can manage Annual Maintenance Contracts (AMC), warranty periods, preventive maintenance schedules, renewals, and customer service agreements from one platform."
     },
     {
-      question: "Can customers track service requests?",
-      answer: "Yes. Customers will receive periodic messages and updates on their service requests as well as the status of their jobs."
+      question: "Can inventory and billing work together?",
+      answer: "Yes. Inventory spare parts procurement, billing and finance are completely integrated, which ensures precise stock updates as well as automated invoicing."
     },
     {
-      question: "Can the platform be customized?",
-      answer: "Absolutely. Workflows, approval procedures, reports, categories of service, and dashboards can be set up in accordance with your company's needs."
+      question: "Can the ERP be customized for our service business?",
+      answer: "Absolutely. Workflows, approval processes, service categories, forms, reports, and dashboards can be customized to match your business operations."
     }
   ];
 
   return (
     <IndustryPage
-      title="Manage Your Service Operations with"
+      title="Manage Your Entire Service Business with"
       highlight="Complete Visibility"
-      tagline="One Platform. Smarter Service Management."
-      desc="Vellko ERP is a cloud-based ERP Service Management System that helps businesses to manage service requests, field teams, work orders, maintenance schedules, customer support, and performance of service from the same central location. Enhance efficiency, speed up time, and offer an excellent customer experience."
+      tagline="One Platform. Smarter Service Operations."
+      desc="Vellko Service Business ERP is cloud-based service management software that connects customer enquiries job scheduling, customer service inventory, billing and finance to a single, intelligent platform. It aids service companies in streamlining their routine operations, improving the customer experience, and boosting the profitability of their business."
+      badges={heroBadges}
+      
       beyondTitle="Service Management Shouldn't Be"
       beyondHighlight="Complicated"
       beyondSubCol1={
         <>
-          <span className="red-highlight">Businesses that provide services to customers</span> often face challenges because customer requests, service communications, schedules for technicians, along with work order requests, are scattered across spreadsheets, emails, telephone calls, and other disconnected software.
+          <span className="red-highlight">Businesses that are expanding in service</span> frequently struggle with incompatible systems. Schedules for technicians, customer requests invoices, inventory, and payments are centralized across sheets, WhatsApp, emails, and various software applications.
         </>
       }
       beyondSubCol2={
         <>
-          <span className="red-highlight">Vellko Service Management</span> is a centralization tool for the service operation. It automates workflows and gives teams full control over each service request from the time of creation until its completion.
+          <span className="red-highlight">Vellko Service Business ERP</span> coordinates your complete Service workflow, automates routine procedures, and gives you full transparency into each service request, from initial request to payment.
         </>
       }
-      beyondDesc="One Platform for Your Entire Service Operations"
+      beyondDesc="One Platform for Your Entire Service Business"
       beyondFeatures={beyondFeaturesList}
-      splitTitleLeft="Traditional Service Operations"
-      splitTitleRight="Vellko Service Management"
-      splitDescLeft="Service requests tracked manually and paper-based work orders"
-      splitDescRight="with a centralized service dashboard and digital work order management."
+      
+      splitTitleLeft="Traditional Service Management"
+      splitTitleRight="Vellko Service Business ERP"
+      splitDescLeft="Customer info scattered across systems & manual scheduling"
+      splitDescRight="with a centralized customer database & live technician tracking."
       splitHeaderLeft="Traditional Service Management"
-      splitHeaderRight="Vellko Service Management"
+      splitHeaderRight="Vellko Service Business ERP"
       splitLeftList={splitLeftListItems}
       splitRightList={splitRightListItems}
       splitClass="industry-split-comparison-section"
-      allInOneTitle="Everything Your Service Team Needs in"
+      
+      allInOneTitle="Everything Your Service Business Needs in"
       allInOneHighlight="One Platform"
-      allInOneTagline="Modern ERP service companies require more than simple ticket management."
-      allInOneDesc="Vellko Service Management integrates customer demands, orders for work, field operations, maintenance assets, customer communications, and reports into one intelligent platform that allows teams to deliver more efficient and efficient service."
+      allInOneTagline="Modern service companies require more than simply scheduling technicians."
+      allInOneDesc="Vellko Service Business ERP blends fields operations, customer service invoice, inventory, contracts accounting, reporting, and more into a single platform which allows teams to concentrate on providing exceptional service, not juggling the paperwork."
       allInOneModules={allInOneModulesList}
+      
       chooseTitle="Why Businesses Choose"
-      chooseHighlight="Vellko Service Management"
-      chooseSub1="Manual processes hinder productivity, increase response times, and negatively impact customer satisfaction."
-      chooseSub2="Vellko Service Management aids companies automatize their service operations, increase the efficiency of technicians, and providing extraordinary customer experiences."
-      chooseHeaderLeft="Service Challenge"
-      chooseHeaderRight="How Vellko Service Management Solves It"
+      chooseHighlight="Vellko Service Business ERP"
+      chooseSub1="Hand-managed service operations can slow the rate of growth of a business."
+      chooseSub2="Vellko Service Business ERP streamlines the process of servicing, boosts technician efficiency, decreases operational expenses and improves customer satisfaction, while providing full insight into all aspects of your company."
+      chooseHeaderLeft="Business Challenge"
+      chooseHeaderRight="How Vellko ERP Solves It"
       chooseRows={chooseRowsList}
-      worksTitle="How Vellko Service"
-      worksHighlight="Management Works"
-      worksSteps={worksStepsList}
-      supportTitle="Dedicated"
+      
+      worksTitle="How Vellko Service Business ERP"
+      worksHighlight="Works"
+      worksSteps={workflowStepsList}
+      
+      supportTitle="Dedicated ERP"
       supportHighlight="Implementation Support"
-      supportSub1="A successful implementation goes beyond the deployment of software."
-      supportSub2="Our experts assist in the creation of service workflows, including data migration, the onboarding of technicians, configuration, and long-term support to ensure a seamless transition."
-      supportSteps={supportStepsList}
+      supportSub1="Implementing ERP is not just about installing software."
+      supportSub2="It's about changing your business operations. Our experts in implementation help with data migration as well as workflow configuration inventory setup, financial Integration, training for employees and provide ongoing assistance to ensure a smooth transition."
+      supportSteps={supportIncludesList}
+      
       faqTitle="Frequently Asked"
       faqHighlight="Questions"
       faqIntroQ=""
       faqIntroA=""
       faqItems={faqItemsList}
-      ctaTitle="Deliver Better Service with Vellko Service Management"
-      ctaDesc="Replace the disconnected service processes with an intelligent platform that can help you handle service requests, improve field operations, increase customer satisfaction, and grow your business effectively."
-      badges={heroBadges}
-      // Common industry class names
+      
+      ctaTitle="Deliver Exceptional Service with Vellko Service Business ERP"
+      ctaDesc="Replace disconnected tools and manual processes with one intelligent platform that helps you manage customers, technicians, inventory, billing, and business operations—all from a single dashboard."
+      
       heroClass="industry-hero-section"
       beyondClass="industry-beyond-section"
       compareClass="industry-need-erp-section"

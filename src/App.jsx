@@ -36,6 +36,7 @@ function App() {
         <Route path="/finance-accounting" element={<FinanceAccounting />} />
         <Route path="/project-management" element={<ProjectManagement />} />
         <Route path="/service-management" element={<ServiceManagement />} />
+        <Route path="/service-business-erp" element={<ServiceManagement />} />
         <Route path="/healthcare-erp" element={<HealthcareErp />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/contact" element={<ContactUs />} />

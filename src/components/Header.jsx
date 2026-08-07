@@ -93,7 +93,7 @@ const industries = [
     title: "Service Business ERP", 
     desc: "Professional services billing & utilization.", 
     icon: Wrench,
-    href: "#"
+    href: "/service-business-erp"
   },
   { 
     title: "E-Commerce ERP", 
