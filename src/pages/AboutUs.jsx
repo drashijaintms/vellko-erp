@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Cpu, Search, Sliders, CheckCircle2, Activity, HelpCircle } from 'lucide-react';
-import aboutPhilosophyLaptop from '../assets/images/about-philosophy-laptop.jpg';
+import aboutPhilosophyLaptop from '../assets/images/about-philosophy-laptop.png';
 
 function AnimatedStatBadge({ target, suffix = '', isStatic = false, staticText = '' }) {
   const [count, setCount] = useState(0);
@@ -138,7 +138,7 @@ export default function AboutUs() {
                 alt="Vellko Workspace Conference Table and SaaS Dashboard" 
                 className="about-philosophy-image" 
               />
-              <div className="about-philosophy-image-overlay"></div>
+              
             </div>
             <div className="about-philosophy-stats-banner">
               <div className="about-philosophy-stats-grid">
