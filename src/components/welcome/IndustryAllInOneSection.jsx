@@ -81,7 +81,17 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
     { x: 15.0, y: 50.0 }
   ];
 
-  const ActiveIcon = iconMap[activeModule % iconMap.length];
+  const getPosition = (idx, total) => {
+    if (total === 8 && circularPositions[idx]) return circularPositions[idx];
+    const angle = (idx * (360 / total) - 90) * (Math.PI / 180);
+    const r = 35;
+    return {
+      x: +(50 + r * Math.cos(angle)).toFixed(1),
+      y: +(50 + r * Math.sin(angle)).toFixed(1)
+    };
+  };
+
+  const ActiveIcon = iconMap[activeModule % iconMap.length] || Boxes;
 
   return (
     <section className={customClass || 'all-in-one-section'}>
@@ -101,7 +111,7 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
             className={`mobile-module-tab ${activeModule === idx ? 'active' : ''}`}
             onClick={() => setActiveModule(idx)}
           >
-            {item.title.split(' & ')[0].split(' Management')[0]}
+            {item.title ? item.title.split(' & ')[0].split(' Management')[0] : ''}
           </button>
         ))}
       </div>
@@ -113,16 +123,16 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
               <div className="module-card-icon-container">
                 <ActiveIcon size={24} className="module-card-icon-svg" />
               </div>
-              <h3 className="module-card-title">{activeData.title}</h3>
+              <h3 className="module-card-title">{activeData?.title || ''}</h3>
             </div>
 
-            <p className="module-card-subtitle">{activeData.subtitle}</p>
-            <p className="module-card-desc">{activeData.desc}</p>
+            <p className="module-card-subtitle">{activeData?.subtitle || ''}</p>
+            <p className="module-card-desc">{activeData?.desc || ''}</p>
 
             <div className="module-features-title-row">Key Features</div>
 
             <ul className="module-features-list">
-              {activeData.features.map((feature, idx) => (
+              {(activeData?.features || []).map((feature, idx) => (
                 <li key={idx} className="module-feature-item">
                   <svg className="feature-checkbox-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect x="3" y="3" width="18" height="18" rx="4" stroke="#111827" strokeWidth="2" fill="none" />
@@ -142,21 +152,20 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
               xmlns="http://www.w3.org/2000/svg"
             >
               <defs>
-                {/* SVG Mask: Black areas set line opacity to 0 over all 8 text label regions */}
+                {/* SVG Mask: Black areas set line opacity to 0 over all text label regions */}
                 <mask id="textGapsMask">
                   <rect x="0" y="0" width="440" height="440" fill="white" />
-                  <circle cx="111.3" cy="111.3" r="44" fill="black" />
-                  <circle cx="220.0" cy="66.0"   r="44" fill="black" />
-                  <circle cx="328.7" cy="111.3" r="44" fill="black" />
-                  <circle cx="374.0" cy="220.0" r="44" fill="black" />
-                  <circle cx="328.7" cy="328.7" r="44" fill="black" />
-                  <circle cx="220.0" cy="374.0" r="44" fill="black" />
-                  <circle cx="111.3" cy="328.7" r="44" fill="black" />
-                  <circle cx="66.0"  cy="220.0" r="44" fill="black" />
+                  {modules.map((_, idx) => {
+                    const pos = getPosition(idx, modules.length);
+                    // Map % coordinates back to 440px SVG viewBox
+                    const cx = (pos.x / 100) * 440;
+                    const cy = (pos.y / 100) * 440;
+                    return <circle key={idx} cx={cx} cy={cy} r="44" fill="black" />;
+                  })}
                 </mask>
               </defs>
 
-              {/* Group masked by textGapsMask so line opacity is 0 under all 8 text labels */}
+              {/* Group masked by textGapsMask so line opacity is 0 under all text labels */}
               <g mask="url(#textGapsMask)">
                 {/* Outer gray ring — continuously rotates CLOCKWISE non-stop */}
                 <g className="ring-spin-cw">
@@ -187,7 +196,7 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
             {/* Circular Labels */}
             {modules.map((item, index) => {
               const isLabelActive = activeModule === index;
-              const pos = circularPositions[index];
+              const pos = getPosition(index, modules.length);
               return (
                 <button
                   key={index}
