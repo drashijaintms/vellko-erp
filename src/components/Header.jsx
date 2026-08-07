@@ -48,7 +48,7 @@ const erpModules = [
     title: "Biometric Attendance", 
     desc: "Real-time biometric sync & automated payroll.", 
     icon: Fingerprint,
-    href: "#"
+    href: "/biometric-attendance"
   }
 ];
 

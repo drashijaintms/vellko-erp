@@ -13,6 +13,7 @@ import FinanceAccounting from './pages/FinanceAccounting';
 import ProjectManagement from './pages/ProjectManagement';
 import ServiceManagement from './pages/ServiceManagement';
 import HealthcareErp from './pages/HealthcareErp';
+import BiometricAttendance from './pages/BiometricAttendance';
 import AboutUs from './pages/AboutUs';
 import ContactUs from './pages/ContactUs';
 import Footer from './components/Footer';
@@ -30,6 +31,7 @@ function App() {
         <Route path="/education-erp" element={<EducationErp />} />
         <Route path="/real-estate-erp" element={<RealEstateErp />} />
         <Route path="/hrms-payroll" element={<HrmsPayroll />} />
+        <Route path="/biometric-attendance" element={<BiometricAttendance />} />
         <Route path="/inventory-management" element={<InventoryManagement />} />
         <Route path="/finance-accounting" element={<FinanceAccounting />} />
         <Route path="/project-management" element={<ProjectManagement />} />
