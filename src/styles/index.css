@@ -5164,15 +5164,15 @@ margin-bottom:0px;
 }
 
 .contact-main-card {
-  background: #ffffff;
-  border-radius: 20px;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.04);
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  padding: 4rem;
-  gap: 4rem;
-  overflow: hidden;
+    background: #ffffff;
+    border-radius: 20px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.04);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 2rem;
+    gap: 2rem;
+    overflow: hidden;
 }
 
 .contact-left-col {
