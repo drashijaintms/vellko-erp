@@ -1,24 +1,30 @@
 import { Link } from 'react-router-dom';
 import logoImg from '../assets/images/logo-white.png';
 
-const erpCityLinks = [
-  { name: 'ERP Software Ahmedabad', path: '/contact' },
-  { name: 'ERP Software Surat', path: '/contact' },
-  { name: 'ERP Software Vadodara', path: '/contact' },
-  { name: 'ERP Software Rajkot', path: '/contact' },
-  { name: 'ERP Software Mumbai', path: '/contact' },
-  { name: 'ERP Software Pune', path: '/contact' },
-  { name: 'ERP Software Bangalore', path: '/contact' },
-  { name: 'ERP Software Hyderabad', path: '/contact' },
-  { name: 'ERP Software Delhi', path: '/contact' },
-  { name: 'ERP Software Chennai', path: '/contact' },
+const erpModules = [
+  { name: 'CRM & Lead Management', path: '/contact' },
+  { name: 'HRMS & Payroll', path: '/hrms-payroll' },
+  { name: 'Finance & Accounting', path: '/finance-accounting' },
+  { name: 'Inventory Management', path: '/inventory-management' },
+  { name: 'Project Management', path: '/project-management' },
+  { name: 'Service Management', path: '/service-management' },
+  { name: 'Biometric Attendance', path: '/biometric-attendance' },
+];
+
+const industries = [
+  { name: 'Manufacturing ERP', path: '/manufacturing-erp' },
+  { name: 'Retail ERP', path: '/retail-erp' },
+  { name: 'Distribution ERP', path: '/distribution-erp' },
+  { name: 'Healthcare ERP', path: '/healthcare-erp' },
+  { name: 'Education ERP', path: '/education-erp' },
+  { name: 'Real Estate ERP', path: '/real-estate-erp' },
+  { name: 'Service Business ERP', path: '/service-business-erp' },
+  { name: 'E-Commerce ERP', path: '/ecommerce-erp' },
 ];
 
 const quickLinks = [
   { name: 'Home', path: '/' },
   { name: 'Pricing', path: '/pricing' },
-  { name: 'ERP Modules', path: '/service-management' },
-  { name: 'Industries', path: '/manufacturing-erp' },
   { name: 'About Us', path: '/about' },
   { name: 'Contact Us', path: '/contact' },
   { name: 'Privacy Policy', path: '/contact' },
@@ -36,15 +42,15 @@ export default function Footer() {
             <img src={logoImg} alt="Vellko ERP" className="footer-logo" />
           </Link>
           <p className="footer-brand-desc">
-            All-in-One ERP Solution in India for CRM, HRMS, Payroll, Accounting, Inventory Management, Project Management, and Business Operations.
+            All-in-One ERP Solution for CRM, HRMS, Payroll, Accounting, Inventory Management, Project Management, and Business Operations.
           </p>
         </div>
 
-        {/* Column 2: ERP Solution in India */}
+        {/* Column 2: ERP Modules */}
         <div className="footer-links-col">
-          <h4 className="footer-col-heading">ERP SOLUTION IN INDIA</h4>
+          <h4 className="footer-col-heading">ERP MODULES</h4>
           <ul className="footer-link-list">
-            {erpCityLinks.map((item, idx) => (
+            {erpModules.map((item, idx) => (
               <li key={idx}>
                 <Link to={item.path} className="footer-link">{item.name}</Link>
               </li>
@@ -52,7 +58,19 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Column 3: Quick Links */}
+        {/* Column 3: Industries */}
+        <div className="footer-links-col">
+          <h4 className="footer-col-heading">INDUSTRIES</h4>
+          <ul className="footer-link-list">
+            {industries.map((item, idx) => (
+              <li key={idx}>
+                <Link to={item.path} className="footer-link">{item.name}</Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Column 4: Quick Links */}
         <div className="footer-links-col">
           <h4 className="footer-col-heading">QUICK LINKS</h4>
           <ul className="footer-link-list">
