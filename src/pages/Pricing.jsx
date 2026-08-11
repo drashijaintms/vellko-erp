@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Check, X } from 'lucide-react';
+import IndustryFinalCtaSection from '../components/welcome/IndustryFinalCtaSection';
 
 const currencies = [
   { id: '1', label: 'Dollars ($)', symbol: '$', rate: 0.012 },
@@ -310,13 +311,10 @@ export default function Pricing() {
       </section>
 
       {/* Bottom Callout */}
-      <section className="pricing-bottom-cta">
-        <div className="pricing-bottom-container">
-          <h2>Need a custom enterprise solution?</h2>
-          <p>Contact our experts to discuss custom volume pricing, dedicated cloud servers, and tailored SLAs.</p>
-          <Link to="/contact" className="cta-btn-filled">Talk to Enterprise Team</Link>
-        </div>
-      </section>
+      <IndustryFinalCtaSection 
+        title="Need a custom enterprise solution?"
+        desc="Contact our experts to discuss custom volume pricing, dedicated cloud servers, and tailored SLAs."
+      />
     </div>
   );
 }
