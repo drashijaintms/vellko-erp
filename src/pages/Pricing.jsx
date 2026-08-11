@@ -244,28 +244,16 @@ export default function Pricing() {
       <section className="pricing-matrix-section">
         <div className="pricing-matrix-container">
           <div className="pricing-table-wrapper">
-            {/* Fixed Left Column: Features Header */}
-            <div className="pricing-features-col">
-              <div className="pricing-col-header title-header">
-                <h3>Pick Your Plan</h3>
-                <p>Choose the right plan to accelerate your business growth.</p>
-              </div>
-              <div className="pricing-features-list">
-                {featureList.map((feature, idx) => (
-                  <div key={idx} className="feature-row-label">
-                    {feature}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Scrollable Right Columns: Plans */}
-            <div className="pricing-plans-cols">
-              {currentPlans.map((plan, pIdx) => (
-                <div key={pIdx} className={`pricing-plan-card ${plan.name === 'Elite' ? 'popular' : ''}`}>
-                  {plan.name === 'Elite' && <div className="popular-ribbon">Most Popular</div>}
-                  
-                  <div className="pricing-col-header plan-header">
+            <div className="pricing-table-scroll">
+              {/* Header Row */}
+              <div className="pricing-grid-row header-row">
+                <div className="pricing-grid-cell title-cell">
+                  <h3>Pick Your Plan</h3>
+                  <p>Choose the right plan to accelerate your business growth.</p>
+                </div>
+                {currentPlans.map((plan, pIdx) => (
+                  <div key={pIdx} className={`pricing-grid-cell plan-header-cell ${plan.name === 'Elite' ? 'popular' : ''}`}>
+                    {plan.name === 'Elite' && <div className="popular-ribbon">Most Popular</div>}
                     <h4 className="plan-title">{plan.name}</h4>
                     <div className="plan-price-area">
                       <span className="plan-price">{formatPrice(plan.price, plan.isFree)}</span>
@@ -275,27 +263,45 @@ export default function Pricing() {
                       {plan.isFree ? 'Get Started Free' : 'Start Free Trial'}
                     </Link>
                   </div>
+                ))}
+              </div>
 
-                  <div className="pricing-plan-features">
-                    {/* Row 0: Max Active Employees */}
-                    <div className="feature-cell text-cell">
-                      {plan.employees}
-                    </div>
-                    {/* Row 1: File Storage */}
-                    <div className="feature-cell text-cell">
-                      {plan.storage}
-                    </div>
-                    {/* Rows 2..42: Boolean Features */}
-                    {plan.features.map((isIncluded, fIdx) => (
-                      <div key={fIdx} className="feature-cell icon-cell">
+              {/* Row 0: Max Active Employees */}
+              <div className="pricing-grid-row">
+                <div className="pricing-grid-cell label-cell">Max Active Employees</div>
+                {currentPlans.map((plan, pIdx) => (
+                  <div key={pIdx} className={`pricing-grid-cell data-cell text-cell ${plan.name === 'Elite' ? 'popular' : ''}`}>
+                    {plan.employees}
+                  </div>
+                ))}
+              </div>
+
+              {/* Row 1: File Storage */}
+              <div className="pricing-grid-row">
+                <div className="pricing-grid-cell label-cell">File Storage</div>
+                {currentPlans.map((plan, pIdx) => (
+                  <div key={pIdx} className={`pricing-grid-cell data-cell text-cell ${plan.name === 'Elite' ? 'popular' : ''}`}>
+                    {plan.storage}
+                  </div>
+                ))}
+              </div>
+
+              {/* Rows 2..42: Feature Boolean List */}
+              {featureList.slice(2).map((featureName, fIdx) => (
+                <div key={fIdx} className="pricing-grid-row">
+                  <div className="pricing-grid-cell label-cell">{featureName}</div>
+                  {currentPlans.map((plan, pIdx) => {
+                    const isIncluded = plan.features[fIdx];
+                    return (
+                      <div key={pIdx} className={`pricing-grid-cell data-cell icon-cell ${plan.name === 'Elite' ? 'popular' : ''}`}>
                         {isIncluded ? (
                           <span className="need-icon-check">✓</span>
                         ) : (
                           <span className="need-icon-cross">✕</span>
                         )}
                       </div>
-                    ))}
-                  </div>
+                    );
+                  })}
                 </div>
               ))}
             </div>
