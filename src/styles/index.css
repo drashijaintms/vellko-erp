@@ -201,6 +201,28 @@ button {
   font-weight: 600;
 }
 
+.nav-link-contact-bold,
+.mobile-nav-contact-bold {
+  font-weight: 700 !important;
+  color: #111827;
+}
+
+.sign-in-nav-link {
+  font-weight: 600;
+  color: var(--primary);
+  margin-left: 0.25rem;
+  transition: color 0.2s ease;
+}
+
+.sign-in-nav-link:hover {
+  color: var(--primary-hover);
+}
+
+.sign-in-mobile-link {
+  font-weight: 700;
+  color: var(--primary) !important;
+}
+
 .chevron-icon {
   width: 14px;
   height: 14px;

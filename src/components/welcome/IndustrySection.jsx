@@ -90,7 +90,20 @@ export default function IndustrySection() {
 
           <div className="industry-bottom-actions-centered">
             <button className="industry-btn-filled">Explore Your Industry Solution</button>
-            <button className="industry-btn-outline">Get Started</button>
+            <button 
+              className="industry-btn-outline"
+              onClick={(e) => {
+                e.preventDefault();
+                const contactElem = document.getElementById('contact-form') || document.querySelector('.contact-main-card');
+                if (contactElem) {
+                  contactElem.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                  window.location.href = '/contact#contact-form';
+                }
+              }}
+            >
+              Start Free Trial
+            </button>
           </div>
         </div>
       </div>

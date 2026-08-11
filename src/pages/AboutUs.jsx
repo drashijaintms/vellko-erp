@@ -98,8 +98,29 @@ export default function AboutUs() {
             Vellko ERP is a trusted ERP software company in India, helping businesses streamline operations, improve efficiency, and accelerate growth through innovative technology.
           </p>
           <div className="about-hero-actions">
-            <button className="hero-btn-filled">Book Demo</button>
-            <button className="hero-btn-outline">Start Free Trial</button>
+            <a 
+              href="https://www.vellkoerp.com/signup" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="hero-btn-filled"
+              style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              Book Demo
+            </a>
+            <button 
+              className="hero-btn-outline"
+              onClick={(e) => {
+                e.preventDefault();
+                const contactElem = document.getElementById('contact-form') || document.querySelector('.contact-main-card');
+                if (contactElem) {
+                  contactElem.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                  window.location.href = '/contact#contact-form';
+                }
+              }}
+            >
+              Start Free Trial
+            </button>
           </div>
         </div>
       </section>

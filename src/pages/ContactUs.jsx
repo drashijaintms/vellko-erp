@@ -59,7 +59,7 @@ export default function ContactUs() {
       <div className="contact-page-container">
         <h1 className="contact-title animate-fade-in">Contact Us</h1>
 
-        <div className="contact-main-card animate-fade-in">
+        <div className="contact-main-card animate-fade-in" id="contact-form">
           {/* Left Column - Form */}
           <div className="contact-left-col">
             <form onSubmit={handleSubmit}>
