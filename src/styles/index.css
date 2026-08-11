@@ -13,8 +13,8 @@
   --border-color: rgba(0, 0, 0, 0.06);
   
   /* Fonts */
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-nav: 'Montserrat', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Poppins', sans-serif;
+  --font-nav: 'Poppins', sans-serif;
   --font-heading: 'Roboto Serif', Georgia, serif;
   --font-body: 'Poppins', sans-serif;
   --font-display: 'Roboto Serif', Georgia, serif;
@@ -78,7 +78,7 @@ h2, .h2, .h2.need-centered-title {
 }
 
 h3, .h3 {
-  font-family: var(--font-body);
+  font-family: var(--font-heading);
   font-size: 1.4rem;
   font-weight: 600;
   color: #000000;
@@ -98,7 +98,7 @@ h4, .h4 {
 }
 
 h5, .h5 {
-  font-family: var(--font-body);
+  font-family: var(--font-heading);
   font-size: 1.15rem;
   font-weight: 600;
   color: #000000;
@@ -5338,7 +5338,7 @@ margin-bottom:0px;
 
 .contact-info-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 1rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid #e5e7eb;
@@ -5361,26 +5361,29 @@ margin-bottom:0px;
   justify-content: center;
   flex-shrink: 0;
   box-shadow: 0 4px 12px rgba(220, 20, 54, 0.25);
+  margin-top: 2px;
 }
 
 .contact-info-text-group {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  display: block;
+  flex: 1;
 }
 
 .contact-info-label {
-  font-family: var(--font-nav);
+  font-family: var(--font-body);
   font-size: 0.95rem;
   font-weight: 700;
   color: #111827;
+  display: inline;
+  margin-right: 0.35rem;
 }
 
 .contact-info-value {
   font-family: var(--font-body);
   font-size: 0.95rem;
   color: #4b5563;
+  display: inline;
+  word-break: break-word;
 }
 
 .contact-social-section {
