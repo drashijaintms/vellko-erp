@@ -199,7 +199,6 @@ export default function Header() {
           </a>
           
           <Link to="/about" className="nav-link">About Us</Link>
-          <Link to="/contact" className="nav-link nav-link-contact-bold">Contact</Link>
         </nav>
 
         {/* Action Controls */}
@@ -309,9 +308,6 @@ export default function Header() {
             
             <Link to="/about" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>
               About Us
-            </Link>
-            <Link to="/contact" className="mobile-nav-link mobile-nav-contact-bold" onClick={() => setMobileMenuOpen(false)}>
-              Contact
             </Link>
             <Link 
               to="/contact" 

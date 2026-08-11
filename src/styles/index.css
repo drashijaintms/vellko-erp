@@ -5204,24 +5204,24 @@ margin-bottom:0px;
 
 .contact-right-col {
   border-left: 1.5px solid #e5e7eb;
-  padding-left: 4rem;
+  padding-left: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: 2.5rem;
+  gap: 1rem;
 }
 
 .contact-form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
 }
 
 .contact-form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .contact-form-group.full-width {
@@ -5230,23 +5230,29 @@ margin-bottom:0px;
 
 .contact-label {
   font-family: var(--font-nav);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  color: #374151;
+  color: #000000;
 }
 
 .contact-input,
 .contact-select,
 .contact-textarea {
   font-family: var(--font-body);
-  font-size: 0.95rem;
-  padding: 0.85rem 1.1rem;
-  background-color: #f9fafb;
-  border: 1.5px solid #d1d5db;
-  border-radius: 8px;
+  font-size: 0.9rem;
+  padding: 0.75rem 1rem;
+  background-color: #f4f4f4;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
   color: #111827;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
   width: 100%;
+}
+
+.contact-input::placeholder,
+.contact-textarea::placeholder {
+  color: #b0b0b0;
+  opacity: 1;
 }
 
 .contact-input:focus,
@@ -5254,7 +5260,7 @@ margin-bottom:0px;
 .contact-textarea:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3.5px rgba(220, 20, 54, 0.12);
+  box-shadow: 0 0 0 3px rgba(220, 20, 54, 0.12);
   background-color: #ffffff;
 }
 
@@ -5326,15 +5332,15 @@ margin-bottom:0px;
 .contact-info-list {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1rem;
   width: 100%;
 }
 
 .contact-info-item {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
-  padding-bottom: 1.15rem;
+  gap: 1rem;
+  padding-bottom: 1rem;
   border-bottom: 1px solid #e5e7eb;
   width: 100%;
 }
@@ -5345,8 +5351,8 @@ margin-bottom:0px;
 }
 
 .contact-info-icon-circle {
-  width: 48px;
-  height: 48px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   background-color: var(--primary);
   color: #ffffff;

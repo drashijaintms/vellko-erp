@@ -89,13 +89,13 @@ export default function ContactUs() {
                 </div>
 
                 <div className="contact-form-group">
-                  <label htmlFor="jobTitle" className="contact-label">Job Title / Role</label>
+                  <label htmlFor="jobTitle" className="contact-label">Job Title / Role-</label>
                   <input type="text" id="jobTitle" name="jobTitle" placeholder="Enter your role"
                     value={formData.jobTitle} onChange={handleChange} className="contact-input" required />
                 </div>
 
                 <div className="contact-form-group">
-                  <label htmlFor="companySize" className="contact-label">Company Size</label>
+                  <label htmlFor="companySize" className="contact-label">Company Size-</label>
                   <select id="companySize" name="companySize" value={formData.companySize}
                     onChange={handleChange} className="contact-select">
                     <option value="1-10 employees">1-10 employees</option>
