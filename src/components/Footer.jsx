@@ -1,26 +1,27 @@
+import { Link } from 'react-router-dom';
 import logoImg from '../assets/images/logo-white.png';
 
 const erpCityLinks = [
-  'ERP Software Ahmedabad',
-  'ERP Software Surat',
-  'ERP Software Vadodara',
-  'ERP Software Rajkot',
-  'ERP Software Mumbai',
-  'ERP Software Pune',
-  'ERP Software Bangalore',
-  'ERP Software Hyderabad',
-  'ERP Software Delhi',
-  'ERP Software Chennai',
+  { name: 'ERP Software Ahmedabad', path: '/contact' },
+  { name: 'ERP Software Surat', path: '/contact' },
+  { name: 'ERP Software Vadodara', path: '/contact' },
+  { name: 'ERP Software Rajkot', path: '/contact' },
+  { name: 'ERP Software Mumbai', path: '/contact' },
+  { name: 'ERP Software Pune', path: '/contact' },
+  { name: 'ERP Software Bangalore', path: '/contact' },
+  { name: 'ERP Software Hyderabad', path: '/contact' },
+  { name: 'ERP Software Delhi', path: '/contact' },
+  { name: 'ERP Software Chennai', path: '/contact' },
 ];
 
 const quickLinks = [
-  'Home',
-  'ERP Modules',
-  'Industries',
-  'About Us',
-  'Contact Us',
-  'Privacy Policy',
-  'Terms & Conditions',
+  { name: 'Home', path: '/' },
+  { name: 'ERP Modules', path: '/service-management' },
+  { name: 'Industries', path: '/manufacturing-erp' },
+  { name: 'About Us', path: '/about' },
+  { name: 'Contact Us', path: '/contact' },
+  { name: 'Privacy Policy', path: '/contact' },
+  { name: 'Terms & Conditions', path: '/contact' },
 ];
 
 export default function Footer() {
@@ -30,7 +31,9 @@ export default function Footer() {
 
         {/* Column 1: Brand */}
         <div className="footer-brand-col">
-          <img src={logoImg} alt="Vellko ERP" className="footer-logo" />
+          <Link to="/" className="footer-logo-link">
+            <img src={logoImg} alt="Vellko ERP" className="footer-logo" />
+          </Link>
           <p className="footer-brand-desc">
             All-in-One ERP Solution in India for CRM, HRMS, Payroll, Accounting, Inventory Management, Project Management, and Business Operations.
           </p>
@@ -40,9 +43,9 @@ export default function Footer() {
         <div className="footer-links-col">
           <h4 className="footer-col-heading">ERP SOLUTION IN INDIA</h4>
           <ul className="footer-link-list">
-            {erpCityLinks.map((link) => (
-              <li key={link}>
-                <a href="#" className="footer-link">{link}</a>
+            {erpCityLinks.map((item, idx) => (
+              <li key={idx}>
+                <Link to={item.path} className="footer-link">{item.name}</Link>
               </li>
             ))}
           </ul>
@@ -52,9 +55,9 @@ export default function Footer() {
         <div className="footer-links-col">
           <h4 className="footer-col-heading">QUICK LINKS</h4>
           <ul className="footer-link-list">
-            {quickLinks.map((link) => (
-              <li key={link}>
-                <a href="#" className="footer-link">{link}</a>
+            {quickLinks.map((item, idx) => (
+              <li key={idx}>
+                <Link to={item.path} className="footer-link">{item.name}</Link>
               </li>
             ))}
           </ul>

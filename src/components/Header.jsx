@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { 
   Menu, X, ChevronDown, 
   Users, UserCheck, DollarSign, Boxes, Briefcase, LifeBuoy, Fingerprint,
@@ -104,6 +104,7 @@ const industries = [
 ];
 
 export default function Header() {
+  const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileModulesOpen, setMobileModulesOpen] = useState(false);
   const [mobileIndustriesOpen, setMobileIndustriesOpen] = useState(false);
@@ -118,7 +119,7 @@ export default function Header() {
 
         {/* Navigation Links (Desktop) */}
         <nav className="desktop-nav">
-          <Link to="/" className="nav-link active">Home</Link>
+          <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>Home</Link>
           
           <div className="nav-dropdown-item">
             <a href="#" className="nav-link">
@@ -198,7 +199,7 @@ export default function Header() {
             Pricing
           </a>
           
-          <Link to="/about" className="nav-link">About Us</Link>
+          <Link to="/about" className={`nav-link ${location.pathname === '/about' ? 'active' : ''}`}>About Us</Link>
         </nav>
 
         {/* Action Controls */}
