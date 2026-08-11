@@ -15,28 +15,6 @@ const iconMap = [
   BarChart3
 ];
 
-const sectorAngles = [
-  { start: 324, end: 351 },
-  { start: 9,   end: 36  },
-  { start: 54,  end: 81  },
-  { start: 99,  end: 126 },
-  { start: 144, end: 171 },
-  { start: 189, end: 216 },
-  { start: 234, end: 261 },
-  { start: 279, end: 306 }
-];
-
-const getArcPath = (startAngle, endAngle, radius) => {
-  const startRad = ((startAngle - 90) * Math.PI) / 180;
-  const endRad = ((endAngle - 90) * Math.PI) / 180;
-  const x1 = 220 + radius * Math.cos(startRad);
-  const y1 = 220 + radius * Math.sin(startRad);
-  const x2 = 220 + radius * Math.cos(endRad);
-  const y2 = 220 + radius * Math.sin(endRad);
-  const largeArcFlag = endAngle - startAngle <= 180 ? 0 : 1;
-  return `M ${x1},${y1} A ${radius},${radius} 0 ${largeArcFlag},1 ${x2},${y2}`;
-};
-
 export default function IndustryAllInOneSection({ title, highlight, tagline, desc, modules, customClass }) {
   if (!modules || modules.length === 0) return null;
 
@@ -52,7 +30,7 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
       const delta = currentScrollY - lastScrollY.current;
       lastScrollY.current = currentScrollY;
 
-      // Rotate rings on scroll (0.25deg per scrolled pixel)
+      // Rotate rings on scroll (0.2deg per scrolled pixel)
       setRingRotation(prev => prev + delta * 0.25);
 
       if (window.innerWidth <= 1024) return;
@@ -172,28 +150,47 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
               viewBox="0 0 440 440"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              style={{ transform: `rotate(${ringRotation}deg)`, transition: 'transform 0.1s linear' }}
             >
-              {sectorAngles.map((sector, index) => (
-                <g key={index}>
-                  {/* Outer Grey Arc */}
-                  <path
-                    d={getArcPath(sector.start, sector.end, 156)}
+              <defs>
+                {/* SVG Mask: Black areas set line opacity to 0 over all text label regions */}
+                <mask id="textGapsMask">
+                  <rect x="0" y="0" width="440" height="440" fill="white" />
+                  {modules.map((_, idx) => {
+                    const pos = getPosition(idx, modules.length);
+                    // Map % coordinates back to 440px SVG viewBox
+                    const cx = (pos.x / 100) * 440;
+                    const cy = (pos.y / 100) * 440;
+                    return <circle key={idx} cx={cx} cy={cy} r="44" fill="black" />;
+                  })}
+                </mask>
+              </defs>
+
+              {/* Group masked by textGapsMask so line opacity is 0 under all text labels */}
+              <g mask="url(#textGapsMask)">
+                {/* Outer gray ring — continuously rotates CLOCKWISE non-stop */}
+                <g className="ring-spin-cw">
+                  <circle
+                    cx="220" cy="220" r="156"
                     stroke="#cbd5e1"
-                    strokeWidth={1.5}
+                    strokeWidth="1.5"
                     strokeLinecap="round"
-                    fill="none"
-                  />
-                  {/* Inner Red Arc */}
-                  <path
-                    d={getArcPath(sector.start, sector.end, 150)}
-                    stroke="#DC1436"
-                    strokeWidth={1.5}
-                    strokeLinecap="round"
+                    strokeDasharray="80 30"
                     fill="none"
                   />
                 </g>
-              ))}
+
+                {/* Inner red ring — continuously rotates COUNTER-CLOCKWISE non-stop */}
+                <g className="ring-spin-ccw">
+                  <circle
+                    cx="220" cy="220" r="150"
+                    stroke="#DC1436"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeDasharray="70 25"
+                    fill="none"
+                  />
+                </g>
+              </g>
             </svg>
 
             {/* Circular Labels */}
