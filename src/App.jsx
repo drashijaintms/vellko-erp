@@ -17,6 +17,7 @@ import HealthcareErp from './pages/HealthcareErp';
 import BiometricAttendance from './pages/BiometricAttendance';
 import AboutUs from './pages/AboutUs';
 import ContactUs from './pages/ContactUs';
+import Pricing from './pages/Pricing';
 import Footer from './components/Footer';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Welcome />} />
+        <Route path="/pricing" element={<Pricing />} />
         <Route path="/ecommerce-erp" element={<EcommerceErp />} />
         <Route path="/manufacturing-erp" element={<ManufacturingErp />} />
         <Route path="/retail-erp" element={<RetailErp />} />

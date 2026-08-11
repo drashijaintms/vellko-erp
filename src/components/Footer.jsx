@@ -16,6 +16,7 @@ const erpCityLinks = [
 
 const quickLinks = [
   { name: 'Home', path: '/' },
+  { name: 'Pricing', path: '/pricing' },
   { name: 'ERP Modules', path: '/service-management' },
   { name: 'Industries', path: '/manufacturing-erp' },
   { name: 'About Us', path: '/about' },

@@ -195,9 +195,9 @@ export default function Header() {
             </div>
           </div>
           
-          <a href="#" className="nav-link">
+          <Link to="/pricing" className={`nav-link ${location.pathname === '/pricing' ? 'active' : ''}`}>
             Pricing
-          </a>
+          </Link>
           
           <Link to="/about" className={`nav-link ${location.pathname === '/about' ? 'active' : ''}`}>About Us</Link>
         </nav>
@@ -303,9 +303,9 @@ export default function Header() {
               )}
             </div>
 
-            <a href="#" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>
+            <Link to="/pricing" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>
               Pricing
-            </a>
+            </Link>
             
             <Link to="/about" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>
               About Us

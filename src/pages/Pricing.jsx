@@ -1,0 +1,316 @@
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Check, X } from 'lucide-react';
+
+const currencies = [
+  { id: '1', label: 'Dollars ($)', symbol: '$', rate: 0.012 },
+  { id: '2', label: 'Pounds (£)', symbol: '£', rate: 0.0095 },
+  { id: '3', label: 'Euros (€)', symbol: '€', rate: 0.011 },
+  { id: '4', label: 'Rupee (₹)', symbol: '₹', rate: 1 },
+];
+
+const featureList = [
+  "Max Active Employees",
+  "File Storage",
+  "Clients",
+  "Employees",
+  "Projects",
+  "Attendance",
+  "Tasks",
+  "Estimates",
+  "Invoices",
+  "Payments",
+  "Time Logs",
+  "Tickets",
+  "Events",
+  "Notices",
+  "Leaves",
+  "Leads",
+  "Holidays",
+  "Products",
+  "Expenses",
+  "Contracts",
+  "Reports",
+  "Orders",
+  "Knowledge Base",
+  "Bank Account",
+  "Messages",
+  "Performance",
+  "Payroll",
+  "Purchase",
+  "AI Tools",
+  "Assets",
+  "Zoom",
+  "Recruit",
+  "Biolinks",
+  "Biometric",
+  "Webhooks",
+  "Group Message",
+  "SMS",
+  "Onboarding",
+  "Policy Center",
+  "Server Manager",
+  "QR Code",
+  "Custom Domain",
+  "Letter"
+];
+
+// Plans matrix mapping: key represents feature index
+// Values for index 0 (Employees) and 1 (Storage): string values
+// Values for index 2..42: boolean (true = check, false = cross)
+const plansData = {
+  monthly: [
+    {
+      name: "Default",
+      price: 0,
+      period: "Free forever",
+      isFree: true,
+      employees: "1",
+      storage: "500 MB",
+      features: [
+        true, true, true, true, true, true, true, true, true, true,
+        true, true, true, true, true, true, true, true, true, true,
+        true, true, true, true, true, true, true, true, true, true,
+        true, true, true, true, true, true, true, true, true, true, true
+      ]
+    },
+    {
+      name: "Basic",
+      price: 6500,
+      period: "Billed Monthly",
+      isFree: false,
+      employees: "50",
+      storage: "32 GB",
+      features: [
+        false, true, false, true, false, false, false, false, true, false,
+        false, false, true, false, true, false, false, false, false, false,
+        false, false, false, false, false, false, false, false, false, false,
+        false, false, false, true, false, false, true, false, false, false, false
+      ]
+    },
+    {
+      name: "Enterprises",
+      price: 12000,
+      period: "Billed Monthly",
+      isFree: false,
+      employees: "50",
+      storage: "64 GB",
+      features: [
+        false, true, false, true, true, false, false, false, true, false,
+        false, false, true, false, true, false, false, false, false, false,
+        false, false, false, true, true, false, false, false, false, false,
+        false, true, false, true, false, true, true, false, false, false, false
+      ]
+    },
+    {
+      name: "Elite",
+      price: 25000,
+      period: "Billed Monthly",
+      isFree: false,
+      employees: "47",
+      storage: "98 GB",
+      features: [
+        true, true, true, true, true, true, true, true, true, true,
+        true, true, true, true, true, true, true, true, true, true,
+        true, true, true, true, true, true, true, true, true, true,
+        true, true, true, true, true, true, true, true, true, true, true
+      ]
+    }
+  ],
+  yearly: [
+    {
+      name: "Default",
+      price: 0,
+      period: "Free forever",
+      isFree: true,
+      employees: "1",
+      storage: "500 MB",
+      features: [
+        true, true, true, true, true, true, true, true, true, true,
+        true, true, true, true, true, true, true, true, true, true,
+        true, true, true, true, true, true, true, true, true, true,
+        true, true, true, true, true, true, true, true, true, true, true
+      ]
+    },
+    {
+      name: "Basic",
+      price: 78000,
+      period: "Billed Annually",
+      isFree: false,
+      employees: "50",
+      storage: "32 GB",
+      features: [
+        false, true, false, true, false, false, false, false, true, false,
+        false, false, true, false, true, false, false, false, false, false,
+        false, false, false, false, false, false, false, false, false, false,
+        false, false, false, true, false, false, true, false, false, false, false
+      ]
+    },
+    {
+      name: "Enterprises",
+      price: 144000,
+      period: "Billed Annually",
+      isFree: false,
+      employees: "50",
+      storage: "64 GB",
+      features: [
+        false, true, false, true, true, false, false, false, true, false,
+        false, false, true, false, true, false, false, false, false, false,
+        false, false, false, true, true, false, false, false, false, false,
+        false, true, false, true, false, true, true, false, false, false, false
+      ]
+    },
+    {
+      name: "Elite",
+      price: 300000,
+      period: "Billed Annually",
+      isFree: false,
+      employees: "Unlimited",
+      storage: "Unlimited",
+      features: [
+        true, true, true, true, true, true, true, true, true, true,
+        true, true, true, true, true, true, true, true, true, true,
+        true, true, true, true, true, true, true, true, true, true,
+        true, true, true, true, true, true, true, true, true, true, true
+      ]
+    }
+  ]
+};
+
+export default function Pricing() {
+  const [currency, setCurrency] = useState('4'); // Default Rupee (₹)
+  const [billingCycle, setBillingCycle] = useState('yearly'); // 'monthly' | 'yearly'
+
+  const activeCurrency = currencies.find(c => c.id === currency) || currencies[3];
+
+  const formatPrice = (priceInINR, isFree) => {
+    if (isFree) return 'Free';
+    const converted = Math.round(priceInINR * activeCurrency.rate);
+    return `${activeCurrency.symbol}${converted.toLocaleString()}`;
+  };
+
+  const currentPlans = plansData[billingCycle];
+
+  return (
+    <div className="pricing-page-wrapper">
+      {/* Hero Header */}
+      <section className="pricing-hero-section">
+        <div className="pricing-hero-container">
+          <span className="pricing-badge">Simple & Transparent Pricing</span>
+          <h1 className="pricing-main-heading">Affordable Pricing</h1>
+          <p className="pricing-sub-desc">
+            Vellko ERP for Teams is a single workspace for your small- to medium-sized company or team.
+          </p>
+
+          {/* Controls Bar: Currency & Cycle Toggle */}
+          <div className="pricing-controls-bar">
+            <div className="currency-selector-wrapper">
+              <label htmlFor="currency-select" className="currency-label">Currency:</label>
+              <select 
+                id="currency-select"
+                className="currency-dropdown"
+                value={currency}
+                onChange={(e) => setCurrency(e.target.value)}
+              >
+                {currencies.map((curr) => (
+                  <option key={curr.id} value={curr.id}>
+                    {curr.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="billing-toggle-container">
+              <button 
+                type="button"
+                className={`billing-tab ${billingCycle === 'monthly' ? 'active' : ''}`}
+                onClick={() => setBillingCycle('monthly')}
+              >
+                Monthly
+              </button>
+              <button 
+                type="button"
+                className={`billing-tab ${billingCycle === 'yearly' ? 'active' : ''}`}
+                onClick={() => setBillingCycle('yearly')}
+              >
+                Annually <span className="save-badge">Save up to 20%</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Comparison Table Section */}
+      <section className="pricing-matrix-section">
+        <div className="pricing-matrix-container">
+          <div className="pricing-table-wrapper">
+            {/* Fixed Left Column: Features Header */}
+            <div className="pricing-features-col">
+              <div className="pricing-col-header title-header">
+                <h3>Pick Your Plan</h3>
+                <p>Choose the right plan to accelerate your business growth.</p>
+              </div>
+              <div className="pricing-features-list">
+                {featureList.map((feature, idx) => (
+                  <div key={idx} className="feature-row-label">
+                    {feature}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Scrollable Right Columns: Plans */}
+            <div className="pricing-plans-cols">
+              {currentPlans.map((plan, pIdx) => (
+                <div key={pIdx} className={`pricing-plan-card ${plan.name === 'Elite' ? 'popular' : ''}`}>
+                  {plan.name === 'Elite' && <div className="popular-ribbon">Most Popular</div>}
+                  
+                  <div className="pricing-col-header plan-header">
+                    <h4 className="plan-title">{plan.name}</h4>
+                    <div className="plan-price-area">
+                      <span className="plan-price">{formatPrice(plan.price, plan.isFree)}</span>
+                      <span className="plan-period">{plan.period}</span>
+                    </div>
+                    <Link to="/contact" className={`plan-cta-btn ${plan.isFree ? 'btn-secondary' : 'btn-primary'}`}>
+                      {plan.isFree ? 'Get Started Free' : 'Start Free Trial'}
+                    </Link>
+                  </div>
+
+                  <div className="pricing-plan-features">
+                    {/* Row 0: Max Active Employees */}
+                    <div className="feature-cell text-cell">
+                      {plan.employees}
+                    </div>
+                    {/* Row 1: File Storage */}
+                    <div className="feature-cell text-cell">
+                      {plan.storage}
+                    </div>
+                    {/* Rows 2..42: Boolean Features */}
+                    {plan.features.map((isIncluded, fIdx) => (
+                      <div key={fIdx} className="feature-cell icon-cell">
+                        {isIncluded ? (
+                          <span className="check-icon"><Check size={18} strokeWidth={3} /></span>
+                        ) : (
+                          <span className="cross-icon"><X size={16} strokeWidth={2.5} /></span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Bottom Callout */}
+      <section className="pricing-bottom-cta">
+        <div className="pricing-bottom-container">
+          <h2>Need a custom enterprise solution?</h2>
+          <p>Contact our experts to discuss custom volume pricing, dedicated cloud servers, and tailored SLAs.</p>
+          <Link to="/contact" className="cta-btn-filled">Talk to Enterprise Team</Link>
+        </div>
+      </section>
+    </div>
+  );
+}
