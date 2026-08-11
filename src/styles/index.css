@@ -5829,16 +5829,22 @@ margin-bottom:0px;
   color: #111827;
 }
 
-.check-icon {
-  color: var(--primary);
-  display: flex;
+.need-icon-check {
+  color: #2563eb;
+  font-weight: 800;
+  font-size: 1.25rem;
+  line-height: 1;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
-.cross-icon {
-  color: #d1d5db;
-  display: flex;
+.need-icon-cross {
+  color: #9ca3af;
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
 }

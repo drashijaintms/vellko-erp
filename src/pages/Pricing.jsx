@@ -289,9 +289,9 @@ export default function Pricing() {
                     {plan.features.map((isIncluded, fIdx) => (
                       <div key={fIdx} className="feature-cell icon-cell">
                         {isIncluded ? (
-                          <span className="check-icon"><Check size={18} strokeWidth={3} /></span>
+                          <span className="need-icon-check">✓</span>
                         ) : (
-                          <span className="cross-icon"><X size={16} strokeWidth={2.5} /></span>
+                          <span className="need-icon-cross">✕</span>
                         )}
                       </div>
                     ))}
