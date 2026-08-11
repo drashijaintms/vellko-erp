@@ -119,7 +119,7 @@ export default function ContactUs() {
               <div className="contact-form-actions">
                 <button type="submit" className="contact-btn-send">Send message</button>
                 <button type="button" className="contact-btn-call"
-                  onClick={() => window.open('tel:+911204567900')}>Call Now</button>
+                  onClick={() => window.open('tel:+917880107201')}>Call Now</button>
               </div>
             </form>
           </div>
@@ -136,7 +136,7 @@ export default function ContactUs() {
                 <div className="contact-info-icon-circle"><Phone size={20} /></div>
                 <div className="contact-info-text-group">
                   <span className="contact-info-label">Contact No:</span>
-                  <span className="contact-info-value">+91 120 456 7900</span>
+                  <span className="contact-info-value">+91-7880107201</span>
                 </div>
               </div>
 
@@ -144,7 +144,7 @@ export default function ContactUs() {
                 <div className="contact-info-icon-circle"><Mail size={20} /></div>
                 <div className="contact-info-text-group">
                   <span className="contact-info-label">Mail ID:</span>
-                  <span className="contact-info-value">info@vellkoerp.com</span>
+                  <span className="contact-info-value">support@vellkoerp.com</span>
                 </div>
               </div>
 
@@ -152,7 +152,7 @@ export default function ContactUs() {
                 <div className="contact-info-icon-circle"><MapPin size={20} /></div>
                 <div className="contact-info-text-group">
                   <span className="contact-info-label">Address:</span>
-                  <span className="contact-info-value">Pune, India</span>
+                  <span className="contact-info-value">Phoenix Corporate Park, Survey No. 359/2 & 359/3, Back Part 2nd Floor, Hoshangabad Road, Bhopal, Madhya Pradesh-462026, India</span>
                 </div>
               </div>
 

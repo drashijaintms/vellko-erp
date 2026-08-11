@@ -66,11 +66,11 @@ export default function Footer() {
           <ul className="footer-contact-list">
             <li>
               <span className="footer-contact-icon">📞</span>
-              <a href="tel:+911204567900" className="footer-link">+91 120 456 7900</a>
+              <a href="tel:+917880107201" className="footer-link">+91-7880107201</a>
             </li>
             <li>
               <span className="footer-contact-icon">✉️</span>
-              <a href="mailto:info@vellkoerp.com" className="footer-link">info@vellkoerp.com</a>
+              <a href="mailto:support@vellkoerp.com" className="footer-link">support@vellkoerp.com</a>
             </li>
             <li>
               <span className="footer-contact-icon">🌐</span>
@@ -78,7 +78,7 @@ export default function Footer() {
             </li>
             <li>
               <span className="footer-contact-icon">📍</span>
-              <span className="footer-link">India</span>
+              <span className="footer-link">Phoenix Corporate Park, Hoshangabad Road, Bhopal, MP - 462026, India</span>
             </li>
           </ul>
 
