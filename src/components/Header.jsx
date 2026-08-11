@@ -200,35 +200,27 @@ export default function Header() {
           
           <Link to="/about" className="nav-link">About Us</Link>
           <Link to="/contact" className="nav-link nav-link-contact-bold">Contact</Link>
-          <a href="https://www.vellkoerp.com/signin" target="_blank" rel="noopener noreferrer" className="nav-link sign-in-nav-link">Sign In</a>
         </nav>
 
         {/* Action Controls */}
         <div className="action-controls">
-          <a 
-            href="https://www.vellkoerp.com/signup" 
-            target="_blank" 
-            rel="noopener noreferrer" 
+          <Link 
+            to="/contact" 
             className="cta-btn-outline"
             style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
           >
-            Book Demo
-          </a>
+            Contact
+          </Link>
 
-          <button 
+          <a 
+            href="https://www.vellkoerp.com/signin" 
+            target="_blank" 
+            rel="noopener noreferrer" 
             className="cta-btn-filled"
-            onClick={(e) => {
-              e.preventDefault();
-              const contactElem = document.getElementById('contact-form') || document.querySelector('.contact-main-card');
-              if (contactElem) {
-                contactElem.scrollIntoView({ behavior: 'smooth' });
-              } else {
-                window.location.href = '/contact#contact-form';
-              }
-            }}
+            style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
           >
-            Start Free Trial
-          </button>
+            Sign In
+          </a>
 
           {/* Mobile Menu Toggle */}
           <button 
@@ -321,39 +313,24 @@ export default function Header() {
             <Link to="/contact" className="mobile-nav-link mobile-nav-contact-bold" onClick={() => setMobileMenuOpen(false)}>
               Contact
             </Link>
-            <a 
-              href="https://www.vellkoerp.com/signin" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="mobile-nav-link sign-in-mobile-link"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Sign In
-            </a>
-            <a 
-              href="https://www.vellkoerp.com/signup" 
-              target="_blank" 
-              rel="noopener noreferrer" 
+            <Link 
+              to="/contact" 
               className="mobile-cta-btn-outline" 
               style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               onClick={() => setMobileMenuOpen(false)}
             >
-              Book Demo
-            </a>
-            <button 
-              className="mobile-cta-btn-filled" 
-              onClick={(e) => {
-                setMobileMenuOpen(false);
-                const contactElem = document.getElementById('contact-form') || document.querySelector('.contact-main-card');
-                if (contactElem) {
-                  contactElem.scrollIntoView({ behavior: 'smooth' });
-                } else {
-                  window.location.href = '/contact#contact-form';
-                }
-              }}
+              Contact
+            </Link>
+            <a 
+              href="https://www.vellkoerp.com/signin" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="mobile-cta-btn-filled"
+              style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              onClick={() => setMobileMenuOpen(false)}
             >
-              Start Free Trial
-            </button>
+              Sign In
+            </a>
           </nav>
         </div>
       )}
