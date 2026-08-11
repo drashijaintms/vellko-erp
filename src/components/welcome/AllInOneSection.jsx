@@ -189,11 +189,20 @@ const getArcPath = (startAngle, endAngle, radius) => {
 
 export default function AllInOneSection() {
   const [activeModule, setActiveModule] = useState(0);
+  const [ringRotation, setRingRotation] = useState(0);
   const activeData = modulesData[activeModule];
   const scrollWrapperRef = useRef(null);
+  const lastScrollY = useRef(typeof window !== 'undefined' ? window.scrollY : 0);
 
   useEffect(() => {
     const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const delta = currentScrollY - lastScrollY.current;
+      lastScrollY.current = currentScrollY;
+
+      // Rotate rings on scroll (0.25deg per scrolled pixel)
+      setRingRotation(prev => prev + delta * 0.25);
+
       if (window.innerWidth <= 1024) return;
       if (!scrollWrapperRef.current) return;
       
@@ -210,7 +219,7 @@ export default function AllInOneSection() {
       setActiveModule(index);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -291,8 +300,13 @@ export default function AllInOneSection() {
         </div>
 
         <div className="circular-graphic-container">
-          {/* SVG containing concentric rings and split alternating arcs */}
-          <svg className="circular-ring-svg" viewBox="0 0 440 440" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg 
+            className="circular-ring-svg" 
+            viewBox="0 0 440 440" 
+            fill="none" 
+            xmlns="http://www.w3.org/2000/svg"
+            style={{ transform: `rotate(${ringRotation}deg)`, transition: 'transform 0.1s linear' }}
+          >
             {sectorAngles.map((sector, index) => {
               const outerColor = '#cbd5e1';
               const innerColor = '#DC1436';
