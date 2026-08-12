@@ -152,7 +152,7 @@ export default function ContactUs() {
                 <div className="contact-info-icon-circle"><MapPin size={20} /></div>
                 <div className="contact-info-text-group">
                   <span className="contact-info-label">Address:</span>
-                  <span className="contact-info-value">Phoenix Corporate Park, Survey No. 359/2 & 359/3, Back Part 2nd Floor, Hoshangabad Road, Bhopal, Madhya Pradesh-462026, India</span>
+                  <span className="contact-info-value">Phoenix Corporate Park, Survey No. 359/2 & 359/3, Back Part 2nd Floor, Narmadapuram Road, Bhopal, MP - 462026</span>
                 </div>
               </div>
 

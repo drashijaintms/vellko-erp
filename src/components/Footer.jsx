@@ -100,7 +100,7 @@ export default function Footer() {
             </li>
             <li>
               <span className="footer-contact-icon">📍</span>
-              <span className="footer-link">Phoenix Corporate Park, Hoshangabad Road, Bhopal, MP - 462026, India</span>
+              <span className="footer-link">Phoenix Corporate Park, Survey No. 359/2 & 359/3, Back Part 2nd Floor, Narmadapuram Road, Bhopal, MP - 462026</span>
             </li>
           </ul>
 
