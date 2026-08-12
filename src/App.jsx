@@ -21,11 +21,13 @@ import ContactUs from './pages/ContactUs';
 import Pricing from './pages/Pricing';
 import TermsAndConditions from './pages/TermsAndConditions';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import ScrollToTop from './components/common/ScrollToTop';
 import Footer from './components/Footer';
 
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Header />
       <Routes>
         <Route path="/" element={<Welcome />} />
