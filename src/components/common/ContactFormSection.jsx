@@ -176,10 +176,22 @@ export default function ContactFormSection({ title, subtitle, showHeading = true
             <div className="contact-social-section">
               <span className="contact-social-label">Follow us :</span>
               <div className="contact-social-links">
-                <a href="#" className="contact-social-icon-circle" aria-label="Facebook">
+                <a 
+                  href="https://www.facebook.com/VellkoERP" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="contact-social-icon-circle" 
+                  aria-label="Facebook"
+                >
                   <FacebookIcon />
                 </a>
-                <a href="#" className="contact-social-icon-circle" aria-label="Instagram">
+                <a 
+                  href="https://www.instagram.com/vellkoerp" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="contact-social-icon-circle" 
+                  aria-label="Instagram"
+                >
                   <InstagramIcon />
                 </a>
                 <a href="#" className="contact-social-icon-circle" aria-label="LinkedIn">
