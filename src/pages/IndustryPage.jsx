@@ -5,7 +5,7 @@ import IndustryAllInOneSection from '../components/welcome/IndustryAllInOneSecti
 import IndustryWorksSection from '../components/welcome/IndustryWorksSection';
 import IndustrySupportSection from '../components/welcome/IndustrySupportSection';
 import IndustryFaqSection from '../components/welcome/IndustryFaqSection';
-import IndustryFinalCtaSection from '../components/welcome/IndustryFinalCtaSection';
+import ContactFormSection from '../components/common/ContactFormSection';
 import IndustrySplitCompareSection from '../components/welcome/IndustrySplitCompareSection';
 
 export default function IndustryPage({ 
@@ -119,13 +119,7 @@ export default function IndustryPage({
           customClass={faqClass}
         />
       )}
-      {ctaTitle && (
-        <IndustryFinalCtaSection 
-          title={ctaTitle}
-          desc={ctaDesc}
-          customClass={ctaClass}
-        />
-      )}
+      <ContactFormSection />
     </>
   );
 }

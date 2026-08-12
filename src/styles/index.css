@@ -5146,6 +5146,36 @@ button {
 margin-bottom:0px;
 }
 
+/* Contact Form Section Styles (Used across all pages above footer) */
+.contact-form-section-wrapper {
+  position: relative;
+  background-color: #f9fafb;
+  width: 100%;
+  padding: 4.5rem 1.5rem 5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.contact-section-header {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 3rem auto;
+}
+
+.contact-section-main-heading {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.75rem;
+}
+
+.contact-section-sub-desc {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: #4b5563;
+  line-height: 1.6;
+}
+
 /* Contact Us Page Styles */
 .contact-page-wrapper {
   position: relative;

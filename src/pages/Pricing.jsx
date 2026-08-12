@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Check, X } from 'lucide-react';
-import IndustryFinalCtaSection from '../components/welcome/IndustryFinalCtaSection';
+import ContactFormSection from '../components/common/ContactFormSection';
 
 const currencies = [
   { id: '1', label: 'Dollars ($)', symbol: '$', rate: 0.012 },
@@ -260,9 +260,19 @@ export default function Pricing() {
                       <span className="plan-price">{formatPrice(plan.price, plan.isFree)}</span>
                       <span className="plan-period">{plan.period}</span>
                     </div>
-                    <Link to="/contact" className={`plan-cta-btn ${plan.isFree ? 'btn-secondary' : 'btn-primary'}`}>
+                    <button 
+                      type="button"
+                      className={`plan-cta-btn ${plan.isFree ? 'btn-secondary' : 'btn-primary'}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        const contactElem = document.getElementById('contact-form') || document.querySelector('.contact-main-card');
+                        if (contactElem) {
+                          contactElem.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                    >
                       {plan.isFree ? 'Get Started Free' : 'Start Free Trial'}
-                    </Link>
+                    </button>
                   </div>
                 ))}
               </div>
@@ -310,11 +320,8 @@ export default function Pricing() {
         </div>
       </section>
 
-      {/* Bottom Callout */}
-      <IndustryFinalCtaSection 
-        title="Need a custom enterprise solution?"
-        desc="Contact our experts to discuss custom volume pricing, dedicated cloud servers, and tailored SLAs."
-      />
+      {/* Bottom Contact Form */}
+      <ContactFormSection />
     </div>
   );
 }

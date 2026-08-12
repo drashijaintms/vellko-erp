@@ -9,7 +9,7 @@ import WorksSection from '../components/welcome/WorksSection';
 import SupportSection from '../components/welcome/SupportSection';
 import CtaPartnershipSection from '../components/welcome/CtaPartnershipSection';
 import TestimonialsSection from '../components/welcome/TestimonialsSection';
-import FinalCtaSection from '../components/welcome/FinalCtaSection';
+import ContactFormSection from '../components/common/ContactFormSection';
 
 export default function Welcome() {
   return (
@@ -27,7 +27,7 @@ export default function Welcome() {
       <SupportSection />
       <CtaPartnershipSection />
       <TestimonialsSection />
-      <FinalCtaSection />
+      <ContactFormSection />
     </>
   );
 }

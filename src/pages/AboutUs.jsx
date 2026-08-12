@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import aboutPhilosophyLaptop from '../assets/images/about-philosophy-laptop.png';
+import ContactFormSection from '../components/common/ContactFormSection';
 
 import beliefIcon1 from '../assets/images/belief-icon-1.png';
 import beliefIcon2 from '../assets/images/belief-icon-2.png';
@@ -213,6 +214,8 @@ export default function AboutUs() {
           })}
         </div>
       </section>
+
+      <ContactFormSection />
     </div>
   );
 }
