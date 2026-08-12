@@ -28,7 +28,7 @@ const quickLinks = [
   { name: 'About Us', path: '/about' },
   { name: 'Contact Us', path: '/contact' },
   { name: 'Privacy Policy', path: '/contact' },
-  { name: 'Terms & Conditions', path: '/contact' },
+  { name: 'Terms & Conditions', path: '/terms-and-conditions' },
 ];
 
 export default function Footer() {

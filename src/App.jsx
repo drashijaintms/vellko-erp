@@ -19,6 +19,7 @@ import CrmLeadManagement from './pages/CrmLeadManagement';
 import AboutUs from './pages/AboutUs';
 import ContactUs from './pages/ContactUs';
 import Pricing from './pages/Pricing';
+import TermsAndConditions from './pages/TermsAndConditions';
 import Footer from './components/Footer';
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
         <Route path="/healthcare-erp" element={<HealthcareErp />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/contact" element={<ContactUs />} />
+        <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
       </Routes>
       <Footer />
     </Router>

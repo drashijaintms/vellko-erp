@@ -5146,6 +5146,100 @@ button {
 margin-bottom:0px;
 }
 
+/* Legal / Policy Page Styles (Terms & Conditions) */
+.legal-page-wrapper {
+  background-color: #f9fafb;
+  min-height: 100vh;
+}
+
+.legal-hero-section {
+  background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+  padding: 5rem 1.5rem 4rem;
+  text-align: center;
+  color: #ffffff;
+}
+
+.legal-hero-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.legal-hero-title {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.legal-hero-subtitle {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  color: #d1d5db;
+  line-height: 1.6;
+}
+
+.legal-content-section {
+  padding: 4rem 1.5rem 5rem;
+}
+
+.legal-content-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.legal-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  padding: 2.25rem 2.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.legal-section-title {
+  font-family: var(--font-heading);
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #f3f4f6;
+}
+
+.legal-text p {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: #4b5563;
+  line-height: 1.75;
+  margin-bottom: 1rem;
+}
+
+.legal-text p:last-child {
+  margin-bottom: 0;
+}
+
+.legal-uppercase {
+  font-size: 0.92rem !important;
+  color: #374151 !important;
+  line-height: 1.7 !important;
+  background: #fdf2f2;
+  padding: 1.25rem;
+  border-radius: 8px;
+  border-left: 4px solid var(--primary);
+}
+
+@media (max-width: 768px) {
+  .legal-hero-title {
+    font-size: 2.25rem;
+  }
+  .legal-card {
+    padding: 1.5rem;
+  }
+}
+
 /* Contact Form Section Styles (Used across all pages above footer) */
 .contact-form-section-wrapper {
   position: relative;
