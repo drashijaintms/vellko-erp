@@ -12,7 +12,7 @@ const erpModules = [
     title: "CRM & Lead Management", 
     desc: "Convert leads to deals faster.", 
     icon: Users,
-    href: "#"
+    href: "/crm-lead-management"
   },
   { 
     title: "HRMS & Payroll", 

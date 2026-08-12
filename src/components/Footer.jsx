@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import logoImg from '../assets/images/logo-white.png';
 
 const erpModules = [
-  { name: 'CRM & Lead Management', path: '/contact' },
+  { name: 'CRM & Lead Management', path: '/crm-lead-management' },
   { name: 'HRMS & Payroll', path: '/hrms-payroll' },
   { name: 'Finance & Accounting', path: '/finance-accounting' },
   { name: 'Inventory Management', path: '/inventory-management' },

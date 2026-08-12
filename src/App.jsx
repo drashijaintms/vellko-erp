@@ -15,6 +15,7 @@ import ServiceManagement from './pages/ServiceManagement';
 import ServiceBusinessErp from './pages/ServiceBusinessErp';
 import HealthcareErp from './pages/HealthcareErp';
 import BiometricAttendance from './pages/BiometricAttendance';
+import CrmLeadManagement from './pages/CrmLeadManagement';
 import AboutUs from './pages/AboutUs';
 import ContactUs from './pages/ContactUs';
 import Pricing from './pages/Pricing';
@@ -27,6 +28,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Welcome />} />
         <Route path="/pricing" element={<Pricing />} />
+        <Route path="/crm-lead-management" element={<CrmLeadManagement />} />
         <Route path="/ecommerce-erp" element={<EcommerceErp />} />
         <Route path="/manufacturing-erp" element={<ManufacturingErp />} />
         <Route path="/retail-erp" element={<RetailErp />} />
