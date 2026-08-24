@@ -28,7 +28,7 @@ import Footer from './components/Footer';
 
 function AppContent() {
   const location = useLocation();
-  const isAdminRoute = location.pathname === '/blog/admin';
+  const isAdminRoute = location.pathname.startsWith('/blog/admin');
 
   return (
     <>
@@ -36,9 +36,9 @@ function AppContent() {
       <Routes>
         <Route path="/" element={<Welcome />} />
         <Route path="/pricing" element={<Pricing />} />
+        <Route path="/blog/admin" element={<BlogAdmin />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<Blog />} />
-        <Route path="/blog/admin" element={<BlogAdmin />} />
         <Route path="/crm-lead-management" element={<CrmLeadManagement />} />
         <Route path="/ecommerce-erp" element={<EcommerceErp />} />
         <Route path="/manufacturing-erp" element={<ManufacturingErp />} />

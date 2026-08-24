@@ -144,8 +144,10 @@ export default function Blog() {
     loadBlogs();
   }, []);
 
-  // Derive selected blog from URL slug
-  const selectedBlog = slug ? blogs.find(b => toSlug(b.title) === slug) || null : null;
+  // Derive selected blog from URL slug (ignoring 'admin')
+  const selectedBlog = (slug && slug !== 'admin') 
+    ? blogs.find(b => toSlug(b.title) === slug) || null 
+    : null;
 
   // Navigate to /blog/:slug when a blog card is clicked
   const openBlog = (blog) => {
