@@ -31,18 +31,32 @@ export default function ContactFormSection({ title, subtitle, showHeading = true
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Thank you, ${formData.fullName}! Your message has been sent successfully.`);
-    setFormData({
-      fullName: '',
-      workEmail: '',
-      phoneNumber: '',
-      companyName: '',
-      jobTitle: '',
-      companySize: '1-10 employees',
-      requirements: ''
-    });
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      if (response.ok) {
+        alert(`Thank you, ${formData.fullName}! Your message has been sent successfully.`);
+        setFormData({
+          fullName: '',
+          workEmail: '',
+          phoneNumber: '',
+          companyName: '',
+          jobTitle: '',
+          companySize: '1-10 employees',
+          requirements: ''
+        });
+      } else {
+        alert('Failed to send message. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error submitting contact form:', error);
+      alert('Error sending message. Please check your connection.');
+    }
   };
 
   return (

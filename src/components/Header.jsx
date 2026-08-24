@@ -198,6 +198,10 @@ export default function Header() {
           <Link to="/pricing" className={`nav-link ${location.pathname === '/pricing' ? 'active' : ''}`}>
             Pricing
           </Link>
+
+          <Link to="/blog" className={`nav-link ${location.pathname === '/blog' ? 'active' : ''}`}>
+            Blog
+          </Link>
           
           <Link to="/about" className={`nav-link ${location.pathname === '/about' ? 'active' : ''}`}>About Us</Link>
         </nav>
@@ -305,6 +309,10 @@ export default function Header() {
 
             <Link to="/pricing" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>
               Pricing
+            </Link>
+
+            <Link to="/blog" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>
+              Blog
             </Link>
             
             <Link to="/about" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>

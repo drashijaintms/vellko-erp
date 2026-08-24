@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Welcome from './pages/Welcome';
 import EcommerceErp from './pages/EcommerceErp';
@@ -21,17 +21,24 @@ import ContactUs from './pages/ContactUs';
 import Pricing from './pages/Pricing';
 import TermsAndConditions from './pages/TermsAndConditions';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import Blog from './pages/Blog';
+import BlogAdmin from './pages/BlogAdmin';
 import ScrollToTop from './components/common/ScrollToTop';
 import Footer from './components/Footer';
 
-function App() {
+function AppContent() {
+  const location = useLocation();
+  const isAdminRoute = location.pathname === '/blog/admin';
+
   return (
-    <Router>
-      <ScrollToTop />
-      <Header />
+    <>
+      {!isAdminRoute && <Header />}
       <Routes>
         <Route path="/" element={<Welcome />} />
         <Route path="/pricing" element={<Pricing />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:slug" element={<Blog />} />
+        <Route path="/blog/admin" element={<BlogAdmin />} />
         <Route path="/crm-lead-management" element={<CrmLeadManagement />} />
         <Route path="/ecommerce-erp" element={<EcommerceErp />} />
         <Route path="/manufacturing-erp" element={<ManufacturingErp />} />
@@ -52,7 +59,16 @@ function App() {
         <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       </Routes>
-      <Footer />
+      {!isAdminRoute && <Footer />}
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <ScrollToTop />
+      <AppContent />
     </Router>
   );
 }
