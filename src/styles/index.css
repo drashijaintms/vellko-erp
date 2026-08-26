@@ -8889,3 +8889,141 @@ margin-bottom:0px;
   background: #fffafb;
 }
 
+/* ==========================================================================
+   Vellko Table of Contents (TOC) Styles
+   ========================================================================== */
+.vellko-toc-card {
+  background: #ffffff;
+  border: 1px solid #fecdd3;
+  border-left: 4px solid #DC1436;
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin: 1.75rem 0 2.5rem 0;
+  box-shadow: 0 4px 15px rgba(220, 20, 54, 0.04);
+}
+
+.vellko-toc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+}
+
+.vellko-toc-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.vellko-toc-icon {
+  color: #DC1436;
+  display: flex;
+  align-items: center;
+}
+
+.vellko-toc-title {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.vellko-toc-badge {
+  background: #fff1f2;
+  color: #DC1436;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 12px;
+  border: 1px solid #fecdd3;
+}
+
+.vellko-toc-toggle-btn {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 4px 6px;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-smooth);
+}
+
+.vellko-toc-toggle-btn:hover {
+  background: #fff1f2;
+  color: #DC1436;
+  border-color: #fecdd3;
+}
+
+.vellko-toc-nav {
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px dashed #fecdd3;
+}
+
+.vellko-toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.vellko-toc-item {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.vellko-toc-link {
+  color: #475569;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  transition: var(--transition-smooth);
+}
+
+.vellko-toc-link:hover {
+  color: #DC1436;
+  transform: translateX(3px);
+}
+
+.vellko-toc-bullet {
+  color: #DC1436;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.vellko-toc-bullet .h2-dot {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.vellko-toc-bullet .h3-dash {
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+.vellko-toc-item.level-2 .vellko-toc-text {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.vellko-toc-item.level-2 .vellko-toc-link:hover .vellko-toc-text {
+  color: #DC1436;
+}
+
+.vellko-toc-item.level-3 .vellko-toc-text {
+  color: #64748b;
+  font-size: 0.88rem;
+}
+
+.blog-anchored-heading {
+  scroll-margin-top: 100px;
+}
+

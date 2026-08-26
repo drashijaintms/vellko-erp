@@ -204,7 +204,97 @@ async function initDB() {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     `;
     await pool.query(createInquiriesTableQuery);
-    console.log('Contact inquiries database table schema verified/created successfully');
+    // 5. Ensure the rich Table-of-Contents test blog exists
+    const testBlogTitle = 'Complete Guide to Enterprise ERP Implementation: Strategies, Architecture and ROI in 2026';
+    const [existingTestBlog] = await pool.query('SELECT id FROM blogs WHERE title = ?', [testBlogTitle]);
+    if (existingTestBlog.length === 0) {
+      const fullContent = [
+        '<p>Modern enterprises operate in increasingly fast-paced environments where fragmented data, siloed communication, and manual reporting significantly slow down decision-making. Adopting a unified Enterprise Resource Planning (ERP) platform is no longer optional—it is the foundational operating system of high-growth businesses.</p>',
+        '<p>In this comprehensive guide, we unpack the proven methodologies, architectural choices, and practical frameworks required to successfully deploy an enterprise ERP system with maximum ROI.</p>',
+        '<h2>1. Understanding Enterprise ERP in the Modern Era</h2>',
+        '<p>At its core, an ERP platform integrates key business operations into a single source of truth. From supply chain and procurement to financial ledger management and HR payroll, centralized operations eliminate redundant data entry and costly communication gaps.</p>',
+        '<h3>1.1 Core Modules and Workflow Synergy</h3>',
+        '<p>A comprehensive ERP solution typically connects the following critical pillars:</p>',
+        '<ul>',
+        '<li><strong>Financial Accounting & Compliance:</strong> Real-time general ledger tracking, automated GST invoice generation, and bank reconciliations.</li>',
+        '<li><strong>Inventory & Multi-Warehouse Tracking:</strong> Live stock movement alerts, batch/serial tracking, and automated reorder points.</li>',
+        '<li><strong>Automated Call & CRM Integration:</strong> Automatic call recording import, transcript generation, and direct attachment to client accounts.</li>',
+        '<li><strong>Human Resource & Payroll (HRMS):</strong> Biometric time-tracking, leave management, and one-click salary disbursement.</li>',
+        '</ul>',
+        '<h3>1.2 Cloud Architecture vs Legacy On-Premise</h3>',
+        '<p>Traditional on-premise ERP software demanded expensive local servers, dedicated IT maintenance staff, and complex manual updates. In contrast, modern cloud ERP platforms provide 99.99% uptime, end-to-end TLS encryption, seamless remote access across devices, and instant automatic updates without downtime.</p>',
+        '<div class="cta-style-2" style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:24px; margin:28px 0; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:20px; box-shadow:0 2px 8px rgba(0,0,0,0.04);">',
+        '<div style="flex:1; min-width:260px;">',
+        '<h4 style="color:#1e293b; margin:0 0 6px 0; font-size:1.15rem; font-weight:700;">Ready to Transform Your Enterprise Operations?</h4>',
+        '<p style="color:#64748b; margin:0; line-height:1.6; font-size:0.95rem;">Experience live demo access to Vellko ERP modules customized for your industry workflows.</p>',
+        '</div>',
+        '<a href="/contact" rel="nofollow noopener noreferrer" target="_blank" style="display:inline-block; background:#DC1436; color:#ffffff; padding:10px 24px; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.88rem; letter-spacing:0.04em; text-transform:uppercase; box-shadow:0 2px 8px rgba(220,20,54,0.35);">Schedule Live Demo</a>',
+        '</div>',
+        '<h2>2. Essential Phases for Successful ERP Implementation</h2>',
+        '<p>According to industry research, over 50% of ERP implementation friction occurs due to poor change management rather than software limitations. Following a structured multi-phase deployment roadmap ensures smooth adoption.</p>',
+        '<h3>2.1 Requirement Gathering and Gap Analysis</h3>',
+        '<p>Begin by mapping every team daily manual processes. Document standard operating procedures (SOPs), identify bottlenecks, and define key performance indicators (KPIs) such as order fulfillment speed and billing accuracy.</p>',
+        '<h3>2.2 Data Cleansing and Migration</h3>',
+        '<p>Before importing legacy data into the new ERP, perform thorough data hygiene. Eliminate duplicate vendor contacts, archive obsolete inventory SKUs, and verify opening ledger balances.</p>',
+        '<h3>2.3 User Training and Role-Based Onboarding</h3>',
+        '<p>Provide tailored, interactive training sessions for each department. Warehouse managers require barcode scanning workflows, while finance controllers need automated reconciliation dashboards.</p>',
+        '<h2>3. Calculating Real-World ERP ROI and Business Impact</h2>',
+        '<p>Investing in enterprise ERP generates direct financial return across multiple business functions:</p>',
+        '<ul>',
+        '<li><strong>30–45% Reduction in Administrative Overhead:</strong> Automated invoicing and reporting eliminates hours of manual data entry each week.</li>',
+        '<li><strong>20% Improvement in Inventory Turnover:</strong> Accurate demand forecasting prevents stockouts and over-purchasing.</li>',
+        '<li><strong>99.8% Billing & Tax Compliance Accuracy:</strong> Built-in tax engines eliminate costly calculation errors and penalty risks.</li>',
+        '</ul>',
+        '<div class="cta-style-1" style="display:flex; align-items:flex-start; gap:16px; background:#fff1f2; border-left:4px solid #DC1436; border-radius:0 12px 12px 0; padding:20px 24px; margin:28px 0; box-shadow:0 2px 5px rgba(220,20,54,0.04);">',
+        '<div style="flex-shrink:0; width:44px; height:44px; border-radius:50%; background:#ffe4e6; display:flex; align-items:center; justify-content:center; font-size:20px; color:#DC1436;">💼</div>',
+        '<div style="flex:1;">',
+        '<h4 style="color:#881337; margin:0 0 6px 0; font-size:1.1rem; font-weight:700;">Executive Strategy Tip</h4>',
+        '<p style="color:#475569; margin:0; font-style:italic; line-height:1.6; font-size:0.95rem;">Appoint a dedicated internal project champion to lead departmental communication and ensure alignment between software milestones and business targets.</p>',
+        '</div>',
+        '</div>',
+        '<h2>4. Frequently Asked Questions</h2>',
+        '<details class="vellko-faq-accordion" style="background:#ffffff; border:1px solid #fecdd3; border-left:4px solid #DC1436; border-radius:8px 12px 12px 8px; margin:18px 0; overflow:hidden; box-shadow:0 1px 3px rgba(220,20,54,0.04);">',
+        '<summary style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; cursor:pointer; font-weight:700; color:#881337; font-size:1.02rem; list-style:none; user-select:none;">',
+        '<span style="display:flex; align-items:center; gap:10px;">',
+        '<span style="display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:50%; background:#ffe4e6; color:#DC1436; font-size:0.78rem; font-weight:800;">Q</span>',
+        '<span>How long does a typical ERP deployment take with Vellko?</span>',
+        '</span>',
+        '<span class="faq-chevron" style="color:#DC1436; font-size:1.15rem; transition:transform 0.2s ease;">▾</span>',
+        '</summary>',
+        '<div style="padding:10px 20px 16px 54px; color:#475569; line-height:1.65; font-size:0.95rem; border-top:1px dashed #ffe4e6;">',
+        '<p style="margin:0;">Standard cloud deployment for small to mid-sized enterprises typically takes 2 to 4 weeks, including data migration and team training. Complex multi-branch setups take between 6 to 8 weeks.</p>',
+        '</div>',
+        '</details>',
+        '<details class="vellko-faq-accordion" style="background:#ffffff; border:1px solid #fecdd3; border-left:4px solid #DC1436; border-radius:8px 12px 12px 8px; margin:18px 0; overflow:hidden; box-shadow:0 1px 3px rgba(220,20,54,0.04);">',
+        '<summary style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; cursor:pointer; font-weight:700; color:#881337; font-size:1.02rem; list-style:none; user-select:none;">',
+        '<span style="display:flex; align-items:center; gap:10px;">',
+        '<span style="display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:50%; background:#ffe4e6; color:#DC1436; font-size:0.78rem; font-weight:800;">Q</span>',
+        '<span>Can our existing CRM and call recording audio files be linked automatically?</span>',
+        '</span>',
+        '<span class="faq-chevron" style="color:#DC1436; font-size:1.15rem; transition:transform 0.2s ease;">▾</span>',
+        '</summary>',
+        '<div style="padding:10px 20px 16px 54px; color:#475569; line-height:1.65; font-size:0.95rem; border-top:1px dashed #ffe4e6;">',
+        '<p style="margin:0;">Yes. Vellko ERP features native call logging and transcription integrations that automatically link incoming/outgoing audio records and transcripts directly to customer contact cards.</p>',
+        '</div>',
+        '</details>'
+      ].join('\n');
+
+      await pool.query(
+        'INSERT INTO blogs (title, category, readTime, excerpt, date, status, isFeatured, image, imageAlt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [
+          testBlogTitle,
+          'ERP Modules',
+          '6 Mins Read',
+          fullContent,
+          'Aug 26, 2026',
+          'Published',
+          1,
+          '/uploads/26522da9c38d01c3c08e1e82de48bd12c96f8c56.jpg',
+          'Enterprise ERP Implementation Strategy 2026'
+        ]
+      );
+      console.log('Seeded complete Table-of-Contents rich test blog post into MySQL.');
+    }
   } catch (error) {
     console.error('MySQL Database Initialization Error:', error);
   }

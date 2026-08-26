@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import RichTextEditor from '../components/RichTextEditor';
 import featuredBlogImg from '../assets/images/blog-featured.jpg';
+import TableOfContents, { parseHeadingsWithAnchors } from '../components/TableOfContents';
 import { 
   Plus, Edit, Trash2, Search, Star, FileText, X, Globe, Folder, 
   Clock, Calendar, LogOut, LayoutDashboard, Settings, User, ArrowRight, 
@@ -2244,13 +2245,23 @@ export default function BlogAdmin() {
                     </div>
 
                     <div className="blog-detail-body" style={{ lineHeight: '1.8', color: '#374151', fontSize: '1.05rem' }}>
-                      {excerpt ? (
-                        <div dangerouslySetInnerHTML={{ __html: excerpt }} />
-                      ) : (
-                        <p style={{ color: '#94a3b8', fontStyle: 'italic' }}>
-                          No article content yet. Write content in the editor to see it rendered here.
-                        </p>
-                      )}
+                      {(() => {
+                        const { headings, modifiedHtml } = parseHeadingsWithAnchors(excerpt || '');
+                        return (
+                          <>
+                            {headings.length >= 2 && (
+                              <TableOfContents headings={headings} />
+                            )}
+                            {excerpt ? (
+                              <div dangerouslySetInnerHTML={{ __html: modifiedHtml }} />
+                            ) : (
+                              <p style={{ color: '#94a3b8', fontStyle: 'italic' }}>
+                                No article content yet. Write content in the editor to see it rendered here.
+                              </p>
+                            )}
+                          </>
+                        );
+                      })()}
                     </div>
                   </article>
                 </div>

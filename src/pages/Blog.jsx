@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Clock, Calendar, ArrowLeft } from 'lucide-react';
 import featuredBlogImg from '../assets/images/blog-featured.jpg';
 import ContactFormSection from '../components/common/ContactFormSection';
+import TableOfContents, { parseHeadingsWithAnchors } from '../components/TableOfContents';
 
 // Generate URL-friendly slug from blog title
 const toSlug = (title) =>
@@ -175,6 +176,7 @@ export default function Blog() {
   // Detail View — rendered when URL has a :slug
   if (selectedBlog) {
     const recentPosts = blogs.filter(b => b._id !== selectedBlog._id).slice(0, 5);
+    const { headings, modifiedHtml } = parseHeadingsWithAnchors(selectedBlog.excerpt || '');
 
     return (
       <div className="blog-page-wrapper">
@@ -205,10 +207,14 @@ export default function Blog() {
                 </div>
 
                 <div className="blog-detail-body">
+                  {headings.length >= 2 && (
+                    <TableOfContents headings={headings} />
+                  )}
+
                   {selectedBlog.excerpt ? (
                     <div
                       className="blog-body-p"
-                      dangerouslySetInnerHTML={{ __html: selectedBlog.excerpt }}
+                      dangerouslySetInnerHTML={{ __html: modifiedHtml }}
                       style={{ lineHeight: '1.8', color: '#374151' }}
                     />
                   ) : (
