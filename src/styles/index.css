@@ -6168,31 +6168,28 @@ margin-bottom:0px;
 .blog-secondary-list {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  background-image: repeating-linear-gradient(180deg, rgb(209 213 219), rgb(209 213 219) 5px, #00000000 5px, transparent 12px);
-  background-position: left;
-  background-size: 1px 100%;
-  background-repeat: no-repeat;
-  padding-left: 3rem;
   height: 100%;
+  border-left: 1px dashed #d1d5db;
+  padding-left: 2.75rem;
 }
 
 .blog-secondary-item {
-  background-image: repeating-linear-gradient(90deg, rgb(209 213 219), rgb(209 213 219) 5px, transparent 5px, transparent 12px);
-  background-position: bottom;
-  background-size: 100% 1px;
-  background-repeat: no-repeat;
-  padding-bottom: 1.75rem;
-  padding-top: 1.75rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-bottom: 1px dashed #d1d5db;
+  padding: 1.25rem 0;
+  transition: var(--transition-smooth);
 }
 
 .blog-secondary-item:first-child {
-  padding-top: 0;
+  padding-top: 0.5rem;
 }
 
 .blog-secondary-item:last-child {
-  background-image: none;
-  padding-bottom: 0;
+  border-bottom: none;
+  padding-bottom: 0.5rem;
 }
 
 .blog-secondary-text {
@@ -6202,11 +6199,12 @@ margin-bottom:0px;
   color: #111827;
   line-height: 1.45;
   margin: 0;
-  transition: var(--transition-smooth);
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .blog-secondary-item:hover .blog-secondary-text {
   color: var(--primary);
+  transform: translateX(4px);
 }
 
 /* Latest Blogs cards grid */
@@ -6362,22 +6360,22 @@ margin-bottom:0px;
   }
 
   .blog-secondary-list {
-    background-image: none;
+    border-left: none;
     padding-left: 0;
   }
 
   .blog-secondary-item {
-    background-image: repeating-linear-gradient(90deg, rgb(209 213 219), rgb(209 213 219) 5px, transparent 5px, transparent 12px);
-    background-position: top;
-    background-size: 100% 1px;
-    background-repeat: no-repeat;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    border-bottom: 1px dashed #d1d5db;
+    padding: 1.5rem 0;
   }
 
   .blog-secondary-item:first-child {
-    background-image: none;
     padding-top: 0;
+  }
+
+  .blog-secondary-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
   }
 
   .blog-latest-grid {
