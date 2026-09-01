@@ -691,7 +691,9 @@ export default function BlogAdmin() {
               <div className="dashboard-stat-card">
                 <div className="stat-content">
                   <span className="stat-label">CUMULATIVE VIEWS</span>
-                  <span className="stat-value">345</span>
+                  <span className="stat-value">
+                    {blogs.reduce((acc, b) => acc + (Number(b.views) || 0), 0)}
+                  </span>
                   <span className="stat-badge-overlay badge-sky">LIVE TRAFFIC</span>
                 </div>
                 <div className="stat-icon-wrapper-circle bg-sky-light"><Clock size={20} /></div>
@@ -1208,7 +1210,6 @@ export default function BlogAdmin() {
                     <tbody>
                       {filteredBlogs.length > 0 ? (
                         filteredBlogs.map((blog, idx) => {
-                          const mockViews = [81, 34, 29, 12][idx] || 5;
                           const hasCustomImg = !!blog.image;
                           return (
                             <tr key={blog._id}>
@@ -1263,7 +1264,7 @@ export default function BlogAdmin() {
                               </td>
                               <td style={{ color: '#64748b', fontSize: '0.85rem' }}>
                                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
-                                  <Eye size={15} style={{ color: '#94a3b8' }} /> {mockViews}
+                                  <Eye size={15} style={{ color: '#94a3b8' }} /> {blog.views || 0}
                                 </span>
                               </td>
                               <td style={{ color: '#64748b', fontSize: '0.85rem' }}>

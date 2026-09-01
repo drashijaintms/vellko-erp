@@ -50,7 +50,7 @@ export default function HeroSection() {
         {/* CTA Buttons */}
         <div className="hero-actions">
           <a 
-            href="https://www.vellkoerp.com/signup" 
+            href="https://app.vellkoerp.com/" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="hero-btn-filled"

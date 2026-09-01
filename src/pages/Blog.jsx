@@ -150,6 +150,20 @@ export default function Blog() {
     ? blogs.find(b => toSlug(b.title) === slug) || null 
     : null;
 
+  // Increment view counter by 1 when article URL is hit
+  useEffect(() => {
+    if (selectedBlog && selectedBlog._id) {
+      fetch(`/api/blogs/${selectedBlog._id}/view`, { method: 'POST' })
+        .then(r => r.json())
+        .then(data => {
+          if (data && data.views !== undefined) {
+            setBlogs(prev => prev.map(b => b._id === selectedBlog._id ? { ...b, views: data.views } : b));
+          }
+        })
+        .catch(err => console.debug('View count error:', err));
+    }
+  }, [selectedBlog?._id]);
+
   // Navigate to /blog/:slug when a blog card is clicked
   const openBlog = (blog) => {
     navigate(`/blog/${toSlug(blog.title)}`);
@@ -170,7 +184,7 @@ export default function Blog() {
     : blogs.filter(b => b.category === activeCategory);
 
   const featuredBlog = filteredBlogs.find(b => b.isFeatured) || filteredBlogs[0];
-  const secondaryBlogs = filteredBlogs.filter(b => b._id !== (featuredBlog ? featuredBlog._id : null)).slice(0, 4);
+  const secondaryBlogs = filteredBlogs.filter(b => b._id !== (featuredBlog ? featuredBlog._id : null)).slice(0, 5);
   const latestBlogs = filteredBlogs.slice(0, 4);
 
   // Detail View — rendered when URL has a :slug
@@ -350,8 +364,10 @@ export default function Blog() {
                     </div>
                   ))
                 ) : (
-                  <div className="blog-secondary-item">
-                    <p className="blog-secondary-text">No additional blogs available in this category.</p>
+                  <div className="blog-secondary-empty">
+                    <p className="blog-secondary-empty-text">
+                      No additional articles available in this category.
+                    </p>
                   </div>
                 )}
               </div>

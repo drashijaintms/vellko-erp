@@ -7,7 +7,7 @@ export default function FinalCtaSection() {
         </h2>
         <div className="final-cta-buttons">
           <a 
-            href="https://www.vellkoerp.com/signup" 
+            href="https://app.vellkoerp.com/" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="final-cta-btn-primary"

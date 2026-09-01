@@ -132,18 +132,22 @@ async function initDB() {
         isFeatured BOOLEAN DEFAULT false,
         image LONGTEXT,
         imageAlt VARCHAR(255),
+        views INT DEFAULT 0,
         createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     `;
     await pool.query(createTableQuery);
 
-    // Ensure image and imageAlt columns exist if table was already created
+    // Ensure image, imageAlt, and views columns exist if table was already created
     try {
       await pool.query("ALTER TABLE blogs ADD COLUMN image LONGTEXT;");
     } catch (e) { /* already exists */ }
     try {
       await pool.query("ALTER TABLE blogs ADD COLUMN imageAlt VARCHAR(255);");
+    } catch (e) { /* already exists */ }
+    try {
+      await pool.query("ALTER TABLE blogs ADD COLUMN views INT DEFAULT 0;");
     } catch (e) { /* already exists */ }
 
     console.log('Blogs database table schema verified/created successfully');
@@ -376,6 +380,7 @@ app.get('/api/blogs', async (req, res) => {
     const formattedBlogs = rows.map(row => ({
       ...row,
       _id: row.id.toString(),
+      views: Number(row.views) || 0,
       isFeatured: !!row.isFeatured
     }));
 
@@ -385,14 +390,29 @@ app.get('/api/blogs', async (req, res) => {
   }
 });
 
-// 2. POST /api/blogs - Create a new blog
+// 2. POST /api/blogs/:id/view - Increment blog views by 1 when URL is visited
+app.post('/api/blogs/:id/view', async (req, res) => {
+  try {
+    const { id } = req.params;
+    await pool.query('UPDATE blogs SET views = COALESCE(views, 0) + 1 WHERE id = ?', [id]);
+    const [rows] = await pool.query('SELECT id, views FROM blogs WHERE id = ?', [id]);
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'Blog not found' });
+    }
+    res.json({ success: true, views: rows[0].views });
+  } catch (error) {
+    res.status(500).json({ message: 'Error incrementing views', error: error.message });
+  }
+});
+
+// 3. POST /api/blogs - Create a new blog
 app.post('/api/blogs', async (req, res) => {
   try {
     const { title, category, readTime, excerpt, date, status, isFeatured, image, imageAlt } = req.body;
     const cleanImage = image ? saveBase64ToDisk(image) : null;
     const sql = `
-      INSERT INTO blogs (title, category, readTime, excerpt, date, status, isFeatured, image, imageAlt)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO blogs (title, category, readTime, excerpt, date, status, isFeatured, image, imageAlt, views)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0)
     `;
     
     const displayDate = date || new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
@@ -419,7 +439,8 @@ app.post('/api/blogs', async (req, res) => {
       status: status || 'Published',
       isFeatured: !!isFeatured,
       image: cleanImage,
-      imageAlt: imageAlt || null
+      imageAlt: imageAlt || null,
+      views: 0
     };
 
     res.status(201).json(newBlog);

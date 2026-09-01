@@ -217,7 +217,7 @@ export default function Header() {
           </Link>
 
           <a 
-            href="https://www.vellkoerp.com/signin" 
+            href="https://app.vellkoerp.com/" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="cta-btn-filled"
@@ -327,7 +327,7 @@ export default function Header() {
               Contact
             </Link>
             <a 
-              href="https://www.vellkoerp.com/signin" 
+              href="https://app.vellkoerp.com/" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="mobile-cta-btn-filled"
