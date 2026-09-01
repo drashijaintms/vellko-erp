@@ -55,7 +55,10 @@ app.use(cors());
 app.use(express.json());
 // Serve uploads folder statically
 app.use('/uploads', express.static(uploadDir));
+// Serve React/Vite production build
+const distDir = path.join(__dirname, 'dist');
 
+app.use(express.static(distDir));
 // Helper to save base64 image strings to real disk files
 function saveBase64ToDisk(base64String, preferredName = 'blog-image') {
   if (!base64String || typeof base64String !== 'string' || !base64String.startsWith('data:image/')) {
@@ -213,7 +216,7 @@ async function initDB() {
     const [existingTestBlog] = await pool.query('SELECT id FROM blogs WHERE title = ?', [testBlogTitle]);
     if (existingTestBlog.length === 0) {
       const fullContent = [
-        '<p>Modern enterprises operate in increasingly fast-paced environments where fragmented data, siloed communication, and manual reporting significantly slow down decision-making. Adopting a unified Enterprise Resource Planning (ERP) platform is no longer optional—it is the foundational operating system of high-growth businesses.</p>',
+        '<p>Modern enterprises operate in increasingly fast-paced environments where fragmented data, siloed communication, and manual reporting significantly slow down decision-making. Adopting a unified Enterprise Resource Planning (ERP) platform is no longer optionalâ€”it is the foundational operating system of high-growth businesses.</p>',
         '<p>In this comprehensive guide, we unpack the proven methodologies, architectural choices, and practical frameworks required to successfully deploy an enterprise ERP system with maximum ROI.</p>',
         '<h2>1. Understanding Enterprise ERP in the Modern Era</h2>',
         '<p>At its core, an ERP platform integrates key business operations into a single source of truth. From supply chain and procurement to financial ledger management and HR payroll, centralized operations eliminate redundant data entry and costly communication gaps.</p>',
@@ -245,12 +248,12 @@ async function initDB() {
         '<h2>3. Calculating Real-World ERP ROI and Business Impact</h2>',
         '<p>Investing in enterprise ERP generates direct financial return across multiple business functions:</p>',
         '<ul>',
-        '<li><strong>30–45% Reduction in Administrative Overhead:</strong> Automated invoicing and reporting eliminates hours of manual data entry each week.</li>',
+        '<li><strong>30â€“45% Reduction in Administrative Overhead:</strong> Automated invoicing and reporting eliminates hours of manual data entry each week.</li>',
         '<li><strong>20% Improvement in Inventory Turnover:</strong> Accurate demand forecasting prevents stockouts and over-purchasing.</li>',
         '<li><strong>99.8% Billing & Tax Compliance Accuracy:</strong> Built-in tax engines eliminate costly calculation errors and penalty risks.</li>',
         '</ul>',
         '<div class="cta-style-1" style="display:flex; align-items:flex-start; gap:16px; background:#fff1f2; border-left:4px solid #DC1436; border-radius:0 12px 12px 0; padding:20px 24px; margin:28px 0; box-shadow:0 2px 5px rgba(220,20,54,0.04);">',
-        '<div style="flex-shrink:0; width:44px; height:44px; border-radius:50%; background:#ffe4e6; display:flex; align-items:center; justify-content:center; font-size:20px; color:#DC1436;">💼</div>',
+        '<div style="flex-shrink:0; width:44px; height:44px; border-radius:50%; background:#ffe4e6; display:flex; align-items:center; justify-content:center; font-size:20px; color:#DC1436;">ðŸ’¼</div>',
         '<div style="flex:1;">',
         '<h4 style="color:#881337; margin:0 0 6px 0; font-size:1.1rem; font-weight:700;">Executive Strategy Tip</h4>',
         '<p style="color:#475569; margin:0; font-style:italic; line-height:1.6; font-size:0.95rem;">Appoint a dedicated internal project champion to lead departmental communication and ensure alignment between software milestones and business targets.</p>',
@@ -263,7 +266,7 @@ async function initDB() {
         '<span style="display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:50%; background:#ffe4e6; color:#DC1436; font-size:0.78rem; font-weight:800;">Q</span>',
         '<span>How long does a typical ERP deployment take with Vellko?</span>',
         '</span>',
-        '<span class="faq-chevron" style="color:#DC1436; font-size:1.15rem; transition:transform 0.2s ease;">▾</span>',
+        '<span class="faq-chevron" style="color:#DC1436; font-size:1.15rem; transition:transform 0.2s ease;">â–¾</span>',
         '</summary>',
         '<div style="padding:10px 20px 16px 54px; color:#475569; line-height:1.65; font-size:0.95rem; border-top:1px dashed #ffe4e6;">',
         '<p style="margin:0;">Standard cloud deployment for small to mid-sized enterprises typically takes 2 to 4 weeks, including data migration and team training. Complex multi-branch setups take between 6 to 8 weeks.</p>',
@@ -275,7 +278,7 @@ async function initDB() {
         '<span style="display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:50%; background:#ffe4e6; color:#DC1436; font-size:0.78rem; font-weight:800;">Q</span>',
         '<span>Can our existing CRM and call recording audio files be linked automatically?</span>',
         '</span>',
-        '<span class="faq-chevron" style="color:#DC1436; font-size:1.15rem; transition:transform 0.2s ease;">▾</span>',
+        '<span class="faq-chevron" style="color:#DC1436; font-size:1.15rem; transition:transform 0.2s ease;">â–¾</span>',
         '</summary>',
         '<div style="padding:10px 20px 16px 54px; color:#475569; line-height:1.65; font-size:0.95rem; border-top:1px dashed #ffe4e6;">',
         '<p style="margin:0;">Yes. Vellko ERP features native call logging and transcription integrations that automatically link incoming/outgoing audio records and transcripts directly to customer contact cards.</p>',
@@ -670,6 +673,15 @@ app.delete('/api/contact/:id', async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Error deleting inquiry from MySQL', error: error.message });
   }
+});
+
+// React Router fallback
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api/') || req.path.startsWith('/uploads/')) {
+    return next();
+  }
+
+  res.sendFile(path.join(distDir, 'index.html'));
 });
 
 // Start Server after database is initialized
