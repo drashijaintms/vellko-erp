@@ -103,15 +103,16 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
         {desc && <p className="all-in-one-p2">{desc}</p>}
       </div>
 
-      {/* Mobile Tab Scroller */}
-      <div className="mobile-modules-scroller">
+      {/* Mobile Multi-Row Module Chips */}
+      <div className="mobile-modules-grid">
         {modules.map((item, idx) => (
           <button 
             key={idx} 
+            type="button"
             className={`mobile-module-tab ${activeModule === idx ? 'active' : ''}`}
             onClick={() => setActiveModule(idx)}
           >
-            {item.title ? item.title.split(' & ')[0].split(' Management')[0] : ''}
+            {item.circleName || item.shortTitle || (item.title ? item.title.split(' & ')[0].split(' Management')[0] : `Module ${idx + 1}`)}
           </button>
         ))}
       </div>
@@ -142,6 +143,27 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
                 </li>
               ))}
             </ul>
+
+            {/* Mobile Module Navigation Controls */}
+            <div className="mobile-module-nav-controls">
+              <button 
+                type="button"
+                className="mobile-module-nav-btn prev"
+                onClick={() => setActiveModule((prev) => (prev > 0 ? prev - 1 : modules.length - 1))}
+              >
+                ← Prev
+              </button>
+              <span className="mobile-module-step-indicator">
+                {activeModule + 1} of {modules.length}
+              </span>
+              <button 
+                type="button"
+                className="mobile-module-nav-btn next"
+                onClick={() => setActiveModule((prev) => (prev < modules.length - 1 ? prev + 1 : 0))}
+              >
+                Next →
+              </button>
+            </div>
           </div>
 
           <div className="circular-graphic-container">

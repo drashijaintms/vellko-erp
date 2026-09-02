@@ -4,6 +4,7 @@ import dashboardMonitor from '../../assets/images/dashboard-monitor.png';
 const modulesData = [
   {
     title: "CRM & Lead Management",
+    shortTitle: "CRM & Leads",
     subtitle: "Never Lose Sight of an Opportunity.",
     desc: "Every customer interaction tells a story. Vellko ERP keeps every lead, quotation, conversation and follow-up connected in one place, so your sales team always knows what happened, what's next and where the next opportunity lies.",
     features: [
@@ -26,6 +27,7 @@ const modulesData = [
   },
   {
     title: "HRMS & Workforce Management",
+    shortTitle: "HRMS",
     subtitle: "Know Your Workforce Better.",
     desc: "From recruitment to payroll, every employee record, attendance update, leave request and performance review is organized in one place- giving HR teams the information they need without searching through multiple systems.",
     features: [
@@ -47,6 +49,7 @@ const modulesData = [
   },
   {
     title: "Biometric Attendance Integration",
+    shortTitle: "Attendance",
     subtitle: "Accurate Attendance. Automated Payroll.",
     desc: "Connect your biometric devices directly with Vellko ERP to capture attendance data in real time. Automatically sync attendance records with payroll, shift schedules, and workforce reports reducing manual work and improving accuracy across your HR operations.",
     featuresTitle: "Key Benefits",
@@ -67,6 +70,7 @@ const modulesData = [
   },
   {
     title: "Work & Project Management",
+    shortTitle: "Projects",
     subtitle: "Plan Better. Execute Faster.",
     desc: "Manage projects, tasks, resources and teams from one centralized workspace. Vellko ERP helps you streamline project execution with real-time visibility into progress, deadlines, and team performance keeping every project on track and every team aligned.",
     features: [
@@ -88,6 +92,7 @@ const modulesData = [
   },
   {
     title: "Finance & Purchase Management",
+    shortTitle: "Finance",
     subtitle: "Gain Complete Financial Control",
     desc: "Financial decisions shouldn't depend on outdated reports. Vellko ERP gives you real-time access to cash flow, payables, receivables, purchases and GST-compliant accounting, so you always know where your business stands.",
     features: [
@@ -106,6 +111,7 @@ const modulesData = [
   },
   {
     title: "Inventory Management",
+    shortTitle: "Inventory",
     subtitle: "Know What's in Stock Before It Becomes a Problem.",
     desc: "Manage inventory seamlessly across warehouses, branches and locations from a single platform. Vellko ERP provides real-time stock visibility, streamlined warehouse operations and accurate inventory tracking helping you reduce stockouts, prevent overstocking and improve operational efficiency.",
     features: [
@@ -127,6 +133,7 @@ const modulesData = [
   },
   {
     title: "Service Management & Customer Support",
+    shortTitle: "Support",
     subtitle: "Deliver Exceptional Customer Experiences",
     desc: "Manage customer inquiries, service requests and support tickets from a single platform. Vellko ERP helps your teams resolve issues faster, track service performance, and maintain SLA compliance ensuring every customer interaction is seamless and measurable.",
     features: [
@@ -144,6 +151,7 @@ const modulesData = [
   },
   {
     title: "Business Intelligence & Analytics",
+    shortTitle: "Analytics",
     subtitle: "Turn Data into Smarter Decisions",
     desc: "Stop searching for reports across different systems. Vellko ERP transforms business data into live dashboards that help leaders understand performance, identify opportunities, and act faster.",
     features: [
@@ -256,15 +264,16 @@ export default function AllInOneSection() {
         </p>
       </div>
 
-      {/* Mobile Horizontal Tab Scroller */}
-      <div className="mobile-modules-scroller">
+      {/* Mobile Multi-Row Module Chips */}
+      <div className="mobile-modules-grid">
         {modulesData.map((item, idx) => (
           <button 
             key={idx} 
+            type="button"
             className={`mobile-module-tab ${activeModule === idx ? 'active' : ''}`}
             onClick={() => setActiveModule(idx)}
           >
-            {item.title.split(' & ')[0]}
+            {item.shortTitle}
           </button>
         ))}
       </div>
@@ -297,6 +306,27 @@ export default function AllInOneSection() {
               </li>
             ))}
           </ul>
+
+          {/* Mobile Module Navigation Controls */}
+          <div className="mobile-module-nav-controls">
+            <button 
+              type="button"
+              className="mobile-module-nav-btn prev"
+              onClick={() => setActiveModule((prev) => (prev > 0 ? prev - 1 : modulesData.length - 1))}
+            >
+              ← Prev
+            </button>
+            <span className="mobile-module-step-indicator">
+              {activeModule + 1} of {modulesData.length}
+            </span>
+            <button 
+              type="button"
+              className="mobile-module-nav-btn next"
+              onClick={() => setActiveModule((prev) => (prev < modulesData.length - 1 ? prev + 1 : 0))}
+            >
+              Next →
+            </button>
+          </div>
         </div>
 
         <div className="circular-graphic-container">
