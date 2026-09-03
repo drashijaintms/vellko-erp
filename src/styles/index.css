@@ -1030,16 +1030,19 @@ button {
   position: relative;
   background-color: #ffffff;
   width: 100%;
+  height: auto;
 }
 
 @media (min-width: 1025px) {
   .all-in-one-scroll-wrapper {
-    height: 170vh;
+    height: auto;
+    margin-top: 1rem;
   }
   .all-in-one-layout {
-    position: sticky;
-    top: 90px;
-    height: calc(100vh - 110px);
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: 560px;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -1050,7 +1053,7 @@ button {
 .all-in-one-section {
   max-width: 1340px;
   margin: 0 auto;
-  padding: 4rem 4rem;
+  padding: 3.5rem 4rem;
   width: 100%;
   background-color: #ffffff;
 }

@@ -199,7 +199,6 @@ export default function AllInOneSection() {
   const [activeModule, setActiveModule] = useState(0);
   const [ringRotation, setRingRotation] = useState(0);
   const activeData = modulesData[activeModule];
-  const scrollWrapperRef = useRef(null);
   const lastScrollY = useRef(typeof window !== 'undefined' ? window.scrollY : 0);
 
   useEffect(() => {
@@ -210,21 +209,6 @@ export default function AllInOneSection() {
 
       // Rotate rings on scroll (0.25deg per scrolled pixel)
       setRingRotation(prev => prev + delta * 0.25);
-
-      if (window.innerWidth <= 1024) return;
-      if (!scrollWrapperRef.current) return;
-      
-      const rect = scrollWrapperRef.current.getBoundingClientRect();
-      const stickyTop = 90;
-      const scrolled = stickyTop - rect.top;
-      const totalScrollable = rect.height - window.innerHeight;
-      
-      if (totalScrollable <= 0) return;
-      
-      // Scale down active scrollable area by 0.85 to trigger final active state before unpinning
-      const progress = Math.max(0, Math.min(1, scrolled / (totalScrollable * 0.85)));
-      const index = Math.min(7, Math.floor(progress * 8));
-      setActiveModule(index);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -232,21 +216,7 @@ export default function AllInOneSection() {
   }, []);
 
   const handleModuleClick = (idx) => {
-    if (window.innerWidth <= 1024 || !scrollWrapperRef.current) {
-      setActiveModule(idx);
-      return;
-    }
-    
-    const rect = scrollWrapperRef.current.getBoundingClientRect();
-    const totalScrollable = rect.height - window.innerHeight;
-    
-    const progress = (idx + 0.5) / 8;
-    const targetScrollY = window.scrollY + rect.top - 90 + (progress * totalScrollable * 0.85);
-    
-    window.scrollTo({
-      top: targetScrollY,
-      behavior: 'smooth'
-    });
+    setActiveModule(idx);
   };
 
   return (
