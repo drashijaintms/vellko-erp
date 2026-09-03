@@ -61,7 +61,7 @@ export default function IndustrySection() {
 
       <div className="industry-container-centered">
         <h2 className="industry-title-centered">
-          ERP Software by Industry <span className="red-highlight">(Manufacturing, Retail, Distribution, Healthcare, Education, Real Estate, Professional Services, E-Commerce)</span>
+          ERP Software by <span className="red-highlight">Industry</span>
         </h2>
 
         <p className="industry-subtitle-centered">
