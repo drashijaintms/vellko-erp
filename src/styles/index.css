@@ -1020,6 +1020,12 @@ button {
 
 
 /* All in One Section (Interactive circular modules section) */
+.mobile-modules-grid,
+.mobile-modules-scroller,
+.mobile-module-nav-controls {
+  display: none !important;
+}
+
 .all-in-one-scroll-wrapper {
   position: relative;
   background-color: #ffffff;
@@ -1028,7 +1034,7 @@ button {
 
 @media (min-width: 1025px) {
   .all-in-one-scroll-wrapper {
-    height: 350vh;
+    height: 170vh;
   }
   .all-in-one-layout {
     position: sticky;
