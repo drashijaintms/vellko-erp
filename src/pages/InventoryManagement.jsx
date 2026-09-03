@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import IndustryPage from './IndustryPage';
 
 export default function InventoryManagement() {
@@ -229,10 +230,10 @@ export default function InventoryManagement() {
 
   return (
     <IndustryPage
-      title="Manage Your Inventory with"
+      title="Manage Your cloud-based inventory management with"
       highlight="Complete Visibility"
       tagline="One Platform. Complete Control."
-      desc="Get complete transparency into your cloud-based warehouse management system and stock movements with a smart platform that minimizes inventory shortages, avoids overstocking and helps you make better buying choices."
+      desc={<>Get complete transparency into your cloud-based warehouse management system and <Link to="/crm-lead-management" className="hero-inline-link">stock movement</Link> with a smart platform that minimizes inventory shortages, avoids overstocking and helps you make better buying choices.</>}
       beyondTitle="Move Beyond Spreadsheets &"
       beyondHighlight="Manual Stock Tracking"
       beyondSubCol1={
@@ -256,11 +257,13 @@ export default function InventoryManagement() {
       splitLeftList={splitLeftListItems}
       splitRightList={splitRightListItems}
       splitClass="industry-split-comparison-section"
+      splitIllustrationAlt="Batch and lot tracking for product traceability"
       allInOneTitle="Everything You Need to Manage"
       allInOneHighlight="Inventory Efficiently"
       allInOneTagline="Inventory includes more than simply counting the number of items."
       allInOneDesc="Vellko Inventory Management connects procurement warehouses, inventory movements, and sales to a single, intelligent platform that gives your team members complete visibility and control over each item within your company."
       allInOneModules={allInOneModulesList}
+      allInOneAlt="Cloud Based Inventory Management Software & real-time multi-warehouse stock dashboard"
       chooseTitle="Why Businesses Choose"
       chooseHighlight="Vellko Cloud-Based Inventory Management"
       chooseSub1="Manually managing inventory can result in unnecessary delays, costs, as well as operational inefficiency."
@@ -271,6 +274,7 @@ export default function InventoryManagement() {
       worksTitle="How Vellko Inventory Management"
       worksHighlight="ERP Works"
       worksSteps={worksStepsList}
+      worksAlt="Barcode and QR code scanning in Vellko Inventory"
       supportTitle="Dedicated Inventory"
       supportHighlight="Implementation Support"
       supportSub1="Transferring inventory operations to the new system is a process that requires meticulous planning."

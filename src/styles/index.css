@@ -39,7 +39,7 @@
 html {
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
   box-sizing: border-box;
 }
 
@@ -53,7 +53,7 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: clip;
   position: relative;
 }
 
@@ -63,7 +63,6 @@ body {
   min-height: 100vh;
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden;
 }
 
 img, svg, video, canvas, audio, iframe, embed, object {
@@ -591,6 +590,19 @@ button {
   max-width: 86%;
 }
 
+.hero-inline-link {
+  color: #000000;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.hero-inline-link:hover {
+  color: var(--primary);
+  text-decoration: none;
+}
+
 /* Feature Badges */
 .hero-features {
   display: flex;
@@ -1030,19 +1042,16 @@ button {
   position: relative;
   background-color: #ffffff;
   width: 100%;
-  height: auto;
 }
 
 @media (min-width: 1025px) {
   .all-in-one-scroll-wrapper {
-    height: auto;
-    margin-top: 1rem;
+    height: 300vh;
   }
   .all-in-one-layout {
-    position: relative;
-    top: auto;
-    height: auto;
-    min-height: 560px;
+    position: sticky;
+    top: 90px;
+    height: calc(100vh - 110px);
     display: flex;
     justify-content: space-evenly;
     align-items: center;

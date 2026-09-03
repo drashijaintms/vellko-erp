@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import dashboardMonitor from '../../assets/images/dashboard-monitor.png';
 
 const modulesData = [
   {
     title: "CRM & Lead Management",
     shortTitle: "CRM & Leads",
+    href: "/crm-lead-management",
     subtitle: "Never Lose Sight of an Opportunity.",
     desc: "Every customer interaction tells a story. Vellko ERP keeps every lead, quotation, conversation and follow-up connected in one place, so your sales team always knows what happened, what's next and where the next opportunity lies.",
     features: [
@@ -28,6 +30,7 @@ const modulesData = [
   {
     title: "HRMS & Workforce Management",
     shortTitle: "HRMS",
+    href: "/hrms-payroll",
     subtitle: "Know Your Workforce Better.",
     desc: "From recruitment to payroll, every employee record, attendance update, leave request and performance review is organized in one place- giving HR teams the information they need without searching through multiple systems.",
     features: [
@@ -50,6 +53,7 @@ const modulesData = [
   {
     title: "Biometric Attendance Integration",
     shortTitle: "Attendance",
+    href: "/biometric-attendance",
     subtitle: "Accurate Attendance. Automated Payroll.",
     desc: "Connect your biometric devices directly with Vellko ERP to capture attendance data in real time. Automatically sync attendance records with payroll, shift schedules, and workforce reports reducing manual work and improving accuracy across your HR operations.",
     featuresTitle: "Key Benefits",
@@ -69,8 +73,9 @@ const modulesData = [
     )
   },
   {
-    title: "Work & Project Management",
+    title: "Project & Work Management",
     shortTitle: "Projects",
+    href: "/project-management",
     subtitle: "Plan Better. Execute Faster.",
     desc: "Manage projects, tasks, resources and teams from one centralized workspace. Vellko ERP helps you streamline project execution with real-time visibility into progress, deadlines, and team performance keeping every project on track and every team aligned.",
     features: [
@@ -91,8 +96,9 @@ const modulesData = [
     )
   },
   {
-    title: "Finance & Purchase Management",
+    title: "Finance, GST Billing & Purchase Management",
     shortTitle: "Finance",
+    href: "/finance-accounting",
     subtitle: "Gain Complete Financial Control",
     desc: "Financial decisions shouldn't depend on outdated reports. Vellko ERP gives you real-time access to cash flow, payables, receivables, purchases and GST-compliant accounting, so you always know where your business stands.",
     features: [
@@ -110,8 +116,9 @@ const modulesData = [
     )
   },
   {
-    title: "Inventory Management",
+    title: "Inventory & Warehouse Management",
     shortTitle: "Inventory",
+    href: "/inventory-management",
     subtitle: "Know What's in Stock Before It Becomes a Problem.",
     desc: "Manage inventory seamlessly across warehouses, branches and locations from a single platform. Vellko ERP provides real-time stock visibility, streamlined warehouse operations and accurate inventory tracking helping you reduce stockouts, prevent overstocking and improve operational efficiency.",
     features: [
@@ -134,6 +141,7 @@ const modulesData = [
   {
     title: "Service Management & Customer Support",
     shortTitle: "Support",
+    href: "/service-management",
     subtitle: "Deliver Exceptional Customer Experiences",
     desc: "Manage customer inquiries, service requests and support tickets from a single platform. Vellko ERP helps your teams resolve issues faster, track service performance, and maintain SLA compliance ensuring every customer interaction is seamless and measurable.",
     features: [
@@ -152,6 +160,7 @@ const modulesData = [
   {
     title: "Business Intelligence & Analytics",
     shortTitle: "Analytics",
+    href: "/finance-accounting",
     subtitle: "Turn Data into Smarter Decisions",
     desc: "Stop searching for reports across different systems. Vellko ERP transforms business data into live dashboards that help leaders understand performance, identify opportunities, and act faster.",
     features: [
@@ -199,6 +208,7 @@ export default function AllInOneSection() {
   const [activeModule, setActiveModule] = useState(0);
   const [ringRotation, setRingRotation] = useState(0);
   const activeData = modulesData[activeModule];
+  const scrollWrapperRef = useRef(null);
   const lastScrollY = useRef(typeof window !== 'undefined' ? window.scrollY : 0);
 
   useEffect(() => {
@@ -209,6 +219,21 @@ export default function AllInOneSection() {
 
       // Rotate rings on scroll (0.25deg per scrolled pixel)
       setRingRotation(prev => prev + delta * 0.25);
+
+      if (window.innerWidth <= 1024) return;
+      if (!scrollWrapperRef.current) return;
+      
+      const rect = scrollWrapperRef.current.getBoundingClientRect();
+      const stickyTop = 90;
+      const scrolled = stickyTop - rect.top;
+      const totalScrollable = rect.height - window.innerHeight;
+      
+      if (totalScrollable <= 0) return;
+      
+      // Scale down active scrollable area by 0.90 to trigger final active state before unpinning
+      const progress = Math.max(0, Math.min(1, scrolled / (totalScrollable * 0.90)));
+      const index = Math.min(7, Math.floor(progress * 8));
+      setActiveModule(index);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -216,14 +241,28 @@ export default function AllInOneSection() {
   }, []);
 
   const handleModuleClick = (idx) => {
-    setActiveModule(idx);
+    if (window.innerWidth <= 1024 || !scrollWrapperRef.current) {
+      setActiveModule(idx);
+      return;
+    }
+    
+    const rect = scrollWrapperRef.current.getBoundingClientRect();
+    const totalScrollable = rect.height - window.innerHeight;
+    
+    const progress = (idx + 0.5) / 8;
+    const targetScrollY = window.scrollY + rect.top - 90 + (progress * totalScrollable * 0.90);
+    
+    window.scrollTo({
+      top: targetScrollY,
+      behavior: 'smooth'
+    });
   };
 
   return (
     <section className="all-in-one-section">
       <div className="all-in-one-text">
         <h2 className="all-in-one-title">
-          Everything Your Business Needs,
+          All-in-One ERP Features
           <span className="red-highlight">All in One Place</span>
         </h2>
         <p className="all-in-one-p1">
@@ -252,10 +291,12 @@ export default function AllInOneSection() {
         <div className="all-in-one-layout">
         <div className="module-details-card">
           <div className="module-card-header">
-            <div className="module-card-icon-container">
+            <Link to={activeData.href} className="module-card-icon-container" style={{ textDecoration: 'none' }}>
               {activeData.iconSvg}
-            </div>
-            <h3 className="module-card-title">{activeData.title}</h3>
+            </Link>
+            <Link to={activeData.href} style={{ textDecoration: 'none', color: 'inherit' }}>
+              <h3 className="module-card-title">{activeData.title}</h3>
+            </Link>
           </div>
 
           <p className="module-card-desc">{activeData.subtitle}</p>
@@ -364,7 +405,7 @@ export default function AllInOneSection() {
 
           {/* Dashboard Monitor Image in center */}
           <div className="dashboard-monitor-wrapper-absolute">
-            <img src={dashboardMonitor} alt="Vellko ERP Dashboard Mockup" className="dashboard-monitor-img" />
+            <img src={dashboardMonitor} alt="Best ERP Software in India for real-time sales dashboard" className="dashboard-monitor-img" />
           </div>
 
         </div>

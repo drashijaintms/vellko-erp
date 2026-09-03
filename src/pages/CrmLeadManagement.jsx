@@ -270,10 +270,10 @@ export default function CrmLeadManagement() {
 
   return (
     <IndustryPage
-      title="Manage Your CRM & Leads with"
+      title="Manage Your Cloud Based CRM Software & Leads with"
       highlight="Complete Visibility"
       tagline="One CRM Platform. Smarter Sales Management."
-      desc="Vellko ERP is a cloud-based CRM and lead management software that integrates lead capture, pipelines for sales monitoring of customers, follow-ups as well as reporting in one platform. It helps sales teams handle each opportunity with total assurance and control."
+      desc="Vellko ERP is a cloud based CRM Software and lead management software that integrates lead capture, pipelines for sales monitoring of customers, follow-ups as well as reporting in one platform. It helps sales teams handle each opportunity with total assurance and control."
       beyondTitle="CRM Management Shouldn't Be"
       beyondHighlight="Complicated"
       beyondSubCol1={
@@ -297,11 +297,13 @@ export default function CrmLeadManagement() {
       splitLeftList={splitLeftListItems}
       splitRightList={splitRightListItems}
       splitClass="industry-split-comparison-section"
+      splitIllustrationAlt="Lead management and follow-up tracking in Vellko CRM"
       allInOneTitle="Everything Your Sales Team Needs in"
       allInOneHighlight="One Platform"
       allInOneTagline="Modern CRM goes beyond the storage of customer data."
       allInOneDesc="Vellko CRM combines the management of leads, customer pipelines for sales, follow-ups, quotes, communication, and analytics into a single, intelligent software, allowing sales teams to reduce the time they spend managing spreadsheets and spend more time converting leads into customers."
       allInOneModules={allInOneModulesList}
+      allInOneAlt="Cloud Based CRM Software sales pipeline dashboard"
       chooseTitle="Why Businesses Choose"
       chooseHighlight="Vellko CRM"
       chooseSub1="Manual sales management can impede growth and cause opportunities to be lost."
@@ -312,6 +314,7 @@ export default function CrmLeadManagement() {
       worksTitle="How Vellko CRM"
       worksHighlight="Works"
       worksSteps={worksStepsList}
+      worksAlt="Vellko CRM implementation and onboarding support"
       supportTitle="Dedicated CRM"
       supportHighlight="Implementation Support"
       supportSub1="The process of implementing a CRM isn't just about installing software. It's about helping your sales staff improve their methods to manage the leads as well as customers."

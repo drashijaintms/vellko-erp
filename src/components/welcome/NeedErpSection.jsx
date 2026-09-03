@@ -15,7 +15,7 @@ export default function NeedErpSection() {
       
       <div className="need-centered-title-wrapper">
         <h2 className="need-centered-title">
-          Why Do Businesses Need an <span className="red-highlight">ERP System?</span>
+          Why Businesses Need an <span className="red-highlight">ERP System</span>
         </h2>
       </div>
 

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import cloudErpIcon from '../../assets/icons/cloud-erp.png';
 import multiLocationIcon from '../../assets/icons/multi-location.png';
 import securityIcon from '../../assets/icons/security.png';
@@ -36,14 +37,14 @@ export default function BeyondSection() {
           <img src={cloudErpIcon} alt="Cloud ERP" className="beyond-feature-icon" />
           <span className="beyond-feature-title">Next Generation<br />Cloud ERP</span>
         </div>
-        <div className="beyond-feature-card">
-          <img src={gst} alt="GST Compliance" className="beyond-feature-icon" />
+        <Link to="/finance-accounting" className="beyond-feature-card" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <img src={gst} alt="GST-compliant invoicing screen in Vellko ERP" className="beyond-feature-icon" />
           <span className="beyond-feature-title">End-to-End GST<br />Compliance</span>
-        </div>
-        <div className="beyond-feature-card">
+        </Link>
+        <Link to="/inventory-management" className="beyond-feature-card" style={{ textDecoration: 'none', color: 'inherit' }}>
           <img src={multiLocationIcon} alt="Multi-Location" className="beyond-feature-icon" />
           <span className="beyond-feature-title">Seamless Multi-Location<br />Management</span>
-        </div>
+        </Link>
         <div className="beyond-feature-card">
           <img src={aiWorkflowIcon} alt="AI Workflow" className="beyond-feature-icon" />
           <span className="beyond-feature-title">AI-Powered Workflow<br />Automation</span>

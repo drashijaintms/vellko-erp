@@ -1,6 +1,6 @@
 import howItWorksImg from '../../assets/images/how-it-works.png';
 
-export default function IndustryWorksSection({ title, highlight, steps, customClass }) {
+export default function IndustryWorksSection({ title, highlight, steps, customClass, worksImgAlt }) {
   if (!steps || steps.length === 0) return null;
 
   return (
@@ -32,7 +32,7 @@ export default function IndustryWorksSection({ title, highlight, steps, customCl
 
           {/* Handshake Image Column */}
           <div className="works-image-col">
-            <img src={howItWorksImg} alt="Businessmen Shaking Hands in Armchairs" className="works-handshake-img" />
+            <img src={howItWorksImg} alt={worksImgAlt || "Businessmen Shaking Hands in Armchairs"} className="works-handshake-img" />
           </div>
         </div>
       </div>

@@ -5,7 +5,7 @@ export default function WorksSection() {
     <section className="works-section">
       <div className="works-container">
         <h2 className="works-title">
-          How Vellko <span className="red-highlight">ERP Works</span>
+          How Vellko ERP <span className="red-highlight">Implementation Works</span>
         </h2>
 
         <div className="works-split-layout">

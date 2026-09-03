@@ -15,12 +15,15 @@ const iconMap = [
   BarChart3
 ];
 
-export default function IndustryAllInOneSection({ title, highlight, tagline, desc, modules, customClass }) {
+export default function IndustryAllInOneSection({ 
+  title, highlight, tagline, desc, modules, customClass, monitorAlt 
+}) {
   if (!modules || modules.length === 0) return null;
 
   const [activeModule, setActiveModule] = useState(0);
   const [ringRotation, setRingRotation] = useState(0);
   const activeData = modules[activeModule];
+  const scrollWrapperRef = useRef(null);
   const lastScrollY = useRef(typeof window !== 'undefined' ? window.scrollY : 0);
 
   useEffect(() => {
@@ -31,14 +34,42 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
 
       // Rotate rings on scroll (0.2deg per scrolled pixel)
       setRingRotation(prev => prev + delta * 0.25);
+
+      if (window.innerWidth <= 1024) return;
+      if (!scrollWrapperRef.current) return;
+      
+      const rect = scrollWrapperRef.current.getBoundingClientRect();
+      const stickyTop = 90;
+      const scrolled = stickyTop - rect.top;
+      const totalScrollable = rect.height - window.innerHeight;
+      
+      if (totalScrollable <= 0) return;
+      
+      const progress = Math.max(0, Math.min(1, scrolled / (totalScrollable * 0.90)));
+      const index = Math.min(modules.length - 1, Math.floor(progress * modules.length));
+      setActiveModule(index);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [modules.length]);
 
   const handleModuleClick = (idx) => {
-    setActiveModule(idx);
+    if (window.innerWidth <= 1024 || !scrollWrapperRef.current) {
+      setActiveModule(idx);
+      return;
+    }
+    
+    const rect = scrollWrapperRef.current.getBoundingClientRect();
+    const totalScrollable = rect.height - window.innerHeight;
+    
+    const progress = (idx + 0.5) / modules.length;
+    const targetScrollY = window.scrollY + rect.top - 90 + (progress * totalScrollable * 0.90);
+    
+    window.scrollTo({
+      top: targetScrollY,
+      behavior: 'smooth'
+    });
   };
 
   const circularPositions = [
@@ -208,7 +239,7 @@ export default function IndustryAllInOneSection({ title, highlight, tagline, des
 
             {/* Central mockup */}
             <div className="dashboard-monitor-wrapper-absolute">
-              <img src={dashboardMonitor} alt="Dashboard Mockup" className="dashboard-monitor-img" />
+              <img src={dashboardMonitor} alt={monitorAlt || "Dashboard Mockup"} className="dashboard-monitor-img" />
             </div>
           </div>
         </div>

@@ -20,6 +20,8 @@ export default function IndustryPage({
   ctaTitle, ctaDesc,
   // Split compare section
   splitTitleLeft, splitTitleRight, splitDescLeft, splitDescRight, splitHeaderLeft, splitHeaderRight, splitLeftList, splitRightList, splitClass,
+  // Custom Alt texts for SEO
+  splitIllustrationAlt, allInOneAlt, worksAlt,
   // Custom unique page classes modifiers
   heroClass, beyondClass, compareClass, allInOneClass, chooseClass, worksClass, supportClass, faqClass, ctaClass
 }) {
@@ -57,6 +59,7 @@ export default function IndustryPage({
           leftList={splitLeftList}
           rightList={splitRightList}
           customClass={splitClass}
+          illustrationAlt={splitIllustrationAlt}
         />
       )}
       {compareRows && (
@@ -77,6 +80,7 @@ export default function IndustryPage({
           desc={allInOneDesc}
           modules={allInOneModules}
           customClass={allInOneClass}
+          monitorAlt={allInOneAlt}
         />
       )}
       {chooseRows && (
@@ -97,6 +101,7 @@ export default function IndustryPage({
           highlight={worksHighlight}
           steps={worksSteps}
           customClass={worksClass}
+          worksImgAlt={worksAlt}
         />
       )}
       {supportSteps && (

@@ -1,7 +1,7 @@
 import splitIllustration from '../../assets/images/split-illustration.png';
 
 export default function IndustrySplitCompareSection({ 
-  titleLeft, titleRight, descLeft, descRight, headerLeft, headerRight, leftList, rightList, customClass 
+  titleLeft, titleRight, descLeft, descRight, headerLeft, headerRight, leftList, rightList, customClass, illustrationAlt 
 }) {
   if (!leftList || leftList.length === 0) return null;
 
@@ -38,7 +38,7 @@ export default function IndustrySplitCompareSection({
 
         {/* Middle Column */}
         <div className="split-comp-col center-col">
-          <img src={splitIllustration} alt="Platform Comparison Illustration" className="split-comp-illustration" />
+          <img src={splitIllustration} alt={illustrationAlt || "Platform Comparison Illustration"} className="split-comp-illustration" />
         </div>
 
         {/* Right Column */}

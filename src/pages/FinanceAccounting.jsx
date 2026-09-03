@@ -229,8 +229,8 @@ export default function FinanceAccounting() {
 
   return (
     <IndustryPage
-      title="Gain Complete"
-      highlight="Financial Visibility"
+      title="Gain complete financial visibility with"
+      highlight="cloud based Accounting."
       tagline="One Platform. Complete Financial Control."
       desc="Utilizing Vellko ERP, you can control the flow of cash, ERP and accounting, as well as tax compliance, on one platform having real-time financial insight to make smarter, faster, and more reliable business decisions."
       beyondTitle="Move Beyond Traditional"
@@ -256,11 +256,13 @@ export default function FinanceAccounting() {
       splitLeftList={splitLeftListItems}
       splitRightList={splitRightListItems}
       splitClass="industry-split-comparison-section"
+      splitIllustrationAlt="Vellko live cash flow dashboard"
       allInOneTitle="Everything Your Finance Team Needs in"
       allInOneHighlight="One Platform"
       allInOneTagline="Modern finance encompasses more than the recording of transactions."
       allInOneDesc="Vellko Accounting and Financial Management brings taxation, accounting, billing, as well as budgeting, payments, and reports into one unified system that allows finance teams to get more done while giving leaders full financial transparency."
       allInOneModules={allInOneModulesList}
+      allInOneAlt="cloud based Accounting general ledger and chart of accounts screen"
       chooseTitle="Why Businesses Choose"
       chooseHighlight="Vellko Accounting & Financial Management"
       chooseSub1="Financial processes that are not connected make it challenging to manage costs, ensure compliance, and make sure that you are making business decisions."
@@ -271,6 +273,7 @@ export default function FinanceAccounting() {
       worksTitle="How Vellko Accounting & Financial"
       worksHighlight="Management Works"
       worksSteps={worksStepsList}
+      worksAlt="Vellko GST billing and e-invoicing screen"
       supportTitle="Dedicated Financial"
       supportHighlight="Implementation Support"
       supportSub1="Moving to a new financial management system requires precision and planning."

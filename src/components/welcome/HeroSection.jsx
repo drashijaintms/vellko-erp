@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import onePlatformIcon from '../../assets/icons/one-platform.png';
 import unlimitedGrowthIcon from '../../assets/icons/unlimited-growth.png';
 
@@ -15,7 +16,7 @@ export default function HeroSection() {
         </p>
         
         <p className="hero-paragraph-1">
-          Vellko ERP unifies your sales, finance, HR, operations, inventory and customer management into one intelligent platform, giving every team a single source of truth so decisions are faster, operations are connected and growth is built on confidence.
+          Vellko ERP, the best ERP software in India, unifies your sales, <Link to="/finance-accounting" className="hero-inline-link">finance</Link>, <Link to="/hrms-payroll" className="hero-inline-link">HR</Link>, operations, <Link to="/inventory-management" className="hero-inline-link">inventory</Link>, and customer management into one intelligent platform. It gives every team a single source of truth, enabling faster decisions, connected operations, and confident business growth.
         </p>
 
         {/* Feature Badges */}

@@ -37,7 +37,7 @@ export default function SplitComparisonSection() {
 
         {/* Middle Column: Center Illustration */}
         <div className="split-comp-col center-col">
-          <img src={splitIllustration} alt="Platform Comparison Illustration" className="split-comp-illustration" />
+          <img src={splitIllustration} alt="Vellko ERP biometric attendance integration for payroll" className="split-comp-illustration" />
         </div>
 
         {/* Right Column: Vellko ERP */}

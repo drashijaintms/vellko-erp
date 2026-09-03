@@ -230,8 +230,8 @@ export default function HrmsPayroll() {
 
   return (
     <IndustryPage
-      title="Manage your ERP system in human resource management with"
-      highlight="Complete Visibility"
+      title="Manage your cloud-based HR systems with"
+      highlight="complete visibility"
       tagline="One HR Platform. Smarter Workforce Management."
       desc="Vellko ERP is a cloud based hr system that connects attendance, recruitment, pay, performance, and payroll on one smart platform, aiding HR managers in controlling their employees with total control and confidence."
       beyondTitle="HR Management Shouldn't Be"
@@ -257,11 +257,13 @@ export default function HrmsPayroll() {
       splitLeftList={splitLeftListItems}
       splitRightList={splitRightListItems}
       splitClass="industry-split-comparison-section"
+      splitIllustrationAlt="Automated payroll processing in cloud-based HR software systems"
       allInOneTitle="Everything Your HR Team Needs in"
       allInOneHighlight="One Platform"
       allInOneTagline="Modern HR is more than managing employees."
       allInOneDesc="Vellko HRMS integrates hiring as well as payroll, attendance, performance, compliance, and employee engagement into a single, smart system to help HR professionals to spend less time in administration and spend more time creating great workplaces."
       allInOneModules={allInOneModulesList}
+      allInOneAlt="Vellko HRMS employee attendance and shift dashboard"
       chooseTitle="Why Businesses Choose"
       chooseHighlight="Vellko HRMS"
       chooseSub1="The manual management of employees slows the growth."
@@ -272,6 +274,7 @@ export default function HrmsPayroll() {
       worksTitle="How Vellko HRMS"
       worksHighlight="Works"
       worksSteps={worksStepsList}
+      worksAlt="HR team using Vellko HRMS implementation support"
       supportTitle="Dedicated HR"
       supportHighlight="Implementation Support"
       supportSub1="It's not only about implementing a system, it's also about assisting your employees to change their ways of working."

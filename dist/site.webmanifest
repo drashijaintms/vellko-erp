@@ -1,0 +1,21 @@
+{
+  "name": "Vellko ERP - Enterprise Resource Planning",
+  "short_name": "Vellko ERP",
+  "description": "All-in-One Cloud ERP Software for Growing Businesses",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#DC1436",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/"
+}

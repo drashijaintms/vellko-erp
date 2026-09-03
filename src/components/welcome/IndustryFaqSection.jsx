@@ -33,7 +33,7 @@ export default function IndustryFaqSection({ title, highlight, introQ, introA, f
             return (
               <div key={idx} className={`faq-accordion-item ${isOpen ? 'open' : ''}`}>
                 <button className="faq-trigger" onClick={() => toggleFaq(idx)} aria-expanded={isOpen}>
-                  <span className="faq-question-text">{item.question}</span>
+                  <h3 className="faq-question-text">{item.question}</h3>
                   <ChevronRight size={18} className={`faq-chevron ${isOpen ? 'rotate-90' : ''}`} />
                 </button>
                 <div className="faq-content-pane">

@@ -49,7 +49,7 @@ export default function TestimonialsSection() {
     <section className="testimonials-section">
       <div className="testimonials-container">
         <h2 className="testimonials-title">
-          Customer Experiences That Speak for <span className="red-highlight">Themselves</span>
+          Customer Results & <span className="red-highlight">Reviews</span>
         </h2>
 
         {/* Single unified white card */}

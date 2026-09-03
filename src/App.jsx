@@ -24,6 +24,7 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import Blog from './pages/Blog';
 import BlogAdmin from './pages/BlogAdmin';
 import ScrollToTop from './components/common/ScrollToTop';
+import HeadManager from './components/common/HeadManager';
 import Footer from './components/Footer';
 
 function AppContent() {
@@ -32,6 +33,7 @@ function AppContent() {
 
   return (
     <>
+      <HeadManager />
       {!isAdminRoute && <Header />}
       <Routes>
         <Route path="/" element={<Welcome />} />
