@@ -1,6 +1,13 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <script>
+      (function() {
+        if (typeof window !== 'undefined' && window.location.hostname === 'www.vellkoerp.com') {
+          window.location.replace('https://vellkoerp.com' + window.location.pathname + window.location.search + window.location.hash);
+        }
+      })();
+    </script>
     <!-- 1. Charset -->
     <meta charset="UTF-8" />
 

@@ -1,13 +1,19 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /
- 
-    # Force HTTPS + Non-WWW
-    RewriteCond %{HTTPS} off [OR]
+
+    # 1. Force Non-WWW (301 Permanent Redirect)
     RewriteCond %{HTTP_HOST} ^www\.vellkoerp\.com$ [NC]
     RewriteRule ^(.*)$ https://vellkoerp.com/$1 [R=301,L]
- 
-    # React SPA Routing
+
+    # 2. Force HTTPS (Handles plain HTTP, cPanel SSL proxy, and standard SSL)
+    RewriteCond %{HTTPS} off [OR]
+    RewriteCond %{HTTP:X-Forwarded-SSL} !on [NC,OR]
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https [NC]
+    RewriteCond %{HTTP_HOST} ^vellkoerp\.com$ [NC]
+    RewriteRule ^(.*)$ https://vellkoerp.com/$1 [R=301,L]
+
+    # 3. React SPA Routing (Route all requests to index.html)
     RewriteRule ^index\.html$ - [L]
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d

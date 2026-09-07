@@ -50,6 +50,20 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
 });
 
+// Canonical 301 Permanent Redirect: Force Non-WWW & HTTPS
+app.use((req, res, next) => {
+  const host = req.headers.host || '';
+  const isWww = /^www\./i.test(host);
+  const proto = req.headers['x-forwarded-proto'] || (req.secure ? 'https' : 'http');
+  const isLocal = ['localhost', '127.0.0.1'].some(localHost => host.includes(localHost));
+
+  if (!isLocal && (isWww || proto === 'http')) {
+    const cleanHost = host.replace(/^www\./i, '');
+    return res.redirect(301, `https://${cleanHost}${req.originalUrl}`);
+  }
+  next();
+});
+
 // Middleware
 app.use(cors());
 app.use(express.json());
