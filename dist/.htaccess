@@ -1,22 +1,16 @@
 <IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /
-
-  # Force HTTPS and redirect www / non-www to https://vellkoerp.com/
-  RewriteCond %{HTTPS} off
-  RewriteCond %{HTTP:X-Forwarded-SSL} !on
-  RewriteCond %{HTTP_HOST} ^vellkoerp\.com$ [OR]
-  RewriteCond %{HTTP_HOST} ^www\.vellkoerp\.com$
-  RewriteRule ^(.*)$ "https\:\/\/vellkoerp\.com\/$1" [R=301,L]
-
-  # Force WWW to Non-WWW on HTTPS
-  RewriteCond %{HTTP_HOST} ^www\.vellkoerp\.com$ [NC]
-  RewriteRule ^(.*)$ "https\:\/\/vellkoerp\.com\/$1" [R=301,L]
-
-  # Single Page Application (SPA) Routing for React Router
-  RewriteRule ^index\.html$ - [L]
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_FILENAME} !-l
-  RewriteRule . /index.html [L]
+    RewriteEngine On
+    RewriteBase /
+ 
+    # Force HTTPS + Non-WWW
+    RewriteCond %{HTTPS} off [OR]
+    RewriteCond %{HTTP_HOST} ^www\.vellkoerp\.com$ [NC]
+    RewriteRule ^(.*)$ https://vellkoerp.com/$1 [R=301,L]
+ 
+    # React SPA Routing
+    RewriteRule ^index\.html$ - [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-l
+    RewriteRule . /index.html [L]
 </IfModule>
