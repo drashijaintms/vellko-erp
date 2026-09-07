@@ -2,21 +2,26 @@
     RewriteEngine On
     RewriteBase /
 
+    # Disable directory indexing
+    Options -Indexes
+
     # 1. Force Non-WWW (301 Permanent Redirect)
     RewriteCond %{HTTP_HOST} ^www\.vellkoerp\.com$ [NC]
     RewriteRule ^(.*)$ https://vellkoerp.com/$1 [R=301,L]
 
-    # 2. Force HTTPS (Handles plain HTTP, cPanel SSL proxy, and standard SSL)
+    # 2. Force HTTPS (Handles direct HTTP and proxy SSL)
     RewriteCond %{HTTPS} off [OR]
     RewriteCond %{HTTP:X-Forwarded-SSL} !on [NC,OR]
     RewriteCond %{HTTP:X-Forwarded-Proto} !https [NC]
     RewriteCond %{HTTP_HOST} ^vellkoerp\.com$ [NC]
     RewriteRule ^(.*)$ https://vellkoerp.com/$1 [R=301,L]
 
-    # 3. React SPA Routing (Route all requests to index.html)
+    # 3. Default Index page
+    DirectoryIndex index.html dist/index.html
+
+    # 4. React SPA Routing (serve index.html or dist/index.html)
     RewriteRule ^index\.html$ - [L]
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-l
     RewriteRule . /index.html [L]
 </IfModule>
