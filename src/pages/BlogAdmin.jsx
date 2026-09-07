@@ -699,12 +699,12 @@ export default function BlogAdmin() {
                 <div className="stat-icon-wrapper-circle bg-sky-light"><Clock size={20} /></div>
               </div>
               
-              {/* Card 4: Subscribers */}
+              {/* Card 4: Contact Inquiries */}
               <div className="dashboard-stat-card">
                 <div className="stat-content">
-                  <span className="stat-label">SUBSCRIBERS</span>
+                  <span className="stat-label">CONTACT INQUIRIES</span>
                   <span className="stat-value">{inquiries.length}</span>
-                  <span className="stat-badge-overlay badge-blue-dark">{inquiries.length} LIST</span>
+                  <span className="stat-badge-overlay badge-blue-dark">{inquiries.length} MESSAGES</span>
                 </div>
                 <div className="stat-icon-wrapper-circle bg-blue-dark-light"><Mail size={20} /></div>
               </div>
@@ -959,6 +959,7 @@ export default function BlogAdmin() {
                 <thead>
                   <tr>
                     <th>Sender Information</th>
+                    <th>Source Page</th>
                     <th>Job Title & Company</th>
                     <th>Company Size</th>
                     <th>Submission Date</th>
@@ -974,6 +975,25 @@ export default function BlogAdmin() {
                             <div className="td-title-text">{inq.fullName}</div>
                             <div className="td-readtime-text">{inq.workEmail}</div>
                             {inq.phoneNumber && <div className="td-readtime-text">📞 {inq.phoneNumber}</div>}
+                          </td>
+                          <td>
+                            <span 
+                              style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '5px',
+                                padding: '4px 10px',
+                                borderRadius: '9999px',
+                                fontSize: '0.78rem',
+                                fontWeight: '600',
+                                backgroundColor: '#EFF6FF',
+                                color: '#1D4ED8',
+                                border: '1px solid #BFDBFE'
+                              }}
+                            >
+                              <Globe size={13} />
+                              {inq.sourcePage || '/contact'}
+                            </span>
                           </td>
                           <td>
                             <div className="td-category">{inq.jobTitle || 'N/A'}</div>
@@ -1009,8 +1029,28 @@ export default function BlogAdmin() {
                         </tr>
                         {expandedInquiry === inq.id && (
                           <tr>
-                            <td colSpan="5" style={{ backgroundColor: '#f9fafb', padding: '1.5rem 2rem' }}>
+                            <td colSpan="6" style={{ backgroundColor: '#f9fafb', padding: '1.5rem 2rem' }}>
                               <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', lineHeight: '1.6', color: '#374151' }}>
+                                <div style={{ marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                  <strong style={{ color: '#111827' }}>Form Submitted From:</strong>
+                                  <span 
+                                    style={{
+                                      display: 'inline-flex',
+                                      alignItems: 'center',
+                                      gap: '4px',
+                                      padding: '2px 8px',
+                                      borderRadius: '6px',
+                                      fontSize: '0.82rem',
+                                      fontWeight: '600',
+                                      backgroundColor: '#EFF6FF',
+                                      color: '#1D4ED8',
+                                      border: '1px solid #BFDBFE'
+                                    }}
+                                  >
+                                    <Globe size={12} />
+                                    {inq.sourcePage || '/contact'}
+                                  </span>
+                                </div>
                                 <strong style={{ color: '#111827', display: 'block', marginBottom: '0.5rem' }}>Requirements Details:</strong>
                                 <p style={{ margin: 0, whiteSpace: 'pre-wrap' }}>{inq.requirements || 'No details provided.'}</p>
                               </div>
@@ -1021,7 +1061,7 @@ export default function BlogAdmin() {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="5" className="table-empty-row">No contact messages found in local database.</td>
+                      <td colSpan="6" className="table-empty-row">No contact messages found in local database.</td>
                     </tr>
                   )}
                 </tbody>

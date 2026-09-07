@@ -8,7 +8,7 @@ const erpModules = [
   { name: 'Inventory Management', path: '/inventory-management' },
   { name: 'Project Management', path: '/project-management' },
   { name: 'Service Management', path: '/service-management' },
-  { name: 'Biometric Attendance', path: '/biometric-attendance' },
+  { name: 'Biometric Attendance', path: '/biometric-attendance-management' },
 ];
 
 const industries = [

@@ -26,24 +26,84 @@ export default function ContactUs() {
     companySize: '1-10 employees',
     requirements: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Thank you, ${formData.fullName}! Your message has been sent successfully.`);
-    setFormData({
-      fullName: '',
-      workEmail: '',
-      phoneNumber: '',
-      companyName: '',
-      jobTitle: '',
-      companySize: '1-10 employees',
-      requirements: ''
-    });
+    setIsSubmitting(true);
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          sourcePage: '/contact'
+        })
+      });
+      if (response.ok) {
+        alert(`Thank you, ${formData.fullName}! Your message has been sent successfully.`);
+        setFormData({
+          fullName: '',
+          workEmail: '',
+          phoneNumber: '',
+          companyName: '',
+          jobTitle: '',
+          companySize: '1-10 employees',
+          requirements: ''
+        });
+      } else {
+        alert('Failed to send message. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error submitting contact form:', error);
+      alert('Error sending message. Please check your connection.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleCallNow = async () => {
+    // 1. Open the tel dialer with requested number
+    window.location.href = 'tel:+91-7880107201';
+
+    const hasData = formData.fullName || formData.phoneNumber || formData.workEmail || formData.companyName || formData.jobTitle || formData.requirements;
+
+    // 2. Submit details to backend if entered
+    try {
+      await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        keepalive: true,
+        body: JSON.stringify({
+          fullName: formData.fullName || 'Direct Caller',
+          workEmail: formData.workEmail || 'N/A',
+          phoneNumber: formData.phoneNumber || 'N/A',
+          companyName: formData.companyName || 'N/A',
+          jobTitle: formData.jobTitle || 'N/A',
+          companySize: formData.companySize || '1-10 employees',
+          requirements: formData.requirements ? `[Call Now] ${formData.requirements}` : '[Call Now Clicked]',
+          sourcePage: '/contact'
+        })
+      });
+      if (hasData) {
+        setFormData({
+          fullName: '',
+          workEmail: '',
+          phoneNumber: '',
+          companyName: '',
+          jobTitle: '',
+          companySize: '1-10 employees',
+          requirements: ''
+        });
+      }
+    } catch (error) {
+      console.error('Error submitting call inquiry:', error);
+    }
   };
 
   return (
@@ -109,9 +169,12 @@ export default function ContactUs() {
               </div>
 
               <div className="contact-form-actions">
-                <button type="submit" className="contact-btn-send">Send message</button>
-                <button type="button" className="contact-btn-call"
-                  onClick={() => window.open('tel:+917880107201')}>Call Now</button>
+                <button type="submit" className="contact-btn-send" disabled={isSubmitting}>
+                  {isSubmitting ? 'Sending...' : 'Send message'}
+                </button>
+                <button type="button" className="contact-btn-call" onClick={handleCallNow}>
+                  Call Now
+                </button>
               </div>
             </form>
           </div>

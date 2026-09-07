@@ -1,8 +1,9 @@
+import { Link } from 'react-router-dom';
 import IndustryPage from './IndustryPage';
 
 export default function ServiceManagement() {
   const heroBadges = [
-    { type: 'img', text: ['One Service', 'Platform'] },
+    { type: 'img', text: ['One Service', 'Platform'], alt: "Vellko field service technician GPS tracking map" },
     { type: 'svg', text: ['Smarter Service', 'Management'] }
   ];
 
@@ -231,17 +232,17 @@ export default function ServiceManagement() {
 
   return (
     <IndustryPage
-      title="Manage Your Service Operations with"
+      title="Cloud based Service Management with"
       highlight="Complete Visibility"
       tagline="One Platform. Smarter Service Management."
-      desc="Vellko ERP is a cloud-based ERP Service Management System that helps businesses to manage service requests, field teams, work orders, maintenance schedules, customer support, and performance of service from the same central location. Enhance efficiency, speed up time, and offer an excellent customer experience."
+      desc={<><Link to="/" className="hero-inline-link">Vellko ERP</Link> is a cloud-based ERP Service Management System that helps businesses to manage service requests, field teams, work orders, maintenance schedules, customer support, and performance of service from the same central location. Enhance efficiency, speed up time, and offer an excellent customer experience.</>}
       badges={heroBadges}
       
       beyondTitle="Service Management Shouldn't Be"
       beyondHighlight="Complicated"
       beyondSubCol1={
         <>
-          <span className="red-highlight">Businesses that provide services to customers</span> often face challenges because customer requests, service communications, schedules for technicians, along with work order requests, are scattered across spreadsheets, emails, telephone calls, and other disconnected software.
+          <span className="red-highlight">Businesses that provide services to customers</span> often face challenges because customer requests, service communications, schedules for technicians, along with work order requests, are scattered across <Link to="/hrms-payroll" className="hero-inline-link">spreadsheets, emails, telephone calls,</Link> and other disconnected software.
         </>
       }
       beyondSubCol2={
@@ -255,18 +256,20 @@ export default function ServiceManagement() {
       splitTitleLeft="Traditional Service Operations"
       splitTitleRight="Vellko Service Management"
       splitDescLeft="Service requests tracked manually and paper-based work orders"
-      splitDescRight="with a centralized service dashboard and digital work order management."
+      splitDescRight={<>with a centralized service dashboard and <Link to="/project-management" className="hero-inline-link">digital work order management</Link>.</>}
       splitHeaderLeft="Traditional Service Management"
       splitHeaderRight="Vellko Service Management"
       splitLeftList={splitLeftListItems}
       splitRightList={splitRightListItems}
       splitClass="industry-split-comparison-section"
+      splitIllustrationAlt="Vellko digital work order management screen"
       
       allInOneTitle="Everything Your Service Team Needs in"
       allInOneHighlight="One Platform"
       allInOneTagline="Modern ERP service companies require more than simple ticket management."
       allInOneDesc="Vellko Service Management integrates customer demands, orders for work, field operations, maintenance assets, customer communications, and reports into one intelligent platform that allows teams to deliver more efficient and efficient service."
       allInOneModules={allInOneModulesList}
+      allInOneAlt="Preventive maintenance scheduling dashboard in Vellko"
       
       chooseTitle="Why Businesses Choose"
       chooseHighlight="Vellko Service Management"
@@ -279,6 +282,7 @@ export default function ServiceManagement() {
       worksTitle="How Vellko Service"
       worksHighlight="Management Works"
       worksSteps={worksStepsList}
+      worksAlt="Vellko customer support ticket and SLA tracking"
       
       supportTitle="Dedicated"
       supportHighlight="Implementation Support"

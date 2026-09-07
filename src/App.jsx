@@ -49,6 +49,7 @@ function AppContent() {
         <Route path="/education-erp" element={<EducationErp />} />
         <Route path="/real-estate-erp" element={<RealEstateErp />} />
         <Route path="/hrms-payroll" element={<HrmsPayroll />} />
+        <Route path="/biometric-attendance-management" element={<BiometricAttendance />} />
         <Route path="/biometric-attendance" element={<BiometricAttendance />} />
         <Route path="/inventory-management" element={<InventoryManagement />} />
         <Route path="/finance-accounting" element={<FinanceAccounting />} />

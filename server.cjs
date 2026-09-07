@@ -85,13 +85,35 @@ function saveBase64ToDisk(base64String, preferredName = 'blog-image') {
 
 let pool;
 
-// Guard middleware: return 503 if DB pool isn't ready yet
-app.use('/api', (req, res, next) => {
-  if (!pool) {
-    return res.status(503).json({ message: 'Database not connected. MySQL may be offline.', error: 'POOL_NOT_INITIALIZED' });
+// Local JSON File Fallback Storage for Inquiries
+const dataDir = path.join(__dirname, 'data');
+if (!fs.existsSync(dataDir)) {
+  fs.mkdirSync(dataDir, { recursive: true });
+}
+const inquiriesFile = path.join(dataDir, 'inquiries.json');
+if (!fs.existsSync(inquiriesFile)) {
+  fs.writeFileSync(inquiriesFile, JSON.stringify([], null, 2), 'utf8');
+}
+
+function getLocalInquiries() {
+  try {
+    if (fs.existsSync(inquiriesFile)) {
+      const content = fs.readFileSync(inquiriesFile, 'utf8');
+      return JSON.parse(content) || [];
+    }
+  } catch (err) {
+    console.error('Error reading inquiries.json:', err);
   }
-  next();
-});
+  return [];
+}
+
+function saveLocalInquiries(list) {
+  try {
+    fs.writeFileSync(inquiriesFile, JSON.stringify(list, null, 2), 'utf8');
+  } catch (err) {
+    console.error('Error saving inquiries.json:', err);
+  }
+}
 
 // Initialize MySQL Connection and Table Schema
 async function initDB() {
@@ -207,10 +229,14 @@ async function initDB() {
         jobTitle VARCHAR(100),
         companySize VARCHAR(50),
         requirements TEXT,
+        sourcePage VARCHAR(255),
         createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     `;
     await pool.query(createInquiriesTableQuery);
+    try {
+      await pool.query("ALTER TABLE contact_inquiries ADD COLUMN sourcePage VARCHAR(255) AFTER requirements;");
+    } catch (e) { /* already exists */ }
     // 5. Ensure the rich Table-of-Contents test blog exists
     const testBlogTitle = 'Complete Guide to Enterprise ERP Implementation: Strategies, Architecture and ROI in 2026';
     const [existingTestBlog] = await pool.query('SELECT id FROM blogs WHERE title = ?', [testBlogTitle]);
@@ -626,38 +652,76 @@ app.post('/api/blogs/seed', async (req, res) => {
 // 6. POST /api/contact - Save contact inquiries
 app.post('/api/contact', async (req, res) => {
   try {
-    const { fullName, workEmail, phoneNumber, companyName, jobTitle, companySize, requirements } = req.body;
+    const { fullName, workEmail, phoneNumber, companyName, jobTitle, companySize, requirements, sourcePage } = req.body;
     if (!fullName || !workEmail) {
       return res.status(400).json({ message: 'Full name and email are required.' });
     }
-    
-    const sql = `
-      INSERT INTO contact_inquiries (fullName, workEmail, phoneNumber, companyName, jobTitle, companySize, requirements)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
-    `;
-    const [result] = await pool.query(sql, [
+
+    const newInquiry = {
+      id: Date.now(),
       fullName,
       workEmail,
-      phoneNumber || '',
-      companyName || '',
-      jobTitle || '',
-      companySize || '1-10 employees',
-      requirements || ''
-    ]);
+      phoneNumber: phoneNumber || '',
+      companyName: companyName || '',
+      jobTitle: jobTitle || '',
+      companySize: companySize || '1-10 employees',
+      requirements: requirements || '',
+      sourcePage: sourcePage || '/contact',
+      createdAt: new Date().toISOString()
+    };
+
+    // 1. Always save to local JSON file for bulletproof persistence
+    const localList = getLocalInquiries();
+    localList.unshift(newInquiry);
+    saveLocalInquiries(localList);
+
+    // 2. Also save to MySQL database if connection pool is active
+    if (pool) {
+      try {
+        const sql = `
+          INSERT INTO contact_inquiries (fullName, workEmail, phoneNumber, companyName, jobTitle, companySize, requirements, sourcePage)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+        const [result] = await pool.query(sql, [
+          newInquiry.fullName,
+          newInquiry.workEmail,
+          newInquiry.phoneNumber,
+          newInquiry.companyName,
+          newInquiry.jobTitle,
+          newInquiry.companySize,
+          newInquiry.requirements,
+          newInquiry.sourcePage
+        ]);
+        newInquiry.id = result.insertId;
+      } catch (dbErr) {
+        console.error('MySQL insert error (persisted to JSON fallback):', dbErr.message);
+      }
+    }
     
-    res.status(201).json({ message: 'Inquiry saved successfully', id: result.insertId });
+    res.status(201).json({ message: 'Inquiry saved successfully', id: newInquiry.id, inquiry: newInquiry });
   } catch (error) {
-    res.status(500).json({ message: 'Error saving contact inquiry to MySQL', error: error.message });
+    console.error('Error saving contact inquiry:', error);
+    res.status(500).json({ message: 'Error saving contact inquiry', error: error.message });
   }
 });
 
 // 7. GET /api/contact - Fetch all contact inquiries (For Admin Dashboard)
 app.get('/api/contact', async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT * FROM contact_inquiries ORDER BY createdAt DESC');
-    res.json(rows);
+    if (pool) {
+      try {
+        const [rows] = await pool.query('SELECT * FROM contact_inquiries ORDER BY createdAt DESC');
+        if (rows && rows.length > 0) {
+          return res.json(rows);
+        }
+      } catch (dbErr) {
+        console.error('MySQL query error, using local fallback:', dbErr.message);
+      }
+    }
+    const localList = getLocalInquiries();
+    res.json(localList);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching contact inquiries from MySQL', error: error.message });
+    res.status(500).json({ message: 'Error fetching contact inquiries', error: error.message });
   }
 });
 
@@ -665,13 +729,18 @@ app.get('/api/contact', async (req, res) => {
 app.delete('/api/contact/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const [result] = await pool.query('DELETE FROM contact_inquiries WHERE id = ?', [id]);
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: 'Inquiry not found' });
+    if (pool) {
+      try {
+        await pool.query('DELETE FROM contact_inquiries WHERE id = ?', [id]);
+      } catch (dbErr) {
+        console.error('MySQL delete error:', dbErr.message);
+      }
     }
-    res.json({ message: 'Inquiry deleted successfully from MySQL', id });
+    const localList = getLocalInquiries().filter(inq => String(inq.id) !== String(id));
+    saveLocalInquiries(localList);
+    res.json({ message: 'Inquiry deleted successfully', id });
   } catch (error) {
-    res.status(500).json({ message: 'Error deleting inquiry from MySQL', error: error.message });
+    res.status(500).json({ message: 'Error deleting inquiry', error: error.message });
   }
 });
 

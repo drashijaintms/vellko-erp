@@ -1,8 +1,9 @@
+import { Link } from 'react-router-dom';
 import IndustryPage from './IndustryPage';
 
 export default function BiometricAttendance() {
   const heroBadges = [
-    { type: 'img', text: ['One Attendance', 'Platform'] },
+    { type: 'img', text: ['One Attendance', 'Platform'], alt: "Cloud based Biometric Attendance Management System fingerprint attendance device" },
     { type: 'svg', text: ['Complete Workforce', 'Tracking'] }
   ];
 
@@ -217,11 +218,11 @@ export default function BiometricAttendance() {
     },
     {
       question: "Can employees mark attendance from mobile devices?",
-      answer: "Yes. Employees are able to be able to check-in and out on mobile devices equipped with GPS and geo-fencing."
+      answer: "Yes. Employees are able to check-in and out on mobile devices equipped with GPS and geo-fencing."
     },
     {
       question: "Does the system support multiple office locations?",
-      answer: "Yes. You can track the attendance of multiple offices, branches warehouses, project sites from a single dashboard."
+      answer: "Yes. You can track the attendance of multiple offices, branches, warehouses, project sites from a single dashboard."
     },
     {
       question: "Can attendance data be integrated with payroll?",
@@ -229,16 +230,16 @@ export default function BiometricAttendance() {
     },
     {
       question: "Does it support shift and overtime management?",
-      answer: "Yes. The system can accommodate shift scheduling and overtime tracking night shifts, rotating shifts, and attendance automated."
+      answer: "Yes. The system can accommodate shift scheduling, overtime tracking, night shifts, rotational shifts, and automated attendance processing."
     }
   ];
 
   return (
     <IndustryPage
-      title="Track Attendance with Accuracy and"
-      highlight="Complete Workforce Visibility"
+      title="Cloud based Biometric Attendance Management System with"
+      highlight="Complete Visibility"
       tagline="One Attendance Platform. Complete Workforce Tracking."
-      desc="Vellko Biometric Attendance Management System helps businesses eliminate manually managed attendance tracking and streamline employee time management. Integrate biometric devices, facial recognition devices, smartphone attendance, and web-based check-ins to create a central platform to ensure accurate employee monitoring and payroll-ready attendance records."
+      desc={<><Link to="/" className="hero-inline-link">Vellko</Link> is a Cloud based Biometric Attendance Management System helps businesses eliminate manually managed attendance tracking and streamline employee time management. Integrate biometric devices, facial recognition devices, smartphone attendance, and web-based check-ins to create a central platform to ensure accurate employee monitoring and payroll-ready attendance records.</>}
       beyondTitle="Attendance Management Shouldn't Be"
       beyondHighlight="Complicated"
       beyondSubCol1={
@@ -262,11 +263,13 @@ export default function BiometricAttendance() {
       splitLeftList={splitLeftListItems}
       splitRightList={splitRightListItems}
       splitClass="industry-split-comparison-section"
+      splitIllustrationAlt="Face recognition attendance check-in screen"
       allInOneTitle="Everything You Need for Attendance Management in"
       allInOneHighlight="One Platform"
       allInOneTagline="Modern workforce management involves more than simply recording employees' check-ins."
       allInOneDesc="Vellko Biometric Attendance System integrates the tracking of attendance as well as shift scheduling and the integration of leave, payroll sync and analysis of workforce data into one smart platform."
       allInOneModules={allInOneModulesList}
+      allInOneAlt="Attendance and overtime dashboard synced with payroll"
       chooseTitle="Why Businesses Choose"
       chooseHighlight="Vellko Biometric Attendance System"
       chooseSub1="Manual attendance management leads to payroll errors, productivity issues, and compliance issues."
@@ -277,10 +280,11 @@ export default function BiometricAttendance() {
       worksTitle="How Vellko Biometric Attendance System"
       worksHighlight="Works"
       worksSteps={worksStepsList}
+      worksAlt="Vellko mobile attendance app with GPS geo-fencing"
       supportTitle="Dedicated Attendance"
       supportHighlight="Implementation Support"
       supportSub1="Achieving successful attendance automation takes more than simply installing devices."
-      supportSub2="Our experts in implementation assist companies integrate biometric devices, set up attendance policies, transferringtransfer workforce data, and educatingeducate administrators to make sure that the devices are used in a seamless manner."
+      supportSub2="Our experts in implementation assist companies to integrate biometric devices, set up attendance policies, transfer workforce data, and educate administrators to make sure that the devices are used in a seamless manner."
       supportSteps={supportStepsList}
       faqTitle="Frequently Asked"
       faqHighlight="Questions"

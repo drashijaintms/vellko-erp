@@ -53,7 +53,7 @@ const modulesData = [
   {
     title: "Biometric Attendance Integration",
     shortTitle: "Attendance",
-    href: "/biometric-attendance",
+    href: "/biometric-attendance-management",
     subtitle: "Accurate Attendance. Automated Payroll.",
     desc: "Connect your biometric devices directly with Vellko ERP to capture attendance data in real time. Automatically sync attendance records with payroll, shift schedules, and workforce reports reducing manual work and improving accuracy across your HR operations.",
     featuresTitle: "Key Benefits",

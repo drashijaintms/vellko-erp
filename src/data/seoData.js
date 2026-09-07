@@ -822,36 +822,547 @@ export const seoRoutes = {
 
   // 6. Project Management
   '/project-management': {
-    title: 'Work & Project Management Software | Team Collaboration | Vellko ERP',
-    description: 'Plan projects, assign tasks, track deadlines, manage team workloads and monitor billable hours with Vellko Project Management.',
+    title: 'Cloud based project management software | Vellko ERP',
+    description: 'Cloud based project management software allows you to plan, track & collaborate on projects in one platform. Task management, resource planning, time tracking & budgets. Book a free demo.',
     keywords: 'project management software, task tracker, team collaboration tool, deadline management, resource allocation ERP',
     schema: {
       "@context": "https://schema.org",
-      "@type": "Service",
-      "name": "Project Management",
-      "provider": { "@type": "Organization", "name": "Vellko ERP", "url": "https://vellkoerp.com" },
-      "description": "Task management, Kanban boards, timesheets, and milestone tracking."
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://www.vellkoerp.com/#organization",
+          "name": "Vellko ERP",
+          "url": "https://www.vellkoerp.com/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.vellkoerp.com/assets/logo-bAy9mXr5.png"
+          },
+          "telephone": "+91-7880107201",
+          "email": "support@vellkoerp.com",
+          "founder": {
+            "@type": "Person",
+            "name": "Deepak Verma"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Phoenix Corporate Park, Survey No. 359/2 & 359/3, Back Part 2nd Floor, Narmadapuram Road",
+            "addressLocality": "Bhopal",
+            "addressRegion": "Madhya Pradesh",
+            "postalCode": "462026",
+            "addressCountry": "IN"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "India"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.vellkoerp.com/#website",
+          "url": "https://www.vellkoerp.com/",
+          "name": "Vellko ERP",
+          "publisher": {
+            "@id": "https://www.vellkoerp.com/#organization"
+          },
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://www.vellkoerp.com/project-management#webpage",
+          "url": "https://www.vellkoerp.com/project-management",
+          "name": "Cloud Based Project Management Software | Vellko ERP",
+          "description": "Cloud based project management software allows you to plan, track, and collaborate on projects on one platform. Manage tasks, resources, time, and budgets.",
+          "isPartOf": {
+            "@id": "https://www.vellkoerp.com/#website"
+          },
+          "about": {
+            "@id": "https://www.vellkoerp.com/project-management#service"
+          },
+          "breadcrumb": {
+            "@id": "https://www.vellkoerp.com/project-management#breadcrumb"
+          },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "https://www.vellkoerp.com/assets/how-it-works-3cD6AAXl.png"
+          },
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "Service",
+          "@id": "https://www.vellkoerp.com/project-management#service",
+          "name": "Project Management Software",
+          "serviceType": "Project Management Software",
+          "url": "https://www.vellkoerp.com/project-management",
+          "description": "Vellko ERP Project Management Software helps businesses plan, manage and track projects with task management, resource planning, time tracking, collaboration and budget management.",
+          "provider": {
+            "@id": "https://www.vellkoerp.com/#organization"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "India"
+          },
+          "audience": {
+            "@type": "BusinessAudience",
+            "audienceType": "Businesses and organizations"
+          },
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Vellko ERP Project Management Features",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Project Planning"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Task Management"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Resource Planning"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Time Tracking"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Project Collaboration"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Project Budget Management"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://www.vellkoerp.com/project-management/#software",
+          "name": "Vellko ERP Project Management Software",
+          "applicationCategory": "BusinessApplication",
+          "applicationSubCategory": "Project Management Software",
+          "operatingSystem": "Web-based",
+          "url": "https://www.vellkoerp.com/project-management",
+          "description": "Vellko ERP is a cloud-based project management solution for planning projects, managing tasks, allocating resources, tracking time, collaborating with teams and monitoring project budgets.",
+          "image": "https://www.vellkoerp.com/assets/how-it-works-3cD6AAXl.png",
+          "publisher": {
+            "@id": "https://www.vellkoerp.com/#organization"
+          },
+          "featureList": [
+            "Project Planning",
+            "Task Management",
+            "Resource Planning",
+            "Team Collaboration",
+            "Time Tracking",
+            "Project Budget Management",
+            "Project Progress Tracking",
+            "Project Reporting",
+            "Workflow Management"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.vellkoerp.com/project-management#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://www.vellkoerp.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Project Management",
+              "item": "https://www.vellkoerp.com/project-management"
+            }
+          ]
+        }
+      ]
     }
   },
 
   // 7. Service Management
   '/service-management': {
-    title: 'Customer Service & Helpdesk Support Ticket Management | Vellko ERP',
-    description: 'Manage support tickets, track SLA compliance, assign service engineers and boost customer satisfaction with Vellko ERP.',
+    title: 'Cloud based Service Management Software | Vellko ERP',
+    description: 'Cloud based Service Management Software for requests, work orders, field teams & maintenance in one platform. Real-time tracking & automated scheduling. Book a free demo.',
     keywords: 'customer service software, helpdesk ticketing, SLA tracking system, service request management, support analytics',
     schema: {
       "@context": "https://schema.org",
-      "@type": "Service",
-      "name": "Customer Service & Ticket Management",
-      "provider": { "@type": "Organization", "name": "Vellko ERP", "url": "https://vellkoerp.com" },
-      "description": "Helpdesk ticketing, SLA monitoring, and engineer dispatch management."
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://www.vellkoerp.com/#organization",
+          "name": "Vellko ERP",
+          "url": "https://www.vellkoerp.com/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.vellkoerp.com/assets/logo-bAy9mXr5.png"
+          },
+          "telephone": "+91-7880107201",
+          "email": "support@vellkoerp.com",
+          "founder": {
+            "@type": "Person",
+            "name": "Deepak Verma"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Phoenix Corporate Park, Survey No. 359/2 & 359/3, Back Part 2nd Floor, Narmadapuram Road",
+            "addressLocality": "Bhopal",
+            "addressRegion": "Madhya Pradesh",
+            "postalCode": "462026",
+            "addressCountry": "IN"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "India"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.vellkoerp.com/#website",
+          "url": "https://www.vellkoerp.com/",
+          "name": "Vellko ERP",
+          "publisher": {
+            "@id": "https://www.vellkoerp.com/#organization"
+          },
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://www.vellkoerp.com/service-management#webpage",
+          "url": "https://www.vellkoerp.com/service-management",
+          "name": "Cloud Based Service Management Software | Vellko ERP",
+          "description": "Cloud based Service Management Software for requests, work orders, field teams and maintenance in one platform. Real-time tracking and automated scheduling. Book a free demo.",
+          "isPartOf": {
+            "@id": "https://www.vellkoerp.com/#website"
+          },
+          "about": {
+            "@id": "https://www.vellkoerp.com/service-management#service"
+          },
+          "breadcrumb": {
+            "@id": "https://www.vellkoerp.com/service-management#breadcrumb"
+          },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "https://www.vellkoerp.com/assets/how-it-works-3cD6AAXl.png"
+          },
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "Service",
+          "@id": "https://www.vellkoerp.com/service-management#service",
+          "name": "Service Management Software",
+          "serviceType": "Service Management Software",
+          "url": "https://www.vellkoerp.com/service-management",
+          "description": "Vellko ERP Service Management Software helps businesses manage service requests, work orders, field teams, maintenance activities, scheduling and service operations from one cloud-based platform.",
+          "provider": {
+            "@id": "https://www.vellkoerp.com/#organization"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "India"
+          },
+          "audience": {
+            "@type": "BusinessAudience",
+            "audienceType": "Businesses and organizations"
+          },
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Vellko Service Management Features",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Service Request Management"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Work Order Management"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Field Team Management"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Maintenance Management"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Automated Service Scheduling"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Real-Time Service Tracking"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://www.vellkoerp.com/service-management#software",
+          "name": "Vellko Service Management Software",
+          "applicationCategory": "BusinessApplication",
+          "applicationSubCategory": "Service Management Software",
+          "operatingSystem": "Web-based",
+          "url": "https://www.vellkoerp.com/service-management",
+          "description": "Vellko Service Management Software is a cloud-based solution for managing service requests, work orders, field teams, maintenance, scheduling and service tracking.",
+          "image": "https://www.vellkoerp.com/assets/how-it-works-3cD6AAXl.png",
+          "publisher": {
+            "@id": "https://www.vellkoerp.com/#organization"
+          },
+          "featureList": [
+            "Service Request Management",
+            "Work Order Management",
+            "Field Team Management",
+            "Maintenance Management",
+            "Automated Scheduling",
+            "Real-Time Service Tracking",
+            "Service Status Management",
+            "Service Reporting and Analytics"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.vellkoerp.com/service-management/#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://www.vellkoerp.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Service Management",
+              "item": "https://www.vellkoerp.com/service-management"
+            }
+          ]
+        }
+      ]
     }
   },
 
   // 8. Biometric Attendance
+  '/biometric-attendance-management': {
+    title: 'Cloud based Biometric Attendance Management System',
+    description: 'Track attendance with Cloud based biometric attendance management system, face recognition & mobile check-ins, shift rosters & payroll sync. Book a free demo.',
+    keywords: 'biometric attendance integration, facial recognition attendance, punch machine sync, real-time attendance ERP, shift tracking, biometric attendance management',
+    schema: {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://www.vellkoerp.com/#organization",
+          "name": "Vellko ERP",
+          "url": "https://www.vellkoerp.com/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.vellkoerp.com/assets/logo-bAy9mXr5.png"
+          },
+          "telephone": "+91-7880107201",
+          "email": "support@vellkoerp.com",
+          "founder": {
+            "@type": "Person",
+            "name": "Deepak Verma"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Phoenix Corporate Park, Survey No. 359/2 & 359/3, Back Part 2nd Floor, Narmadapuram Road",
+            "addressLocality": "Bhopal",
+            "addressRegion": "Madhya Pradesh",
+            "postalCode": "462026",
+            "addressCountry": "IN"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "India"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.vellkoerp.com/#website",
+          "url": "https://www.vellkoerp.com/",
+          "name": "Vellko ERP",
+          "publisher": {
+            "@id": "https://www.vellkoerp.com/#organization"
+          },
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://www.vellkoerp.com/biometric-attendance-management#webpage",
+          "url": "https://www.vellkoerp.com/biometric-attendance-management",
+          "name": "Cloud Based Biometric Attendance Management System",
+          "description": "Track attendance with a cloud based biometric attendance management system, face recognition and mobile check-ins, shift rosters and payroll sync. Book a free demo.",
+          "isPartOf": {
+            "@id": "https://www.vellkoerp.com/#website"
+          },
+          "about": {
+            "@id": "https://www.vellkoerp.com/biometric-attendance-management#service"
+          },
+          "breadcrumb": {
+            "@id": "https://www.vellkoerp.com/biometric-attendance-management#breadcrumb"
+          },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "https://www.vellkoerp.com/assets/how-it-works-CWxy5_XR.png"
+          },
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "Service",
+          "@id": "https://www.vellkoerp.com/biometric-attendance-management#service",
+          "name": "Cloud Based Biometric Attendance Management System",
+          "serviceType": "Biometric Attendance Management Software",
+          "url": "https://www.vellkoerp.com/biometric-attendance-management",
+          "description": "Vellko ERP provides a cloud based biometric attendance management system with biometric and face recognition attendance, mobile check-ins, shift rosters and payroll synchronization.",
+          "provider": {
+            "@id": "https://www.vellkoerp.com/#organization"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "India"
+          },
+          "audience": {
+            "@type": "BusinessAudience",
+            "audienceType": "Businesses and organizations"
+          },
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Biometric Attendance Management Features",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Biometric Attendance Tracking"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Face Recognition Attendance"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Mobile Attendance Check-ins"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Shift Roster Management"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Payroll Synchronization"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Real-Time Attendance Reports"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://www.vellkoerp.com/biometric-attendance-management#software",
+          "name": "Vellko Biometric Attendance Management System",
+          "applicationCategory": "BusinessApplication",
+          "applicationSubCategory": "Attendance Management Software",
+          "operatingSystem": "Web-based",
+          "url": "https://www.vellkoerp.com/biometric-attendance-management",
+          "description": "Vellko biometric attendance management software helps businesses track employee attendance through biometric devices, face recognition and mobile check-ins, while managing shifts and payroll synchronization.",
+          "image": "https://www.vellkoerp.com/assets/how-it-works-CWxy5_XR.png",
+          "publisher": {
+            "@id": "https://www.vellkoerp.com/#organization"
+          },
+          "featureList": [
+            "Biometric Attendance Tracking",
+            "Face Recognition Attendance",
+            "Mobile Attendance Check-ins",
+            "Cloud-Based Attendance Management",
+            "Shift Roster Management",
+            "Payroll Synchronization",
+            "Employee Attendance Reports",
+            "Real-Time Attendance Monitoring"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.vellkoerp.com/biometric-attendance-management#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://www.vellkoerp.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Biometric Attendance Management",
+              "item": "https://www.vellkoerp.com/biometric-attendance-management"
+            }
+          ]
+        }
+      ]
+    }
+  },
   '/biometric-attendance': {
-    title: 'Biometric Attendance & Facial Recognition Integration | Vellko ERP',
-    description: 'Connect biometric devices, RFID scanners and facial recognition directly to payroll for accurate real-time time tracking.',
+    title: 'Cloud based Biometric Attendance Management System',
+    description: 'Track attendance with Cloud based biometric attendance management system, face recognition & mobile check-ins, shift rosters & payroll sync. Book a free demo.',
     keywords: 'biometric attendance integration, facial recognition attendance, punch machine sync, real-time attendance ERP, shift tracking',
     schema: {
       "@context": "https://schema.org",

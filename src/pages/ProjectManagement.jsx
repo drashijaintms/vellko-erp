@@ -1,8 +1,9 @@
+import { Link } from 'react-router-dom';
 import IndustryPage from './IndustryPage';
 
 export default function ProjectManagement() {
   const heroBadges = [
-    { type: 'img', text: ['One Project', 'Platform'] },
+    { type: 'img', text: ['One Project', 'Platform'], alt: "Vellko project resource allocation and capacity planning" },
     { type: 'svg', text: ['Better Team', 'Collaboration'] }
   ];
 
@@ -231,15 +232,15 @@ export default function ProjectManagement() {
 
   return (
     <IndustryPage
-      title="Manage Project Management ERP with"
-      highlight="Complete Visibility and Control"
+      title="Cloud based Project Management ERP with"
+      highlight="Complete Visibility"
       tagline="One Project Platform. Better Team Collaboration."
-      desc="Vellko Project Management ERP is a cloud-based application that helps teams organize, track, work together, and complete projects with efficiency. From the management of tasks and resources to budgeting and reporting, everything is handled by one system centrally."
+      desc={<><Link to="/" className="hero-inline-link">Vellko ERP</Link> is a cloud-based Project Management ERP that helps teams organize, track, work together, and complete projects efficiently. From <Link to="/crm-lead-management" className="hero-inline-link">management of tasks</Link> and resource management to budgeting and reporting, everything is handled centrally by one system.</>}
       beyondTitle="Project Management Shouldn't Be"
       beyondHighlight="Complicated"
       beyondSubCol1={
         <>
-          <span className="red-highlight">Growing businesses struggle</span> with managing projects since information is scattered throughout spreadsheets and emails, chat tools, and a variety of software platforms.
+          <span className="red-highlight">Growing businesses struggle</span> with <Link to="/project-management" className="hero-inline-link">managing projects</Link> since information is scattered throughout spreadsheets and emails, chat tools, and a variety of software platforms.
         </>
       }
       beyondSubCol2={
@@ -258,14 +259,20 @@ export default function ProjectManagement() {
       splitLeftList={splitLeftListItems}
       splitRightList={splitRightListItems}
       splitClass="industry-split-comparison-section"
+      splitIllustrationAlt="Vellko project Gantt chart and milestone timeline"
       allInOneTitle="Everything Your Project Team Needs in"
       allInOneHighlight="One Platform"
       allInOneTagline="Modern project management demands more than task lists."
       allInOneDesc="Vellko Program Management Software integrates planning execution, collaboration, budgeting, and resource management, as well as monitoring of performance and reporting, into a single system, making it possible for teams to complete projects more quickly and effectively."
       allInOneModules={allInOneModulesList}
+      allInOneAlt="Vellko task management Kanban board"
       chooseTitle="Why Businesses Choose"
       chooseHighlight="Vellko Project Management Software"
-      chooseSub1="Manually managing projects slows down progress and can increase risks to projects."
+      chooseSub1={
+        <>
+          Manually <Link to="/project-management" className="hero-inline-link">managing projects</Link> slows down progress and can increase risks to projects.
+        </>
+      }
       chooseSub2="ERP Project Management can help organisations automate workflows for their projects and improve collaboration among teams, decrease delays, and provide complete visibility into projects."
       chooseHeaderLeft="Project Challenge"
       chooseHeaderRight="How Vellko Solves It"
@@ -273,9 +280,14 @@ export default function ProjectManagement() {
       worksTitle="How Vellko Project"
       worksHighlight="Management Works"
       worksSteps={worksStepsList}
+      worksAlt="Vellko client portal project progress dashboard"
       supportTitle="Dedicated Project"
       supportHighlight="Implementation Support"
-      supportSub1="Implementing a system for managing projects is not just about the best task management software. It helps teams be more efficient."
+      supportSub1={
+        <>
+          Implementing a system for <Link to="/project-management" className="hero-inline-link">managing projects</Link> is not just about the best <Link to="/service-management" className="hero-inline-link">task management software</Link>. It helps teams be more efficient.
+        </>
+      }
       supportSub2="Our experts in implementation help with project setup as well as workflow configuration and data migration, as well as user training and ongoing assistance to ensure successful adoption."
       supportSteps={supportStepsList}
       faqTitle="Frequently Asked"
