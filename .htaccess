@@ -2,26 +2,22 @@
     RewriteEngine On
     RewriteBase /
 
-    # Disable directory indexing
-    Options -Indexes
+    # Disable directory listing and MultiViews
+    Options -Indexes -MultiViews
 
-    # 1. Force Non-WWW (301 Permanent Redirect)
+    # 1. Force HTTPS + Non-WWW (301 Permanent Redirect)
+    RewriteCond %{HTTPS} off [OR]
     RewriteCond %{HTTP_HOST} ^www\.vellkoerp\.com$ [NC]
     RewriteRule ^(.*)$ https://vellkoerp.com/$1 [R=301,L]
 
-    # 2. Force HTTPS (Handles direct HTTP and proxy SSL)
-    RewriteCond %{HTTPS} off [OR]
-    RewriteCond %{HTTP:X-Forwarded-SSL} !on [NC,OR]
-    RewriteCond %{HTTP:X-Forwarded-Proto} !https [NC]
-    RewriteCond %{HTTP_HOST} ^vellkoerp\.com$ [NC]
-    RewriteRule ^(.*)$ https://vellkoerp.com/$1 [R=301,L]
+    # 2. Allow existing files and folders to be served directly (css, js, images, etc.)
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
 
-    # 3. Default Index page
-    DirectoryIndex index.html dist/index.html
-
-    # 4. React SPA Routing (serve index.html or dist/index.html)
-    RewriteRule ^index\.html$ - [L]
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule . /index.html [L]
+    # 3. Rewrite all frontend routes to index.html for React Router
+    RewriteRule ^ index.html [QSA,L]
 </IfModule>
+
+# LiteSpeed / Apache 404 fallback to React SPA
+ErrorDocument 404 /index.html
