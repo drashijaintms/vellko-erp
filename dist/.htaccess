@@ -2,16 +2,18 @@
   RewriteEngine On
   RewriteBase /
 
-  # 1. 301 Permanent Redirect: Force WWW to NON-WWW (https://www.vellkoerp.com/* -> https://vellkoerp.com/*)
-  RewriteCond %{HTTP_HOST} ^www\.vellkoerp\.com$ [NC]
-  RewriteRule ^(.*)$ https://vellkoerp.com/$1 [R=301,L]
-
-  # 2. 301 Permanent Redirect: Force HTTPS on non-www (http://vellkoerp.com/* -> https://vellkoerp.com/*)
+  # Force HTTPS and redirect www / non-www to https://vellkoerp.com/
   RewriteCond %{HTTPS} off
-  RewriteCond %{HTTP_HOST} ^vellkoerp\.com$ [NC]
-  RewriteRule ^(.*)$ https://vellkoerp.com/$1 [R=301,L]
+  RewriteCond %{HTTP:X-Forwarded-SSL} !on
+  RewriteCond %{HTTP_HOST} ^vellkoerp\.com$ [OR]
+  RewriteCond %{HTTP_HOST} ^www\.vellkoerp\.com$
+  RewriteRule ^(.*)$ "https\:\/\/vellkoerp\.com\/$1" [R=301,L]
 
-  # 3. Single Page Application (SPA) Routing for React Router
+  # Force WWW to Non-WWW on HTTPS
+  RewriteCond %{HTTP_HOST} ^www\.vellkoerp\.com$ [NC]
+  RewriteRule ^(.*)$ "https\:\/\/vellkoerp\.com\/$1" [R=301,L]
+
+  # Single Page Application (SPA) Routing for React Router
   RewriteRule ^index\.html$ - [L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
