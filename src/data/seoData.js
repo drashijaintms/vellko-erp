@@ -159,27 +159,27 @@ export const seoRoutes = {
         },
         {
           "@type": "WebPage",
-          "@id": "https://vellkoerp.com/crm-lead-management/#webpage",
-          "url": "https://vellkoerp.com/crm-lead-management/",
+          "@id": "https://vellkoerp.com/crm-lead-management#webpage",
+          "url": "https://vellkoerp.com/crm-lead-management",
           "name": "Cloud Based CRM Software & Lead Management Software",
           "description": "Vellko ERP is a cloud based CRM Software and lead management software that integrates lead capture, pipelines for sales monitoring of customers, follow-ups as well as reporting in one platform. It helps sales teams handle each opportunity with total assurance and control.",
           "isPartOf": {
             "@id": "https://vellkoerp.com/#website"
           },
           "about": {
-            "@id": "https://vellkoerp.com/crm-lead-management/#service"
+            "@id": "https://vellkoerp.com/crm-lead-management#service"
           },
           "breadcrumb": {
-            "@id": "https://vellkoerp.com/crm-lead-management/#breadcrumb"
+            "@id": "https://vellkoerp.com/crm-lead-management#breadcrumb"
           },
           "inLanguage": "en-IN"
         },
         {
           "@type": "Service",
-          "@id": "https://vellkoerp.com/crm-lead-management/#service",
+          "@id": "https://vellkoerp.com/crm-lead-management#service",
           "name": "CRM & Lead Management Software",
           "serviceType": "CRM and Lead Management Software",
-          "url": "https://vellkoerp.com/crm-lead-management/",
+          "url": "https://vellkoerp.com/crm-lead-management",
           "description": "Vellko ERP is a cloud based CRM Software and lead management software that integrates lead capture, pipelines for sales monitoring of customers, follow-ups as well as reporting in one platform. It helps sales teams handle each opportunity with total assurance and control.",
           "provider": {
             "@id": "https://vellkoerp.com/#organization"
@@ -236,12 +236,12 @@ export const seoRoutes = {
         },
         {
           "@type": "SoftwareApplication",
-          "@id": "https://vellkoerp.com/crm-lead-management/#software",
+          "@id": "https://vellkoerp.com/crm-lead-management#software",
           "name": "Vellko CRM",
           "applicationCategory": "BusinessApplication",
           "applicationSubCategory": "CRM Software",
           "operatingSystem": "Web-based",
-          "url": "https://vellkoerp.com/crm-lead-management/",
+          "url": "https://vellkoerp.com/crm-lead-management",
           "description": "Vellko CRM helps businesses manage leads, sales pipelines, follow-ups, quotations, customer relationships and sales performance through a cloud-based CRM platform.",
           "publisher": {
             "@id": "https://vellkoerp.com/#organization"
@@ -259,7 +259,7 @@ export const seoRoutes = {
         },
         {
           "@type": "BreadcrumbList",
-          "@id": "https://vellkoerp.com/crm-lead-management/#breadcrumb",
+          "@id": "https://vellkoerp.com/crm-lead-management#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
@@ -271,7 +271,7 @@ export const seoRoutes = {
               "@type": "ListItem",
               "position": 2,
               "name": "CRM & Lead Management",
-              "item": "https://vellkoerp.com/crm-lead-management/"
+              "item": "https://vellkoerp.com/crm-lead-management"
             }
           ]
         }
@@ -327,7 +327,7 @@ export const seoRoutes = {
         },
         {
           "@type": "WebPage",
-          "@id": "https://vellkoerp.com/hrms-payroll/#webpage",
+          "@id": "https://vellkoerp.com/hrms-payroll#webpage",
           "url": "https://vellkoerp.com/hrms-payroll",
           "name": "Cloud based HR systems | Payroll management system",
           "description": "Manage attendance, cloud HR and payroll, leave, recruitment and performance in one HRMS. Automate workflows, track compliance and view live dashboards.",
@@ -335,16 +335,16 @@ export const seoRoutes = {
             "@id": "https://vellkoerp.com/#website"
           },
           "about": {
-            "@id": "https://vellkoerp.com/hrms-payroll/#service"
+            "@id": "https://vellkoerp.com/hrms-payroll#service"
           },
           "breadcrumb": {
-            "@id": "https://vellkoerp.com/hrms-payroll/#breadcrumb"
+            "@id": "https://vellkoerp.com/hrms-payroll#breadcrumb"
           },
           "inLanguage": "en-IN"
         },
         {
           "@type": "Service",
-          "@id": "https://vellkoerp.com/hrms-payroll/#service",
+          "@id": "https://vellkoerp.com/hrms-payroll#service",
           "name": "HRMS & Payroll Software",
           "serviceType": "HRMS and Payroll Software",
           "url": "https://vellkoerp.com/hrms-payroll",
@@ -411,7 +411,7 @@ export const seoRoutes = {
         },
         {
           "@type": "SoftwareApplication",
-          "@id": "https://vellkoerp.com/hrms-payroll/#software",
+          "@id": "https://vellkoerp.com/hrms-payroll#software",
           "name": "Vellko HRMS",
           "applicationCategory": "BusinessApplication",
           "applicationSubCategory": "Human Resource Management Software",
@@ -436,7 +436,7 @@ export const seoRoutes = {
         },
         {
           "@type": "BreadcrumbList",
-          "@id": "https://vellkoerp.com/hrms-payroll/#breadcrumb",
+          "@id": "https://vellkoerp.com/hrms-payroll#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
@@ -504,7 +504,7 @@ export const seoRoutes = {
         },
         {
           "@type": "WebPage",
-          "@id": "https://vellkoerp.com/finance-accounting/#webpage",
+          "@id": "https://vellkoerp.com/finance-accounting#webpage",
           "url": "https://vellkoerp.com/finance-accounting",
           "name": "Cloud based Accounting software | Financial Management Vellko ERPP",
           "description": "Manage cloud based accounting, GST, cash flow, budgeting, and financial reports with Vellko ERP Accounting Software. Get real-time financial visibility and automate finance workflows..",
@@ -512,10 +512,10 @@ export const seoRoutes = {
             "@id": "https://vellkoerp.com/#website"
           },
           "about": {
-            "@id": "https://vellkoerp.com/finance-accounting/#service"
+            "@id": "https://vellkoerp.com/finance-accounting#service"
           },
           "breadcrumb": {
-            "@id": "https://vellkoerp.com/finance-accounting/#breadcrumb"
+            "@id": "https://vellkoerp.com/finance-accounting#breadcrumb"
           },
           "primaryImageOfPage": {
             "@type": "ImageObject",
@@ -525,7 +525,7 @@ export const seoRoutes = {
         },
         {
           "@type": "Service",
-          "@id": "https://vellkoerp.com/finance-accounting/#service",
+          "@id": "https://vellkoerp.com/finance-accounting#service",
           "name": "Cloud based Accounting software | Financial Management Vellko ERP",
           "serviceType": "ERP Finance and Accounting Software",
           "url": "https://vellkoerp.com/finance-accounting",
@@ -592,7 +592,7 @@ export const seoRoutes = {
         },
         {
           "@type": "SoftwareApplication",
-          "@id": "https://vellkoerp.com/finance-accounting/#software",
+          "@id": "https://vellkoerp.com/finance-accounting#software",
           "name": "Vellko ERP Accounting Software",
           "applicationCategory": "BusinessApplication",
           "applicationSubCategory": "Accounting and Financial Management Software",
@@ -618,7 +618,7 @@ export const seoRoutes = {
         },
         {
           "@type": "BreadcrumbList",
-          "@id": "https://vellkoerp.com/finance-accounting/#breadcrumb",
+          "@id": "https://vellkoerp.com/finance-accounting#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
@@ -686,7 +686,7 @@ export const seoRoutes = {
         },
         {
           "@type": "WebPage",
-          "@id": "https://vellkoerp.com/inventory-management/#webpage",
+          "@id": "https://vellkoerp.com/inventory-management#webpage",
           "url": "https://vellkoerp.com/inventory-management",
           "name": "Cloud Based Inventory Management Software | Vellko ERP",
           "description": "Cloud Based Inventory Management Software to track stock across warehouses in real time. Barcode scanning, batch tracking, purchase integration and live analytics.",
@@ -694,10 +694,10 @@ export const seoRoutes = {
             "@id": "https://vellkoerp.com/#website"
           },
           "about": {
-            "@id": "https://vellkoerp.com/inventory-management/#service"
+            "@id": "https://vellkoerp.com/inventory-management#service"
           },
           "breadcrumb": {
-            "@id": "https://vellkoerp.com/inventory-management/#breadcrumb"
+            "@id": "https://vellkoerp.com/inventory-management#breadcrumb"
           },
           "primaryImageOfPage": {
             "@type": "ImageObject",
@@ -707,7 +707,7 @@ export const seoRoutes = {
         },
         {
           "@type": "Service",
-          "@id": "https://vellkoerp.com/inventory-management/#service",
+          "@id": "https://vellkoerp.com/inventory-management#service",
           "name": "Inventory Management Software",
           "serviceType": "Cloud-Based Inventory Management Software",
           "url": "https://vellkoerp.com/inventory-management",
@@ -774,7 +774,7 @@ export const seoRoutes = {
         },
         {
           "@type": "SoftwareApplication",
-          "@id": "https://vellkoerp.com/inventory-management/#software",
+          "@id": "https://vellkoerp.com/inventory-management#software",
           "name": "Vellko ERP Inventory Management Software",
           "applicationCategory": "BusinessApplication",
           "applicationSubCategory": "Inventory Management Software",
@@ -800,7 +800,7 @@ export const seoRoutes = {
         },
         {
           "@type": "BreadcrumbList",
-          "@id": "https://vellkoerp.com/inventory-management/#breadcrumb",
+          "@id": "https://vellkoerp.com/inventory-management#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
@@ -956,7 +956,7 @@ export const seoRoutes = {
         },
         {
           "@type": "SoftwareApplication",
-          "@id": "https://vellkoerp.com/project-management/#software",
+          "@id": "https://vellkoerp.com/project-management#software",
           "name": "Vellko ERP Project Management Software",
           "applicationCategory": "BusinessApplication",
           "applicationSubCategory": "Project Management Software",
@@ -1161,7 +1161,7 @@ export const seoRoutes = {
         },
         {
           "@type": "BreadcrumbList",
-          "@id": "https://vellkoerp.com/service-management/#breadcrumb",
+          "@id": "https://vellkoerp.com/service-management#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
@@ -1360,19 +1360,6 @@ export const seoRoutes = {
       ]
     }
   },
-  '/biometric-attendance': {
-    title: 'Cloud based Biometric Attendance Management System',
-    description: 'Track attendance with Cloud based biometric attendance management system, face recognition & mobile check-ins, shift rosters & payroll sync. Book a free demo.',
-    keywords: 'biometric attendance integration, facial recognition attendance, punch machine sync, real-time attendance ERP, shift tracking',
-    schema: {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "name": "Biometric Attendance Integration",
-      "provider": { "@type": "Organization", "name": "Vellko ERP", "url": "https://vellkoerp.com" },
-      "description": "Biometric machine sync, RFID, and facial recognition attendance integration."
-    }
-  },
-
   // 9. Manufacturing ERP
   '/manufacturing-erp': {
     title: 'Manufacturing ERP Software | Production & BOM Management | Vellko ERP',
