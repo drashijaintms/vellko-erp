@@ -6,6 +6,7 @@ deployment:
     - /bin/cp -R dist/* $DEPLOYPATH/
     - /bin/cp -R public $DEPLOYPATH
     - /bin/cp -R public/* $DEPLOYPATH/
+    - /bin/cp -R data $DEPLOYPATH
     - /bin/cp dist/.htaccess $DEPLOYPATH/.htaccess
     - /bin/cp .htaccess $DEPLOYPATH/.htaccess
     - /bin/cp package.json $DEPLOYPATH

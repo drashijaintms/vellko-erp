@@ -5,9 +5,11 @@ import featuredBlogImg from '../assets/images/blog-featured.jpg';
 import ContactFormSection from '../components/common/ContactFormSection';
 import TableOfContents, { parseHeadingsWithAnchors } from '../components/TableOfContents';
 
+import { DEFAULT_BLOGS } from '../data/defaultBlogs';
+
 // Generate URL-friendly slug from blog title
 const toSlug = (title) =>
-  title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  (title || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 
 const categoriesList = [
   "Vellko Call Recording",
@@ -22,125 +24,69 @@ const categoriesList = [
   "E-Commerce"
 ];
 
-// Static fallback blogs shown when the backend/MySQL is unavailable
-const FALLBACK_BLOGS = [
-  {
-    _id: 'f1', id: 1,
-    title: "Vellko ERP now imports and transcribes your call recordings automatically",
-    category: "Vellko Call Recording",
-    readTime: "4 Mins Read",
-    excerpt: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966,",
-    date: "Aug 5, 2026",
-    status: "Published",
-    isFeatured: true
-  },
-  {
-    _id: 'f2', id: 2,
-    title: "How ERP Modules help coordinate retail workflows",
-    category: "ERP Modules",
-    readTime: "3 Mins Read",
-    excerpt: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966,",
-    date: "Aug 5, 2026",
-    status: "Published",
-    isFeatured: false
-  },
-  {
-    _id: 'f3', id: 3,
-    title: "Introducing Vellko ERP for manufacturing business optimization",
-    category: "ERP Modules",
-    readTime: "3 Mins Read",
-    excerpt: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966,",
-    date: "Aug 5, 2026",
-    status: "Published",
-    isFeatured: false
-  },
-  {
-    _id: 'f4', id: 4,
-    title: "Healthcare compliance and digital record keeping in 2026",
-    category: "Healthcare",
-    readTime: "3 Mins Read",
-    excerpt: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966,",
-    date: "Aug 5, 2026",
-    status: "Published",
-    isFeatured: false
-  },
-  {
-    _id: 'f5', id: 5,
-    title: "10 reasons to migrate inventory management to cloud ERP",
-    category: "ERP Modules",
-    readTime: "3 Mins Read",
-    excerpt: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966,",
-    date: "Aug 5, 2026",
-    status: "Published",
-    isFeatured: false
-  },
-  {
-    _id: 'f6', id: 6,
-    title: "How cloud ERP is transforming e-commerce order management",
-    category: "E-Commerce",
-    readTime: "6 Mins Read",
-    excerpt: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966,",
-    date: "Aug 5, 2026",
-    status: "Published",
-    isFeatured: false
-  },
-  {
-    _id: 'f7', id: 7,
-    title: "Smart manufacturing with integrated ERP and IoT connectivity",
-    category: "Manufacturing",
-    readTime: "3 Mins Read",
-    excerpt: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966,",
-    date: "Aug 5, 2026",
-    status: "Published",
-    isFeatured: false
-  },
-  {
-    _id: 'f8', id: 8,
-    title: "Real estate portfolio management made simple with Vellko ERP",
-    category: "Real Estate",
-    readTime: "3 Mins Read",
-    excerpt: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966,",
-    date: "Aug 5, 2026",
-    status: "Published",
-    isFeatured: false
-  },
-  {
-    _id: 'f9', id: 9,
-    title: "Patient data security and HIPAA compliance in healthcare ERP",
-    category: "Healthcare",
-    readTime: "3 Mins Read",
-    excerpt: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966,",
-    date: "Aug 5, 2026",
-    status: "Published",
-    isFeatured: false
-  }
-];
-
 export default function Blog() {
   const navigate = useNavigate();
   const { slug } = useParams();
 
-  const [blogs, setBlogs] = useState(FALLBACK_BLOGS);
+  const [blogs, setBlogs] = useState(DEFAULT_BLOGS);
   const [activeCategory, setActiveCategory] = useState('All');
 
   useEffect(() => {
     const loadBlogs = async () => {
+      // 1. Try Live API
       try {
         const response = await fetch('/api/blogs?status=Published');
-        if (!response.ok) return;
-        const data = await response.json();
-        if (data.length === 0) {
-          await fetch('/api/blogs/seed', { method: 'POST' });
-          const retryResponse = await fetch('/api/blogs?status=Published');
-          if (!retryResponse.ok) return;
-          const retryData = await retryResponse.json();
-          if (retryData.length > 0) setBlogs(retryData);
-        } else {
-          setBlogs(data);
+        if (response.ok) {
+          const text = await response.text();
+          if (text.trim().startsWith('[') || text.trim().startsWith('{')) {
+            const data = JSON.parse(text);
+            if (Array.isArray(data) && data.length > 0) {
+              setBlogs(data);
+              localStorage.setItem('vellko_cached_blogs', JSON.stringify(data));
+              return;
+            }
+          }
         }
       } catch (err) {
-        console.error('Error loading blogs, keeping fallback data:', err);
+        console.debug('API /api/blogs not reachable, trying static /data/blogs.json...', err);
       }
+
+      // 2. Try static public JSON file
+      try {
+        const staticRes = await fetch('/data/blogs.json');
+        if (staticRes.ok) {
+          const text = await staticRes.text();
+          if (text.trim().startsWith('[') || text.trim().startsWith('{')) {
+            const data = JSON.parse(text);
+            if (Array.isArray(data) && data.length > 0) {
+              const published = data.filter(b => b.status === 'Published');
+              setBlogs(published.length > 0 ? published : data);
+              localStorage.setItem('vellko_cached_blogs', JSON.stringify(data));
+              return;
+            }
+          }
+        }
+      } catch (err) {
+        console.debug('Static /data/blogs.json not reachable, checking localStorage cache...', err);
+      }
+
+      // 3. Try LocalStorage Cache
+      try {
+        const cached = localStorage.getItem('vellko_cached_blogs');
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            const published = parsed.filter(b => b.status === 'Published');
+            setBlogs(published.length > 0 ? published : parsed);
+            return;
+          }
+        }
+      } catch (e) {
+        console.debug('LocalStorage read failed:', e);
+      }
+
+      // 4. Default in-memory blogs
+      setBlogs(DEFAULT_BLOGS);
     };
     loadBlogs();
   }, []);

@@ -9,6 +9,8 @@ import {
   ThumbsUp, ThumbsDown, Upload, ChevronLeft, Image as ImageIcon
 } from 'lucide-react';
 
+import { DEFAULT_BLOGS } from '../data/defaultBlogs';
+
 // Strip HTML tags and decode entities → plain text for meta descriptions
 const stripHtml = (html = '') => {
   if (!html) return '';
@@ -60,161 +62,92 @@ const generateDefaultSchema = (currentTitle, currentSlug) => {
 
 export default function BlogAdmin() {
   const [isLoggedIn, setIsLoggedIn] = useState(!!sessionStorage.getItem('adminToken'));
-  const [blogs, setBlogs] = useState([]);
+  const [blogs, setBlogs] = useState(DEFAULT_BLOGS);
   const [inquiries, setInquiries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expandedInquiry, setExpandedInquiry] = useState(null);
-  
-  // Login Form Credentials
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loginError, setLoginError] = useState('');
 
-  // Toast notification state (replaces all alert() calls)
-  const [toastMsg, setToastMsg] = useState('');
-  const [toastType, setToastType] = useState('error'); // 'error' | 'success'
-  const showToast = (msg, type = 'error') => {
-    setToastMsg(msg);
-    setToastType(type);
-    setTimeout(() => setToastMsg(''), 4000);
-  };
-
-  // Active navigation tab matching NutraFyi sidebar:
-  // "dashboard", "categories", "contact", "newsletter", "cms_pages", "cms_blogs", "trash"
-  const [activeTab, setActiveTab] = useState('dashboard');
-
-  // Search & Filter State
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('All');
-  const [categoryFilter, setCategoryFilter] = useState('All');
-
-  // Category Tab input states
-  const [newCatName, setNewCatName] = useState('');
-  const [newCatSlug, setNewCatSlug] = useState('');
-  const [newCatParent, setNewCatParent] = useState('None');
-  const [newCatImg, setNewCatImg] = useState('');
-  const [newCatAlt, setNewCatAlt] = useState('');
-  const [newCatDesc, setNewCatDesc] = useState('');
-
-  // Selected blog for editing
-  const [editingBlog, setEditingBlog] = useState(null);
-  
-  // Blog Form Inputs (MySQL Bound)
-  const [title, setTitle] = useState('');
-  const [category, setCategory] = useState(categoriesList[0]);
-  const [readTime, setReadTime] = useState('3 Mins Read');
-  const [excerpt, setExcerpt] = useState('');
-  const [status, setStatus] = useState('Published');
-  const [isFeatured, setIsFeatured] = useState(false);
-  const [date, setDate] = useState('');
-  const [featuredImage, setFeaturedImage] = useState('');
-  const [featuredImageAlt, setFeaturedImageAlt] = useState('');
-  const [uploadedImages, setUploadedImages] = useState([]);
-  const [isUploading, setIsUploading] = useState(false);
-  const fileInputRef = React.useRef(null);
-
-  // Fetch all already uploaded images from the server
-  const fetchUploadedImages = async () => {
-    try {
-      const res = await fetch('/api/uploads');
-      if (res.ok) {
-        const data = await res.json();
-        setUploadedImages(data);
-      }
-    } catch (err) {
-      console.error('Error loading uploaded images:', err);
-    }
-  };
-
-  // Handle Featured Image File Upload to Server
-  const handleImageUpload = async (e) => {
-    const file = e.target.files && e.target.files[0];
-    if (!file) return;
-
-    if (file.size > 10 * 1024 * 1024) {
-      showToast('Image size should be under 10MB', 'error');
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('image', file);
-
-    setIsUploading(true);
-    try {
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        setFeaturedImage(data.url);
-        if (!featuredImageAlt) {
-          const autoAlt = file.name.replace(/\.[^/.]+$/, '').replace(/[-_]+/g, ' ');
-          setFeaturedImageAlt(autoAlt);
-        }
-        showToast('Image uploaded to server successfully!', 'success');
-        fetchUploadedImages();
-      } else {
-        const errData = await res.json();
-        showToast(`Upload failed: ${errData.message || 'Server error'}`);
-      }
-    } catch (err) {
-      console.error('Upload error:', err);
-      showToast('Error uploading image to server');
-    } finally {
-      setIsUploading(false);
-    }
-  };
-
-  // SEO Tab Local States (NutraFyi Redesign)
-  const [seoTitle, setSeoTitle] = useState('');
-  const [metaDesc, setMetaDesc] = useState('');
-  const [focusKeyword, setFocusKeyword] = useState('');
-  const [slug, setSlug] = useState('');
-
-  // TinyMCE editor ref
-  const editorRef = React.useRef(null);
-
-
-  const [seoTab, setSeoTab] = useState('general'); // "general", "social", "schema", "analyzer"
-
-  // Social Preview & Schema Markup Local States
-  const [ogTitle, setOgTitle] = useState('');
-  const [ogDesc, setOgDesc] = useState('');
-  const [ogImg, setOgImg] = useState('https://vellkoerp.com/images/og-image.png');
-  const [twitterTitle, setTwitterTitle] = useState('');
-  const [twitterDesc, setTwitterDesc] = useState('');
-  const [twitterCard, setTwitterCard] = useState('Summary Large Image');
-  const [rawSchema, setRawSchema] = useState('');
-  const [showPreviewModal, setShowPreviewModal] = useState(false);
-
-
-  // Load all blogs
+  // Load all blogs with resilient fallback
   const fetchBlogs = async () => {
     try {
       const response = await fetch('/api/blogs');
-      if (!response.ok) throw new Error('Server error');
-      const data = await response.json();
-      setBlogs(data);
+      const contentType = response.headers.get('content-type') || '';
+      if (response.ok && contentType.includes('application/json')) {
+        const data = await response.json();
+        if (Array.isArray(data) && data.length > 0) {
+          setBlogs(data);
+          try { localStorage.setItem('vellko_cached_blogs', JSON.stringify(data)); } catch (e) {}
+          return;
+        }
+      }
+      throw new Error('API not available');
     } catch (err) {
-      console.error('Error fetching blogs in admin (DB may be offline):', err);
-      setBlogs([]);
+      // 1. Try static JSON endpoint
+      try {
+        const staticRes = await fetch('/data/blogs.json');
+        if (staticRes.ok) {
+          const staticData = await staticRes.json();
+          if (Array.isArray(staticData) && staticData.length > 0) {
+            setBlogs(staticData);
+            return;
+          }
+        }
+      } catch (fErr) { /* ignore */ }
+
+      // 2. Try localStorage cache
+      try {
+        const cached = localStorage.getItem('vellko_cached_blogs');
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setBlogs(parsed);
+            return;
+          }
+        }
+      } catch (cErr) { /* ignore */ }
+
+      // 3. Bundled Default Blogs
+      setBlogs(DEFAULT_BLOGS);
     } finally {
       setLoading(false);
     }
   };
 
-  // Load all contact inquiries
+  // Load all contact inquiries with resilient fallback
   const fetchInquiries = async () => {
     try {
       const response = await fetch('/api/contact');
-      if (!response.ok) throw new Error('Server error');
-      const data = await response.json();
-      setInquiries(data);
+      const contentType = response.headers.get('content-type') || '';
+      if (response.ok && contentType.includes('application/json')) {
+        const data = await response.json();
+        if (Array.isArray(data)) {
+          setInquiries(data);
+          try { localStorage.setItem('vellko_cached_inquiries', JSON.stringify(data)); } catch (e) {}
+          return;
+        }
+      }
     } catch (err) {
-      console.error('Error fetching inquiries in admin (DB may be offline):', err);
-      setInquiries([]);
+      try {
+        const staticRes = await fetch('/data/inquiries.json');
+        if (staticRes.ok) {
+          const staticData = await staticRes.json();
+          if (Array.isArray(staticData)) {
+            setInquiries(staticData);
+            return;
+          }
+        }
+      } catch (fErr) { /* ignore */ }
+
+      try {
+        const cached = localStorage.getItem('vellko_cached_inquiries');
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed)) {
+            setInquiries(parsed);
+            return;
+          }
+        }
+      } catch (cErr) { /* ignore */ }
     }
   };
 
