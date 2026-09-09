@@ -331,8 +331,9 @@ export default function BlogAdmin() {
 
     try {
       let response;
-      if (editingBlog) {
-        response = await fetch(`/api/blogs/${editingBlog._id}`, {
+      const blogId = editingBlog ? (editingBlog._id || editingBlog.id) : null;
+      if (editingBlog && blogId) {
+        response = await fetch(`/api/blogs/${blogId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
@@ -354,8 +355,8 @@ export default function BlogAdmin() {
         showToast(`Error: ${errorData.message}`);
       }
     } catch (err) {
-      console.error('Error saving blog to MySQL:', err);
-      showToast('Failed to save blog. Please check database connection.');
+      console.error('Error saving blog:', err);
+      showToast('Failed to save blog. Please check connection.');
     }
   };
 
@@ -397,8 +398,9 @@ export default function BlogAdmin() {
 
   // Toggle Featured status
   const handleToggleFeatured = async (blog) => {
+    const blogId = blog._id || blog.id;
     try {
-      const response = await fetch(`/api/blogs/${blog._id}`, {
+      const response = await fetch(`/api/blogs/${blogId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ isFeatured: !blog.isFeatured })
@@ -413,9 +415,10 @@ export default function BlogAdmin() {
 
   // Toggle Publish Status
   const handleToggleStatus = async (blog) => {
+    const blogId = blog._id || blog.id;
     const nextStatus = blog.status === 'Published' ? 'Draft' : 'Published';
     try {
-      const response = await fetch(`/api/blogs/${blog._id}`, {
+      const response = await fetch(`/api/blogs/${blogId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: nextStatus })

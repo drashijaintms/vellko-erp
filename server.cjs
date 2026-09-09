@@ -66,7 +66,8 @@ app.use((req, res, next) => {
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 // Serve uploads folder statically
 app.use('/uploads', express.static(uploadDir));
 // Serve React/Vite production build
@@ -90,6 +91,15 @@ function saveBase64ToDisk(base64String, preferredName = 'blog-image') {
     const filePath = path.join(uploadDir, filename);
     const buffer = Buffer.from(matches[2], 'base64');
     fs.writeFileSync(filePath, buffer);
+
+    // Also sync to dist/uploads if dist directory exists
+    const distUploadDir = path.join(distDir, 'uploads');
+    if (fs.existsSync(distUploadDir)) {
+      try {
+        fs.writeFileSync(path.join(distUploadDir, filename), buffer);
+      } catch (e) { /* ignore */ }
+    }
+
     return `/uploads/${filename}`;
   } catch (err) {
     console.error('Error saving base64 to disk:', err);
@@ -99,11 +109,13 @@ function saveBase64ToDisk(base64String, preferredName = 'blog-image') {
 
 let pool;
 
-// Local JSON File Fallback Storage for Inquiries
+// Local JSON File Fallback Storage for Inquiries & Blogs
 const dataDir = path.join(__dirname, 'data');
 if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
 }
+
+// Inquiries storage
 const inquiriesFile = path.join(dataDir, 'inquiries.json');
 if (!fs.existsSync(inquiriesFile)) {
   fs.writeFileSync(inquiriesFile, JSON.stringify([], null, 2), 'utf8');
@@ -126,6 +138,35 @@ function saveLocalInquiries(list) {
     fs.writeFileSync(inquiriesFile, JSON.stringify(list, null, 2), 'utf8');
   } catch (err) {
     console.error('Error saving inquiries.json:', err);
+  }
+}
+
+// Blogs storage
+const blogsFile = path.join(dataDir, 'blogs.json');
+if (!fs.existsSync(blogsFile)) {
+  fs.writeFileSync(blogsFile, JSON.stringify([], null, 2), 'utf8');
+}
+
+function getLocalBlogs() {
+  try {
+    if (fs.existsSync(blogsFile)) {
+      const content = fs.readFileSync(blogsFile, 'utf8');
+      const parsed = JSON.parse(content);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    }
+  } catch (err) {
+    console.error('Error reading blogs.json:', err);
+  }
+  return [];
+}
+
+function saveLocalBlogs(list) {
+  try {
+    fs.writeFileSync(blogsFile, JSON.stringify(list, null, 2), 'utf8');
+  } catch (err) {
+    console.error('Error saving blogs.json:', err);
   }
 }
 
@@ -356,6 +397,18 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
       return res.status(400).json({ message: 'No file uploaded' });
     }
     const fileUrl = `/uploads/${req.file.filename}`;
+
+    // Also sync to dist/uploads if dist directory exists
+    const distUploadDir = path.join(distDir, 'uploads');
+    if (fs.existsSync(distUploadDir)) {
+      try {
+        fs.copyFileSync(
+          path.join(uploadDir, req.file.filename),
+          path.join(distUploadDir, req.file.filename)
+        );
+      } catch (e) { /* ignore */ }
+    }
+
     res.status(200).json({
       url: fileUrl,
       filename: req.file.filename,
@@ -384,7 +437,7 @@ app.get('/api/uploads', (req, res) => {
           createdAt: stats.mtime
         };
       })
-      .sort((a, b) => b.createdAt - a.createdAt);
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     res.json(images);
   } catch (error) {
     res.status(500).json({ message: 'Error listing uploaded images', error: error.message });
@@ -393,89 +446,123 @@ app.get('/api/uploads', (req, res) => {
 
 // 1. GET /api/blogs - Fetch blogs based on filters
 app.get('/api/blogs', async (req, res) => {
-  try {
-    const { status, category, isFeatured, q } = req.query;
-    let sql = 'SELECT * FROM blogs WHERE 1=1';
-    const params = [];
+  const { status, category, isFeatured, q } = req.query;
 
-    if (status) {
-      sql += ' AND status = ?';
-      params.push(status);
-    }
-    if (category) {
-      sql += ' AND category = ?';
-      params.push(category);
-    }
-    if (isFeatured !== undefined) {
-      sql += ' AND isFeatured = ?';
-      params.push(isFeatured === 'true' ? 1 : 0);
-    }
-    if (q) {
-      sql += ' AND (title LIKE ? OR excerpt LIKE ?)';
-      params.push(`%${q}%`, `%${q}%`);
-    }
+  // Try MySQL if available
+  if (pool) {
+    try {
+      let sql = 'SELECT * FROM blogs WHERE 1=1';
+      const params = [];
 
-    sql += ' ORDER BY createdAt DESC';
+      if (status) {
+        sql += ' AND status = ?';
+        params.push(status);
+      }
+      if (category) {
+        sql += ' AND category = ?';
+        params.push(category);
+      }
+      if (isFeatured !== undefined) {
+        sql += ' AND isFeatured = ?';
+        params.push(isFeatured === 'true' ? 1 : 0);
+      }
+      if (q) {
+        sql += ' AND (title LIKE ? OR excerpt LIKE ?)';
+        params.push(`%${q}%`, `%${q}%`);
+      }
 
-    const [rows] = await pool.query(sql, params);
-    
-    // Map 'id' to '_id' and format booleans for frontend compatibility
-    const formattedBlogs = rows.map(row => ({
-      ...row,
-      _id: row.id.toString(),
-      views: Number(row.views) || 0,
-      isFeatured: !!row.isFeatured
-    }));
+      sql += ' ORDER BY createdAt DESC';
 
-    res.json(formattedBlogs);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching blogs from MySQL', error: error.message });
+      const [rows] = await pool.query(sql, params);
+      
+      const formattedBlogs = rows.map(row => ({
+        ...row,
+        _id: (row.id || row._id || '').toString(),
+        views: Number(row.views) || 0,
+        isFeatured: !!row.isFeatured
+      }));
+
+      // Cache full list to blogs.json
+      if (!status && !category && isFeatured === undefined && !q && rows.length > 0) {
+        saveLocalBlogs(formattedBlogs);
+      }
+
+      return res.json(formattedBlogs);
+    } catch (mysqlErr) {
+      console.error('MySQL query error (falling back to JSON):', mysqlErr.message);
+    }
   }
+
+  // Fallback to local JSON storage
+  let localBlogs = getLocalBlogs();
+  if (status) {
+    localBlogs = localBlogs.filter(b => b.status === status);
+  }
+  if (category) {
+    localBlogs = localBlogs.filter(b => b.category === category);
+  }
+  if (isFeatured !== undefined) {
+    const featBool = isFeatured === 'true';
+    localBlogs = localBlogs.filter(b => !!b.isFeatured === featBool);
+  }
+  if (q) {
+    const lowerQ = q.toLowerCase();
+    localBlogs = localBlogs.filter(b => 
+      (b.title && b.title.toLowerCase().includes(lowerQ)) ||
+      (b.excerpt && b.excerpt.toLowerCase().includes(lowerQ))
+    );
+  }
+
+  return res.json(localBlogs);
 });
 
 // 2. POST /api/blogs/:id/view - Increment blog views by 1 when URL is visited
 app.post('/api/blogs/:id/view', async (req, res) => {
-  try {
-    const { id } = req.params;
-    await pool.query('UPDATE blogs SET views = COALESCE(views, 0) + 1 WHERE id = ?', [id]);
-    const [rows] = await pool.query('SELECT id, views FROM blogs WHERE id = ?', [id]);
-    if (rows.length === 0) {
-      return res.status(404).json({ message: 'Blog not found' });
-    }
-    res.json({ success: true, views: rows[0].views });
-  } catch (error) {
-    res.status(500).json({ message: 'Error incrementing views', error: error.message });
+  const { id } = req.params;
+  let newViews = 1;
+
+  // Update local JSON
+  const localList = getLocalBlogs();
+  const index = localList.findIndex(b => String(b.id) === String(id) || String(b._id) === String(id));
+  if (index !== -1) {
+    localList[index].views = (Number(localList[index].views) || 0) + 1;
+    newViews = localList[index].views;
+    saveLocalBlogs(localList);
   }
+
+  // Update MySQL if available
+  if (pool) {
+    try {
+      await pool.query('UPDATE blogs SET views = COALESCE(views, 0) + 1 WHERE id = ?', [id]);
+      const [rows] = await pool.query('SELECT id, views FROM blogs WHERE id = ?', [id]);
+      if (rows.length > 0) {
+        newViews = rows[0].views;
+      }
+    } catch (dbErr) {
+      console.error('MySQL view increment error:', dbErr.message);
+    }
+  }
+
+  res.json({ success: true, views: newViews });
 });
 
 // 3. POST /api/blogs - Create a new blog
 app.post('/api/blogs', async (req, res) => {
   try {
     const { title, category, readTime, excerpt, date, status, isFeatured, image, imageAlt } = req.body;
+    if (!title) {
+      return res.status(400).json({ message: 'Blog title is required' });
+    }
+
     const cleanImage = image ? saveBase64ToDisk(image) : null;
-    const sql = `
-      INSERT INTO blogs (title, category, readTime, excerpt, date, status, isFeatured, image, imageAlt, views)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0)
-    `;
-    
     const displayDate = date || new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-    const [result] = await pool.query(sql, [
-      title,
-      category,
-      readTime || '3 Mins Read',
-      excerpt || '',
-      displayDate,
-      status || 'Published',
-      isFeatured ? 1 : 0,
-      cleanImage,
-      imageAlt || null
-    ]);
+    const nowId = Date.now();
 
     const newBlog = {
-      _id: result.insertId.toString(),
-      id: result.insertId,
+      id: nowId,
+      _id: nowId.toString(),
       title,
-      category,
+      category: category || 'ERP Modules',
       readTime: readTime || '3 Mins Read',
       excerpt: excerpt || '',
       date: displayDate,
@@ -483,73 +570,146 @@ app.post('/api/blogs', async (req, res) => {
       isFeatured: !!isFeatured,
       image: cleanImage,
       imageAlt: imageAlt || null,
-      views: 0
+      views: 0,
+      createdAt: new Date().toISOString()
     };
+
+    // 1. Save to local blogs.json
+    const localList = getLocalBlogs();
+    localList.unshift(newBlog);
+    saveLocalBlogs(localList);
+
+    // 2. Also insert to MySQL if pool is active
+    if (pool) {
+      try {
+        const sql = `
+          INSERT INTO blogs (title, category, readTime, excerpt, date, status, isFeatured, image, imageAlt, views)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0)
+        `;
+        const [result] = await pool.query(sql, [
+          newBlog.title,
+          newBlog.category,
+          newBlog.readTime,
+          newBlog.excerpt,
+          newBlog.date,
+          newBlog.status,
+          newBlog.isFeatured ? 1 : 0,
+          newBlog.image,
+          newBlog.imageAlt
+        ]);
+        if (result && result.insertId) {
+          newBlog.id = result.insertId;
+          newBlog._id = result.insertId.toString();
+          localList[0].id = result.insertId;
+          localList[0]._id = result.insertId.toString();
+          saveLocalBlogs(localList);
+        }
+      } catch (dbErr) {
+        console.error('MySQL insert error (saved to JSON fallback):', dbErr.message);
+      }
+    }
 
     res.status(201).json(newBlog);
   } catch (error) {
-    res.status(400).json({ message: 'Error creating blog in MySQL', error: error.message });
+    console.error('Error creating blog:', error);
+    res.status(400).json({ message: 'Error creating blog', error: error.message });
   }
 });
 
-// 3. PUT /api/blogs/:id - Update an existing blog
+// 4. PUT /api/blogs/:id - Update an existing blog
 app.put('/api/blogs/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const fields = [];
-    const params = [];
-    
-    const allowedFields = ['title', 'category', 'readTime', 'excerpt', 'date', 'status', 'isFeatured', 'image', 'imageAlt'];
-    allowedFields.forEach(field => {
-      if (req.body[field] !== undefined) {
-        fields.push(`\`${field}\` = ?`);
-        if (field === 'isFeatured') {
-          params.push(req.body[field] ? 1 : 0);
-        } else if (field === 'image') {
-          params.push(req.body[field] ? saveBase64ToDisk(req.body[field]) : null);
-        } else {
-          params.push(req.body[field]);
-        }
-      }
-    });
+    const cleanImage = req.body.image ? saveBase64ToDisk(req.body.image) : req.body.image;
 
-    if (fields.length === 0) {
-      return res.status(400).json({ message: 'No fields to update' });
+    // Update in local JSON
+    const localList = getLocalBlogs();
+    const index = localList.findIndex(b => String(b.id) === String(id) || String(b._id) === String(id));
+    let updatedBlog = null;
+
+    if (index !== -1) {
+      localList[index] = {
+        ...localList[index],
+        ...req.body,
+        ...(req.body.image !== undefined ? { image: cleanImage } : {}),
+        _id: (localList[index].id || id).toString(),
+        isFeatured: req.body.isFeatured !== undefined ? !!req.body.isFeatured : localList[index].isFeatured
+      };
+      updatedBlog = localList[index];
+      saveLocalBlogs(localList);
     }
 
-    params.push(id);
-    const sql = `UPDATE blogs SET ${fields.join(', ')} WHERE id = ?`;
-    const [result] = await pool.query(sql, params);
+    // Update in MySQL if pool is active
+    if (pool) {
+      try {
+        const fields = [];
+        const params = [];
+        const allowedFields = ['title', 'category', 'readTime', 'excerpt', 'date', 'status', 'isFeatured', 'image', 'imageAlt'];
+        
+        allowedFields.forEach(field => {
+          if (req.body[field] !== undefined) {
+            fields.push(`\`${field}\` = ?`);
+            if (field === 'isFeatured') {
+              params.push(req.body[field] ? 1 : 0);
+            } else if (field === 'image') {
+              params.push(cleanImage);
+            } else {
+              params.push(req.body[field]);
+            }
+          }
+        });
 
-    if (result.affectedRows === 0) {
+        if (fields.length > 0) {
+          params.push(id);
+          const sql = `UPDATE blogs SET ${fields.join(', ')} WHERE id = ?`;
+          await pool.query(sql, params);
+          const [rows] = await pool.query('SELECT * FROM blogs WHERE id = ?', [id]);
+          if (rows.length > 0) {
+            updatedBlog = {
+              ...rows[0],
+              _id: rows[0].id.toString(),
+              isFeatured: !!rows[0].isFeatured
+            };
+          }
+        }
+      } catch (dbErr) {
+        console.error('MySQL update error (updated in JSON fallback):', dbErr.message);
+      }
+    }
+
+    if (!updatedBlog && index === -1) {
       return res.status(404).json({ message: 'Blog not found' });
     }
 
-    // Fetch and return the updated row
-    const [rows] = await pool.query('SELECT * FROM blogs WHERE id = ?', [id]);
-    res.json({
-      ...rows[0],
-      _id: rows[0].id.toString(),
-      isFeatured: !!rows[0].isFeatured
-    });
+    res.json(updatedBlog || { message: 'Blog updated successfully', id });
   } catch (error) {
-    res.status(400).json({ message: 'Error updating blog in MySQL', error: error.message });
+    console.error('Error updating blog:', error);
+    res.status(400).json({ message: 'Error updating blog', error: error.message });
   }
 });
 
-// 4. DELETE /api/blogs/:id - Delete a blog
+// 5. DELETE /api/blogs/:id - Delete a blog
 app.delete('/api/blogs/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const [result] = await pool.query('DELETE FROM blogs WHERE id = ?', [id]);
-    
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: 'Blog not found' });
+
+    // Delete from local JSON
+    const localList = getLocalBlogs().filter(b => String(b.id) !== String(id) && String(b._id) !== String(id));
+    saveLocalBlogs(localList);
+
+    // Delete from MySQL if pool is active
+    if (pool) {
+      try {
+        await pool.query('DELETE FROM blogs WHERE id = ?', [id]);
+      } catch (dbErr) {
+        console.error('MySQL delete error:', dbErr.message);
+      }
     }
-    
-    res.json({ message: 'Blog deleted successfully from MySQL', id });
+
+    res.json({ message: 'Blog deleted successfully', id });
   } catch (error) {
-    res.status(500).json({ message: 'Error deleting blog from MySQL', error: error.message });
+    console.error('Error deleting blog:', error);
+    res.status(500).json({ message: 'Error deleting blog', error: error.message });
   }
 });
 
