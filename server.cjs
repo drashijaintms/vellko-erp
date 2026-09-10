@@ -854,20 +854,25 @@ app.post('/api/blogs/seed', async (req, res) => {
 // 6. POST /api/contact - Save contact inquiries
 app.post('/api/contact', async (req, res) => {
   try {
-    const { fullName, workEmail, phoneNumber, companyName, jobTitle, companySize, requirements, sourcePage } = req.body;
-    if (!fullName || !workEmail) {
+    const { fullName, workEmail, email, phoneNumber, phone, companyName, company, jobTitle, companySize, requirements, message, sourcePage } = req.body;
+    const finalEmail = workEmail || email;
+    const finalPhone = phoneNumber || phone || '';
+    const finalCompany = companyName || company || '';
+    const finalReqs = requirements || message || '';
+
+    if (!fullName || !finalEmail) {
       return res.status(400).json({ message: 'Full name and email are required.' });
     }
 
     const newInquiry = {
       id: Date.now(),
       fullName,
-      workEmail,
-      phoneNumber: phoneNumber || '',
-      companyName: companyName || '',
+      workEmail: finalEmail,
+      phoneNumber: finalPhone,
+      companyName: finalCompany,
       jobTitle: jobTitle || '',
       companySize: companySize || '1-10 employees',
-      requirements: requirements || '',
+      requirements: finalReqs,
       sourcePage: sourcePage || '/contact',
       createdAt: new Date().toISOString()
     };

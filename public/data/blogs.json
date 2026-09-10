@@ -1,5 +1,35 @@
 [
   {
+    "id": 1789019037168,
+    "_id": "1789019037168",
+    "title": "Revolutionizing Retail Logistics with Cloud-Native ERP in 2026",
+    "category": "Retail",
+    "readTime": "4 Mins Read",
+    "excerpt": "<h2>1. Next-Generation Retail Logistics</h2><p>Modern retail requires ultra-fast inventory syncing across omnichannel storefronts and decentralized fulfillment warehouses.</p><h3>1.1 Real-Time Inventory Control</h3><p>Vellko ERP connects point-of-sale terminals directly with regional warehouses.</p>",
+    "date": "Sep 10, 2026",
+    "status": "Published",
+    "isFeatured": true,
+    "image": "/uploads/test-featured-banner-1.png",
+    "imageAlt": "Retail Logistics Banner",
+    "views": 1,
+    "createdAt": "2026-09-10T05:43:57.168Z"
+  },
+  {
+    "id": 1789018999203,
+    "_id": "1789018999203",
+    "title": "Revolutionizing Retail Logistics with Cloud-Native ERP in 2026",
+    "category": "Retail",
+    "readTime": "4 Mins Read",
+    "excerpt": "<h2>1. Next-Generation Retail Logistics</h2><p>Modern retail requires ultra-fast inventory syncing across omnichannel storefronts and decentralized fulfillment warehouses.</p><h3>1.1 Real-Time Inventory Control</h3><p>Vellko ERP connects point-of-sale terminals directly with regional warehouses.</p>",
+    "date": "Sep 10, 2026",
+    "status": "Published",
+    "isFeatured": true,
+    "image": "/uploads/test-featured-banner.png",
+    "imageAlt": "Retail Logistics Banner",
+    "views": 1,
+    "createdAt": "2026-09-10T05:43:19.203Z"
+  },
+  {
     "id": 12,
     "title": "Real-World ERP Architecture and Integration 1788956622094 [UPDATED]",
     "category": "ERP Modules",
