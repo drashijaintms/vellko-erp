@@ -115,7 +115,7 @@ export default function BlogAdmin() {
 
   // Media Library & Uploads
   const [uploadedImages, setUploadedImages] = useState([]);
-  const [uploading, setUploading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef(null);
 
   // Filters & Search
@@ -140,7 +140,7 @@ export default function BlogAdmin() {
     const formData = new FormData();
     formData.append('image', file);
 
-    setUploading(true);
+    setIsUploading(true);
     try {
       const res = await fetch('/api/upload', {
         method: 'POST',
@@ -158,7 +158,7 @@ export default function BlogAdmin() {
       console.error('Upload error:', err);
       showToast('Image upload failed.');
     } finally {
-      setUploading(false);
+      setIsUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
