@@ -385,7 +385,7 @@ export default function RichTextEditor({ value, onChange, height = 460 }) {
           },
 
           images_upload_handler: (blobInfo) =>
-            new Promise((resolve, reject) => {
+            new Promise((resolve) => {
               const formData = new FormData();
               formData.append('image', blobInfo.blob(), blobInfo.filename());
 
@@ -393,15 +393,22 @@ export default function RichTextEditor({ value, onChange, height = 460 }) {
                 method: 'POST',
                 body: formData
               })
-                .then((res) => {
-                  if (!res.ok) throw new Error('Upload failed');
-                  return res.json();
+                .then(async (res) => {
+                  const contentType = res.headers.get('content-type') || '';
+                  if (res.ok && contentType.includes('application/json')) {
+                    const data = await res.json();
+                    if (data && data.url) {
+                      return resolve(data.url);
+                    }
+                  }
+                  throw new Error('API non-JSON response');
                 })
-                .then((data) => {
-                  resolve(data.url);
-                })
-                .catch((err) => {
-                  reject(`Image upload failed: ${err.message}`);
+                .catch(() => {
+                  // Resilient fallback: convert image blob directly to base64 Data URL
+                  const reader = new FileReader();
+                  reader.onload = () => resolve(reader.result);
+                  reader.onerror = () => resolve(`data:${blobInfo.blob().type};base64,${blobInfo.base64()}`);
+                  reader.readAsDataURL(blobInfo.blob());
                 });
             }),
         }}

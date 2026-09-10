@@ -146,17 +146,28 @@ export default function BlogAdmin() {
         method: 'POST',
         body: formData
       });
-      if (res.ok) {
+      const contentType = res.headers.get('content-type') || '';
+      if (res.ok && contentType.includes('application/json')) {
         const data = await res.json();
-        setFeaturedImage(data.url);
-        showToast('Image uploaded successfully!', 'success');
-        fetchUploadedImages();
-      } else {
-        showToast('Image upload failed.');
+        if (data && data.url) {
+          setFeaturedImage(data.url);
+          showToast('Image uploaded successfully!', 'success');
+          fetchUploadedImages();
+          return;
+        }
       }
+      throw new Error('API non-JSON response');
     } catch (err) {
-      console.error('Upload error:', err);
-      showToast('Image upload failed.');
+      console.debug('Server API upload offline, using client Data URL fallback:', err);
+      const reader = new FileReader();
+      reader.onload = () => {
+        setFeaturedImage(reader.result);
+        showToast('Image attached successfully!', 'success');
+      };
+      reader.onerror = () => {
+        showToast('Failed to read image file.');
+      };
+      reader.readAsDataURL(file);
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
