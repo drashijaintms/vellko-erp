@@ -151,6 +151,17 @@ if ($method === 'POST') {
         'isFeatured' => !empty($body['isFeatured']),
         'image' => $featuredImg,
         'imageAlt' => $body['imageAlt'] ?? $title,
+        'seoTitle' => $body['seoTitle'] ?? $title,
+        'metaDesc' => $body['metaDesc'] ?? '',
+        'focusKeyword' => $body['focusKeyword'] ?? '',
+        'slug' => $body['slug'] ?? strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $title), '-')),
+        'ogTitle' => $body['ogTitle'] ?? $title,
+        'ogDesc' => $body['ogDesc'] ?? '',
+        'ogImg' => $body['ogImg'] ?? $featuredImg,
+        'twitterTitle' => $body['twitterTitle'] ?? $title,
+        'twitterDesc' => $body['twitterDesc'] ?? '',
+        'twitterCard' => $body['twitterCard'] ?? 'Summary Large Image',
+        'rawSchema' => $body['rawSchema'] ?? '',
         'views' => 0
     ];
 
@@ -182,6 +193,17 @@ if ($method === 'PUT') {
             if (isset($body['isFeatured'])) $b['isFeatured'] = (bool)$body['isFeatured'];
             if (isset($body['image'])) $b['image'] = extractAndSaveBase64Images($body['image'], $b['title'] . '-featured');
             if (isset($body['imageAlt'])) $b['imageAlt'] = $body['imageAlt'];
+            if (isset($body['seoTitle'])) $b['seoTitle'] = $body['seoTitle'];
+            if (isset($body['metaDesc'])) $b['metaDesc'] = $body['metaDesc'];
+            if (isset($body['focusKeyword'])) $b['focusKeyword'] = $body['focusKeyword'];
+            if (isset($body['slug'])) $b['slug'] = $body['slug'];
+            if (isset($body['ogTitle'])) $b['ogTitle'] = $body['ogTitle'];
+            if (isset($body['ogDesc'])) $b['ogDesc'] = $body['ogDesc'];
+            if (isset($body['ogImg'])) $b['ogImg'] = $body['ogImg'];
+            if (isset($body['twitterTitle'])) $b['twitterTitle'] = $body['twitterTitle'];
+            if (isset($body['twitterDesc'])) $b['twitterDesc'] = $body['twitterDesc'];
+            if (isset($body['twitterCard'])) $b['twitterCard'] = $body['twitterCard'];
+            if (isset($body['rawSchema'])) $b['rawSchema'] = $body['rawSchema'];
             $found = true;
             break;
         }
