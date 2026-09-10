@@ -188,6 +188,8 @@ function getLocalBlogs() {
   return [];
 }
 
+const { generateSitemapXml, saveSitemap } = require('./scripts/generate-sitemap.cjs');
+
 function saveLocalBlogs(list) {
   const json = JSON.stringify(list, null, 2);
   const targets = [
@@ -203,6 +205,13 @@ function saveLocalBlogs(list) {
     } catch (err) {
       console.error('Error saving blogs json target:', file, err.message);
     }
+  }
+
+  // Auto-regenerate sitemap.xml on blog changes
+  try {
+    saveSitemap();
+  } catch (err) {
+    console.error('Error auto-generating sitemap in saveLocalBlogs:', err.message);
   }
 }
 
@@ -951,6 +960,18 @@ app.delete('/api/contact/:id', async (req, res) => {
   }
 });
 
+// 9. GET /sitemap.xml - Dynamic XML sitemap
+app.get('/sitemap.xml', (req, res) => {
+  try {
+    const blogs = getLocalBlogs();
+    const xml = generateSitemapXml(blogs);
+    res.header('Content-Type', 'application/xml');
+    res.send(xml);
+  } catch (err) {
+    res.status(500).send('Error generating sitemap');
+  }
+});
+
 // React Router fallback
 app.use((req, res, next) => {
   if (req.path.startsWith('/api/') || req.path.startsWith('/uploads/')) {
@@ -962,6 +983,11 @@ app.use((req, res, next) => {
 
 // Start Server after database is initialized
 initDB().then(() => {
+  try {
+    saveSitemap();
+  } catch (err) {
+    console.error('Error generating initial sitemap:', err.message);
+  }
   app.listen(PORT, () => {
     console.log('Backend server is running on port ' + PORT);
   });
