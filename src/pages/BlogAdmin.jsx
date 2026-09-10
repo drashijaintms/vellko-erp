@@ -1378,8 +1378,20 @@ export default function BlogAdmin() {
                                 <div className="nutra-article-title" onClick={() => handleOpenEdit(blog)} style={{ cursor: 'pointer', fontWeight: '700', color: '#1e293b' }}>
                                   {blog.title}
                                 </div>
-                                <div className="nutra-article-category-label">
-                                  {blog.category}
+                                <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center', marginTop: '3px' }}>
+                                  <span className="nutra-article-category-label">
+                                    {blog.category}
+                                  </span>
+                                  <a 
+                                    href={`/blog/${(blog.slug || blog.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')).replace(/^\/+|\/+$/g, '')}`} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    style={{ fontSize: '0.72rem', color: '#6366f1', textDecoration: 'none', fontWeight: '600' }}
+                                    onClick={(e) => e.stopPropagation()}
+                                    title="Open article in new tab"
+                                  >
+                                    🔗 /blog/{(blog.slug || blog.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')).replace(/^\/+|\/+$/g, '')}
+                                  </a>
                                 </div>
                               </td>
                               <td>
@@ -1460,8 +1472,15 @@ export default function BlogAdmin() {
                 </div>
                 <div className="editor-permalink-line" style={{ marginTop: '0.4rem', fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: '#64748b' }}>
                   <span>Permalink: </span>
-                  <span style={{ fontWeight: '600', color: '#1e293b' }}>/blog/</span>
-                  <span style={{ color: '#4f46e5', fontWeight: '500' }}>{slug || 'url-slug'}</span>
+                  <a 
+                    href={`/blog/${(slug || title.toLowerCase().replace(/[^a-z0-9]+/g, '-')).replace(/^\/+|\/+$/g, '')}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    style={{ fontWeight: '600', color: '#4f46e5', textDecoration: 'underline' }}
+                    title="Click to view live article in a new tab"
+                  >
+                    /blog/{(slug || title.toLowerCase().replace(/[^a-z0-9]+/g, '-')).replace(/^\/+|\/+$/g, '') || 'url-slug'}
+                  </a>
                 </div>
               </div>
               

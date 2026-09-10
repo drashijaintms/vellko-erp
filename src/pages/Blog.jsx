@@ -91,9 +91,14 @@ export default function Blog() {
     loadBlogs();
   }, []);
 
-  // Derive selected blog from URL slug (ignoring 'admin')
+  // Derive selected blog from URL slug (matching either custom slug, generated title slug, or ID)
   const selectedBlog = (slug && slug !== 'admin') 
-    ? blogs.find(b => toSlug(b.title) === slug) || null 
+    ? blogs.find(b => 
+        (b.slug && b.slug.toLowerCase() === slug.toLowerCase()) || 
+        toSlug(b.title) === slug.toLowerCase() || 
+        String(b.id) === slug || 
+        String(b._id) === slug
+      ) || null 
     : null;
 
   // Increment view counter by 1 when article URL is hit
@@ -110,9 +115,10 @@ export default function Blog() {
     }
   }, [selectedBlog?._id]);
 
-  // Navigate to /blog/:slug when a blog card is clicked
+  // Navigate to /blog/:slug (using custom slug if set, otherwise fallback to title slug)
   const openBlog = (blog) => {
-    navigate(`/blog/${toSlug(blog.title)}`);
+    const blogSlug = (blog.slug || toSlug(blog.title)).replace(/^\/+|\/+$/g, '');
+    navigate(`/blog/${blogSlug}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
