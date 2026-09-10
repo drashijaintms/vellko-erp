@@ -15,7 +15,13 @@
     RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^ - [L]
 
-    # 3. Rewrite all frontend routes to index.html for React Router
+    # 3. Direct API Endpoints for cPanel Backend (Clean SEO Image Uploads & Blogs)
+    RewriteRule ^api/upload/?$ api/upload.php [L,QSA]
+    RewriteRule ^api/uploads/?$ api/uploads.php [L,QSA]
+    RewriteRule ^api/blogs/?(.*)$ api/blogs.php?path=$1 [L,QSA]
+    RewriteRule ^api/contact/?(.*)$ api/contact.php?path=$1 [L,QSA]
+
+    # 4. Rewrite all frontend routes to index.html for React Router
     RewriteRule ^ index.html [QSA,L]
 </IfModule>
 
