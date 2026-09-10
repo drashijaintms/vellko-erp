@@ -73,7 +73,28 @@ app.use('/uploads', express.static(uploadDir));
 // Serve React/Vite production build
 const distDir = path.join(__dirname, 'dist');
 
-app.use(express.static(distDir));
+// Helper to sync an uploaded file or buffer across all web root upload directories
+function syncFileToUploadDirs(filename, sourcePathOrBuffer) {
+  const targets = [
+    path.join(__dirname, 'public', 'uploads'),
+    path.join(__dirname, 'dist', 'uploads'),
+    path.join(__dirname, 'uploads')
+  ];
+  for (const dir of targets) {
+    try {
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+      const dest = path.join(dir, filename);
+      if (Buffer.isBuffer(sourcePathOrBuffer)) {
+        fs.writeFileSync(dest, sourcePathOrBuffer);
+      } else if (typeof sourcePathOrBuffer === 'string' && fs.existsSync(sourcePathOrBuffer)) {
+        if (dest !== sourcePathOrBuffer) {
+          fs.copyFileSync(sourcePathOrBuffer, dest);
+        }
+      }
+    } catch (e) { /* ignore */ }
+  }
+}
+
 // Helper to save base64 image strings to real disk files
 function saveBase64ToDisk(base64String, preferredName = 'blog-image') {
   if (!base64String || typeof base64String !== 'string' || !base64String.startsWith('data:image/')) {
@@ -92,13 +113,8 @@ function saveBase64ToDisk(base64String, preferredName = 'blog-image') {
     const buffer = Buffer.from(matches[2], 'base64');
     fs.writeFileSync(filePath, buffer);
 
-    // Also sync to dist/uploads if dist directory exists
-    const distUploadDir = path.join(distDir, 'uploads');
-    if (fs.existsSync(distUploadDir)) {
-      try {
-        fs.writeFileSync(path.join(distUploadDir, filename), buffer);
-      } catch (e) { /* ignore */ }
-    }
+    // Sync across dist/uploads, public/uploads, uploads
+    syncFileToUploadDirs(filename, buffer);
 
     return `/uploads/${filename}`;
   } catch (err) {
@@ -134,10 +150,20 @@ function getLocalInquiries() {
 }
 
 function saveLocalInquiries(list) {
-  try {
-    fs.writeFileSync(inquiriesFile, JSON.stringify(list, null, 2), 'utf8');
-  } catch (err) {
-    console.error('Error saving inquiries.json:', err);
+  const json = JSON.stringify(list, null, 2);
+  const targets = [
+    inquiriesFile,
+    path.join(__dirname, 'public', 'data', 'inquiries.json'),
+    path.join(__dirname, 'dist', 'data', 'inquiries.json')
+  ];
+  for (const file of targets) {
+    try {
+      const dir = path.dirname(file);
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+      fs.writeFileSync(file, json, 'utf8');
+    } catch (err) {
+      console.error('Error saving inquiries json target:', file, err.message);
+    }
   }
 }
 
@@ -163,10 +189,20 @@ function getLocalBlogs() {
 }
 
 function saveLocalBlogs(list) {
-  try {
-    fs.writeFileSync(blogsFile, JSON.stringify(list, null, 2), 'utf8');
-  } catch (err) {
-    console.error('Error saving blogs.json:', err);
+  const json = JSON.stringify(list, null, 2);
+  const targets = [
+    blogsFile,
+    path.join(__dirname, 'public', 'data', 'blogs.json'),
+    path.join(__dirname, 'dist', 'data', 'blogs.json')
+  ];
+  for (const file of targets) {
+    try {
+      const dir = path.dirname(file);
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+      fs.writeFileSync(file, json, 'utf8');
+    } catch (err) {
+      console.error('Error saving blogs json target:', file, err.message);
+    }
   }
 }
 
@@ -398,16 +434,8 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
     }
     const fileUrl = `/uploads/${req.file.filename}`;
 
-    // Also sync to dist/uploads if dist directory exists
-    const distUploadDir = path.join(distDir, 'uploads');
-    if (fs.existsSync(distUploadDir)) {
-      try {
-        fs.copyFileSync(
-          path.join(uploadDir, req.file.filename),
-          path.join(distUploadDir, req.file.filename)
-        );
-      } catch (e) { /* ignore */ }
-    }
+    // Sync across dist/uploads, public/uploads, and root uploads
+    syncFileToUploadDirs(req.file.filename, path.join(uploadDir, req.file.filename));
 
     res.status(200).json({
       url: fileUrl,
