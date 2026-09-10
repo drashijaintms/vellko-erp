@@ -61,11 +61,78 @@ const generateDefaultSchema = (currentTitle, currentSlug) => {
 
 
 export default function BlogAdmin() {
+  // Authentication state
   const [isLoggedIn, setIsLoggedIn] = useState(!!sessionStorage.getItem('adminToken'));
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+
+  // Dashboard Tab state
+  const [activeTab, setActiveTab] = useState('cms_blogs'); // 'dashboard' | 'categories' | 'contact' | 'newsletter' | 'cms_pages' | 'cms_blogs' | 'new' | 'edit' | 'trash' | 'media'
+
+  // Blog & Inquiry dataset state
   const [blogs, setBlogs] = useState(DEFAULT_BLOGS);
   const [inquiries, setInquiries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expandedInquiry, setExpandedInquiry] = useState(null);
+  const [editingBlog, setEditingBlog] = useState(null);
+
+  // Form Fields for Blog Creation / Editing
+  const [title, setTitle] = useState('');
+  const [category, setCategory] = useState(categoriesList[0]);
+  const [readTime, setReadTime] = useState('3 Mins Read');
+  const [excerpt, setExcerpt] = useState('');
+  const [status, setStatus] = useState('Published');
+  const [isFeatured, setIsFeatured] = useState(false);
+  const [date, setDate] = useState(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }));
+  const [featuredImage, setFeaturedImage] = useState('');
+  const [featuredImageAlt, setFeaturedImageAlt] = useState('');
+
+  // SEO Fields
+  const [seoTitle, setSeoTitle] = useState('');
+  const [metaDesc, setMetaDesc] = useState('');
+  const [focusKeyword, setFocusKeyword] = useState('');
+  const [slug, setSlug] = useState('');
+  const [ogTitle, setOgTitle] = useState('');
+  const [ogDesc, setOgDesc] = useState('');
+  const [ogImg, setOgImg] = useState('https://vellkoerp.com/images/og-image.png');
+  const [twitterTitle, setTwitterTitle] = useState('');
+  const [twitterDesc, setTwitterDesc] = useState('');
+  const [twitterCard, setTwitterCard] = useState('Summary Large Image');
+  const [rawSchema, setRawSchema] = useState(generateDefaultSchema('', ''));
+
+  // Media Library & Uploads
+  const [uploadedImages, setUploadedImages] = useState([]);
+  const [uploading, setUploading] = useState(false);
+
+  // Filters & Search
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('All');
+  const [categoryFilter, setCategoryFilter] = useState('All');
+
+  // Toast Notification State
+  const [toastMsg, setToastMsg] = useState('');
+  const [toastType, setToastType] = useState('success');
+  const showToast = (msg, type = 'error') => {
+    setToastMsg(msg);
+    setToastType(type);
+    setTimeout(() => setToastMsg(''), 4000);
+  };
+
+  // Fetch uploaded images list
+  const fetchUploadedImages = async () => {
+    try {
+      const res = await fetch('/api/uploads');
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          setUploadedImages(data);
+        }
+      }
+    } catch (e) {
+      console.debug('Error loading uploads:', e);
+    }
+  };
 
   // Load all blogs with resilient fallback
   const fetchBlogs = async () => {
