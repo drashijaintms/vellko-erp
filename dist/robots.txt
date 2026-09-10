@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+
+# Block login/authentication and private areas
+Disallow: /signin
+Disallow: /login
+Disallow: /logout
+Disallow: /register
+Disallow: /signup
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /api/
+
+# Block query-parameter URLs
+Disallow: /*?*
+
+# Sitemap
+Sitemap: https://vellkoerp.com/sitemap.xml
+https://vellkoerp.com/llms.txt
