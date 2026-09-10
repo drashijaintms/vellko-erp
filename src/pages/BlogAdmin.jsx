@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import RichTextEditor from '../components/RichTextEditor';
 import featuredBlogImg from '../assets/images/blog-featured.jpg';
 import TableOfContents, { parseHeadingsWithAnchors } from '../components/TableOfContents';
@@ -88,7 +88,8 @@ export default function BlogAdmin() {
   const [featuredImage, setFeaturedImage] = useState('');
   const [featuredImageAlt, setFeaturedImageAlt] = useState('');
 
-  // SEO Fields
+  // SEO Fields & SEO Tab
+  const [seoTab, setSeoTab] = useState('general'); // 'general' | 'social' | 'schema'
   const [seoTitle, setSeoTitle] = useState('');
   const [metaDesc, setMetaDesc] = useState('');
   const [focusKeyword, setFocusKeyword] = useState('');
@@ -101,9 +102,21 @@ export default function BlogAdmin() {
   const [twitterCard, setTwitterCard] = useState('Summary Large Image');
   const [rawSchema, setRawSchema] = useState(generateDefaultSchema('', ''));
 
+  // Category Management State
+  const [newCatName, setNewCatName] = useState('');
+  const [newCatSlug, setNewCatSlug] = useState('');
+  const [newCatParent, setNewCatParent] = useState('None');
+  const [newCatImg, setNewCatImg] = useState('');
+  const [newCatAlt, setNewCatAlt] = useState('');
+  const [newCatDesc, setNewCatDesc] = useState('');
+
+  // Live Preview Modal
+  const [showPreviewModal, setShowPreviewModal] = useState(false);
+
   // Media Library & Uploads
   const [uploadedImages, setUploadedImages] = useState([]);
   const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef(null);
 
   // Filters & Search
   const [searchTerm, setSearchTerm] = useState('');
@@ -117,6 +130,37 @@ export default function BlogAdmin() {
     setToastMsg(msg);
     setToastType(type);
     setTimeout(() => setToastMsg(''), 4000);
+  };
+
+  // Upload handler for featured image
+  const handleImageUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    setUploading(true);
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setFeaturedImage(data.url);
+        showToast('Image uploaded successfully!', 'success');
+        fetchUploadedImages();
+      } else {
+        showToast('Image upload failed.');
+      }
+    } catch (err) {
+      console.error('Upload error:', err);
+      showToast('Image upload failed.');
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
   };
 
   // Fetch uploaded images list
