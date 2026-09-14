@@ -198,23 +198,39 @@ async function runPrerender() {
       } else {
         const cleanRoute = route.replace(/^\//, '');
         
-        // Write file 1: dist/<route>.html (e.g. dist/crm-lead-management.html)
+        // Write file: dist/<route>.html (e.g. dist/crm-lead-management.html or dist/blog/slug.html)
         const directHtmlPath = path.resolve(__dirname, `../dist/${cleanRoute}.html`);
         const directHtmlDir = path.dirname(directHtmlPath);
         if (!fs.existsSync(directHtmlDir)) fs.mkdirSync(directHtmlDir, { recursive: true });
         fs.writeFileSync(directHtmlPath, pageHtml, 'utf8');
 
-        // Write file 2: dist/<route>/index.html (e.g. dist/crm-lead-management/index.html)
-        const dirHtmlPath = path.resolve(__dirname, `../dist/${cleanRoute}/index.html`);
-        const dirHtmlDir = path.dirname(dirHtmlPath);
-        if (!fs.existsSync(dirHtmlDir)) fs.mkdirSync(dirHtmlDir, { recursive: true });
-        fs.writeFileSync(dirHtmlPath, pageHtml, 'utf8');
+        // Remove legacy directory if it exists to avoid web servers (Apache/LiteSpeed) issuing 301 trailing slash redirects
+        const legacyDirPath = path.resolve(__dirname, `../dist/${cleanRoute}`);
+        if (fs.existsSync(legacyDirPath) && fs.statSync(legacyDirPath).isDirectory() && cleanRoute !== 'blog') {
+          try {
+            fs.rmSync(legacyDirPath, { recursive: true, force: true });
+          } catch (rmErr) {
+            console.warn(`Could not remove legacy directory ${legacyDirPath}:`, rmErr.message);
+          }
+        }
       }
 
       console.log(`✓ Prerendered ${route} (${pageHtml.length} bytes)`);
     } catch (err) {
       console.error(`✗ Error prerendering ${route}:`, err.message);
     }
+  }
+
+  // Ensure .htaccess is in dist
+  try {
+    const publicHtaccess = path.resolve(__dirname, '../public/.htaccess');
+    const distHtaccess = path.resolve(__dirname, '../dist/.htaccess');
+    if (fs.existsSync(publicHtaccess)) {
+      fs.copyFileSync(publicHtaccess, distHtaccess);
+      console.log('✓ Copied .htaccess to dist/.htaccess');
+    }
+  } catch (htErr) {
+    console.warn('Could not copy .htaccess:', htErr.message);
   }
 
   console.log('Prerendering complete!');

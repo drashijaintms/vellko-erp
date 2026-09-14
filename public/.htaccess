@@ -1,43 +1,45 @@
+# Disable directory listing and MultiViews
+Options -Indexes -MultiViews
+
+# Disable LiteSpeed / Apache automatic directory trailing slash 301 redirects
+<IfModule mod_dir.c>
+    DirectorySlash Off
+</IfModule>
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /
 
-    # Disable directory listing and MultiViews
-    Options -Indexes -MultiViews
-
-    # 1. Force HTTPS + Non-WWW (301 Permanent Redirect)
+    # 1. Force HTTPS + Non-WWW (Canonical 301 Permanent Redirect)
     RewriteCond %{HTTPS} off [OR]
     RewriteCond %{HTTP_HOST} ^www\.vellkoerp\.com$ [NC]
     RewriteRule ^(.*)$ https://vellkoerp.com/$1 [R=301,L]
 
-    # 2. Allow existing static assets, scripts, uploads, sitemap.xml, robots.txt, and APIs
+    # 2. Redirect requests with trailing slashes (except root /) to clean URL without trailing slash (301)
+    RewriteCond %{REQUEST_URI} ^(.+)/+$
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ %1 [R=301,L]
+
+    # 3. Allow real static files (images, CSS, JS, fonts, sitemap.xml, robots.txt, etc.)
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule ^ - [L]
 
-    # 3. Serve Pre-Rendered Static HTML for internal routes
-    # 3a. Direct .html file match for single segment (e.g. /crm-lead-management -> crm-lead-management.html)
+    # 4. Serve Pre-Rendered Static HTML with 200 OK
+    # 4a. Single-segment clean URL (e.g. /crm-lead-management -> crm-lead-management.html)
     RewriteCond %{DOCUMENT_ROOT}/$1.html -f
-    RewriteRule ^([^/]+)/?$ $1.html [L]
+    RewriteRule ^([^/]+)$ $1.html [L]
 
-    # 3b. Nested .html file match (e.g. /blog/some-slug -> blog/some-slug.html)
+    # 4b. Nested clean URL (e.g. /blog/some-slug -> blog/some-slug.html)
     RewriteCond %{DOCUMENT_ROOT}/$1/$2.html -f
-    RewriteRule ^([^/]+)/([^/]+)/?$ $1/$2.html [L]
+    RewriteRule ^([^/]+)/([^/]+)$ $1/$2.html [L]
 
-    # 3c. Directory index.html match for single segment (e.g. /crm-lead-management/ -> crm-lead-management/index.html)
-    RewriteCond %{DOCUMENT_ROOT}/$1/index.html -f
-    RewriteRule ^([^/]+)/?$ $1/index.html [L]
-
-    # 3d. Nested directory index.html match (e.g. /blog/some-slug/ -> blog/some-slug/index.html)
-    RewriteCond %{DOCUMENT_ROOT}/$1/$2/index.html -f
-    RewriteRule ^([^/]+)/([^/]+)/?$ $1/$2/index.html [L]
-
-    # 4. Allow existing directories
+    # 5. Allow existing physical directories (like /uploads/, /api/)
     RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^ - [L]
 
-    # 5. Rewrite any unmatched SPA routes to index.html
+    # 6. React SPA Router fallback for unknown paths
     RewriteRule ^ index.html [QSA,L]
 </IfModule>
 
-# LiteSpeed / Apache 404 fallback to React SPA
+# Fallback 404
 ErrorDocument 404 /index.html
