@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "vite",
     "server": "node server.cjs",
+    "prerender": "vite build && vite build --ssr src/entry-server.jsx --outDir dist-ssr && node scripts/prerender.cjs && node scripts/generate-sitemap.cjs",
     "sitemap": "node scripts/generate-sitemap.cjs",
-    "build": "node scripts/generate-sitemap.cjs && vite build",
+    "build": "vite build && vite build --ssr src/entry-server.jsx --outDir dist-ssr && node scripts/prerender.cjs && node scripts/generate-sitemap.cjs",
     "lint": "oxlint",
     "preview": "vite preview"
   },

@@ -10,12 +10,32 @@
     RewriteCond %{HTTP_HOST} ^www\.vellkoerp\.com$ [NC]
     RewriteRule ^(.*)$ https://vellkoerp.com/$1 [R=301,L]
 
-    # 2. Allow existing files and folders to be served directly (css, js, images, etc.)
-    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    # 2. Allow existing static assets, scripts, uploads, sitemap.xml, robots.txt, and APIs
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+
+    # 3. Serve Pre-Rendered Static HTML for internal routes
+    # 3a. Direct .html file match for single segment (e.g. /crm-lead-management -> crm-lead-management.html)
+    RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+    RewriteRule ^([^/]+)/?$ $1.html [L]
+
+    # 3b. Nested .html file match (e.g. /blog/some-slug -> blog/some-slug.html)
+    RewriteCond %{DOCUMENT_ROOT}/$1/$2.html -f
+    RewriteRule ^([^/]+)/([^/]+)/?$ $1/$2.html [L]
+
+    # 3c. Directory index.html match for single segment (e.g. /crm-lead-management/ -> crm-lead-management/index.html)
+    RewriteCond %{DOCUMENT_ROOT}/$1/index.html -f
+    RewriteRule ^([^/]+)/?$ $1/index.html [L]
+
+    # 3d. Nested directory index.html match (e.g. /blog/some-slug/ -> blog/some-slug/index.html)
+    RewriteCond %{DOCUMENT_ROOT}/$1/$2/index.html -f
+    RewriteRule ^([^/]+)/([^/]+)/?$ $1/$2/index.html [L]
+
+    # 4. Allow existing directories
     RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^ - [L]
 
-    # 3. Rewrite all frontend routes to index.html for React Router
+    # 5. Rewrite any unmatched SPA routes to index.html
     RewriteRule ^ index.html [QSA,L]
 </IfModule>
 

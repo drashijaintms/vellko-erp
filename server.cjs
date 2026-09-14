@@ -972,10 +972,26 @@ app.get('/sitemap.xml', (req, res) => {
   }
 });
 
-// React Router fallback
+// React Router fallback - Serve pre-rendered HTML if available, otherwise index.html
 app.use((req, res, next) => {
   if (req.path.startsWith('/api/') || req.path.startsWith('/uploads/')) {
     return next();
+  }
+
+  const cleanPath = req.path.replace(/^\/+|\/+$/g, '');
+  
+  if (!cleanPath) {
+    return res.sendFile(path.join(distDir, 'index.html'));
+  }
+
+  const directFile = path.join(distDir, `${cleanPath}.html`);
+  if (fs.existsSync(directFile)) {
+    return res.sendFile(directFile);
+  }
+
+  const dirFile = path.join(distDir, cleanPath, 'index.html');
+  if (fs.existsSync(dirFile)) {
+    return res.sendFile(dirFile);
   }
 
   res.sendFile(path.join(distDir, 'index.html'));
