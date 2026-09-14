@@ -226,7 +226,8 @@ async function runPrerender() {
     const publicHtaccess = path.resolve(__dirname, '../public/.htaccess');
     const distHtaccess = path.resolve(__dirname, '../dist/.htaccess');
     if (fs.existsSync(publicHtaccess)) {
-      fs.copyFileSync(publicHtaccess, distHtaccess);
+      const htContent = fs.readFileSync(publicHtaccess, 'utf8');
+      fs.writeFileSync(distHtaccess, htContent, 'utf8');
       console.log('✓ Copied .htaccess to dist/.htaccess');
     }
   } catch (htErr) {
