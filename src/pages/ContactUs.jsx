@@ -16,6 +16,8 @@ const InstagramIcon = () => (
   </svg>
 );
 
+const FEEDXO_INGEST_URL = 'https://app.feedxo.io/api/v1/source/b97e30e6-2c7c-42f7-bb52-d78eefc2be23/ingest?api_key=f53c2707f0bf4962b0a21e89ceee057d';
+
 export default function ContactUs() {
   const [formData, setFormData] = useState({
     fullName: '',
@@ -36,29 +38,57 @@ export default function ContactUs() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+
+    const pageurl = typeof window !== 'undefined' ? window.location.href : 'https://vellkoerp.com/contact';
+    const sourcePage = typeof window !== 'undefined' ? window.location.pathname : '/contact';
+
+    const payload = {
+      type: 'contactform',
+      pageurl: pageurl,
+      sourcePage: sourcePage,
+      fullName: formData.fullName,
+      name: formData.fullName,
+      workEmail: formData.workEmail,
+      email: formData.workEmail,
+      phoneNumber: formData.phoneNumber,
+      phone: formData.phoneNumber,
+      companyName: formData.companyName,
+      company: formData.companyName,
+      jobTitle: formData.jobTitle,
+      companySize: formData.companySize,
+      requirements: formData.requirements,
+      message: formData.requirements
+    };
+
     try {
+      // 1. Send to Feedxo API
+      try {
+        await fetch(FEEDXO_INGEST_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      } catch (feedxoErr) {
+        console.warn('Feedxo Ingest Notice:', feedxoErr);
+      }
+
+      // 2. Also save to local backend database
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...formData,
-          sourcePage: '/contact'
-        })
+        body: JSON.stringify(payload)
       });
-      if (response.ok) {
-        alert(`Thank you, ${formData.fullName}! Your message has been sent successfully.`);
-        setFormData({
-          fullName: '',
-          workEmail: '',
-          phoneNumber: '',
-          companyName: '',
-          jobTitle: '',
-          companySize: '1-10 employees',
-          requirements: ''
-        });
-      } else {
-        alert('Failed to send message. Please try again.');
-      }
+
+      alert(`Thank you, ${formData.fullName}! Your message has been sent successfully.`);
+      setFormData({
+        fullName: '',
+        workEmail: '',
+        phoneNumber: '',
+        companyName: '',
+        jobTitle: '',
+        companySize: '1-10 employees',
+        requirements: ''
+      });
     } catch (error) {
       console.error('Error submitting contact form:', error);
       alert('Error sending message. Please check your connection.');
@@ -72,24 +102,44 @@ export default function ContactUs() {
     window.location.href = 'tel:+91-7880107201';
 
     const hasData = formData.fullName || formData.phoneNumber || formData.workEmail || formData.companyName || formData.jobTitle || formData.requirements;
+    const pageurl = typeof window !== 'undefined' ? window.location.href : 'https://vellkoerp.com/contact';
+    const sourcePage = typeof window !== 'undefined' ? window.location.pathname : '/contact';
 
-    // 2. Submit details to backend if entered
+    const callPayload = {
+      type: 'contactform',
+      action: 'call_now',
+      pageurl: pageurl,
+      sourcePage: sourcePage,
+      fullName: formData.fullName || 'Direct Caller',
+      name: formData.fullName || 'Direct Caller',
+      workEmail: formData.workEmail || 'N/A',
+      email: formData.workEmail || 'N/A',
+      phoneNumber: formData.phoneNumber || 'N/A',
+      phone: formData.phoneNumber || 'N/A',
+      companyName: formData.companyName || 'N/A',
+      company: formData.companyName || 'N/A',
+      jobTitle: formData.jobTitle || 'N/A',
+      companySize: formData.companySize || '1-10 employees',
+      requirements: formData.requirements ? `[Call Now] ${formData.requirements}` : '[Call Now Clicked]',
+      message: formData.requirements ? `[Call Now] ${formData.requirements}` : '[Call Now Clicked]'
+    };
+
+    // Submit details to Feedxo & local backend if entered
     try {
-      await fetch('/api/contact', {
+      fetch(FEEDXO_INGEST_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         keepalive: true,
-        body: JSON.stringify({
-          fullName: formData.fullName || 'Direct Caller',
-          workEmail: formData.workEmail || 'N/A',
-          phoneNumber: formData.phoneNumber || 'N/A',
-          companyName: formData.companyName || 'N/A',
-          jobTitle: formData.jobTitle || 'N/A',
-          companySize: formData.companySize || '1-10 employees',
-          requirements: formData.requirements ? `[Call Now] ${formData.requirements}` : '[Call Now Clicked]',
-          sourcePage: '/contact'
-        })
-      });
+        body: JSON.stringify(callPayload)
+      }).catch(() => {});
+
+      fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        keepalive: true,
+        body: JSON.stringify(callPayload)
+      }).catch(() => {});
+
       if (hasData) {
         setFormData({
           fullName: '',
@@ -115,6 +165,8 @@ export default function ContactUs() {
           {/* Left Column - Form */}
           <div className="contact-left-col">
             <form onSubmit={handleSubmit}>
+              <input type="hidden" name="type" value="contactform" />
+              <input type="hidden" name="pageurl" value={typeof window !== 'undefined' ? window.location.href : 'https://vellkoerp.com/contact'} />
               <div className="contact-form-grid">
                 <div className="contact-form-group">
                   <label htmlFor="fullName" className="contact-label">Full Name</label>

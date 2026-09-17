@@ -923,6 +923,32 @@ app.post('/api/contact', async (req, res) => {
         console.error('MySQL insert error (persisted to JSON fallback):', dbErr.message);
       }
     }
+
+    // 3. Asynchronously forward to Feedxo Ingest API as redundancy
+    const FEEDXO_INGEST_URL = 'https://app.feedxo.io/api/v1/source/b97e30e6-2c7c-42f7-bb52-d78eefc2be23/ingest?api_key=f53c2707f0bf4962b0a21e89ceee057d';
+    try {
+      fetch(FEEDXO_INGEST_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'contactform',
+          pageurl: req.body.pageurl || (req.headers.referer || `https://vellkoerp.com${newInquiry.sourcePage}`),
+          sourcePage: newInquiry.sourcePage,
+          fullName: newInquiry.fullName,
+          name: newInquiry.fullName,
+          workEmail: newInquiry.workEmail,
+          email: newInquiry.workEmail,
+          phoneNumber: newInquiry.phoneNumber,
+          phone: newInquiry.phoneNumber,
+          companyName: newInquiry.companyName,
+          company: newInquiry.companyName,
+          jobTitle: newInquiry.jobTitle,
+          companySize: newInquiry.companySize,
+          requirements: newInquiry.requirements,
+          message: newInquiry.requirements
+        })
+      }).catch(err => console.warn('Feedxo server forward error:', err.message));
+    } catch (fErr) { /* ignore */ }
     
     res.status(201).json({ message: 'Inquiry saved successfully', id: newInquiry.id, inquiry: newInquiry });
   } catch (error) {
