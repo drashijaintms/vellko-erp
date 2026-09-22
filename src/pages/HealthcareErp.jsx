@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import IndustryPage from './IndustryPage';
 
 export default function HealthcareErp() {
@@ -7,17 +8,17 @@ export default function HealthcareErp() {
   ];
 
   const beyondFeaturesList = [
-    "Patient Registration & EMR",
-    "Appointment Management",
-    "OPD & IPD Management",
-    "Doctor & Staff Management",
-    "Pharmacy Management",
-    "Laboratory Management",
-    "Billing & Insurance",
-    "Inventory & Procurement",
-    "Finance & Accounting",
-    "HR & Payroll",
-    "Reports & Analytics"
+    { title: "Patient Registration & EMR", alt: "Cloud-based healthcare management software" },
+    { title: "Appointment Management", alt: "Appointment Management" },
+    { title: "OPD & IPD Management", alt: "OPD & IPD Management" },
+    { title: "Doctor & Staff Management", alt: "Doctor & Staff Management" },
+    { title: "Pharmacy Management", alt: "Healthcare inventory management ERP software" },
+    { title: "Laboratory Management", alt: "Laboratory Management" },
+    { title: "Billing & Insurance", alt: "Billing & Insurance" },
+    { title: "Inventory & Procurement", alt: "Healthcare procurement management system" },
+    { title: "Finance & Accounting", alt: "Vellko healthcare ERP finance management dashboard" },
+    { title: "HR & Payroll", alt: "Healthcare HR and payroll ERP software" },
+    { title: "Reports & Analytics", alt: "Healthcare ERP analytics dashboard" }
   ];
 
   const splitLeftListItems = [
@@ -211,6 +212,10 @@ export default function HealthcareErp() {
 
   const faqItemsList = [
     {
+      question: "Is Vellko Healthcare ERP suitable for multi-specialty hospitals?",
+      answer: "Yes. It is designed for clinics, diagnostic centers, specialty hospitals, and multi-location healthcare organizations."
+    },
+    {
       question: "Can Vellko ERP manage multiple hospital branches?",
       answer: "Yes. The platform can be used to manage centrally of multiple branches or hospitals with separate patient documents, inventory, financials as well as reports specific to each one."
     },
@@ -238,10 +243,14 @@ export default function HealthcareErp() {
 
   return (
     <IndustryPage
-      title="Manage Your Entire Healthcare Organization with"
-      highlight="Complete Visibility."
+      title="Cloud Based Healthcare ERP Software for"
+      highlight="Complete Healthcare Visibility"
       tagline="One Healthcare Platform. Better Patient Care."
-      desc="Vellko Healthcare ERP a cloud-based hospital management software that integrates patient care, appointments as well as billing, pharmacy inventory, laboratory as well as HR and finance to a single platform. It assists hospitals, clinics, and health organizations in improving their efficiency, increasing the quality of care for patients, and taking informed decisions based on data."
+      desc={
+        <>
+          Vellko ERP is a cloud based Healthcare ERP software that integrates patient care, appointments as well as billing, pharmacy <Link to="/inventory-management" className="hero-inline-link">inventory</Link>, laboratory as well as <Link to="/hrms-payroll" className="hero-inline-link">HR</Link> and <Link to="/finance-accounting" className="hero-inline-link">finance</Link> to a single platform. It assists hospitals, clinics, and health organizations in improving their efficiency, increasing the quality of care for patients, and taking informed decisions based on data.
+        </>
+      }
       beyondTitle="Healthcare Management Shouldn't Be"
       beyondHighlight="Complicated"
       beyondSubCol1={
@@ -251,7 +260,7 @@ export default function HealthcareErp() {
       }
       beyondSubCol2={
         <>
-          Many hospitals manage patient records, billing appointments, lab reports as well as HR and inventory by using different software, which can lead to delays, duplicate data along with operational inefficiencies.
+          Many hospitals manage patient relationships with <Link to="/crm-lead-management" className="hero-inline-link">CRM &amp; patient management</Link>, staff shifts with <Link to="/biometric-attendance-management" className="hero-inline-link">biometric attendance</Link>, and hospital equipment with <Link to="/service-management" className="hero-inline-link">service management</Link>, which works seamlessly alongside our specialized supply chain solutions like <Link to="/distribution-erp" className="hero-inline-link">Distribution ERP</Link>.
         </>
       }
       beyondDesc="Vellko Healthcare ERP consolidates each department onto a secure platform that allows healthcare professionals to provide more quickly, safer, and more efficient care to patients."
@@ -268,7 +277,7 @@ export default function HealthcareErp() {
       allInOneTitle="Everything Your Healthcare Organization Needs in"
       allInOneHighlight="One Platform"
       allInOneTagline="Modern healthcare is more than just patient care."
-      allInOneDesc="Vellko Healthcare ERP combines clinical operations, patient records as well as finance, pharmacy labs, procurement, HR, compliance and reporting into one unified solution that allows healthcare professionals to concentrate on patient care and less on administration."
+      allInOneDesc="Vellko is a cloud based Healthcare ERP software combines clinical operations, patient records as well as finance, pharmacy labs, procurement, HR, compliance and reporting into one unified solution that allows healthcare professionals to concentrate on patient care and less on administration."
       allInOneModules={allInOneModulesList}
       chooseTitle="Why Healthcare Organizations Choose"
       chooseHighlight="Vellko Healthcare ERP"
@@ -287,12 +296,15 @@ export default function HealthcareErp() {
       supportSteps={supportStepsList}
       faqTitle="Frequently Asked"
       faqHighlight="Questions"
-      faqIntroQ="Is Vellko Healthcare ERP suitable for multi-specialty hospitals?"
-      faqIntroA="Yes. It is designed for clinics, diagnostic centers, specialty hospitals, and multi-location healthcare organizations."
+      faqIntroQ=""
+      faqIntroA=""
       faqItems={faqItemsList}
       ctaTitle="Improve Patient Care with Vellko Healthcare ERP"
       ctaDesc="Replace scattered systems with a secure, unified healthcare management platform. Schedule a free demo today."
       badges={heroBadges}
+      splitIllustrationAlt="Cloud-based healthcare management software"
+      allInOneAlt="Cloud Based Healthcare ERP Software software dashboard"
+      worksAlt="Healthcare ERP analytics dashboard"
       heroClass="industry-hero-section"
       beyondClass="industry-beyond-section"
       compareClass="industry-need-erp-section"

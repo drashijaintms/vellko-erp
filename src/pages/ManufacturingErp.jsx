@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import IndustryPage from './IndustryPage';
 
 export default function ManufacturingErp() {
@@ -7,14 +8,14 @@ export default function ManufacturingErp() {
   ];
 
   const beyondFeaturesList = [
-    "Production Planning & Scheduling",
-    "Inventory Management",
-    "Procurement Management",
-    "Warehouse Management",
-    "Quality Control",
-    "Supply Chain Management",
-    "Finance & Accounting",
-    "Manufacturing Analytics & Reports"
+    { title: "Production Planning & Scheduling", alt: "Vellko ERP production planning dashboard" },
+    { title: "Inventory Management", alt: "Manufacturing inventory management software" },
+    { title: "Procurement Management", alt: "Procurement Management" },
+    { title: "Warehouse Management", alt: "Manufacturing ERP warehouse management dashboard" },
+    { title: "Quality Control", alt: "Manufacturing quality control management system" },
+    { title: "Supply Chain Management", alt: "Supply Chain Management" },
+    { title: "Finance & Accounting", alt: "Finance & Accounting" },
+    { title: "Manufacturing Analytics & Reports", alt: "Manufacturing ERP analytics and reporting dashboard" }
   ];
 
   const splitLeftListItems = [
@@ -235,10 +236,14 @@ export default function ManufacturingErp() {
 
   return (
     <IndustryPage
-      title="Manage Your Manufacturing Operations with"
+      title="Cloud Based Manufacturing ERP for"
       highlight="Complete Visibility"
       tagline="One Manufacturing Platform. Smarter Production Management."
-      desc="Vellko Manufacturing ERP software (or manufacturing) is a cloud-based manufacturing control system that connects production, inventory, procurement, and warehouse operations, quality control, finance, and supply chain management onto one platform. It assists manufacturers in streamlining their processes, cutting expenses, boosting productivity, and taking complete control of production processes."
+      desc={
+        <>
+          Vellkoerp is a cloud based <Link to="/" className="hero-inline-link">ERP software</Link> is an ERP solution that connects production, <Link to="/inventory-management" className="hero-inline-link">inventory</Link>, procurement, warehouse operations, quality control, <Link to="/finance-accounting" className="hero-inline-link">finance</Link>, and supply chain management on one platform. It helps manufacturers streamline operations, improve visibility, reduce manual processes, and make data-driven decisions.
+        </>
+      }
       beyondTitle="Manufacturing Management Shouldn't Be"
       beyondHighlight="Complicated"
       beyondSubCol1={
@@ -265,7 +270,7 @@ export default function ManufacturingErp() {
       allInOneTitle="Everything Your Manufacturing Team Needs in"
       allInOneHighlight="One Platform"
       allInOneTagline="The modern manufacturing process requires much more than just production management."
-      allInOneDesc="Vellko Manufacturing ERP integrates manufacturing and procurement, inventory, logistics in warehouses, assurance, financial reporting, and finance into one platform that assists businesses in reducing operational complexity and increasing efficiency."
+      allInOneDesc="Vellko is a cloud based Manufacturing ERP software that integrates manufacturing and procurement, inventory, logistics in warehouses, assurance, financial reporting, and finance into one platform that assists businesses in reducing operational complexity and increasing efficiency."
       allInOneModules={allInOneModulesList}
       chooseTitle="Why Manufacturers Choose"
       chooseHighlight="Vellko Manufacturing ERP"
@@ -290,6 +295,9 @@ export default function ManufacturingErp() {
       ctaTitle="Build a Smarter Manufacturing Business with Vellko Manufacturing ERP"
       ctaDesc="Replace outdated systems and manual processes by utilizing one platform that lets you control production and inventory, procurement, finance, quality, and supply chain operations all from one platform."
       badges={heroBadges}
+      splitIllustrationAlt="Manufacturing ERP software dashboard"
+      allInOneAlt="Vellko ERP production planning dashboard"
+      worksAlt="Manufacturing ERP analytics and reporting dashboard"
       // Common industry class names
       heroClass="industry-hero-section"
       beyondClass="industry-beyond-section"

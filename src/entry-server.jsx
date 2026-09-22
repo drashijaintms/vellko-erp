@@ -38,6 +38,7 @@ export function render(url) {
         <Route path="/blog/:slug" element={<Blog />} />
         <Route path="/crm-lead-management" element={<CrmLeadManagement />} />
         <Route path="/ecommerce-erp" element={<EcommerceErp />} />
+        <Route path="/e-commerce-erp" element={<EcommerceErp />} />
         <Route path="/manufacturing-erp" element={<ManufacturingErp />} />
         <Route path="/retail-erp" element={<RetailErp />} />
         <Route path="/distribution-erp" element={<DistributionErp />} />

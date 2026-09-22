@@ -1362,113 +1362,1515 @@ export const seoRoutes = {
   },
   // 9. Manufacturing ERP
   '/manufacturing-erp': {
-    title: 'Manufacturing ERP Software | Production & BOM Management | Vellko ERP',
-    description: 'Optimize bill of materials (BOM), production planning, shop-floor tracking, machine maintenance and quality control.',
-    keywords: 'manufacturing ERP, bill of materials software, production scheduling, shop-floor management, quality control ERP',
+    title: 'Cloud based Manufacturing ERP Software | Vellko ERP',
+    description: 'Cloud based Manufacturing ERP software connects production, inventory, procurement, warehouse, quality, finance, and supply chain management on one platform.',
+    keywords: 'Cloud based Manufacturing ERP Software, manufacturing ERP software, production planning, inventory management, procurement, warehouse management, quality control, supply chain management, finance management',
     schema: {
       "@context": "https://schema.org",
-      "@type": "Service",
-      "name": "Manufacturing ERP",
-      "provider": { "@type": "Organization", "name": "Vellko ERP", "url": "https://vellkoerp.com" },
-      "description": "BOM planning, work order routing, job cards, and shop-floor control."
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://vellkoerp.com/#organization",
+          "name": "Vellko ERP",
+          "url": "https://vellkoerp.com/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://vellkoerp.com/assets/logo-bAy9mXr5.png"
+          },
+          "telephone": "+91-7880107201",
+          "email": "support@vellkoerp.com",
+          "founder": {
+            "@type": "Person",
+            "name": "Deepak Verma"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Phoenix Corporate Park, Survey No. 359/2 & 359/3, Back Part 2nd Floor, Narmadapuram Road",
+            "addressLocality": "Bhopal",
+            "addressRegion": "Madhya Pradesh",
+            "postalCode": "462026",
+            "addressCountry": "IN"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "India"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://vellkoerp.com/#website",
+          "url": "https://vellkoerp.com/",
+          "name": "Vellko ERP",
+          "publisher": {
+            "@id": "https://vellkoerp.com/#organization"
+          },
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://vellkoerp.com/manufacturing-erp#webpage",
+          "url": "https://vellkoerp.com/manufacturing-erp",
+          "name": "Cloud Based Manufacturing ERP Software | Vellko ERP",
+          "description": "Cloud based Manufacturing ERP software connects production, inventory, procurement, warehouse, quality, finance, and supply chain management on one platform.",
+          "isPartOf": {
+            "@id": "https://vellkoerp.com/#website"
+          },
+          "about": {
+            "@id": "https://vellkoerp.com/manufacturing-erp#software"
+          },
+          "breadcrumb": {
+            "@id": "https://vellkoerp.com/manufacturing-erp#breadcrumb"
+          },
+          "mainEntity": {
+            "@id": "https://vellkoerp.com/manufacturing-erp#software"
+          },
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://vellkoerp.com/manufacturing-erp#software",
+          "name": "Vellko Manufacturing ERP",
+          "applicationCategory": "BusinessApplication",
+          "applicationSubCategory": "Manufacturing ERP Software",
+          "operatingSystem": "Web-based",
+          "url": "https://vellkoerp.com/manufacturing-erp",
+          "description": "Vellko Manufacturing ERP is a cloud based ERP solution that helps businesses manage production, inventory, procurement, warehouse operations, quality control, finance, and supply chain processes.",
+          "publisher": {
+            "@id": "https://vellkoerp.com/#organization"
+          },
+          "featureList": [
+            "Production Management",
+            "Production Planning",
+            "Inventory Management",
+            "Procurement Management",
+            "Warehouse Management",
+            "Quality Management",
+            "Supply Chain Management",
+            "Finance Management",
+            "Sales and Order Management",
+            "Business Reporting and Analytics"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://vellkoerp.com/manufacturing-erp#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://vellkoerp.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Manufacturing ERP",
+              "item": "https://vellkoerp.com/manufacturing-erp"
+            }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://vellkoerp.com/manufacturing-erp#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Is Vellko Manufacturing ERP suitable for small and medium manufacturers?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. The platform was built to be scalable from small manufacturing units to multi-location companies."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can it manage multiple factories or production plants?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Vellko Manufacturing ERP can handle multi-factory operations, with centralized monitoring and control."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does it support inventory and warehouse management?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. The system offers real-time inventory tracking, stock transfers, warehouse management, and inventory analytics."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can production planning and procurement work together?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Absolutely. Production requirements are connected to procurement workflows to help ensure the availability of required materials."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does it support quality control processes?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. The platform provides inspection management, quality checks, defect tracking, compliance monitoring, and reporting."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can finance and manufacturing work together?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Manufacturing operations can be integrated with budgeting, accounting, costing, and financial reporting."
+              }
+            }
+          ]
+        }
+      ]
     }
   },
 
   // 10. Retail ERP
   '/retail-erp': {
-    title: 'Retail & POS ERP Software | Multi-Store Retail Management | Vellko ERP',
-    description: 'Fast POS billing, barcode scanning, loyalty programs, inventory sync and consolidated multi-store retail reporting.',
-    keywords: 'retail ERP software, POS billing software, multi-store management, barcode retail POS, retail inventory tracking',
+    title: 'Cloud based Retail ERP Software | POS & Inventory | Vellko',
+    description: 'Cloud based Retail ERP software connects POS, inventory, purchasing, warehouses, finance, CRM, and multi-store operations on one platform.',
+    keywords: 'Cloud based Retail ERP Software, retail ERP software, POS software, inventory management, purchasing management, multi-store management, retail finance, warehouse management',
     schema: {
       "@context": "https://schema.org",
-      "@type": "Service",
-      "name": "Retail & POS ERP",
-      "provider": { "@type": "Organization", "name": "Vellko ERP", "url": "https://vellkoerp.com" },
-      "description": "Multi-store retail POS, barcode scanning, customer loyalty, and stock sync."
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://vellkoerp.com/#organization",
+          "name": "Vellko ERP",
+          "url": "https://vellkoerp.com/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://vellkoerp.com/assets/logo-bAy9mXr5.png"
+          },
+          "telephone": "+91-7880107201",
+          "email": "support@vellkoerp.com",
+          "founder": {
+            "@type": "Person",
+            "name": "Deepak Verma"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Phoenix Corporate Park, Survey No. 359/2 & 359/3, Back Part 2nd Floor, Narmadapuram Road",
+            "addressLocality": "Bhopal",
+            "addressRegion": "Madhya Pradesh",
+            "postalCode": "462026",
+            "addressCountry": "IN"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "India"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://vellkoerp.com/#website",
+          "url": "https://vellkoerp.com/",
+          "name": "Vellko ERP",
+          "publisher": {
+            "@id": "https://vellkoerp.com/#organization"
+          },
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://vellkoerp.com/retail-erp#webpage",
+          "url": "https://vellkoerp.com/retail-erp",
+          "name": "Cloud Based Retail ERP Software | POS & Inventory | Vellko",
+          "description": "Cloud Based Retail ERP software connects POS, inventory, purchasing, warehouses, finance, CRM, and multi-store operations on one platform.",
+          "isPartOf": {
+            "@id": "https://vellkoerp.com/#website"
+          },
+          "about": {
+            "@id": "https://vellkoerp.com/retail-erp#software"
+          },
+          "mainEntity": {
+            "@id": "https://vellkoerp.com/retail-erp#software"
+          },
+          "breadcrumb": {
+            "@id": "https://vellkoerp.com/retail-erp#breadcrumb"
+          },
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://vellkoerp.com/retail-erp#software",
+          "name": "Vellko Retail ERP",
+          "applicationCategory": "BusinessApplication",
+          "applicationSubCategory": "Retail ERP Software",
+          "operatingSystem": "Web-based",
+          "url": "https://vellkoerp.com/retail-erp",
+          "description": "Vellko Retail ERP is a cloud based ERP solution that helps retail businesses manage point of sale, inventory, purchasing, warehouses, finance, customer relationships, and multi-store operations.",
+          "publisher": {
+            "@id": "https://vellkoerp.com/#organization"
+          },
+          "featureList": [
+            "Point of Sale (POS)",
+            "Inventory Management",
+            "Purchasing Management",
+            "Warehouse Management",
+            "Multi-Store Management",
+            "Customer Relationship Management",
+            "Finance Management",
+            "Sales Management",
+            "Stock Transfers",
+            "Barcode Inventory Management",
+            "Role-Based Access Control",
+            "Business Reporting and Analytics"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://vellkoerp.com/retail-erp#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://vellkoerp.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Retail ERP",
+              "item": "https://vellkoerp.com/retail-erp"
+            }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://vellkoerp.com/retail-erp#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Is Vellko Retail ERP suitable for small and large retail businesses?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. The platform can scale from single-store businesses to multi-location retail chains."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can it manage multiple stores and warehouses?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Vellko Retail ERP provides centralized control of multiple stores, warehouses, inventory, and retail operations."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does it support barcode scanning?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. The system supports barcode-based inventory management and point-of-sale operations."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can inventory be tracked in real time?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Absolutely. Stock levels can be automatically adjusted following purchases, sales, transfers, or stock adjustments."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does it integrate finance and procurement?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Purchasing, inventory, accounting, and vendor management can be integrated into one platform."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can different departments have different permissions?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Role-based access control allows companies to set permissions for store managers, cashiers, finance teams, warehouse employees, and administrators."
+              }
+            }
+          ]
+        }
+      ]
     }
   },
 
   // 11. Distribution ERP
   '/distribution-erp': {
-    title: 'Distribution & Wholesale Supply Chain ERP | Vellko ERP',
-    description: 'Manage dealer networks, logistics, order fulfillment, pricing tiers and wholesale distribution workflows.',
-    keywords: 'distribution ERP, wholesale management system, supply chain ERP, dealer distributor portal, order fulfillment software',
+    title: 'Cloud based Distribution ERP Software | Wholesale & Supply Chain ERP',
+    description: 'Vellko Cloud based Distribution ERP connects inventory, procurement, warehouses, sales, logistics, finance, and suppliers on one cloud-based platform.',
+    keywords: 'Cloud based Distribution ERP Software, wholesale ERP software, supply chain ERP, distribution inventory management, warehouse distribution software, procurement management, multi-warehouse logistics, distribution finance',
     schema: {
       "@context": "https://schema.org",
-      "@type": "Service",
-      "name": "Distribution ERP",
-      "provider": { "@type": "Organization", "name": "Vellko ERP", "url": "https://vellkoerp.com" },
-      "description": "Wholesale distribution, dealer portals, logistics routing, and order fulfillment."
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://vellkoerp.com/#organization",
+          "name": "Vellko ERP",
+          "url": "https://vellkoerp.com/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://vellkoerp.com/assets/logo-bAy9mXr5.png"
+          },
+          "telephone": "+91-7880107201",
+          "email": "support@vellkoerp.com",
+          "founder": {
+            "@type": "Person",
+            "name": "Deepak Verma"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Phoenix Corporate Park, Survey No. 359/2 & 359/3, Back Part 2nd Floor, Narmadapuram Road",
+            "addressLocality": "Bhopal",
+            "addressRegion": "Madhya Pradesh",
+            "postalCode": "462026",
+            "addressCountry": "IN"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "India"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://vellkoerp.com/#website",
+          "url": "https://vellkoerp.com/",
+          "name": "Vellko ERP",
+          "publisher": {
+            "@id": "https://vellkoerp.com/#organization"
+          },
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://vellkoerp.com/distribution-erp#webpage",
+          "url": "https://vellkoerp.com/distribution-erp",
+          "name": "Cloud Based Distribution ERP Software | Vellko ERP",
+          "description": "Vellko Cloud Based Distribution ERP connects inventory, procurement, warehouses, sales, logistics, finance, and suppliers on one platform.",
+          "isPartOf": {
+            "@id": "https://vellkoerp.com/#website"
+          },
+          "about": {
+            "@id": "https://vellkoerp.com/distribution-erp#software"
+          },
+          "mainEntity": {
+            "@id": "https://vellkoerp.com/distribution-erp#software"
+          },
+          "breadcrumb": {
+            "@id": "https://vellkoerp.com/distribution-erp#breadcrumb"
+          },
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://vellkoerp.com/distribution-erp#software",
+          "name": "Vellko Distribution ERP",
+          "applicationCategory": "BusinessApplication",
+          "applicationSubCategory": "Distribution ERP Software",
+          "operatingSystem": "Web-based",
+          "url": "https://vellkoerp.com/distribution-erp",
+          "description": "Vellko Distribution ERP is a cloud based ERP solution that helps distributors manage inventory, procurement, warehouses, sales, logistics, finance, suppliers, and multi-location operations.",
+          "publisher": {
+            "@id": "https://vellkoerp.com/#organization"
+          },
+          "featureList": [
+            "Inventory Management",
+            "Procurement Management",
+            "Purchase Order Management",
+            "Supplier Management",
+            "Warehouse Management",
+            "Multi-Warehouse Management",
+            "Sales Management",
+            "Order Management",
+            "Logistics Management",
+            "Stock Transfers",
+            "Finance Management",
+            "Vendor Performance Monitoring",
+            "Business Reporting and Analytics",
+            "Role-Based Access Control",
+            "Custom Workflows and Approvals"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://vellkoerp.com/distribution-erp#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://vellkoerp.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Distribution ERP",
+              "item": "https://vellkoerp.com/distribution-erp"
+            }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://vellkoerp.com/distribution-erp#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Is Vellko Distribution ERP suitable for small and growing distributors?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. The platform was built to be scalable from small-scale distributors to multi-location distribution companies."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can it manage multiple warehouses?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. You can control transfers, inventory, and warehouse operations across several locations using a central system."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does it support supplier and procurement management?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. The platform offers purchase orders, supplier management, procurement workflows, and vendor performance monitoring."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can finance and inventory work together?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Sales, inventory, purchasing, and accounting are integrated to provide greater visibility into financial and operational performance."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can the system be customized?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Absolutely. Workflows, approvals, reports, user roles, and dashboards can be configured to meet the requirements of your business."
+              }
+            }
+          ]
+        }
+      ]
     }
   },
 
   // 12. Healthcare ERP
   '/healthcare-erp': {
-    title: 'Healthcare & Hospital Management ERP Software | Vellko ERP',
-    description: 'Streamline patient registration, doctor appointments, pharmacy inventory, lab reports and hospital billing.',
-    keywords: 'healthcare ERP, hospital management software, clinic management, pharmacy stock ERP, patient billing system',
+    title: 'Cloud Based Healthcare ERP Software | Vellko ERP',
+    description: 'Vellko cloud based Healthcare ERP connects finance, inventory, HR, procurement, operations, and reporting on one centralized platform.',
+    keywords: 'Cloud Based Healthcare ERP Software, healthcare ERP software, hospital management software, clinic management, pharmacy stock ERP, patient billing system, healthcare inventory management, healthcare HR and payroll',
     schema: {
       "@context": "https://schema.org",
-      "@type": "Service",
-      "name": "Healthcare ERP",
-      "provider": { "@type": "Organization", "name": "Vellko ERP", "url": "https://vellkoerp.com" },
-      "description": "Patient records, OPD/IPD billing, doctor scheduling, and pharmacy stock."
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://vellkoerp.com/#organization",
+          "name": "Vellko ERP",
+          "url": "https://vellkoerp.com/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://vellkoerp.com/assets/logo-bAy9mXr5.png"
+          },
+          "telephone": "+91-7880107201",
+          "email": "support@vellkoerp.com",
+          "founder": {
+            "@type": "Person",
+            "name": "Deepak Verma"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Phoenix Corporate Park, Survey No. 359/2 & 359/3, Back Part 2nd Floor, Narmadapuram Road",
+            "addressLocality": "Bhopal",
+            "addressRegion": "Madhya Pradesh",
+            "postalCode": "462026",
+            "addressCountry": "IN"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "India"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://vellkoerp.com/#website",
+          "url": "https://vellkoerp.com/",
+          "name": "Vellko ERP",
+          "publisher": {
+            "@id": "https://vellkoerp.com/#organization"
+          },
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://vellkoerp.com/healthcare-erp#webpage",
+          "url": "https://vellkoerp.com/healthcare-erp",
+          "name": "Cloud Based Healthcare ERP Software | Vellko ERP",
+          "description": "Vellko cloud based Healthcare ERP connects finance, inventory, HR, procurement, operations, and reporting on one centralized platform.",
+          "isPartOf": {
+            "@id": "https://vellkoerp.com/#website"
+          },
+          "about": {
+            "@id": "https://vellkoerp.com/healthcare-erp#software"
+          },
+          "mainEntity": {
+            "@id": "https://vellkoerp.com/healthcare-erp#software"
+          },
+          "breadcrumb": {
+            "@id": "https://vellkoerp.com/healthcare-erp#breadcrumb"
+          },
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://vellkoerp.com/healthcare-erp#software",
+          "name": "Vellko Healthcare ERP",
+          "applicationCategory": "BusinessApplication",
+          "applicationSubCategory": "Healthcare ERP Software",
+          "operatingSystem": "Web-based",
+          "url": "https://vellkoerp.com/healthcare-erp",
+          "description": "Vellko Healthcare ERP is a cloud based ERP solution that helps healthcare organizations manage finance, inventory, human resources, procurement, operations, and reporting through one centralized platform.",
+          "publisher": {
+            "@id": "https://vellkoerp.com/#organization"
+          },
+          "featureList": [
+            "Healthcare Operations Management",
+            "Finance Management",
+            "Inventory Management",
+            "Procurement Management",
+            "Human Resource Management",
+            "Employee Management",
+            "Purchase Management",
+            "Reporting and Analytics",
+            "Workflow Management",
+            "Role-Based Access Control",
+            "Centralized Business Management"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://vellkoerp.com/healthcare-erp#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://vellkoerp.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Healthcare ERP",
+              "item": "https://vellkoerp.com/healthcare-erp"
+            }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://vellkoerp.com/healthcare-erp#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Is Vellko Healthcare ERP suitable for small and large healthcare organizations?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. The platform can be scaled to support the operational and management requirements of healthcare organizations of different sizes."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can Vellko Healthcare ERP manage inventory and procurement?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. The system helps healthcare organizations manage inventory, purchasing, procurement workflows, and supplier-related activities from one platform."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can finance and healthcare operations work together?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Finance and operational processes can be connected to provide centralized visibility into costs, transactions, and business performance."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does Vellko Healthcare ERP support HR management?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. The platform supports human resource and employee management to help organizations manage their workforce and related processes."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can healthcare organizations generate reports and analytics?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Vellko Healthcare ERP provides reporting and analytics capabilities to help organizations monitor operations and business performance."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can the Healthcare ERP system be customized?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Workflows, user roles, permissions, reports, and other system settings can be configured according to business requirements."
+              }
+            }
+          ]
+        }
+      ]
     }
   },
 
   // 13. Education ERP
   '/education-erp': {
-    title: 'Education & School Institute Management ERP | Vellko ERP',
-    description: 'Manage student admissions, fee collections, timetable scheduling, exams, grading and staff payroll in one platform.',
-    keywords: 'education ERP, school management software, college institute ERP, fee collection system, student attendance software',
+    title: 'Cloud Based Education ERP Software | Vellko ERP',
+    description: 'Vellko cloud based Education ERP connects student management, finance, HR, operations, and reporting on one centralized platform.',
+    keywords: 'Cloud Based Education ERP Software, education ERP software, school management software, college ERP, student information system, online admission management, fee collection system, student attendance software, education HR and payroll',
     schema: {
       "@context": "https://schema.org",
-      "@type": "Service",
-      "name": "Education ERP",
-      "provider": { "@type": "Organization", "name": "Vellko ERP", "url": "https://vellkoerp.com" },
-      "description": "School and college admissions, online fee collection, and timetable scheduling."
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://vellkoerp.com/#organization",
+          "name": "Vellko ERP",
+          "url": "https://vellkoerp.com/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://vellkoerp.com/assets/logo-bAy9mXr5.png"
+          },
+          "telephone": "+91-7880107201",
+          "email": "support@vellkoerp.com",
+          "founder": {
+            "@type": "Person",
+            "name": "Deepak Verma"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Phoenix Corporate Park, Survey No. 359/2 & 359/3, Back Part 2nd Floor, Narmadapuram Road",
+            "addressLocality": "Bhopal",
+            "addressRegion": "Madhya Pradesh",
+            "postalCode": "462026",
+            "addressCountry": "IN"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "India"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://vellkoerp.com/#website",
+          "url": "https://vellkoerp.com/",
+          "name": "Vellko ERP",
+          "publisher": {
+            "@id": "https://vellkoerp.com/#organization"
+          },
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://vellkoerp.com/education-erp#webpage",
+          "url": "https://vellkoerp.com/education-erp",
+          "name": "Cloud Based Education ERP Software | Vellko ERP",
+          "description": "Vellko cloud based Education ERP connects student management, finance, HR, operations, and reporting on one centralized platform.",
+          "isPartOf": {
+            "@id": "https://vellkoerp.com/#website"
+          },
+          "about": {
+            "@id": "https://vellkoerp.com/education-erp#software"
+          },
+          "mainEntity": {
+            "@id": "https://vellkoerp.com/education-erp#software"
+          },
+          "breadcrumb": {
+            "@id": "https://vellkoerp.com/education-erp#breadcrumb"
+          },
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://vellkoerp.com/education-erp#software",
+          "name": "Vellko Education ERP",
+          "applicationCategory": "BusinessApplication",
+          "applicationSubCategory": "Education ERP Software",
+          "operatingSystem": "Web-based",
+          "url": "https://vellkoerp.com/education-erp",
+          "description": "Vellko Education ERP is a cloud based ERP solution that helps schools, colleges, universities, coaching institutes, and other educational institutions manage students, admissions, fees, HR, operations, and reporting.",
+          "publisher": {
+            "@id": "https://vellkoerp.com/#organization"
+          },
+          "featureList": [
+            "Student Management",
+            "Online Admission Management",
+            "Enrollment Management",
+            "Fee Management",
+            "Online Payment Management",
+            "Attendance Management",
+            "Examination and Results Management",
+            "Assignment Management",
+            "Parent and Student Portals",
+            "Human Resource Management",
+            "Finance Management",
+            "Academic Management",
+            "Reporting and Analytics",
+            "Workflow Management",
+            "Role-Based Access Control"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://vellkoerp.com/education-erp#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://vellkoerp.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Education ERP",
+              "item": "https://vellkoerp.com/education-erp"
+            }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://vellkoerp.com/education-erp#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Is Vellko Education ERP suitable for schools and colleges?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. It is designed to be used by universities, schools, colleges, coaching institutes, and educational institutions of different sizes."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can it manage online admissions?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. The system is fully online and supports admission processes, application tracking, and enrollment management."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does it support fee collection and online payments?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Institutions can manage fees, online payments, receipts, dues, and financial reports through the platform."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can parents and students access information online?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Secure portals allow parents and students to view information about attendance, results, fees, assignments, and announcements."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can the Education ERP be customized?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Absolutely. Workflows, approval procedures, academic report structures, and modules can be adapted to meet the requirements of your institution."
+              }
+            }
+          ]
+        }
+      ]
     }
   },
 
   // 14. Real Estate ERP
   '/real-estate-erp': {
-    title: 'Real Estate & Construction Project ERP | Vellko ERP',
-    description: 'Track property units, construction milestones, subcontractor billing, customer CRM and payment schedules.',
-    keywords: 'real estate ERP, construction management software, property booking CRM, builder billing software, project milestone tracking',
+    title: 'Cloud Based Real Estate ERP Software | Vellko ERP',
+    description: 'Vellko ERP is a cloud based Real Estate ERP that connects finance, projects, sales, CRM, HR, inventory, and reporting on one centralized platform.',
+    keywords: 'Cloud Based Real Estate ERP Software, real estate ERP, property management software, real estate CRM, builder ERP, real estate accounting software, tenant lease management, construction project management ERP',
     schema: {
       "@context": "https://schema.org",
-      "@type": "Service",
-      "name": "Real Estate & Construction ERP",
-      "provider": { "@type": "Organization", "name": "Vellko ERP", "url": "https://vellkoerp.com" },
-      "description": "Property unit booking, construction milestones, and contractor billing."
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://vellkoerp.com/#organization",
+          "name": "Vellko ERP",
+          "url": "https://vellkoerp.com/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://vellkoerp.com/assets/logo-bAy9mXr5.png"
+          },
+          "founder": {
+            "@type": "Person",
+            "name": "Deepak Verma"
+          },
+          "telephone": "+91-7880107201",
+          "email": "support@vellkoerp.com",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Phoenix Corporate Park, Survey No. 359/2 & 359/3, Back Part 2nd Floor, Narmadapuram Road",
+            "addressLocality": "Bhopal",
+            "addressRegion": "Madhya Pradesh",
+            "postalCode": "462026",
+            "addressCountry": "IN"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "India"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://vellkoerp.com/#website",
+          "url": "https://vellkoerp.com/",
+          "name": "Vellko ERP",
+          "publisher": {
+            "@id": "https://vellkoerp.com/#organization"
+          },
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://vellkoerp.com/real-estate-erp#webpage",
+          "url": "https://vellkoerp.com/real-estate-erp",
+          "name": "Cloud Based Real Estate ERP Software | Vellko ERP",
+          "description": "Vellko ERP is a cloud based Real Estate ERP that connects finance, projects, sales, CRM, HR, inventory, and reporting on one centralized platform.",
+          "isPartOf": {
+            "@id": "https://vellkoerp.com/#website"
+          },
+          "about": {
+            "@id": "https://vellkoerp.com/real-estate-erp#software"
+          },
+          "mainEntity": {
+            "@id": "https://vellkoerp.com/real-estate-erp#software"
+          },
+          "breadcrumb": {
+            "@id": "https://vellkoerp.com/real-estate-erp#breadcrumb"
+          },
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://vellkoerp.com/real-estate-erp#software",
+          "name": "Vellko Real Estate ERP",
+          "applicationCategory": "BusinessApplication",
+          "applicationSubCategory": "Real Estate ERP Software",
+          "operatingSystem": "Web-based",
+          "url": "https://vellkoerp.com/real-estate-erp",
+          "description": "Vellko Real Estate ERP is a cloud based ERP solution that helps real estate companies manage properties, projects, finance, sales, CRM, leases, tenants, HR, inventory, and reporting through one centralized platform.",
+          "publisher": {
+            "@id": "https://vellkoerp.com/#organization"
+          },
+          "featureList": [
+            "Property Management",
+            "Project Management",
+            "Multi-Property Management",
+            "Multi-Location Management",
+            "Lease Management",
+            "Tenant Management",
+            "Occupancy Management",
+            "Rent Management",
+            "Sales Management",
+            "Customer Relationship Management",
+            "Finance Management",
+            "Human Resource Management",
+            "Inventory Management",
+            "Maintenance Management",
+            "Reporting and Analytics",
+            "Workflow Management",
+            "Role-Based Access Control"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://vellkoerp.com/real-estate-erp#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://vellkoerp.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Real Estate ERP",
+              "item": "https://vellkoerp.com/real-estate-erp"
+            }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://vellkoerp.com/real-estate-erp#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Is Vellko Real Estate ERP suitable for small and large real estate companies?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. The platform can scale from smaller property management companies to large real estate corporations."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can it manage multiple properties and locations?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Vellko Real Estate ERP allows businesses to manage multiple buildings, properties, projects, branches, and locations through one centralized dashboard."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does it support lease and tenant management?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. The system supports lease management, renewals, lease schedules, rent plans, tenant records, and occupancy monitoring."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can finance and property management work together?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Maintenance, finance, leasing, and sales operations can be integrated through the platform."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can the Real Estate ERP be customized?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Absolutely. Workflows, reports, approval processes, and modules can be customized to meet your company's requirements."
+              }
+            }
+          ]
+        }
+      ]
     }
   },
 
   // 15. Service Business ERP
   '/service-business-erp': {
-    title: 'ERP for Professional Services & Agencies | Vellko ERP',
-    description: 'Timesheet tracking, milestone billing, contract management, resource scheduling and profitability analytics for service businesses.',
-    keywords: 'service business ERP, agency management software, professional services automation, consultant billing ERP, timesheet software',
+    title: 'Cloud Based Service Business ERP Software | Vellko',
+    description: 'Vellko cloud based Service Business ERP connects CRM, finance, HR, projects, service operations, and reporting on one centralized platform.',
+    keywords: 'Cloud Based Service Business ERP Software, service business ERP, field service management, technician scheduling software, AMC management ERP, service billing software, work order management, service accounting software',
     schema: {
       "@context": "https://schema.org",
-      "@type": "Service",
-      "name": "Professional Service Business ERP",
-      "provider": { "@type": "Organization", "name": "Vellko ERP", "url": "https://vellkoerp.com" },
-      "description": "Client retainers, timesheet tracking, resource utilization, and billable hour invoicing."
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://vellkoerp.com/#organization",
+          "name": "Vellko ERP",
+          "url": "https://vellkoerp.com/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://vellkoerp.com/assets/logo-bAy9mXr5.png"
+          },
+          "founder": {
+            "@type": "Person",
+            "name": "Deepak Verma"
+          },
+          "telephone": "+91-7880107201",
+          "email": "support@vellkoerp.com",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Phoenix Corporate Park, Survey No. 359/2 & 359/3, Back Part 2nd Floor, Narmadapuram Road",
+            "addressLocality": "Bhopal",
+            "addressRegion": "Madhya Pradesh",
+            "postalCode": "462026",
+            "addressCountry": "IN"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "India"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://vellkoerp.com/#website",
+          "url": "https://vellkoerp.com/",
+          "name": "Vellko ERP",
+          "publisher": {
+            "@id": "https://vellkoerp.com/#organization"
+          },
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://vellkoerp.com/service-business-erp#webpage",
+          "url": "https://vellkoerp.com/service-business-erp",
+          "name": "Cloud Based Service Business ERP Software | Vellko",
+          "description": "Vellko cloud based Service Business ERP connects CRM, finance, HR, projects, service operations, and reporting on one centralized platform.",
+          "isPartOf": {
+            "@id": "https://vellkoerp.com/#website"
+          },
+          "about": {
+            "@id": "https://vellkoerp.com/service-business-erp#software"
+          },
+          "mainEntity": {
+            "@id": "https://vellkoerp.com/service-business-erp#software"
+          },
+          "breadcrumb": {
+            "@id": "https://vellkoerp.com/service-business-erp#breadcrumb"
+          },
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://vellkoerp.com/service-business-erp#software",
+          "name": "Vellko Service Business ERP",
+          "applicationCategory": "BusinessApplication",
+          "applicationSubCategory": "Service Business ERP Software",
+          "operatingSystem": "Web-based",
+          "url": "https://vellkoerp.com/service-business-erp",
+          "description": "Vellko Service Business ERP is a cloud based ERP solution that helps service businesses manage CRM, finance, HR, projects, field service operations, technicians, AMC, warranties, inventory, billing, and reporting through one centralized platform.",
+          "publisher": {
+            "@id": "https://vellkoerp.com/#organization"
+          },
+          "featureList": [
+            "Customer Relationship Management",
+            "Service Management",
+            "Field Service Management",
+            "Field Technician Management",
+            "Technician Scheduling",
+            "Mobile Access",
+            "GPS Monitoring",
+            "Attendance Tracking",
+            "Job Status Tracking",
+            "Annual Maintenance Contract Management",
+            "Warranty Management",
+            "Preventive Maintenance Management",
+            "Service Agreement Management",
+            "Project Management",
+            "Inventory Management",
+            "Spare Parts Management",
+            "Procurement Management",
+            "Billing and Invoicing",
+            "Finance Management",
+            "Human Resource Management",
+            "Reporting and Analytics",
+            "Workflow Management",
+            "Role-Based Access Control"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://vellkoerp.com/service-business-erp#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://vellkoerp.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Service Business ERP",
+              "item": "https://vellkoerp.com/service-business-erp"
+            }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://vellkoerp.com/service-business-erp#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Is Vellko Service Business ERP suitable for small businesses?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Vellko Service Business ERP is designed for small and medium-sized businesses, startups, and large service companies, with features that can scale as your business grows."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can Vellko Service Business ERP manage field technicians?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. The ERP includes technician scheduling, mobile access, GPS monitoring, attendance tracking, and job-status updates to help businesses manage field service operations effectively."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does it support AMC and warranty management?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Businesses can manage Annual Maintenance Contracts (AMC), warranty periods, preventive maintenance schedules, renewals, and customer service agreements from one platform."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can inventory and billing work together?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Inventory, spare parts, procurement, billing, and finance can be integrated to help maintain accurate stock updates and streamline invoicing."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can the ERP be customized for our service business?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Absolutely. Workflows, approval processes, service categories, forms, reports, and dashboards can be customized to match your business operations."
+              }
+            }
+          ]
+        }
+      ]
     }
   },
 
   // 16. E-Commerce ERP
   '/ecommerce-erp': {
-    title: 'E-Commerce ERP & Multi-Channel Inventory Integration | Vellko ERP',
-    description: 'Sync Shopify, WooCommerce, Amazon orders and inventory automatically with financial accounts and shipping.',
-    keywords: 'ecommerce ERP, Shopify ERP integration, multi-channel inventory sync, marketplace order management, automated ecommerce billing',
+    title: 'Cloud-Based E-Commerce ERP Software | Vellko ERP',
+    description: 'Vellko cloud-based E-Commerce ERP connects orders, inventory, finance, customers, procurement, and reporting on one centralized platform.',
+    keywords: 'Cloud-Based E-Commerce ERP Software, ecommerce ERP, online store management software, marketplace integration ERP, multi-channel inventory management, ecommerce billing software, order management system',
     schema: {
       "@context": "https://schema.org",
-      "@type": "Service",
-      "name": "E-Commerce ERP Integration",
-      "provider": { "@type": "Organization", "name": "Vellko ERP", "url": "https://vellkoerp.com" },
-      "description": "Marketplace order management, inventory sync, and shipping integration."
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://vellkoerp.com/#organization",
+          "name": "Vellko ERP",
+          "url": "https://vellkoerp.com/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://vellkoerp.com/assets/logo-bAy9mXr5.png"
+          },
+          "founder": {
+            "@type": "Person",
+            "name": "Deepak Verma"
+          },
+          "telephone": "+91-7880107201",
+          "email": "support@vellkoerp.com",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Phoenix Corporate Park, Survey No. 359/2 & 359/3, Back Part 2nd Floor, Narmadapuram Road",
+            "addressLocality": "Bhopal",
+            "addressRegion": "Madhya Pradesh",
+            "postalCode": "462026",
+            "addressCountry": "IN"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "India"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://vellkoerp.com/#website",
+          "url": "https://vellkoerp.com/",
+          "name": "Vellko ERP",
+          "publisher": {
+            "@id": "https://vellkoerp.com/#organization"
+          },
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://vellkoerp.com/e-commerce-erp#webpage",
+          "url": "https://vellkoerp.com/e-commerce-erp",
+          "name": "Cloud-Based E-Commerce ERP Software | Vellko ERP",
+          "description": "Vellko cloud-based E-Commerce ERP connects orders, inventory, finance, customers, procurement, and reporting on one centralized platform.",
+          "isPartOf": {
+            "@id": "https://vellkoerp.com/#website"
+          },
+          "about": {
+            "@id": "https://vellkoerp.com/e-commerce-erp#software"
+          },
+          "mainEntity": {
+            "@id": "https://vellkoerp.com/e-commerce-erp#software"
+          },
+          "breadcrumb": {
+            "@id": "https://vellkoerp.com/e-commerce-erp#breadcrumb"
+          },
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://vellkoerp.com/e-commerce-erp#software",
+          "name": "Vellko E-Commerce ERP",
+          "applicationCategory": "BusinessApplication",
+          "applicationSubCategory": "E-Commerce ERP Software",
+          "operatingSystem": "Web-based",
+          "url": "https://vellkoerp.com/e-commerce-erp",
+          "description": "Vellko E-Commerce ERP is a cloud-based ERP solution that helps e-commerce businesses manage orders, inventory, finance, customers, procurement, marketplaces, and reporting through one centralized platform.",
+          "publisher": {
+            "@id": "https://vellkoerp.com/#organization"
+          },
+          "featureList": [
+            "E-Commerce Order Management",
+            "Multi-Store Management",
+            "Sales Channel Management",
+            "Marketplace Management",
+            "Inventory Management",
+            "Warehouse Management",
+            "Procurement Management",
+            "Product Management",
+            "Customer Relationship Management",
+            "Customer Data Management",
+            "Finance Management",
+            "Billing and Invoicing",
+            "Order Tracking",
+            "Reporting and Analytics",
+            "Workflow Management",
+            "Role-Based Access Control"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://vellkoerp.com/e-commerce-erp#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://vellkoerp.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "E-Commerce ERP",
+              "item": "https://vellkoerp.com/e-commerce-erp"
+            }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://vellkoerp.com/e-commerce-erp#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Is Vellko E-Commerce ERP suitable for small businesses?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Vellko ERP is designed to support startups, small and medium-sized businesses, and large enterprises with scalable e-commerce solutions."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can it manage multiple online stores?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Businesses can manage multiple online stores, sales channels, and marketplaces through one centralized platform."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does it support inventory management?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. The system provides inventory tracking, warehouse management, stock alerts, and inventory reporting."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can it integrate with marketplaces?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Vellko ERP can integrate with marketplaces to help synchronize products, inventory, and orders."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can businesses manage customer data?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. The integrated CRM helps businesses manage customer profiles, purchase history, interactions, and engagement."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can the E-Commerce ERP be customized?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Absolutely. Workflows, reports, integrations, and business processes can be customized according to your requirements."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  '/e-commerce-erp': {
+    title: 'Cloud-Based E-Commerce ERP Software | Vellko ERP',
+    description: 'Vellko cloud-based E-Commerce ERP connects orders, inventory, finance, customers, procurement, and reporting on one centralized platform.',
+    keywords: 'Cloud-Based E-Commerce ERP Software, ecommerce ERP, online store management software, marketplace integration ERP, multi-channel inventory management, ecommerce billing software, order management system',
+    schema: {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://vellkoerp.com/#organization",
+          "name": "Vellko ERP",
+          "url": "https://vellkoerp.com/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://vellkoerp.com/assets/logo-bAy9mXr5.png"
+          },
+          "founder": {
+            "@type": "Person",
+            "name": "Deepak Verma"
+          },
+          "telephone": "+91-7880107201",
+          "email": "support@vellkoerp.com",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Phoenix Corporate Park, Survey No. 359/2 & 359/3, Back Part 2nd Floor, Narmadapuram Road",
+            "addressLocality": "Bhopal",
+            "addressRegion": "Madhya Pradesh",
+            "postalCode": "462026",
+            "addressCountry": "IN"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "India"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://vellkoerp.com/#website",
+          "url": "https://vellkoerp.com/",
+          "name": "Vellko ERP",
+          "publisher": {
+            "@id": "https://vellkoerp.com/#organization"
+          },
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://vellkoerp.com/e-commerce-erp#webpage",
+          "url": "https://vellkoerp.com/e-commerce-erp",
+          "name": "Cloud-Based E-Commerce ERP Software | Vellko ERP",
+          "description": "Vellko cloud-based E-Commerce ERP connects orders, inventory, finance, customers, procurement, and reporting on one centralized platform.",
+          "isPartOf": {
+            "@id": "https://vellkoerp.com/#website"
+          },
+          "about": {
+            "@id": "https://vellkoerp.com/e-commerce-erp#software"
+          },
+          "mainEntity": {
+            "@id": "https://vellkoerp.com/e-commerce-erp#software"
+          },
+          "breadcrumb": {
+            "@id": "https://vellkoerp.com/e-commerce-erp#breadcrumb"
+          },
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://vellkoerp.com/e-commerce-erp#software",
+          "name": "Vellko E-Commerce ERP",
+          "applicationCategory": "BusinessApplication",
+          "applicationSubCategory": "E-Commerce ERP Software",
+          "operatingSystem": "Web-based",
+          "url": "https://vellkoerp.com/e-commerce-erp",
+          "description": "Vellko E-Commerce ERP is a cloud-based ERP solution that helps e-commerce businesses manage orders, inventory, finance, customers, procurement, marketplaces, and reporting through one centralized platform.",
+          "publisher": {
+            "@id": "https://vellkoerp.com/#organization"
+          },
+          "featureList": [
+            "E-Commerce Order Management",
+            "Multi-Store Management",
+            "Sales Channel Management",
+            "Marketplace Management",
+            "Inventory Management",
+            "Warehouse Management",
+            "Procurement Management",
+            "Product Management",
+            "Customer Relationship Management",
+            "Customer Data Management",
+            "Finance Management",
+            "Billing and Invoicing",
+            "Order Tracking",
+            "Reporting and Analytics",
+            "Workflow Management",
+            "Role-Based Access Control"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://vellkoerp.com/e-commerce-erp#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://vellkoerp.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "E-Commerce ERP",
+              "item": "https://vellkoerp.com/e-commerce-erp"
+            }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://vellkoerp.com/e-commerce-erp#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Is Vellko E-Commerce ERP suitable for small businesses?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Vellko ERP is designed to support startups, small and medium-sized businesses, and large enterprises with scalable e-commerce solutions."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can it manage multiple online stores?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Businesses can manage multiple online stores, sales channels, and marketplaces through one centralized platform."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does it support inventory management?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. The system provides inventory tracking, warehouse management, stock alerts, and inventory reporting."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can it integrate with marketplaces?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Vellko ERP can integrate with marketplaces to help synchronize products, inventory, and orders."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can businesses manage customer data?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. The integrated CRM helps businesses manage customer profiles, purchase history, interactions, and engagement."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can the E-Commerce ERP be customized?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Absolutely. Workflows, reports, integrations, and business processes can be customized according to your requirements."
+              }
+            }
+          ]
+        }
+      ]
     }
   },
 

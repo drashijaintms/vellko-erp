@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import IndustryPage from './IndustryPage';
 
 export default function RealEstateErp() {
@@ -7,14 +8,14 @@ export default function RealEstateErp() {
   ];
 
   const beyondFeaturesList = [
-    "Property Management",
-    "Sales & Lead Management",
-    "Leasing & Tenant Management",
-    "Maintenance Management",
-    "Finance & Accounting",
-    "CRM & Customer Management",
-    "Vendor & Contractor Management",
-    "Real-Time Analytics & Reporting"
+    { title: "Property Management", alt: "Cloud-based Real Estate ERP dashboard" },
+    { title: "Sales & Lead Management", alt: "Real Estate ERP sales and CRM dashboard" },
+    { title: "Leasing & Tenant Management", alt: "Vellko Real Estate ERP software dashboard" },
+    { title: "Maintenance Management", alt: "Real Estate ERP software project management" },
+    { title: "Finance & Accounting", alt: "Real Estate ERP finance and accounting" },
+    { title: "CRM & Customer Management", alt: "Real Estate ERP sales and CRM dashboard" },
+    { title: "Vendor & Contractor Management", alt: "Real Estate ERP inventory management" },
+    { title: "Real-Time Analytics & Reporting", alt: "Cloud-based Real Estate ERP dashboard" }
   ];
 
   const splitLeftListItems = [
@@ -209,42 +210,46 @@ export default function RealEstateErp() {
   const faqItemsList = [
     {
       question: "Is Vellko Real Estate ERP suitable for small and large real estate companies?",
-      answer: "Yes. The platform can scale starting from smaller property management companies to massive real estate corporations."
+      answer: "Yes. The platform can scale from smaller property management companies to large real estate corporations."
     },
     {
       question: "Can it manage multiple properties and locations?",
-      answer: "Yes. There is the ability to control multiple buildings, projects branches, properties, and projects through one dashboard."
+      answer: "Yes. Vellko Real Estate ERP allows businesses to manage multiple buildings, properties, projects, branches, and locations through one centralized dashboard."
     },
     {
       question: "Does it support lease and tenant management?",
-      answer: "Yes. The system is able to manage leases renewals lease schedules, rent plans, tenants' records and occupancy monitoring."
+      answer: "Yes. The system supports lease management, renewals, lease schedules, rent plans, tenant records, and occupancy monitoring."
     },
     {
       question: "Can finance and property management work together?",
-      answer: "Yes. Maintenance, finance, leasing and sales operations are completely integrated."
+      answer: "Yes. Maintenance, finance, leasing, and sales operations can be integrated through the platform."
     },
     {
-      question: "Can the ERP be customized?",
-      answer: "Absolutely. Workflows and reports, processes for approval and modules can be customized to meet your company's requirements."
+      question: "Can the Real Estate ERP be customized?",
+      answer: "Absolutely. Workflows, reports, approval processes, and modules can be customized to meet your company's requirements."
     }
   ];
 
   return (
     <IndustryPage
-      title="Manage Your Real Estate Business with"
+      title="Cloud Based Real Estate ERP for"
       highlight="Complete Visibility"
       tagline="One Real Estate Platform. Smarter Property Management."
-      desc="Vellko Real Estate ERP a cloud-based property management software that integrates leasing, sales property management Finance maintenance, CRM and reporting onto an intelligent platform. It allows real estate firms to manage tenants, properties, agents, and operations in complete control and with confidence."
+      desc={
+        <>
+          Vellko ERP is a cloud based Real Estate ERP software that integrates leasing, <Link to="/inventory-management" className="hero-inline-link">sales &amp; inventory</Link>, property management, <Link to="/finance-accounting" className="hero-inline-link">finance</Link>, maintenance, CRM and reporting onto an intelligent platform. It allows real estate firms to manage tenants, properties, agents, and operations in complete control and with confidence.
+        </>
+      }
       beyondTitle="Real Estate Management Shouldn't Be"
       beyondHighlight="Complicated"
       beyondSubCol1={
         <>
-          <span className="red-highlight">Real estate companies that are growing</span> shouldn't have to struggle with disconnected systems and manual procedures.
+          <span className="red-highlight">Growing real estate companies and property developers</span> shouldn't have to struggle with disconnected systems and manual paperwork.
         </>
       }
       beyondSubCol2={
         <>
-          <span className="red-highlight">A lot of companies</span> are facing challenges because property information, customer queries leasing agreements, requests for maintenance and financial data are scattered across spreadsheets, emails, and various software applications.
+          Many real estate firms streamline ongoing construction with <Link to="/project-management" className="hero-inline-link">maintenance &amp; project management</Link>, nurture buyers with <Link to="/crm-lead-management" className="hero-inline-link">CRM &amp; customer management</Link>, and handle vendor bills directly instead of wrestling with spreadsheets.
         </>
       }
       beyondDesc="Vellko Real Estate ERP consolidates the entire property system, streamlines routine operations, and provides real-time transparency across every department."
@@ -286,6 +291,9 @@ export default function RealEstateErp() {
       ctaTitle="Build a Smarter Real Estate Business with Vellko Real Estate ERP"
       ctaDesc="Replace disconnected systems with one intelligent platform that helps you manage properties, automate operations, improve customer experiences, and make better business decisions."
       badges={heroBadges}
+      splitIllustrationAlt="Cloud-based Real Estate ERP dashboard"
+      allInOneAlt="Vellko Real Estate ERP software dashboard"
+      worksAlt="Real Estate ERP software project management"
       // Common industry class names
       heroClass="industry-hero-section"
       beyondClass="industry-beyond-section"

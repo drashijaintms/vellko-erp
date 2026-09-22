@@ -64,7 +64,7 @@ function updateSitemap($blogs) {
     $xml .= "<!--  ERP Modules  -->\n";
     $modules = [
         '/crm-lead-management',
-        '/ecommerce-erp',
+        '/e-commerce-erp',
         '/manufacturing-erp',
         '/retail-erp',
         '/distribution-erp',

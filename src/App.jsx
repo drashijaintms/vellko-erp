@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import Welcome from './pages/Welcome';
 import EcommerceErp from './pages/EcommerceErp';
@@ -73,7 +73,8 @@ function AppContent() {
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<Blog />} />
         <Route path="/crm-lead-management" element={<CrmLeadManagement />} />
-        <Route path="/ecommerce-erp" element={<EcommerceErp />} />
+        <Route path="/e-commerce-erp" element={<EcommerceErp />} />
+        <Route path="/ecommerce-erp" element={<Navigate to="/e-commerce-erp" replace />} />
         <Route path="/manufacturing-erp" element={<ManufacturingErp />} />
         <Route path="/retail-erp" element={<RetailErp />} />
         <Route path="/distribution-erp" element={<DistributionErp />} />

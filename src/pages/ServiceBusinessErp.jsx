@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import IndustryPage from './IndustryPage';
 
 export default function ServiceBusinessErp() {
@@ -7,16 +8,16 @@ export default function ServiceBusinessErp() {
   ];
 
   const beyondFeaturesList = [
-    "Customer Relationship Management",
-    "Service Request Management",
-    "Work Order Management",
-    "Technician Scheduling",
-    "Field Service Management",
-    "Inventory & Spare Parts Management",
-    "Billing & Invoicing",
-    "AMC & Contract Management",
-    "Finance & Accounting",
-    "Business Reports & Analytics"
+    { title: "Customer Relationship Management", alt: "Service Business ERP CRM dashboard" },
+    { title: "Service Request Management", alt: "Cloud-based Service Business ERP dashboard" },
+    { title: "Work Order Management", alt: "Service management ERP work order management" },
+    { title: "Technician Scheduling", alt: "Vellko Service Business ERP software" },
+    { title: "Field Service Management", alt: "Vellko Service Business ERP software" },
+    { title: "Inventory & Spare Parts Management", alt: "Cloud-based Service Business ERP dashboard" },
+    { title: "Billing & Invoicing", alt: "Service Business ERP finance management" },
+    { title: "AMC & Contract Management", alt: "Service Business ERP software dashboard" },
+    { title: "Finance & Accounting", alt: "Service Business ERP finance management" },
+    { title: "Business Reports & Analytics", alt: "Service Business ERP software dashboard" }
   ];
 
   const splitLeftListItems = [
@@ -229,19 +230,19 @@ export default function ServiceBusinessErp() {
   const faqItemsList = [
     {
       question: "Is Vellko Service Business ERP suitable for small businesses?",
-      answer: "Yes. It was designed specifically for small and medium-sized businesses, startups as well as large service companies and features that can be scaled to expand with your business."
+      answer: "Yes. Vellko Service Business ERP is designed for small and medium-sized businesses, startups, and large service companies, with features that can scale as your business grows."
     },
     {
-      question: "Can we manage field technicians?",
-      answer: "Yes. The ERP includes scheduling for technicians and mobile access. GPS monitoring, tracking attendance as well as job-status updates to ensure effective field management of service."
+      question: "Can Vellko Service Business ERP manage field technicians?",
+      answer: "Yes. The ERP includes technician scheduling, mobile access, GPS monitoring, attendance tracking, and job-status updates to help businesses manage field service operations effectively."
     },
     {
       question: "Does it support AMC and warranty management?",
-      answer: "Yes. You can manage Annual Maintenance Contracts (AMC), warranty periods, preventive maintenance schedules, renewals, and customer service agreements from one platform."
+      answer: "Yes. Businesses can manage Annual Maintenance Contracts (AMC), warranty periods, preventive maintenance schedules, renewals, and customer service agreements from one platform."
     },
     {
       question: "Can inventory and billing work together?",
-      answer: "Yes. Inventory spare parts procurement, billing and finance are completely integrated, which ensures precise stock updates as well as automated invoicing."
+      answer: "Yes. Inventory, spare parts, procurement, billing, and finance can be integrated to help maintain accurate stock updates and streamline invoicing."
     },
     {
       question: "Can the ERP be customized for our service business?",
@@ -251,10 +252,14 @@ export default function ServiceBusinessErp() {
 
   return (
     <IndustryPage
-      title="Manage Your Entire Service Business with"
+      title="Cloud Based Business ERP for"
       highlight="Complete Visibility"
       tagline="One Platform. Smarter Service Operations."
-      desc="Vellko Service Business ERP is cloud-based service management software that connects customer enquiries job scheduling, customer service inventory, billing and finance to a single, intelligent platform. It aids service companies in streamlining their routine operations, improving the customer experience, and boosting the profitability of their business."
+      desc={
+        <>
+          Vellko is a Cloud Based Business ERP software that connects customer enquiries job scheduling, customer service <Link to="/inventory-management" className="hero-inline-link">inventory</Link>, billing and <Link to="/finance-accounting" className="hero-inline-link">finance</Link> to a single, intelligent platform. It aids service companies in streamlining their routine operations, improving the customer experience, and boosting the profitability of their business.
+        </>
+      }
       badges={heroBadges}
       
       beyondTitle="Service Management Shouldn't Be"
@@ -266,7 +271,7 @@ export default function ServiceBusinessErp() {
       }
       beyondSubCol2={
         <>
-          <span className="red-highlight">Vellko Service Business ERP</span> coordinates your complete Service workflow, automates routine procedures, and gives you full transparency into each service request, from initial request to payment.
+          Vellko Service Business ERP coordinates your complete service workflow, linking <Link to="/project-management" className="hero-inline-link">work order management</Link> with <Link to="/crm-lead-management" className="hero-inline-link">Customer Relationship Management</Link> and omnichannel sync with <Link to="/e-commerce-erp" className="hero-inline-link">customer service invoice</Link> generation, giving you full transparency into each service request from initial enquiry to payment.
         </>
       }
       beyondDesc="One Platform for Your Entire Service Business"
@@ -315,6 +320,10 @@ export default function ServiceBusinessErp() {
       ctaTitle="Deliver Exceptional Service with Vellko Service Business ERP"
       ctaDesc="Replace disconnected tools and manual processes with one intelligent platform that helps you manage customers, technicians, inventory, billing, and business operations—all from a single dashboard."
       
+      splitIllustrationAlt="Cloud-based Service Business ERP dashboard"
+      allInOneAlt="Service Business ERP software dashboard"
+      worksAlt="Service management ERP work order management"
+
       heroClass="industry-hero-section"
       beyondClass="industry-beyond-section"
       compareClass="industry-need-erp-section"

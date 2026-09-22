@@ -63,7 +63,7 @@ async function runPrerender() {
     '/hrms-payroll',
     '/finance-accounting',
     '/inventory-management',
-    '/ecommerce-erp',
+    '/e-commerce-erp',
     '/manufacturing-erp',
     '/retail-erp',
     '/distribution-erp',

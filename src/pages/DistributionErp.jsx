@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import IndustryPage from './IndustryPage';
 
 export default function DistributionErp() {
@@ -7,14 +8,14 @@ export default function DistributionErp() {
   ];
 
   const beyondFeaturesList = [
-    "Inventory Management",
-    "Warehouse Management",
-    "Procurement & Purchasing",
-    "Sales & Order Management",
-    "Supplier Management",
-    "Logistics & Delivery Tracking",
-    "Finance & Accounting",
-    "Analytics & Reporting"
+    { title: "Inventory Management", alt: "Vellko Distribution ERP inventory management dashboard" },
+    { title: "Warehouse Management", alt: "Distribution warehouse management software" },
+    { title: "Procurement & Purchasing", alt: "Distribution procurement management system" },
+    { title: "Sales & Order Management", alt: "Wholesale distribution ERP software" },
+    { title: "Supplier Management", alt: "Supplier Management" },
+    { title: "Logistics & Delivery Tracking", alt: "Distribution logistics and delivery tracking dashboard" },
+    { title: "Finance & Accounting", alt: "Finance & Accounting" },
+    { title: "Analytics & Reporting", alt: "Distribution ERP analytics and reporting dashboard" }
   ];
 
   const splitLeftListItems = [
@@ -214,28 +215,40 @@ export default function DistributionErp() {
     },
     {
       question: "Can it manage multiple warehouses?",
-      answer: "Yes. You can control transfer, inventory, and warehouse operations over several locations using a central system."
+      answer: "Yes. You can control transfers, inventory, and warehouse operations across several locations using a central system."
     },
     {
       question: "Does it support supplier and procurement management?",
-      answer: "Yes. The platform offers purchasing orders, supplier management, procurement workflows, and monitoring of vendor performance."
+      answer: (
+        <>
+          Yes. The platform offers purchase orders, supplier management, procurement workflows, and vendor performance monitoring with integrated <Link to="/service-management" className="hero-inline-link">service management</Link>.
+        </>
+      )
     },
     {
       question: "Can finance and inventory work together?",
-      answer: "Yes. Sales, inventory, purchasing, and accounting are all integrated to provide total financial transparency."
+      answer: "Yes. Sales, inventory, purchasing, and accounting are integrated to provide greater visibility into financial and operational performance."
     },
     {
       question: "Can the system be customized?",
-      answer: "Absolutely. Workflows, approvals, and reports, as well as user roles and dashboards, can be configured to meet the requirements of your business."
+      answer: (
+        <>
+          Absolutely. Workflows, approvals, reports, user roles, and dashboards can be configured to meet the requirements of your business, including for <Link to="/service-business-erp" className="hero-inline-link">service businesses</Link>.
+        </>
+      )
     }
   ];
 
   return (
     <IndustryPage
-      title="Manage Your ERP Distribution Business with"
+      title="Cloud based Distribution ERP for"
       highlight="Complete Visibility"
       tagline="One Distribution Platform. Smarter Supply Chain Management."
-      desc="Vellko Distribution ERP is a cloud-based distribution management ERP software that integrates procurement, inventory, warehouse operations, logistics, sales, as well as finance and reporting in one intelligent platform that helps distributors manage the entire supply chain with total control and security."
+      desc={
+        <>
+          Vellkoerp is a Cloud based Distribution ERP software solution that connects <Link to="/inventory-management" className="hero-inline-link">inventory</Link>, procurement, warehouse operations, sales, logistics, supplier management, <Link to="/finance-accounting" className="hero-inline-link">finance</Link>, and reporting on one platform. It helps distributors streamline workflows, improve inventory visibility, manage orders efficiently, and gain greater control over their supply chain.
+        </>
+      }
       beyondTitle="Distribution Management Shouldn't Be"
       beyondHighlight="Complicated"
       beyondSubCol1={
@@ -245,7 +258,7 @@ export default function DistributionErp() {
       }
       beyondSubCol2={
         <>
-          <span className="red-highlight">Vellko Distribution ERP solutions</span> consolidate inventory, buying, warehouse management, logistics, sales, and finance on one platform, giving each department access to precise and real-time business information.
+          <span className="red-highlight">Vellko Distribution ERP solutions</span> consolidate operations across <Link to="/manufacturing-erp" className="hero-inline-link">Manufacturing ERP</Link>, <Link to="/retail-erp" className="hero-inline-link">Retail ERP</Link>, and <Link to="/e-commerce-erp" className="hero-inline-link">E-Commerce ERP</Link>, giving each department access to precise and real-time business information.
         </>
       }
       beyondDesc="One Platform for Your Entire Distribution Network"
@@ -267,7 +280,11 @@ export default function DistributionErp() {
       chooseTitle="Why Businesses Choose"
       chooseHighlight="Vellko Distribution ERP Systems"
       chooseSub1="Manual processes and unconnected systems slow the growth of distribution."
-      chooseSub2="Vellko Distribution ERP can help companies automatize their operations, increase the accuracy of inventory, cut expenses, and get complete transparency into the supply chain."
+      chooseSub2={
+        <>
+          Vellko Distribution ERP integrates with our <Link to="/crm-lead-management" className="hero-inline-link">CRM &amp; lead management</Link>, <Link to="/hrms-payroll" className="hero-inline-link">HRMS &amp; payroll</Link>, and <Link to="/project-management" className="hero-inline-link">project management</Link> tools to help companies automate workflows, increase inventory accuracy, and gain complete supply chain transparency.
+        </>
+      }
       chooseHeaderLeft="Distribution Challenge"
       chooseHeaderRight="How Vellko Distribution ERP Solves It"
       chooseRows={chooseRowsList}
@@ -287,6 +304,9 @@ export default function DistributionErp() {
       ctaTitle="Build a More Efficient Distribution Network with Vellko Distribution ERP"
       ctaDesc="Replace outdated systems and manual processes using one platform that lets you organize inventory, automate operations, increase visibility of the supply chain, and accelerate the growth of your business."
       badges={heroBadges}
+      splitIllustrationAlt="Wholesale distribution ERP software"
+      allInOneAlt="Distribution ERP software dashboard"
+      worksAlt="Distribution logistics and delivery tracking dashboard"
       // Common industry class names
       heroClass="industry-hero-section"
       beyondClass="industry-beyond-section"

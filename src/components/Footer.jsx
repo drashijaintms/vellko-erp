@@ -19,7 +19,7 @@ const industries = [
   { name: 'Education ERP', path: '/education-erp' },
   { name: 'Real Estate ERP', path: '/real-estate-erp' },
   { name: 'Service Business ERP', path: '/service-business-erp' },
-  { name: 'E-Commerce ERP', path: '/ecommerce-erp' },
+  { name: 'E-Commerce ERP', path: '/e-commerce-erp' },
 ];
 
 const quickLinks = [

@@ -23,6 +23,9 @@ Options -Indexes -MultiViews
     RewriteCond %{THE_REQUEST} \s/+(.+?)/+[\s?] [NC]
     RewriteRule ^ /%1 [R=301,NE,L]
 
+    # 3. Redirect legacy /ecommerce-erp to /e-commerce-erp (301 Permanent Redirect)
+    RewriteRule ^ecommerce-erp/?$ /e-commerce-erp [R=301,L,NC]
+
     # 3. Allow real physical files directly (CSS, JS, images, fonts, uploads, sitemap.xml, robots.txt)
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule ^ - [L]

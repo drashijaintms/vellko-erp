@@ -99,7 +99,7 @@ const industries = [
     title: "E-Commerce ERP", 
     desc: "Synchronize orders & stocks across channels.", 
     icon: ShoppingCart,
-    href: "/ecommerce-erp"
+    href: "/e-commerce-erp"
   }
 ];
 

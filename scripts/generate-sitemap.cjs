@@ -22,7 +22,7 @@ const staticSections = [
     comment: 'ERP Modules',
     urls: [
       { loc: `${BASE_URL}/crm-lead-management`, changefreq: 'monthly', priority: '0.8' },
-      { loc: `${BASE_URL}/ecommerce-erp`, changefreq: 'monthly', priority: '0.8' },
+      { loc: `${BASE_URL}/e-commerce-erp`, changefreq: 'monthly', priority: '0.8' },
       { loc: `${BASE_URL}/manufacturing-erp`, changefreq: 'monthly', priority: '0.8' },
       { loc: `${BASE_URL}/retail-erp`, changefreq: 'monthly', priority: '0.8' },
       { loc: `${BASE_URL}/distribution-erp`, changefreq: 'monthly', priority: '0.8' },

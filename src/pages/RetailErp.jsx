@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import IndustryPage from './IndustryPage';
 
 export default function RetailErp() {
@@ -7,14 +8,14 @@ export default function RetailErp() {
   ];
 
   const beyondFeaturesList = [
-    "Inventory Management",
-    "Multi-Store Management",
-    "Point of Sale (POS)",
-    "Procurement & Purchasing",
-    "Warehouse Management",
-    "Customer Relationship Management (CRM)",
-    "Finance & Accounting",
-    "Analytics & Reporting"
+    { title: "Inventory Management", alt: "Vellko Retail ERP inventory management dashboard" },
+    { title: "Multi-Store Management", alt: "Multi-store retail management software" },
+    { title: "Point of Sale (POS)", alt: "Retail POS and inventory management software" },
+    { title: "Procurement & Purchasing", alt: "Procurement & Purchasing" },
+    { title: "Warehouse Management", alt: "Retail ERP warehouse management dashboard" },
+    { title: "Customer Relationship Management (CRM)", alt: "Customer Relationship Management (CRM)" },
+    { title: "Finance & Accounting", alt: "Retail ERP finance and accounting dashboard" },
+    { title: "Analytics & Reporting", alt: "Retail analytics and reporting dashboard" }
   ];
 
   const splitLeftListItems = [
@@ -211,36 +212,44 @@ export default function RetailErp() {
   const faqItemsList = [
     {
       question: "Is Vellko Retail ERP suitable for small and large retail businesses?",
-      answer: "Yes. The platform can scale from single-store stores to multi-location chain stores."
+      answer: "Yes. The platform can scale from single-store businesses to multi-location retail chains."
     },
     {
       question: "Can it manage multiple stores and warehouses?",
-      answer: "Yes. Vellko Retail industry software ERP provides centralized control of multiple warehouses, stores, inventory, operations, and warehouses."
+      answer: "Yes. Vellko Retail ERP provides centralized control of multiple stores, warehouses, inventory, and retail operations."
     },
     {
       question: "Does it support barcode scanning?",
-      answer: "Yes. The system is compatible with inventory management using barcodes and POS operations."
+      answer: "Yes. The system supports barcode-based inventory management and point-of-sale operations."
     },
     {
       question: "Can inventory be tracked in real time?",
-      answer: "Absolutely. Stock level is automatically adjusted following every purchase, sale, transfer, or the adjustment of stock."
+      answer: "Absolutely. Stock levels can be automatically adjusted following purchases, sales, transfers, or stock adjustments."
     },
     {
       question: "Does it integrate finance and procurement?",
-      answer: "Yes. Purchase inventory, accounting, and vendor management integrate into one platform."
+      answer: (
+        <>
+          Yes. Purchasing, inventory, accounting, and <Link to="/service-management" className="hero-inline-link">vendor management</Link> can be integrated into one platform.
+        </>
+      )
     },
     {
       question: "Can different departments have different permissions?",
-      answer: "Yes. Role-based access control allows companies to set the rights of store managers, cashiers, finance teams, warehouse employees, and administrators."
+      answer: "Yes. Role-based access control allows companies to set permissions for store managers, cashiers, finance teams, warehouse employees, and administrators."
     }
   ];
 
   return (
     <IndustryPage
-      title="Manage Your Retail Business with"
+      title="Cloud based Retail ERP for"
       highlight="Complete Visibility"
       tagline="One Retail Platform. Smarter Business Management."
-      desc="Vellko Retail ERP software is a cloud-based retail management system that integrates inventory and sales, purchasing, warehouses, and customers with finance and reporting to one sophisticated platform. It assists retailers in streamlining their operations, cutting costs, and making faster business decisions with total control and insight."
+      desc={
+        <>
+          Vellkoerp is a Cloud based Retail ERP software solution that connects POS, sales, <Link to="/inventory-management" className="hero-inline-link">inventory</Link>, purchasing, warehouses, customer management, <Link to="/finance-accounting" className="hero-inline-link">finance</Link>, and reporting on one platform. It helps retailers streamline operations, improve inventory visibility, and manage multiple stores more efficiently.
+        </>
+      }
       beyondTitle="Retail Management Shouldn't Be"
       beyondHighlight="Complicated"
       beyondSubCol1={
@@ -267,7 +276,7 @@ export default function RetailErp() {
       allInOneTitle="Everything Your Retail Business Needs in"
       allInOneHighlight="One Platform"
       allInOneTagline="Modern retailing is more than just selling goods."
-      allInOneDesc="Vellko Retail ERP software integrates the management of inventory, sales procurement, warehousing and financial management, customer management and reporting into a single system that enables retailers to run effectively and grow with confidence."
+      allInOneDesc="Vellkoerp is a Cloud based Retail ERP software solution integrates the management of inventory, sales procurement, warehousing and financial management, customer management and reporting into a single system that enables retailers to run effectively and grow with confidence."
       allInOneModules={allInOneModulesList}
       chooseTitle="Why Retailers Choose"
       chooseHighlight="Vellko Retail ERP"
@@ -292,6 +301,9 @@ export default function RetailErp() {
       ctaTitle="Build a More Efficient Retail Business with Vellko Retail ERP"
       ctaDesc="Replace disconnected retail systems with one intelligent platform that helps you manage inventory, sales, purchasing, finance, and customer relationships while making smarter business decisions."
       badges={heroBadges}
+      splitIllustrationAlt="Multi-store retail management software"
+      allInOneAlt="Cloud based Retail ERP software dashboard"
+      worksAlt="Retail POS and inventory management software"
       // Common industry class names
       heroClass="industry-hero-section"
       beyondClass="industry-beyond-section"

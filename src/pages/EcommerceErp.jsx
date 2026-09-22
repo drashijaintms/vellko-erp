@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import IndustryPage from './IndustryPage';
 
 export default function EcommerceErp() {
@@ -7,14 +8,14 @@ export default function EcommerceErp() {
   ];
 
   const beyondFeaturesList = [
-    "Product Information Management",
-    "Inventory & Warehouse Management",
-    "Order Management",
-    "Customer Management (CRM)",
-    "Sales & Payment Management",
-    "Purchase & Supplier Management",
-    "Marketplace Integration",
-    "Reports & Business Analytics"
+    { title: "Product Information Management", alt: "Cloud-based E-Commerce ERP dashboard" },
+    { title: "Inventory & Warehouse Management", alt: "E-Commerce ERP inventory management dashboard" },
+    { title: "Order Management", alt: "E-Commerce ERP order management software" },
+    { title: "Customer Management (CRM)", alt: "Vellko E-Commerce ERP software dashboard" },
+    { title: "Sales & Payment Management", alt: "E-Commerce ERP finance and accounting" },
+    { title: "Purchase & Supplier Management", alt: "E-Commerce ERP warehouse management" },
+    { title: "Marketplace Integration", alt: "Cloud-based E-Commerce ERP dashboard" },
+    { title: "Reports & Business Analytics", alt: "Vellko E-Commerce ERP software dashboard" }
   ];
 
   const splitLeftListItems = [
@@ -207,36 +208,40 @@ export default function EcommerceErp() {
   const faqItemsList = [
     {
       question: "Is Vellko E-Commerce ERP suitable for small businesses?",
-      answer: "Yes. Vellko ERP is designed to support startups, SMEs, and large enterprises with scalable e-commerce solutions."
+      answer: "Yes. Vellko ERP is designed to support startups, small and medium-sized businesses, and large enterprises with scalable e-commerce solutions."
     },
     {
       question: "Can it manage multiple online stores?",
-      answer: "Yes. Companies are able to manage several stores, channels for sales and marketplaces on one central platform.."
+      answer: "Yes. Businesses can manage multiple online stores, sales channels, and marketplaces through one centralized platform."
     },
     {
       question: "Does it support inventory management?",
-      answer: "Yes. The system offers real-time inventory tracking and warehouse management, alerts for stock and reports."
+      answer: "Yes. The system provides inventory tracking, warehouse management, stock alerts, and inventory reporting."
     },
     {
       question: "Can it integrate with marketplaces?",
-      answer: "Yes. Vellko ERP can integrate with marketplaces to allow synchronization of inventory, products as well as orders."
+      answer: "Yes. Vellko ERP can integrate with marketplaces to help synchronize products, inventory, and orders."
     },
     {
       question: "Can businesses manage customer data?",
-      answer: "Yes. The integrated CRM can help businesses manage customer profiles as well as purchase history and engagement."
+      answer: "Yes. The integrated CRM helps businesses manage customer profiles, purchase history, interactions, and engagement."
     },
     {
-      question: "Can the ERP be customized?",
+      question: "Can the E-Commerce ERP be customized?",
       answer: "Absolutely. Workflows, reports, integrations, and business processes can be customized according to your requirements."
     }
   ];
 
   return (
     <IndustryPage
-      title="Manage Your E-Commerce Operations with"
+      title="Cloud Based E-Commerce ERP for"
       highlight="Complete Visibility"
       tagline="One E-Commerce Platform. Smarter Business Management."
-      desc="Vellko ERP is a cloud-based E-commerce management system that integrates customers, orders, inventory sales, payments procuring, analytics, as well as other data onto one intelligent platform, assisting companies run their online operations with full control and effectiveness."
+      desc={
+        <>
+          Vellko is a Cloud Based E-Commerce ERP software that connects customer enquiries, multi-channel orders, customer service <Link to="/inventory-management" className="hero-inline-link">inventory &amp; warehouse management</Link>, and <Link to="/finance-accounting" className="hero-inline-link">finance &amp; accounting</Link> to a single, intelligent platform. It aids businesses in streamlining online operations, improving the customer experience, and boosting profitability.
+        </>
+      }
       beyondTitle="E-Commerce Management Shouldn't Be"
       beyondHighlight="Complicated"
       beyondSubCol1={
@@ -246,7 +251,7 @@ export default function EcommerceErp() {
       }
       beyondSubCol2={
         <>
-          <span className="red-highlight">Controlling inventory</span>, products, and orders, as well as suppliers, customers and sales by hand leads to delays, errors as well as missed chances.
+          Modern online brands integrate comprehensive <Link to="/project-management" className="hero-inline-link">Product Information Management</Link> and unified <Link to="/crm-lead-management" className="hero-inline-link">Customer Management (CRM)</Link> to streamline order fulfillment and vendor tracking across all sales channels.
         </>
       }
       beyondDesc="Vellko E-Commerce ERP centralizes your entire online business, streamlines everyday operations, and gives immediate insights that assist you in making faster and more informed decisions."
@@ -268,7 +273,7 @@ export default function EcommerceErp() {
       chooseTitle="Why Businesses Choose"
       chooseHighlight="Vellko E-Commerce ERP"
       chooseSub1="The manual management of e-commerce hinders growth of businesses."
-      chooseSub2="Vellko E-Commerce ERP can help businesses improve efficiency, decrease mistakes, enhance customer service and give them complete visibility into their online presence."
+      chooseSub2="Vellko Cloud based E-Commerce ERP streamlines the process of servicing, boosts technician efficiency, decreases operational expenses and improves customer satisfaction, while providing full insight into all aspects of your company."
       chooseHeaderLeft="E-Commerce Challenge"
       chooseHeaderRight="How Vellko ERP Solves It"
       chooseRows={chooseRowsList}
@@ -282,12 +287,15 @@ export default function EcommerceErp() {
       supportSteps={supportStepsList}
       faqTitle="Frequently Asked"
       faqHighlight="Questions"
-      faqIntroQ="What is eCommerce ERP Software?"
-      faqIntroA="eCommerce ERP Software is a centralized solution that helps businesses manage products, inventory, orders, customers, procurement, finance, shipping, and reporting from one integrated platform."
+      faqIntroQ=""
+      faqIntroA=""
       faqItems={faqItemsList}
       ctaTitle="Grow Your Online Business with Vellko E-Commerce ERP"
       ctaDesc="Replace manual processes with an intelligent e-commerce management platform that helps you automate operations, improve efficiency, and make smarter business decisions."
       badges={heroBadges}
+      splitIllustrationAlt="Cloud-based E-Commerce ERP dashboard"
+      allInOneAlt="Vellko E-Commerce ERP software dashboard"
+      worksAlt="E-Commerce ERP warehouse management"
       // Common industry class names instead of page-specific ones
       heroClass="industry-hero-section"
       beyondClass="industry-beyond-section"

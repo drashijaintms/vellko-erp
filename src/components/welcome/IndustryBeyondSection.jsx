@@ -51,7 +51,7 @@ export default function IndustryBeyondSection({ title, highlight, subCol1, subCo
             const iconSrc = typeof feat === 'object' && feat.icon ? feat.icon : defaultIcons[idx % defaultIcons.length];
             return (
               <div key={idx} className="beyond-feature-card">
-                <img src={iconSrc} alt={titleText} className="beyond-feature-icon" />
+                <img src={iconSrc} alt={(typeof feat === 'object' && feat.alt) ? feat.alt : titleText} className="beyond-feature-icon" />
                 <span className="beyond-feature-title">{titleText}</span>
               </div>
             );

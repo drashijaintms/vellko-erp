@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import IndustryPage from './IndustryPage';
 
 export default function EducationErp() {
@@ -7,18 +8,18 @@ export default function EducationErp() {
   ];
 
   const beyondFeaturesList = [
-    "Student Information Management",
-    "Admissions Management",
-    "Attendance Management",
-    "Fee Management",
-    "Examination & Results",
-    "Timetable Management",
-    "Faculty Management",
-    "Parent & Student Portal",
-    "Library Management",
-    "Transportation Management",
-    "Hostel Management",
-    "Reports & Analytics"
+    { title: "Student Information Management", alt: "Education ERP software student management" },
+    { title: "Admissions Management", alt: "Cloud based Education ERP dashboard" },
+    { title: "Attendance Management", alt: "Education ERP software student management" },
+    { title: "Fee Management", alt: "Education ERP finance and fee management" },
+    { title: "Examination & Results", alt: "Education ERP reporting and analytics" },
+    { title: "Timetable Management", alt: "Education ERP reporting and analytics" },
+    { title: "Faculty Management", alt: "Education ERP HR management dashboard" },
+    { title: "Parent & Student Portal", alt: "Vellko Education ERP software dashboard" },
+    { title: "Library Management", alt: "Vellko Education ERP software dashboard" },
+    { title: "Transportation Management", alt: "Vellko Education ERP software dashboard" },
+    { title: "Hostel Management", alt: "Vellko Education ERP software dashboard" },
+    { title: "Reports & Analytics", alt: "Education ERP reporting and analytics" }
   ];
 
   const splitLeftListItems = [
@@ -211,42 +212,46 @@ export default function EducationErp() {
   const faqItemsList = [
     {
       question: "Is Vellko Education ERP suitable for schools and colleges?",
-      answer: "Yes. It is designed to be used by universities, schools, colleges as well as coaching institutes and educational institutions of all sizes."
+      answer: "Yes. It is designed to be used by universities, schools, colleges, coaching institutes, and educational institutions of different sizes."
     },
     {
       question: "Can it manage online admissions?",
-      answer: "Yes. The system is fully online and supports process for admission, tracking applications and the management of enrollment."
+      answer: "Yes. The system is fully online and supports admission processes, application tracking, and enrollment management."
     },
     {
       question: "Does it support fee collection and online payments?",
-      answer: "Yes. Institutions are able to manage fees, online payments such as receipts, dues, along with financial report."
+      answer: "Yes. Institutions can manage fees, online payments, receipts, dues, and financial reports through the platform."
     },
     {
       question: "Can parents and students access information online?",
-      answer: "Yes. Secure portals allow parents as well as students to view information about attendance, results fee, assignments, and announcements."
+      answer: "Yes. Secure portals allow parents and students to view information about attendance, results, fees, assignments, and announcements."
     },
     {
       question: "Can the Education ERP be customized?",
-      answer: "Absolutely. Workflows, approval procedures structure of academic reports and modules can be adapted to meet the requirements of your institution."
+      answer: "Absolutely. Workflows, approval procedures, academic report structures, and modules can be adapted to meet the requirements of your institution."
     }
   ];
 
   return (
     <IndustryPage
-      title="Manage Your Educational Institution with"
+      title="Cloud Based Education ERP for"
       highlight="Complete Visibility"
       tagline="One Education Platform. Smarter Institution Management."
-      desc="Vellko Education ERP, a cloud-based educational management system that integrates admissions academics, attendance, fees, exams and administration to one platform. It helps educational institutions to manage their operations efficiently and with confidence."
+      desc={
+        <>
+          Vellko ERP is a cloud-based Education ERP system that integrates <Link to="/inventory-management" className="hero-inline-link">admissions</Link> academics, attendance, <Link to="/finance-accounting" className="hero-inline-link">fees</Link>, exams and administration to one platform. It helps educational institutions to manage their operations efficiently and with confidence.
+        </>
+      }
       beyondTitle="Education Management Shouldn't Be"
       beyondHighlight="Complicated"
       beyondSubCol1={
         <>
-          <span className="red-highlight">The growing schools, colleges universities, coaching institutions</span> should not be struggling with inefficient systems and manual procedures.
+          <span className="red-highlight">Growing schools, colleges, universities, and coaching institutions</span> should not be struggling with disconnected systems and manual paperwork.
         </>
       }
       beyondSubCol2={
         <>
-          <span className="red-highlight">The problem</span> isn't managing students but rather managing data that is scattered between spreadsheets, paper records and multiple software systems and even departments.
+          Modern institutions seamlessly coordinate <Link to="/project-management" className="hero-inline-link">student information management</Link>, staff and <Link to="/service-management" className="hero-inline-link">faculty management</Link>, and digital engagement through a dedicated <Link to="/service-business-erp" className="hero-inline-link">parent &amp; student portal</Link> without dealing with scattered spreadsheets.
         </>
       }
       beyondDesc="Vellko Education ERP combines administrative and academic processes It automates routine tasks and provides real-time information on the entire operation of your school."
@@ -268,7 +273,7 @@ export default function EducationErp() {
       chooseTitle="Why Educational Institutions Choose"
       chooseHighlight="Vellko Education ERP"
       chooseSub1="Manual administration slows educational growth."
-      chooseSub2="Vellko Education ERP helps institutions automate operations, improve communication, increase transparency, and enhance academic outcomes."
+      chooseSub2="Vellko ERP is a cloud-based Education ERP system helps institutions automate operations, improve communication, increase transparency, and enhance academic outcomes."
       chooseHeaderLeft="Institution Challenge"
       chooseHeaderRight="How Vellko Education ERP Solves It"
       chooseRows={chooseRowsList}
@@ -288,6 +293,9 @@ export default function EducationErp() {
       ctaTitle="Build a Smarter Educational Institution with Vellko Education ERP"
       ctaDesc="Replace manual academic and administrative processes with one intelligent platform that helps you manage students, automate operations, improve learning outcomes, and make better institutional decisions."
       badges={heroBadges}
+      splitIllustrationAlt="Cloud based Education ERP dashboard"
+      allInOneAlt="Vellko Education ERP software dashboard"
+      worksAlt="Education ERP reporting and analytics"
       // Common industry class names
       heroClass="industry-hero-section"
       beyondClass="industry-beyond-section"
