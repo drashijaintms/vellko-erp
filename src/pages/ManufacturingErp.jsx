@@ -241,7 +241,7 @@ export default function ManufacturingErp() {
       tagline="One Manufacturing Platform. Smarter Production Management."
       desc={
         <>
-          Vellkoerp is a cloud based <Link to="/" className="hero-inline-link">ERP software</Link> is an ERP solution that connects production, <Link to="/inventory-management" className="hero-inline-link">inventory</Link>, procurement, warehouse operations, quality control, <Link to="/finance-accounting" className="hero-inline-link">finance</Link>, and supply chain management on one platform. It helps manufacturers streamline operations, improve visibility, reduce manual processes, and make data-driven decisions.
+          Vellkoerp is a cloud based Manufacturing ERP that connects production, <Link to="/inventory-management" className="hero-inline-link">inventory</Link>, procurement, warehouse operations, quality control, <Link to="/finance-accounting" className="hero-inline-link">finance</Link>, and supply chain management on one platform. It helps manufacturers streamline operations, improve visibility, reduce manual processes, and make data-driven decisions.
         </>
       }
       beyondTitle="Manufacturing Management Shouldn't Be"
