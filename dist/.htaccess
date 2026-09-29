@@ -21,17 +21,17 @@ Options -Indexes -MultiViews
     # 301 Redirects
     RewriteRule ^ecommerce-erp/?$ /e-commerce-erp [R=301,L,NC]
 
-    # 3. Allow real static files directly
+    # 3. Allow real static files directly (CSS, JS, images, fonts, uploads, sitemap.xml, robots.txt)
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule ^ - [L]
 
-    # 4. Serve Pre-Rendered HTML directly with 200 OK
-    RewriteCond %{DOCUMENT_ROOT}/$1.html -f
-    RewriteRule ^([^/]+)$ $1.html [L]
+    # 4. Serve Pre-Rendered HTML directly with 200 OK (Clean URLs)
+    RewriteCond %{REQUEST_FILENAME}.html -f
+    RewriteRule ^(.+?)/?$ $1.html [L]
 
-    # 4b. Nested clean URLs
-    RewriteCond %{DOCUMENT_ROOT}/$1/$2.html -f
-    RewriteRule ^([^/]+)/([^/]+)$ $1/$2.html [L]
+    # 4b. Alternate check for DOCUMENT_ROOT + REQUEST_URI
+    RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}.html -f
+    RewriteRule ^(.+?)/?$ %{REQUEST_URI}.html [L]
 
     # 5. SPA Fallback
     RewriteRule ^ index.html [QSA,L]
