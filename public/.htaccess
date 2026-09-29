@@ -8,6 +8,10 @@ Options -Indexes -MultiViews
     RewriteEngine On
     RewriteBase /
 
+    # If already rewritten internally, stop processing immediately
+    RewriteCond %{ENV:REDIRECT_STATUS} 200
+    RewriteRule ^ - [L]
+
     # 1. Force HTTPS + Non-WWW
     RewriteCond %{HTTPS} off [OR]
     RewriteCond %{HTTP_HOST} ^www\.vellkoerp\.com$ [NC]
@@ -18,24 +22,30 @@ Options -Indexes -MultiViews
     RewriteCond %{THE_REQUEST} \s/+(.+?)/+[\s?] [NC]
     RewriteRule ^ /%1 [R=301,NE,L]
 
-    # 301 Redirects
+    # 3. 301 Redirects
     RewriteRule ^ecommerce-erp/?$ /e-commerce-erp [R=301,L,NC]
 
-    # 3. Allow real static files directly (CSS, JS, images, fonts, uploads, sitemap.xml, robots.txt)
+    # 4. Allow real static files directly
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule ^ - [L]
 
-    # 4. Serve Pre-Rendered HTML directly with 200 OK (Clean URLs for LiteSpeed & Apache)
-    RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}.html -f
-    RewriteRule ^(.*)$ /$1.html [L]
+    # 5. Serve Pre-Rendered HTML if .html exists
+    RewriteCond %{REQUEST_FILENAME}.html -f
+    RewriteRule ^([^/]+)$ $1.html [L]
 
     RewriteCond %{REQUEST_FILENAME}.html -f
-    RewriteRule ^(.*)$ /$1.html [L]
+    RewriteRule ^([^/]+)/([^/]+)$ $1/$2.html [L]
 
-    # 5. SPA Fallback
+    RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+    RewriteRule ^([^/]+)$ $1.html [L]
+
+    RewriteCond %{DOCUMENT_ROOT}/$1/$2.html -f
+    RewriteRule ^([^/]+)/([^/]+)$ $1/$2.html [L]
+
+    # 6. React SPA Router fallback
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^ index.html [QSA,L]
+    RewriteRule ^ index.html [L]
 </IfModule>
 
 ErrorDocument 404 /index.html
