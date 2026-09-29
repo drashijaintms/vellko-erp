@@ -25,15 +25,16 @@ Options -Indexes -MultiViews
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule ^ - [L]
 
-    # 4. Serve Pre-Rendered HTML directly with 200 OK (Clean URLs)
-    RewriteCond %{REQUEST_FILENAME}.html -f
-    RewriteRule ^(.+?)/?$ $1.html [L]
-
-    # 4b. Alternate check for DOCUMENT_ROOT + REQUEST_URI
+    # 4. Serve Pre-Rendered HTML directly with 200 OK (Clean URLs for LiteSpeed & Apache)
     RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}.html -f
-    RewriteRule ^(.+?)/?$ %{REQUEST_URI}.html [L]
+    RewriteRule ^(.*)$ /$1.html [L]
+
+    RewriteCond %{REQUEST_FILENAME}.html -f
+    RewriteRule ^(.*)$ /$1.html [L]
 
     # 5. SPA Fallback
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^ index.html [QSA,L]
 </IfModule>
 
