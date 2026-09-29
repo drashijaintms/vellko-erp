@@ -8,44 +8,42 @@ Options -Indexes -MultiViews
     RewriteEngine On
     RewriteBase /
 
-    # If already rewritten internally, stop processing immediately
-    RewriteCond %{ENV:REDIRECT_STATUS} 200
-    RewriteRule ^ - [L]
-
-    # 1. Force HTTPS + Non-WWW
+    # 1. Force HTTPS + Non-WWW (301 Permanent Redirect)
     RewriteCond %{HTTPS} off [OR]
     RewriteCond %{HTTP_HOST} ^www\.vellkoerp\.com$ [NC]
     RewriteRule ^(.*)$ https://vellkoerp.com/$1 [R=301,L]
 
-    # 2. Redirect Slash to Non-Slash (301 Permanent Redirect)
+    # 2. Redirect Trailing Slash to Non-Slash (except actual directories)
     RewriteCond %{REQUEST_METHOD} =GET
     RewriteCond %{THE_REQUEST} \s/+(.+?)/+[\s?] [NC]
+    RewriteCond %{DOCUMENT_ROOT}/%1 !-d
     RewriteRule ^ /%1 [R=301,NE,L]
 
-    # 301 Redirects
+    # 3. 301 Redirects
     RewriteRule ^ecommerce-erp/?$ /e-commerce-erp [R=301,L,NC]
 
-    # 4. Allow real static files directly
-    RewriteCond %{REQUEST_FILENAME} -f
+    # 4. Direct API Endpoints for cPanel Backend
+    RewriteRule ^api/upload/?$ api/upload.php [L,QSA]
+    RewriteRule ^api/uploads/?$ api/uploads.php [L,QSA]
+    RewriteRule ^api/blogs/?(.*)$ api/blogs.php?path=$1 [L,QSA]
+    RewriteRule ^api/contact/?(.*)$ api/contact.php?path=$1 [L,QSA]
+
+    # 5. Allow existing physical files and directories directly
+    RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_URI} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^ - [L]
 
-    # 5. Serve Pre-Rendered HTML if .html exists
+    # 6. Serve Pre-Rendered HTML for clean URLs (Single-level routes: /privacy-policy -> privacy-policy.html)
+    RewriteCond %{DOCUMENT_ROOT}/$1.html -f [OR]
     RewriteCond %{REQUEST_FILENAME}.html -f
     RewriteRule ^([^/]+)$ $1.html [L]
 
+    # 7. Serve Pre-Rendered HTML for nested clean URLs (e.g. /blog/slug -> blog/slug.html)
+    RewriteCond %{DOCUMENT_ROOT}/$1/$2.html -f [OR]
     RewriteCond %{REQUEST_FILENAME}.html -f
     RewriteRule ^([^/]+)/([^/]+)$ $1/$2.html [L]
 
-    RewriteCond %{DOCUMENT_ROOT}/$1.html -f
-    RewriteRule ^([^/]+)$ $1.html [L]
-
-    RewriteCond %{DOCUMENT_ROOT}/$1/$2.html -f
-    RewriteRule ^([^/]+)/([^/]+)$ $1/$2.html [L]
-
-    # 6. React SPA Router fallback
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^ index.html [L]
+    # 8. Dynamic SPA Route (Blog Admin)
+    RewriteRule ^blog/admin(/.*)?$ index.html [L]
 </IfModule>
-
-ErrorDocument 404 /index.html

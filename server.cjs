@@ -1030,7 +1030,11 @@ app.use((req, res, next) => {
     return res.sendFile(dirFile);
   }
 
-  res.sendFile(path.join(distDir, 'index.html'));
+  if (cleanPath.startsWith('blog/admin')) {
+    return res.sendFile(path.join(distDir, 'index.html'));
+  }
+
+  res.status(404).send('<!DOCTYPE html><html><head><title>404 Not Found</title></head><body><h1>404 Not Found</h1><p>The requested URL was not found on this server.</p></body></html>');
 });
 
 // Start Server after database is initialized
