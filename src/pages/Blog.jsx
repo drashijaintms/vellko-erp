@@ -31,11 +31,11 @@ export default function Blog() {
   const [blogs, setBlogs] = useState(() => {
     try {
       const cached = localStorage.getItem('vellko_cached_blogs');
-      if (cached) {
+      if (cached !== null) {
         const parsed = JSON.parse(cached);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          const published = parsed.filter(b => b.status === 'Published');
-          return published.length > 0 ? published : parsed;
+        if (Array.isArray(parsed)) {
+          const published = parsed.filter(b => (b.status === 'Published' || !b.status) && (b.active === 1 || b.active === undefined || b.active === null));
+          return published;
         }
       }
     } catch (e) {}
@@ -83,16 +83,16 @@ export default function Blog() {
     loadCategories();
 
     const loadBlogs = async () => {
-      // 1. Try Live API
+      // 1. Try Live API (only active published blogs)
       try {
-        const response = await fetch('/api/blogs?status=Published');
+        const response = await fetch('/api/blogs?status=Published&active=1');
         if (response.ok) {
           const text = await response.text();
           if (text.trim().startsWith('[') || text.trim().startsWith('{')) {
             const data = JSON.parse(text);
-            if (Array.isArray(data) && data.length > 0) {
+            if (Array.isArray(data)) {
               setBlogs(data);
-              localStorage.setItem('vellko_cached_blogs', JSON.stringify(data));
+              try { localStorage.setItem('vellko_cached_blogs', JSON.stringify(data)); } catch (e) {}
               setIsLoading(false);
               return;
             }
@@ -109,10 +109,10 @@ export default function Blog() {
           const text = await staticRes.text();
           if (text.trim().startsWith('[') || text.trim().startsWith('{')) {
             const data = JSON.parse(text);
-            if (Array.isArray(data) && data.length > 0) {
-              const published = data.filter(b => b.status === 'Published');
-              setBlogs(published.length > 0 ? published : data);
-              localStorage.setItem('vellko_cached_blogs', JSON.stringify(data));
+            if (Array.isArray(data)) {
+              const published = data.filter(b => (b.status === 'Published' || !b.status) && b.active !== 0);
+              setBlogs(published);
+              try { localStorage.setItem('vellko_cached_blogs', JSON.stringify(data)); } catch (e) {}
               setIsLoading(false);
               return;
             }
@@ -125,11 +125,11 @@ export default function Blog() {
       // 3. Try LocalStorage Cache
       try {
         const cached = localStorage.getItem('vellko_cached_blogs');
-        if (cached) {
+        if (cached !== null) {
           const parsed = JSON.parse(cached);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            const published = parsed.filter(b => b.status === 'Published');
-            setBlogs(published.length > 0 ? published : parsed);
+          if (Array.isArray(parsed)) {
+            const published = parsed.filter(b => (b.status === 'Published' || !b.status) && b.active !== 0);
+            setBlogs(published);
             setIsLoading(false);
             return;
           }

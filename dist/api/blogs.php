@@ -103,6 +103,7 @@ function getPDO() {
             'excerpt' => "LONGTEXT NULL",
             'date' => "VARCHAR(50) NULL DEFAULT NULL",
             'status' => "VARCHAR(50) DEFAULT 'Published'",
+            'active' => "TINYINT(1) DEFAULT 1",
             'isFeatured' => "TINYINT(1) DEFAULT 0",
             'image' => "LONGTEXT NULL",
             'imageAlt' => "VARCHAR(500) NULL DEFAULT NULL",
@@ -135,49 +136,12 @@ function getPDO() {
             }
         }
 
-        // Fill any null _id or slug for older rows
+        // Fill any null _id or active for older rows
         try {
             $pdo->exec("UPDATE blogs SET _id = CAST(id AS CHAR) WHERE _id IS NULL OR _id = ''");
+            $pdo->exec("UPDATE blogs SET active = 1 WHERE active IS NULL");
         } catch (Exception $e) {}
 
-        // Auto-seed table from JSON if empty
-        $count = (int)$pdo->query("SELECT COUNT(*) FROM blogs")->fetchColumn();
-        if ($count === 0) {
-            $jsonBlogs = getBlogsFromJson();
-            if (!empty($jsonBlogs)) {
-                $stmt = $pdo->prepare("INSERT INTO blogs (_id, slug, title, category, readTime, excerpt, date, status, isFeatured, image, imageAlt, seoTitle, metaDesc, focusKeyword, ogTitle, ogDesc, ogImg, twitterTitle, twitterDesc, twitterCard, rawSchema, views, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                foreach ($jsonBlogs as $b) {
-                    $title = $b['title'] ?? 'Untitled Article';
-                    $slug = $b['slug'] ?? strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $title), '-'));
-                    $stmt->execute([
-                        (string)($b['_id'] ?? $b['id'] ?? time() . mt_rand(100, 999)),
-                        $slug,
-                        $title,
-                        $b['category'] ?? 'ERP Modules',
-                        $b['readTime'] ?? '3 Mins Read',
-                        $b['excerpt'] ?? '',
-                        $b['date'] ?? date('M j, Y'),
-                        $b['status'] ?? 'Published',
-                        !empty($b['isFeatured']) ? 1 : 0,
-                        $b['image'] ?? null,
-                        $b['imageAlt'] ?? $title,
-                        $b['seoTitle'] ?? $title,
-                        $b['metaDesc'] ?? '',
-                        $b['focusKeyword'] ?? '',
-                        $b['ogTitle'] ?? $title,
-                        $b['ogDesc'] ?? '',
-                        $b['ogImg'] ?? ($b['image'] ?? ''),
-                        $b['twitterTitle'] ?? $title,
-                        $b['twitterDesc'] ?? '',
-                        $b['twitterCard'] ?? 'Summary Large Image',
-                        $b['rawSchema'] ?? '',
-                        intval($b['views'] ?? 0),
-                        $b['createdAt'] ?? date('c'),
-                        $b['updatedAt'] ?? date('c')
-                    ]);
-                }
-            }
-        }
         return $pdo;
     } catch (Exception $e) {
         $lastDbError = $e->getMessage();
@@ -196,15 +160,17 @@ function getBlogsFromJson() {
     return [];
 }
 
-function getBlogs() {
+function getBlogs($activeOnly = true) {
     $pdo = getPDO();
     if ($pdo) {
         try {
-            $stmt = $pdo->query("SELECT * FROM blogs ORDER BY id DESC");
+            $sql = $activeOnly ? "SELECT * FROM blogs WHERE (active = 1 OR active IS NULL) AND status != 'Trash' ORDER BY id DESC" : "SELECT * FROM blogs ORDER BY id DESC";
+            $stmt = $pdo->query($sql);
             $rows = $stmt->fetchAll();
             foreach ($rows as &$r) {
                 $r['id'] = (int)$r['id'];
                 $r['isFeatured'] = (bool)$r['isFeatured'];
+                $r['active'] = isset($r['active']) ? (int)$r['active'] : 1;
                 $r['views'] = (int)$r['views'];
             }
             return $rows;
@@ -212,8 +178,8 @@ function getBlogs() {
             error_log('MySQL select error: ' . $e->getMessage());
         }
     }
-    return getBlogsFromJson();
 }
+
 
 function saveBlogsBackup($blogs) {
     global $dataFile;
@@ -408,12 +374,13 @@ if ($method === 'GET') {
             if ($single) {
                 $single['id'] = (int)$single['id'];
                 $single['isFeatured'] = (bool)$single['isFeatured'];
+                $single['active'] = isset($single['active']) ? (int)$single['active'] : 1;
                 $single['views'] = (int)$single['views'];
                 echo json_encode($single);
                 exit;
             }
         } else {
-            $blogs = getBlogs();
+            $blogs = getBlogs(false);
             foreach ($blogs as $b) {
                 if ((isset($b['id']) && (string)$b['id'] === $path) || (isset($b['_id']) && (string)$b['_id'] === $path) || (isset($b['slug']) && $b['slug'] === $path)) {
                     echo json_encode($b);
@@ -430,14 +397,25 @@ if ($method === 'GET') {
     $status = $_GET['status'] ?? null;
     $category = $_GET['category'] ?? null;
     $isFeatured = isset($_GET['isFeatured']) ? filter_var($_GET['isFeatured'], FILTER_VALIDATE_BOOLEAN) : null;
+    $activeFilter = $_GET['active'] ?? null;
+    $isTrash = isset($_GET['trash']) || $activeFilter === '0' || $status === 'Trash';
 
     if ($pdo) {
         $sql = "SELECT * FROM blogs WHERE 1=1";
         $params = [];
-        if ($status) {
-            $sql .= " AND status = ?";
-            $params[] = $status;
+
+        if ($isTrash) {
+            $sql .= " AND (active = 0 OR status = 'Trash')";
+        } elseif ($activeFilter === 'all') {
+            // no active restriction
+        } else {
+            $sql .= " AND (active = 1 OR active IS NULL) AND (status != 'Trash' OR status IS NULL)";
+            if ($status) {
+                $sql .= " AND status = ?";
+                $params[] = $status;
+            }
         }
+
         if ($category) {
             $sql .= " AND category = ?";
             $params[] = $category;
@@ -454,14 +432,17 @@ if ($method === 'GET') {
         foreach ($rows as &$r) {
             $r['id'] = (int)$r['id'];
             $r['isFeatured'] = (bool)$r['isFeatured'];
+            $r['active'] = isset($r['active']) ? (int)$r['active'] : 1;
             $r['views'] = (int)$r['views'];
         }
         echo json_encode($rows);
         exit;
     }
 
-    $blogs = getBlogs();
-    $filtered = array_values(array_filter($blogs, function($b) use ($status, $category, $isFeatured) {
+    $blogs = getBlogs(!$isTrash && $activeFilter !== 'all');
+    $filtered = array_values(array_filter($blogs, function($b) use ($status, $category, $isFeatured, $isTrash) {
+        if ($isTrash && (isset($b['active']) && $b['active'] == 1)) return false;
+        if (!$isTrash && isset($b['active']) && $b['active'] == 0) return false;
         if ($status && (!isset($b['status']) || $b['status'] !== $status)) return false;
         if ($category && (!isset($b['category']) || $b['category'] !== $category)) return false;
         if ($isFeatured !== null && (!isset($b['isFeatured']) || (bool)$b['isFeatured'] !== $isFeatured)) return false;
@@ -472,10 +453,24 @@ if ($method === 'GET') {
     exit;
 }
 
-// 2. POST /api/blogs or /api/blogs/:id/view
+// 2. POST /api/blogs or /api/blogs/:id/view or /api/blogs/:id/restore
 if ($method === 'POST') {
     $raw = file_get_contents('php://input');
     $body = json_decode($raw, true) ?: [];
+
+    // Restore Trashed Blog
+    if (strpos($path, 'restore') !== false || substr($path, -8) === '/restore') {
+        $id = explode('/', $path)[0];
+        $pdo = getPDO();
+        if ($pdo) {
+            $stmt = $pdo->prepare("UPDATE blogs SET active = 1, status = 'Published', updatedAt = ? WHERE _id = ? OR id = ?");
+            $stmt->execute([date('c'), $id, $id]);
+        }
+        $allBlogs = getBlogs(false);
+        saveBlogsBackup($allBlogs);
+        echo json_encode(['message' => 'Blog restored successfully']);
+        exit;
+    }
 
     // View Counter Increment
     if (strpos($path, 'view') !== false || substr($path, -5) === '/view') {
@@ -489,7 +484,7 @@ if ($method === 'POST') {
             $stmt2->execute([$id, $id]);
             $updatedViews = (int)$stmt2->fetchColumn();
         } else {
-            $blogs = getBlogs();
+            $blogs = getBlogs(false);
             foreach ($blogs as &$b) {
                 if ((isset($b['id']) && (string)$b['id'] === $id) || (isset($b['_id']) && (string)$b['_id'] === $id)) {
                     $b['views'] = isset($b['views']) ? ($b['views'] + 1) : 1;
@@ -521,6 +516,7 @@ if ($method === 'POST') {
         'excerpt' => $excerpt,
         'date' => $body['date'] ?? date('M j, Y'),
         'status' => $body['status'] ?? 'Published',
+        'active' => 1,
         'isFeatured' => !empty($body['isFeatured']),
         'image' => $featuredImg,
         'imageAlt' => $body['imageAlt'] ?? $title,
@@ -543,7 +539,7 @@ if ($method === 'POST') {
     $pdo = getPDO();
     if ($pdo) {
         try {
-            $stmt = $pdo->prepare("INSERT INTO blogs (_id, slug, title, category, readTime, excerpt, date, status, isFeatured, image, imageAlt, seoTitle, metaDesc, focusKeyword, ogTitle, ogDesc, ogImg, twitterTitle, twitterDesc, twitterCard, rawSchema, views, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt = $pdo->prepare("INSERT INTO blogs (_id, slug, title, category, readTime, excerpt, date, status, active, isFeatured, image, imageAlt, seoTitle, metaDesc, focusKeyword, ogTitle, ogDesc, ogImg, twitterTitle, twitterDesc, twitterCard, rawSchema, views, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             $stmt->execute([
                 $newBlog['_id'],
                 $newBlog['slug'],
@@ -553,6 +549,7 @@ if ($method === 'POST') {
                 $newBlog['excerpt'],
                 $newBlog['date'],
                 $newBlog['status'],
+                1,
                 $newBlog['isFeatured'] ? 1 : 0,
                 $newBlog['image'],
                 $newBlog['imageAlt'],
@@ -579,7 +576,7 @@ if ($method === 'POST') {
         }
     }
 
-    $allBlogs = getBlogs();
+    $allBlogs = getBlogs(false);
     saveBlogsBackup($allBlogs);
 
     http_response_code(201);
@@ -598,11 +595,11 @@ if ($method === 'PUT') {
         $fields = [];
         $values = [];
 
-        $allowed = ['title', 'category', 'readTime', 'excerpt', 'date', 'status', 'isFeatured', 'image', 'imageAlt', 'seoTitle', 'metaDesc', 'focusKeyword', 'slug', 'ogTitle', 'ogDesc', 'ogImg', 'twitterTitle', 'twitterDesc', 'twitterCard', 'rawSchema'];
+        $allowed = ['title', 'category', 'readTime', 'excerpt', 'date', 'status', 'active', 'isFeatured', 'image', 'imageAlt', 'seoTitle', 'metaDesc', 'focusKeyword', 'slug', 'ogTitle', 'ogDesc', 'ogImg', 'twitterTitle', 'twitterDesc', 'twitterCard', 'rawSchema'];
         
         foreach ($allowed as $f) {
             if (isset($body[$f])) {
-                if ($f === 'isFeatured') {
+                if ($f === 'isFeatured' || $f === 'active') {
                     $fields[] = "`{$f}` = ?";
                     $values[] = !empty($body[$f]) ? 1 : 0;
                 } elseif ($f === 'excerpt' || $f === 'image') {
@@ -635,14 +632,14 @@ if ($method === 'PUT') {
             }
         }
 
-        $allBlogs = getBlogs();
+        $allBlogs = getBlogs(false);
         saveBlogsBackup($allBlogs);
 
         echo json_encode(['message' => 'Blog updated successfully in MySQL']);
         exit;
     }
 
-    $blogs = getBlogs();
+    $blogs = getBlogs(false);
     $found = false;
     foreach ($blogs as &$b) {
         if ((isset($b['id']) && (string)$b['id'] === $id) || (isset($b['_id']) && (string)$b['_id'] === $id)) {
@@ -669,14 +666,21 @@ if ($method === 'PUT') {
     exit;
 }
 
-// 4. DELETE /api/blogs/:id
+// 4. DELETE /api/blogs/:id (Soft-delete to Trash OR Permanent Delete)
 if ($method === 'DELETE') {
     $id = $path;
+    $isPermanent = isset($_GET['permanent']) || isset($_GET['force']);
+
     $pdo = getPDO();
     if ($pdo) {
         try {
-            $stmt = $pdo->prepare("DELETE FROM blogs WHERE _id = ? OR id = ?");
-            $stmt->execute([$id, $id]);
+            if ($isPermanent) {
+                $stmt = $pdo->prepare("DELETE FROM blogs WHERE _id = ? OR id = ?");
+                $stmt->execute([$id, $id]);
+            } else {
+                $stmt = $pdo->prepare("UPDATE blogs SET active = 0, status = 'Trash', updatedAt = ? WHERE _id = ? OR id = ?");
+                $stmt->execute([date('c'), $id, $id]);
+            }
         } catch (Exception $e) {
             error_log('MySQL Delete Error in api/blogs.php: ' . $e->getMessage());
             http_response_code(500);
@@ -684,25 +688,34 @@ if ($method === 'DELETE') {
             exit;
         }
 
-        $allBlogs = getBlogs();
+        $allBlogs = getBlogs(false);
         saveBlogsBackup($allBlogs);
 
-        echo json_encode(['message' => 'Blog deleted successfully from MySQL', 'id' => $id]);
+        echo json_encode([
+            'message' => $isPermanent ? 'Blog permanently deleted from MySQL' : 'Blog moved to Trash in MySQL',
+            'id' => $id,
+            'permanent' => $isPermanent
+        ]);
         exit;
     }
 
-    $blogs = getBlogs();
-    $initialCount = count($blogs);
-    $blogs = array_values(array_filter($blogs, function($b) use ($id) {
-        return !((isset($b['id']) && (string)$b['id'] === $id) || (isset($b['_id']) && (string)$b['_id'] === $id));
-    }));
-
-    if (count($blogs) !== $initialCount) {
-        saveBlogsBackup($blogs);
-        echo json_encode(['message' => 'Blog deleted successfully', 'id' => $id]);
+    $blogs = getBlogs(false);
+    if ($isPermanent) {
+        $blogs = array_values(array_filter($blogs, function($b) use ($id) {
+            return !((isset($b['id']) && (string)$b['id'] === $id) || (isset($b['_id']) && (string)$b['_id'] === $id));
+        }));
     } else {
-        http_response_code(404);
-        echo json_encode(['message' => 'Blog not found']);
+        foreach ($blogs as &$b) {
+            if ((isset($b['id']) && (string)$b['id'] === $id) || (isset($b['_id']) && (string)$b['_id'] === $id)) {
+                $b['active'] = 0;
+                $b['status'] = 'Trash';
+                $b['updatedAt'] = date('c');
+                break;
+            }
+        }
     }
+
+    saveBlogsBackup($blogs);
+    echo json_encode(['message' => $isPermanent ? 'Blog permanently deleted' : 'Blog moved to trash', 'id' => $id]);
     exit;
 }

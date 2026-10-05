@@ -6,7 +6,7 @@ import {
   Plus, Edit, Trash2, Search, Star, FileText, X, Globe, Folder, 
   Clock, Calendar, LogOut, LayoutDashboard, Settings, User, ArrowRight, 
   Mail, Bell, Trash, Link2, BookOpen, Layers, Eye, MessageSquare, 
-  ThumbsUp, ThumbsDown, Upload, ChevronLeft, Image as ImageIcon
+  ThumbsUp, ThumbsDown, Upload, ChevronLeft, Image as ImageIcon, RotateCcw
 } from 'lucide-react';
 
 import { DEFAULT_BLOGS } from '../data/defaultBlogs';
@@ -71,7 +71,17 @@ export default function BlogAdmin() {
   const [activeTab, setActiveTab] = useState('cms_blogs'); // 'dashboard' | 'categories' | 'contact' | 'newsletter' | 'cms_pages' | 'cms_blogs' | 'new' | 'edit' | 'trash' | 'media'
 
   // Blog & Inquiry dataset state
-  const [blogs, setBlogs] = useState(DEFAULT_BLOGS);
+  const [blogs, setBlogs] = useState(() => {
+    try {
+      const cached = localStorage.getItem('vellko_cached_blogs');
+      if (cached !== null) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed)) return parsed;
+      }
+    } catch (e) {}
+    return DEFAULT_BLOGS;
+  });
+  const [trashBlogs, setTrashBlogs] = useState([]);
   const [inquiries, setInquiries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expandedInquiry, setExpandedInquiry] = useState(null);
@@ -273,47 +283,45 @@ export default function BlogAdmin() {
     }
   };
 
-  // Load all blogs with resilient fallback
+  // Load all active and trashed blogs with resilient fallback
   const fetchBlogs = async () => {
     try {
-      const response = await fetch('/api/blogs');
+      // 1. Fetch active blogs
+      const response = await fetch('/api/blogs?active=1');
       const contentType = response.headers.get('content-type') || '';
       if (response.ok && contentType.includes('application/json')) {
         const data = await response.json();
-        if (Array.isArray(data) && data.length > 0) {
+        if (Array.isArray(data)) {
           setBlogs(data);
           try { localStorage.setItem('vellko_cached_blogs', JSON.stringify(data)); } catch (e) {}
-          return;
         }
       }
-      throw new Error('API not available');
-    } catch (err) {
-      // 1. Try static JSON endpoint
+
+      // 2. Fetch trashed blogs
       try {
-        const staticRes = await fetch('/data/blogs.json');
-        if (staticRes.ok) {
-          const staticData = await staticRes.json();
-          if (Array.isArray(staticData) && staticData.length > 0) {
-            setBlogs(staticData);
-            return;
+        const trashRes = await fetch('/api/blogs?active=0');
+        const trashType = trashRes.headers.get('content-type') || '';
+        if (trashRes.ok && trashType.includes('application/json')) {
+          const trashData = await trashRes.json();
+          if (Array.isArray(trashData)) {
+            setTrashBlogs(trashData);
           }
         }
-      } catch (fErr) { /* ignore */ }
-
-      // 2. Try localStorage cache
+      } catch (tErr) {
+        console.debug('Failed to fetch trash blogs:', tErr);
+      }
+    } catch (err) {
+      console.debug('API /api/blogs network fallback:', err);
+      // Fallback to cache if exists
       try {
         const cached = localStorage.getItem('vellko_cached_blogs');
         if (cached) {
           const parsed = JSON.parse(cached);
-          if (Array.isArray(parsed) && parsed.length > 0) {
+          if (Array.isArray(parsed)) {
             setBlogs(parsed);
-            return;
           }
         }
-      } catch (cErr) { /* ignore */ }
-
-      // 3. Bundled Default Blogs
-      setBlogs(DEFAULT_BLOGS);
+      } catch (cErr) {}
     } finally {
       setLoading(false);
     }
@@ -661,22 +669,97 @@ export default function BlogAdmin() {
     }
   };
 
-  // Delete Blog
-  const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this blog?')) return;
+  // Delete Blog (Soft-delete to Trash)
+  const handleDelete = async (blogOrId) => {
+    const id = typeof blogOrId === 'object' ? (blogOrId._id || blogOrId.id) : blogOrId;
+    const blogTitle = typeof blogOrId === 'object' && blogOrId.title ? `"${blogOrId.title}"` : 'this article';
+    if (!window.confirm(`Move ${blogTitle} to Trash Bin?`)) return;
+
+    // Optimistically update local active blogs state
+    setBlogs(prev => {
+      const updated = prev.filter(b => String(b._id || b.id) !== String(id));
+      try { localStorage.setItem('vellko_cached_blogs', JSON.stringify(updated)); } catch (e) {}
+      return updated;
+    });
 
     try {
       const response = await fetch(`/api/blogs/${id}`, {
         method: 'DELETE'
       });
       if (response.ok) {
-        fetchBlogs();
+        showToast('Blog moved to Trash Bin', 'success');
       } else {
-        showToast('Failed to delete blog.');
+        showToast('Failed to move blog to Trash.');
       }
     } catch (err) {
       console.error('Error deleting blog:', err);
+    } finally {
+      fetchBlogs();
     }
+  };
+
+  // Restore Blog from Trash
+  const handleRestoreBlog = async (blog) => {
+    const id = blog._id || blog.id;
+    try {
+      const res = await fetch(`/api/blogs/${id}/restore`, {
+        method: 'POST'
+      });
+      if (res.ok) {
+        showToast('Blog restored to active posts!', 'success');
+      } else {
+        await fetch(`/api/blogs/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ active: 1, status: 'Published' })
+        });
+        showToast('Blog restored to active posts!', 'success');
+      }
+    } catch (err) {
+      showToast('Error restoring blog: ' + err.message);
+    } finally {
+      fetchBlogs();
+    }
+  };
+
+  // Permanently Delete Blog from MySQL
+  const handlePermanentDelete = async (blog) => {
+    const id = blog._id || blog.id;
+    const blogTitle = blog.title ? `"${blog.title}"` : 'this article';
+    if (!window.confirm(`Permanently delete ${blogTitle} from the database? This cannot be undone.`)) return;
+
+    // Optimistically update local trash state
+    setTrashBlogs(prev => prev.filter(b => String(b._id || b.id) !== String(id)));
+
+    try {
+      const response = await fetch(`/api/blogs/${id}?permanent=1`, {
+        method: 'DELETE'
+      });
+      if (response.ok) {
+        showToast('Blog permanently deleted from database!', 'success');
+      } else {
+        showToast('Failed to permanently delete blog.');
+      }
+    } catch (err) {
+      showToast('Error deleting blog: ' + err.message);
+    } finally {
+      fetchBlogs();
+    }
+  };
+
+  // Empty Trash Bin
+  const handleEmptyTrash = async () => {
+    if (trashBlogs.length === 0) return;
+    if (!window.confirm(`Permanently delete all ${trashBlogs.length} trashed article(s)? This cannot be undone.`)) return;
+
+    for (const b of trashBlogs) {
+      const id = b._id || b.id;
+      try {
+        await fetch(`/api/blogs/${id}?permanent=1`, { method: 'DELETE' });
+      } catch (e) {}
+    }
+    showToast('Trash bin emptied.', 'success');
+    fetchBlogs();
   };
 
   // Delete Contact Inquiry
@@ -908,9 +991,24 @@ export default function BlogAdmin() {
           <button 
             onClick={() => setActiveTab('trash')} 
             className={`sidebar-menu-btn ${activeTab === 'trash' ? 'active' : ''}`}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
           >
-            <Trash size={18} />
-            Trash Bin
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
+              <Trash size={18} />
+              Trash Bin
+            </span>
+            {trashBlogs.length > 0 && (
+              <span style={{
+                backgroundColor: '#ef4444',
+                color: '#ffffff',
+                fontSize: '0.7rem',
+                fontWeight: '700',
+                padding: '2px 7px',
+                borderRadius: '9999px'
+              }}>
+                {trashBlogs.length}
+              </span>
+            )}
           </button>
 
           <button onClick={handleLogout} className="sidebar-menu-btn btn-sidebar-logout">
@@ -1578,10 +1676,31 @@ export default function BlogAdmin() {
               
               {/* Tab options bar */}
               <div className="posts-tab-sub-nav">
-                <button className="posts-tab-sub-btn active">All Posts ({totalBlogs})</button>
-                <button className="posts-tab-sub-btn">My Posts (0)</button>
-                <button className="posts-tab-sub-btn">Published Posts ({publishedBlogs})</button>
-                <button className="posts-tab-sub-btn">Drafts Posts ({draftBlogs})</button>
+                <button 
+                  onClick={() => setStatusFilter('All')} 
+                  className={`posts-tab-sub-btn ${statusFilter === 'All' ? 'active' : ''}`}
+                >
+                  All Posts ({totalBlogs})
+                </button>
+                <button 
+                  onClick={() => setStatusFilter('Published')} 
+                  className={`posts-tab-sub-btn ${statusFilter === 'Published' ? 'active' : ''}`}
+                >
+                  Published Posts ({publishedBlogs})
+                </button>
+                <button 
+                  onClick={() => setStatusFilter('Draft')} 
+                  className={`posts-tab-sub-btn ${statusFilter === 'Draft' ? 'active' : ''}`}
+                >
+                  Drafts Posts ({draftBlogs})
+                </button>
+                <button 
+                  onClick={() => setActiveTab('trash')} 
+                  className="posts-tab-sub-btn"
+                  style={{ color: trashBlogs.length > 0 ? '#ef4444' : undefined, fontWeight: trashBlogs.length > 0 ? '700' : 'normal' }}
+                >
+                  Trash ({trashBlogs.length})
+                </button>
                 
                 <div className="posts-tab-entries-select">
                   <span>Show</span>
@@ -1654,10 +1773,10 @@ export default function BlogAdmin() {
                     </thead>
                     <tbody>
                       {filteredBlogs.length > 0 ? (
-                        filteredBlogs.map((blog, idx) => {
+                        filteredBlogs.map((blog) => {
                           const hasCustomImg = !!blog.image;
                           return (
-                            <tr key={blog._id}>
+                            <tr key={blog._id || blog.id}>
                               <td style={{ paddingLeft: '1.5rem' }}>
                                 <input type="checkbox" className="nutra-table-checkbox" />
                               </td>
@@ -1704,14 +1823,14 @@ export default function BlogAdmin() {
                                     {blog.category}
                                   </span>
                                   <a 
-                                    href={`/blog/${(blog.slug || blog.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')).replace(/^\/+|\/+$/g, '')}`} 
+                                    href={`/blog/${(blog.slug || blog.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-')).replace(/^\/+|\/+$/g, '')}`} 
                                     target="_blank" 
                                     rel="noopener noreferrer"
                                     style={{ fontSize: '0.72rem', color: '#6366f1', textDecoration: 'none', fontWeight: '600' }}
                                     onClick={(e) => e.stopPropagation()}
                                     title="Open article in new tab"
                                   >
-                                    🔗 /blog/{(blog.slug || blog.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')).replace(/^\/+|\/+$/g, '')}
+                                    🔗 /blog/{(blog.slug || blog.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-')).replace(/^\/+|\/+$/g, '')}
                                   </a>
                                 </div>
                               </td>
@@ -1736,8 +1855,8 @@ export default function BlogAdmin() {
                                 </span>
                               </td>
                               <td>
-                                <span className={`status-badge-btn ${blog.status.toLowerCase()}`}>
-                                  {blog.status.toUpperCase()}
+                                <span className={`status-badge-btn ${(blog.status || 'Published').toLowerCase()}`}>
+                                  {(blog.status || 'Published').toUpperCase()}
                                 </span>
                               </td>
                               <td className="td-date">{blog.date}</td>
@@ -1745,7 +1864,7 @@ export default function BlogAdmin() {
                                 <button onClick={() => handleOpenEdit(blog)} className="action-btn-circle-nutra" title="Edit Article">
                                   <Edit size={14} />
                                 </button>
-                                <button onClick={() => handleDelete(blog._id)} className="action-btn-circle-nutra text-red-del" title="Delete Article">
+                                <button onClick={() => handleDelete(blog)} className="action-btn-circle-nutra text-red-del" title="Move Article to Trash">
                                   <Trash2 size={14} />
                                 </button>
                               </td>
@@ -1754,7 +1873,7 @@ export default function BlogAdmin() {
                         })
                       ) : (
                         <tr>
-                          <td colSpan="9" className="table-empty-row">No articles match the selected filters.</td>
+                          <td colSpan="10" className="table-empty-row">No articles found matching filters.</td>
                         </tr>
                       )}
                     </tbody>
@@ -1768,10 +1887,117 @@ export default function BlogAdmin() {
         {/* G. TRASH BIN TAB */}
         {activeTab === 'trash' && (
           <div className="trash-tab-content">
-            <div className="overview-card-panel">
-              <h3>Trash Bin</h3>
-              <p className="panel-subtitle">Temporary deleted blogs and items</p>
-              <p className="no-activity-text" style={{ marginTop: '1.5rem' }}>Trash bin is empty.</p>
+            <div className="cms-blogs-header-row" style={{ marginBottom: '1.5rem' }}>
+              <div className="cms-blogs-header-left">
+                <div className="title-and-badge-wrap">
+                  <button onClick={() => setActiveTab('cms_blogs')} className="btn-back-circle-grey">
+                    <ChevronLeft size={18} />
+                  </button>
+                  <h1 className="cms-blogs-main-heading">Trash Bin</h1>
+                  <span className="orange-posts-badge" style={{ backgroundColor: '#fee2e2', color: '#dc2626' }}>
+                    {trashBlogs.length} TRASHED
+                  </span>
+                </div>
+                <p className="cms-blogs-sub-desc">Deleted blogs are preserved here (active = 0). You can restore them anytime or permanently delete them.</p>
+              </div>
+              <div className="cms-blogs-header-right">
+                {trashBlogs.length > 0 && (
+                  <button 
+                    onClick={handleEmptyTrash} 
+                    className="btn-apply-grey" 
+                    style={{ color: '#ef4444', borderColor: '#fca5a5', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                  >
+                    <Trash2 size={15} /> Empty Trash
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <div className="overview-card-panel" style={{ padding: '1.5rem 0' }}>
+              {trashBlogs.length === 0 ? (
+                <div style={{ textAlign: 'center', padding: '3.5rem 1rem' }}>
+                  <Trash size={44} style={{ color: '#cbd5e1', marginBottom: '0.75rem' }} />
+                  <p style={{ color: '#64748b', fontSize: '1rem', fontWeight: '600' }}>Trash bin is empty.</p>
+                  <p style={{ color: '#94a3b8', fontSize: '0.85rem' }}>Articles you delete will appear here until permanently deleted.</p>
+                </div>
+              ) : (
+                <div className="admin-table-card" style={{ borderLeft: 'none', borderRight: 'none', borderRadius: '0' }}>
+                  <table className="admin-table">
+                    <thead>
+                      <tr>
+                        <th style={{ width: '70px', paddingLeft: '1.5rem' }}>IMAGE</th>
+                        <th>ARTICLE TITLE</th>
+                        <th>CATEGORY</th>
+                        <th>STATUS</th>
+                        <th>DATE</th>
+                        <th style={{ textAlign: 'right', paddingRight: '1.5rem' }}>ACTIONS</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {trashBlogs.map((b) => (
+                        <tr key={b._id || b.id}>
+                          <td style={{ width: '70px', paddingLeft: '1.5rem' }}>
+                            <div style={{
+                              width: '52px',
+                              height: '38px',
+                              borderRadius: '8px',
+                              overflow: 'hidden',
+                              border: '1px solid #e2e8f0',
+                              backgroundColor: '#f8fafc'
+                            }}>
+                              <img
+                                src={b.image || featuredBlogImg}
+                                alt={b.title}
+                                style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.65 }}
+                              />
+                            </div>
+                          </td>
+                          <td className="td-title">
+                            <div style={{ fontWeight: '700', color: '#475569' }}>{b.title}</div>
+                            <div style={{ fontSize: '0.75rem', color: '#94a3b8', marginTop: '2px' }}>
+                              Slug: /blog/{b.slug || b.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
+                            </div>
+                          </td>
+                          <td>
+                            <span className="nutra-article-category-label">{b.category}</span>
+                          </td>
+                          <td>
+                            <span style={{
+                              padding: '2px 8px',
+                              borderRadius: '9999px',
+                              fontSize: '0.75rem',
+                              fontWeight: '600',
+                              backgroundColor: '#fee2e2',
+                              color: '#dc2626'
+                            }}>
+                              TRASHED
+                            </span>
+                          </td>
+                          <td className="td-date">{b.date}</td>
+                          <td className="td-actions" style={{ textAlign: 'right', paddingRight: '1.5rem' }}>
+                            <button
+                              onClick={() => handleRestoreBlog(b)}
+                              className="admin-btn-secondary"
+                              style={{ padding: '0.4rem 0.75rem', fontSize: '0.8rem', display: 'inline-flex', alignItems: 'center', gap: '5px', marginRight: '8px' }}
+                              title="Restore to Active Blogs"
+                            >
+                              <RotateCcw size={14} /> Restore
+                            </button>
+                            <button
+                              onClick={() => handlePermanentDelete(b)}
+                              className="action-btn-circle-nutra text-red-del"
+                              style={{ padding: '0.45rem' }}
+                              title="Permanently Delete Forever"
+                            >
+                              <Trash2 size={15} />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           </div>
         )}
