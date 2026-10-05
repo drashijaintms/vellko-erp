@@ -458,13 +458,202 @@ if ($method === 'POST') {
     $raw = file_get_contents('php://input');
     $body = json_decode($raw, true) ?: [];
 
+// Helper to insert or update blog in MySQL and JSON backup
+function upsertBlog($id, $body) {
+    global $lastDbError;
+    $pdo = getPDO();
+    $title = $body['title'] ?? 'Untitled Article';
+    $excerpt = isset($body['excerpt']) ? extractAndSaveBase64Images($body['excerpt'], $title) : '';
+    $featuredImg = isset($body['image']) ? extractAndSaveBase64Images($body['image'], $title . '-featured') : '';
+    $slug = !empty($body['slug']) ? $body['slug'] : strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $title), '-'));
+    $status = $body['status'] ?? 'Published';
+    $active = isset($body['active']) ? (!empty($body['active']) ? 1 : 0) : ($status === 'Trash' ? 0 : 1);
+    $isFeatured = !empty($body['isFeatured']) ? 1 : 0;
+    $updatedAt = date('c');
+
+    if ($pdo) {
+        $existing = null;
+        if (!empty($id)) {
+            $stmt = $pdo->prepare("SELECT * FROM blogs WHERE _id = ? OR id = ? OR slug = ? LIMIT 1");
+            $stmt->execute([$id, $id, $id]);
+            $existing = $stmt->fetch();
+        }
+
+        if ($existing) {
+            $rowId = $existing['id'];
+            $allowed = ['title', 'category', 'readTime', 'excerpt', 'date', 'status', 'active', 'isFeatured', 'image', 'imageAlt', 'seoTitle', 'metaDesc', 'focusKeyword', 'slug', 'ogTitle', 'ogDesc', 'ogImg', 'twitterTitle', 'twitterDesc', 'twitterCard', 'rawSchema'];
+            $fields = [];
+            $values = [];
+
+            foreach ($allowed as $f) {
+                if (isset($body[$f])) {
+                    if ($f === 'isFeatured') {
+                        $fields[] = "`{$f}` = ?";
+                        $values[] = !empty($body[$f]) ? 1 : 0;
+                    } elseif ($f === 'active') {
+                        $fields[] = "`{$f}` = ?";
+                        $values[] = !empty($body[$f]) ? 1 : 0;
+                    } elseif ($f === 'excerpt') {
+                        $fields[] = "`{$f}` = ?";
+                        $values[] = $excerpt;
+                    } elseif ($f === 'image') {
+                        $fields[] = "`{$f}` = ?";
+                        $values[] = $featuredImg;
+                    } else {
+                        $fields[] = "`{$f}` = ?";
+                        $values[] = $body[$f];
+                    }
+                }
+            }
+            $fields[] = "`updatedAt` = ?";
+            $values[] = $updatedAt;
+            $values[] = $rowId;
+
+            try {
+                $sql = "UPDATE blogs SET " . implode(', ', $fields) . " WHERE id = ?";
+                $updateStmt = $pdo->prepare($sql);
+                $updateStmt->execute($values);
+
+                $fetchStmt = $pdo->prepare("SELECT * FROM blogs WHERE id = ? LIMIT 1");
+                $fetchStmt->execute([$rowId]);
+                $updatedRecord = $fetchStmt->fetch();
+                if ($updatedRecord) {
+                    $updatedRecord['id'] = (int)$updatedRecord['id'];
+                    $updatedRecord['isFeatured'] = (bool)$updatedRecord['isFeatured'];
+                    $updatedRecord['active'] = (int)$updatedRecord['active'];
+                    $updatedRecord['views'] = (int)$updatedRecord['views'];
+                }
+                saveBlogsBackup(getBlogs(false));
+                echo json_encode($updatedRecord ?: ['message' => 'Blog updated successfully in MySQL', 'id' => $rowId]);
+                exit;
+            } catch (Exception $e) {
+                error_log('MySQL Update Error in api/blogs.php: ' . $e->getMessage());
+                http_response_code(500);
+                echo json_encode(['error' => 'Database update error: ' . $e->getMessage()]);
+                exit;
+            }
+        } else {
+            // Not found in MySQL -> INSERT as new row with provided or generated ID
+            $genId = !empty($body['_id']) ? (string)$body['_id'] : (!empty($id) ? (string)$id : (string)(time() . mt_rand(100, 999)));
+            $createdAt = $body['createdAt'] ?? date('c');
+
+            try {
+                $stmt = $pdo->prepare("INSERT INTO blogs (_id, slug, title, category, readTime, excerpt, date, status, active, isFeatured, image, imageAlt, seoTitle, metaDesc, focusKeyword, ogTitle, ogDesc, ogImg, twitterTitle, twitterDesc, twitterCard, rawSchema, views, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt->execute([
+                    $genId,
+                    $slug,
+                    $title,
+                    $body['category'] ?? 'ERP Modules',
+                    $body['readTime'] ?? '3 Mins Read',
+                    $excerpt,
+                    $body['date'] ?? date('M j, Y'),
+                    $status,
+                    $active,
+                    $isFeatured,
+                    $featuredImg,
+                    $body['imageAlt'] ?? $title,
+                    $body['seoTitle'] ?? $title,
+                    $body['metaDesc'] ?? '',
+                    $body['focusKeyword'] ?? '',
+                    $body['ogTitle'] ?? $title,
+                    $body['ogDesc'] ?? '',
+                    $body['ogImg'] ?? $featuredImg,
+                    $body['twitterTitle'] ?? $title,
+                    $body['twitterDesc'] ?? '',
+                    $body['twitterCard'] ?? 'Summary Large Image',
+                    $body['rawSchema'] ?? '',
+                    isset($body['views']) ? (int)$body['views'] : 0,
+                    $createdAt,
+                    $updatedAt
+                ]);
+                $newId = (int)$pdo->lastInsertId();
+                $fetchStmt = $pdo->prepare("SELECT * FROM blogs WHERE id = ? LIMIT 1");
+                $fetchStmt->execute([$newId]);
+                $createdRecord = $fetchStmt->fetch();
+                if ($createdRecord) {
+                    $createdRecord['id'] = (int)$createdRecord['id'];
+                    $createdRecord['isFeatured'] = (bool)$createdRecord['isFeatured'];
+                    $createdRecord['active'] = (int)$createdRecord['active'];
+                    $createdRecord['views'] = (int)$createdRecord['views'];
+                }
+                saveBlogsBackup(getBlogs(false));
+                http_response_code(200);
+                echo json_encode($createdRecord ?: ['message' => 'Blog saved successfully in MySQL', 'id' => $newId]);
+                exit;
+            } catch (Exception $e) {
+                error_log('MySQL Insert Error in api/blogs.php: ' . $e->getMessage());
+                http_response_code(500);
+                echo json_encode(['error' => 'Database insert error: ' . $e->getMessage()]);
+                exit;
+            }
+        }
+    }
+
+    // JSON fallback if MySQL is offline
+    $blogs = getBlogs(false);
+    $found = false;
+    foreach ($blogs as &$b) {
+        if ((!empty($id) && ((isset($b['id']) && (string)$b['id'] === (string)$id) || (isset($b['_id']) && (string)$b['_id'] === (string)$id) || (isset($b['slug']) && $b['slug'] === $id))) || (!empty($body['_id']) && isset($b['_id']) && (string)$b['_id'] === (string)$body['_id'])) {
+            foreach ($body as $k => $v) {
+                if ($k === 'excerpt' || $k === 'image') {
+                    $b[$k] = extractAndSaveBase64Images($v, $b['title'] ?? 'blog');
+                } else {
+                    $b[$k] = $v;
+                }
+            }
+            $b['updatedAt'] = $updatedAt;
+            $found = true;
+            break;
+        }
+    }
+    if (!$found) {
+        $newBlog = array_merge([
+            'id' => time() . mt_rand(100, 999),
+            '_id' => !empty($body['_id']) ? (string)$body['_id'] : (!empty($id) ? (string)$id : (string)(time() . mt_rand(100, 999))),
+            'title' => $title,
+            'category' => $body['category'] ?? 'ERP Modules',
+            'readTime' => $body['readTime'] ?? '3 Mins Read',
+            'excerpt' => $excerpt,
+            'date' => $body['date'] ?? date('M j, Y'),
+            'status' => $status,
+            'active' => $active,
+            'isFeatured' => $isFeatured,
+            'image' => $featuredImg,
+            'imageAlt' => $body['imageAlt'] ?? $title,
+            'seoTitle' => $body['seoTitle'] ?? $title,
+            'metaDesc' => $body['metaDesc'] ?? '',
+            'focusKeyword' => $body['focusKeyword'] ?? '',
+            'slug' => $slug,
+            'ogTitle' => $body['ogTitle'] ?? $title,
+            'ogDesc' => $body['ogDesc'] ?? '',
+            'ogImg' => $body['ogImg'] ?? $featuredImg,
+            'twitterTitle' => $body['twitterTitle'] ?? $title,
+            'twitterDesc' => $body['twitterDesc'] ?? '',
+            'twitterCard' => $body['twitterCard'] ?? 'Summary Large Image',
+            'rawSchema' => $body['rawSchema'] ?? '',
+            'views' => 0,
+            'createdAt' => date('c'),
+            'updatedAt' => date('c')
+        ], $body);
+        $blogs = array_merge([$newBlog], $blogs);
+    }
+    saveBlogsBackup($blogs);
+    echo json_encode(['message' => 'Blog saved successfully']);
+    exit;
+}
+
+// 2. POST /api/blogs or /api/blogs/:id/view or /api/blogs/:id/restore
+if ($method === 'POST') {
+    $raw = file_get_contents('php://input');
+    $body = json_decode($raw, true) ?: [];
+
     // Restore Trashed Blog
     if (strpos($path, 'restore') !== false || substr($path, -8) === '/restore') {
         $id = explode('/', $path)[0];
         $pdo = getPDO();
         if ($pdo) {
-            $stmt = $pdo->prepare("UPDATE blogs SET active = 1, status = 'Published', updatedAt = ? WHERE _id = ? OR id = ?");
-            $stmt->execute([date('c'), $id, $id]);
+            $stmt = $pdo->prepare("UPDATE blogs SET active = 1, status = 'Published', updatedAt = ? WHERE _id = ? OR id = ? OR slug = ?");
+            $stmt->execute([date('c'), $id, $id, $id]);
         }
         $allBlogs = getBlogs(false);
         saveBlogsBackup($allBlogs);
@@ -478,15 +667,15 @@ if ($method === 'POST') {
         $pdo = getPDO();
         $updatedViews = 1;
         if ($pdo) {
-            $stmt = $pdo->prepare("UPDATE blogs SET views = views + 1 WHERE _id = ? OR id = ?");
-            $stmt->execute([$id, $id]);
-            $stmt2 = $pdo->prepare("SELECT views FROM blogs WHERE _id = ? OR id = ? LIMIT 1");
-            $stmt2->execute([$id, $id]);
+            $stmt = $pdo->prepare("UPDATE blogs SET views = views + 1 WHERE _id = ? OR id = ? OR slug = ?");
+            $stmt->execute([$id, $id, $id]);
+            $stmt2 = $pdo->prepare("SELECT views FROM blogs WHERE _id = ? OR id = ? OR slug = ? LIMIT 1");
+            $stmt2->execute([$id, $id, $id]);
             $updatedViews = (int)$stmt2->fetchColumn();
         } else {
             $blogs = getBlogs(false);
             foreach ($blogs as &$b) {
-                if ((isset($b['id']) && (string)$b['id'] === $id) || (isset($b['_id']) && (string)$b['_id'] === $id)) {
+                if ((isset($b['id']) && (string)$b['id'] === $id) || (isset($b['_id']) && (string)$b['_id'] === $id) || (isset($b['slug']) && $b['slug'] === $id)) {
                     $b['views'] = isset($b['views']) ? ($b['views'] + 1) : 1;
                     $updatedViews = $b['views'];
                     break;
@@ -498,172 +687,17 @@ if ($method === 'POST') {
         exit;
     }
 
-    // Create New Blog
-    $title = $body['title'] ?? 'Untitled Article';
-    $excerpt = extractAndSaveBase64Images($body['excerpt'] ?? '', $title);
-    $featuredImg = extractAndSaveBase64Images($body['image'] ?? '', $title . '-featured');
-    $slug = $body['slug'] ?? strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $title), '-'));
-    $genId = (string)(time() . mt_rand(100, 999));
-    $createdAt = date('c');
-    $updatedAt = date('c');
-
-    $newBlog = [
-        'id' => time() . mt_rand(100, 999),
-        '_id' => $genId,
-        'title' => $title,
-        'category' => $body['category'] ?? 'ERP Modules',
-        'readTime' => $body['readTime'] ?? '3 Mins Read',
-        'excerpt' => $excerpt,
-        'date' => $body['date'] ?? date('M j, Y'),
-        'status' => $body['status'] ?? 'Published',
-        'active' => 1,
-        'isFeatured' => !empty($body['isFeatured']),
-        'image' => $featuredImg,
-        'imageAlt' => $body['imageAlt'] ?? $title,
-        'seoTitle' => $body['seoTitle'] ?? $title,
-        'metaDesc' => $body['metaDesc'] ?? '',
-        'focusKeyword' => $body['focusKeyword'] ?? '',
-        'slug' => $slug,
-        'ogTitle' => $body['ogTitle'] ?? $title,
-        'ogDesc' => $body['ogDesc'] ?? '',
-        'ogImg' => $body['ogImg'] ?? $featuredImg,
-        'twitterTitle' => $body['twitterTitle'] ?? $title,
-        'twitterDesc' => $body['twitterDesc'] ?? '',
-        'twitterCard' => $body['twitterCard'] ?? 'Summary Large Image',
-        'rawSchema' => $body['rawSchema'] ?? '',
-        'views' => 0,
-        'createdAt' => $createdAt,
-        'updatedAt' => $updatedAt
-    ];
-
-    $pdo = getPDO();
-    if ($pdo) {
-        try {
-            $stmt = $pdo->prepare("INSERT INTO blogs (_id, slug, title, category, readTime, excerpt, date, status, active, isFeatured, image, imageAlt, seoTitle, metaDesc, focusKeyword, ogTitle, ogDesc, ogImg, twitterTitle, twitterDesc, twitterCard, rawSchema, views, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->execute([
-                $newBlog['_id'],
-                $newBlog['slug'],
-                $newBlog['title'],
-                $newBlog['category'],
-                $newBlog['readTime'],
-                $newBlog['excerpt'],
-                $newBlog['date'],
-                $newBlog['status'],
-                1,
-                $newBlog['isFeatured'] ? 1 : 0,
-                $newBlog['image'],
-                $newBlog['imageAlt'],
-                $newBlog['seoTitle'],
-                $newBlog['metaDesc'],
-                $newBlog['focusKeyword'],
-                $newBlog['ogTitle'],
-                $newBlog['ogDesc'],
-                $newBlog['ogImg'],
-                $newBlog['twitterTitle'],
-                $newBlog['twitterDesc'],
-                $newBlog['twitterCard'],
-                $newBlog['rawSchema'],
-                0,
-                $createdAt,
-                $updatedAt
-            ]);
-            $newBlog['id'] = (int)$pdo->lastInsertId();
-        } catch (Exception $e) {
-            error_log('MySQL Insert Error in api/blogs.php: ' . $e->getMessage());
-            http_response_code(500);
-            echo json_encode(['error' => 'Database insert error: ' . $e->getMessage()]);
-            exit;
-        }
-    }
-
-    $allBlogs = getBlogs(false);
-    saveBlogsBackup($allBlogs);
-
-    http_response_code(201);
-    echo json_encode($newBlog);
-    exit;
+    // Create or Update Blog via POST
+    $id = !empty($path) ? $path : ($_GET['id'] ?? $body['_id'] ?? $body['id'] ?? '');
+    upsertBlog($id, $body);
 }
 
 // 3. PUT /api/blogs/:id (Update Blog)
 if ($method === 'PUT') {
     $raw = file_get_contents('php://input');
     $body = json_decode($raw, true) ?: [];
-    $id = $path;
-
-    $pdo = getPDO();
-    if ($pdo) {
-        $fields = [];
-        $values = [];
-
-        $allowed = ['title', 'category', 'readTime', 'excerpt', 'date', 'status', 'active', 'isFeatured', 'image', 'imageAlt', 'seoTitle', 'metaDesc', 'focusKeyword', 'slug', 'ogTitle', 'ogDesc', 'ogImg', 'twitterTitle', 'twitterDesc', 'twitterCard', 'rawSchema'];
-        
-        foreach ($allowed as $f) {
-            if (isset($body[$f])) {
-                if ($f === 'isFeatured' || $f === 'active') {
-                    $fields[] = "`{$f}` = ?";
-                    $values[] = !empty($body[$f]) ? 1 : 0;
-                } elseif ($f === 'excerpt' || $f === 'image') {
-                    $titleForImg = $body['title'] ?? 'blog';
-                    $fields[] = "`{$f}` = ?";
-                    $values[] = extractAndSaveBase64Images($body[$f], $titleForImg);
-                } else {
-                    $fields[] = "`{$f}` = ?";
-                    $values[] = $body[$f];
-                }
-            }
-        }
-
-        if (!empty($fields)) {
-            $fields[] = "`updatedAt` = ?";
-            $values[] = date('c');
-
-            $values[] = $id;
-            $values[] = $id;
-
-            try {
-                $sql = "UPDATE blogs SET " . implode(', ', $fields) . " WHERE _id = ? OR id = ?";
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute($values);
-            } catch (Exception $e) {
-                error_log('MySQL Update Error in api/blogs.php: ' . $e->getMessage());
-                http_response_code(500);
-                echo json_encode(['error' => 'Database update error: ' . $e->getMessage()]);
-                exit;
-            }
-        }
-
-        $allBlogs = getBlogs(false);
-        saveBlogsBackup($allBlogs);
-
-        echo json_encode(['message' => 'Blog updated successfully in MySQL']);
-        exit;
-    }
-
-    $blogs = getBlogs(false);
-    $found = false;
-    foreach ($blogs as &$b) {
-        if ((isset($b['id']) && (string)$b['id'] === $id) || (isset($b['_id']) && (string)$b['_id'] === $id)) {
-            foreach ($body as $k => $v) {
-                if ($k === 'excerpt' || $k === 'image') {
-                    $b[$k] = extractAndSaveBase64Images($v, $b['title'] ?? 'blog');
-                } else {
-                    $b[$k] = $v;
-                }
-            }
-            $b['updatedAt'] = date('c');
-            $found = true;
-            break;
-        }
-    }
-
-    if ($found) {
-        saveBlogsBackup($blogs);
-        echo json_encode(['message' => 'Blog updated successfully']);
-    } else {
-        http_response_code(404);
-        echo json_encode(['message' => 'Blog not found']);
-    }
-    exit;
+    $id = !empty($path) ? $path : ($_GET['id'] ?? $body['_id'] ?? $body['id'] ?? '');
+    upsertBlog($id, $body);
 }
 
 // 4. DELETE /api/blogs/:id (Soft-delete to Trash OR Permanent Delete)

@@ -613,12 +613,21 @@ export default function BlogAdmin() {
       rawSchema: rawSchema || generateDefaultSchema(title, finalSlug)
     };
 
-    const blogId = editingBlog ? (editingBlog._id || editingBlog.id) : null;
+    const blogId = editingBlog ? (editingBlog._id || editingBlog.id || editingBlog.slug) : null;
+    if (blogId) {
+      payload.id = editingBlog.id || blogId;
+      payload._id = editingBlog._id || String(blogId);
+    }
 
     // Instant local state and cache synchronization
     if (editingBlog && blogId) {
       setBlogs(prev => {
-        const updated = prev.map(b => (String(b.id) === String(blogId) || String(b._id) === String(blogId)) ? { ...b, ...payload } : b);
+        const updated = prev.map(b => (
+          String(b.id) === String(blogId) || 
+          String(b._id) === String(blogId) || 
+          (editingBlog.slug && b.slug === editingBlog.slug) ||
+          (editingBlog.title && b.title === editingBlog.title)
+        ) ? { ...b, ...payload, id: b.id || blogId, _id: b._id || String(blogId) } : b);
         try { localStorage.setItem('vellko_cached_blogs', JSON.stringify(updated)); } catch (e) {}
         return updated;
       });
@@ -634,11 +643,20 @@ export default function BlogAdmin() {
     try {
       let response;
       if (editingBlog && blogId) {
-        response = await fetch(`/api/blogs/${blogId}`, {
+        response = await fetch(`/api/blogs/${encodeURIComponent(blogId)}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
+
+        // If PUT returns non-ok status, fallback to POST with _id
+        if (!response.ok) {
+          response = await fetch('/api/blogs', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ...payload, _id: String(blogId), id: blogId, _method: 'PUT' })
+          });
+        }
       } else {
         response = await fetch('/api/blogs', {
           method: 'POST',
@@ -659,12 +677,12 @@ export default function BlogAdmin() {
       } else {
         showToast(editingBlog ? 'Blog updated successfully in database!' : 'Blog created successfully in database!', 'success');
       }
-      fetchBlogs();
+      await fetchBlogs();
       setActiveTab('cms_blogs');
     } catch (err) {
       console.debug('API call network fallback:', err);
       showToast('Network error saving blog: ' + (err.message || 'unknown'), 'error');
-      fetchBlogs();
+      await fetchBlogs();
       setActiveTab('cms_blogs');
     }
   };
