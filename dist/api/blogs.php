@@ -453,11 +453,6 @@ if ($method === 'GET') {
     exit;
 }
 
-// 2. POST /api/blogs or /api/blogs/:id/view or /api/blogs/:id/restore
-if ($method === 'POST') {
-    $raw = file_get_contents('php://input');
-    $body = json_decode($raw, true) ?: [];
-
 // Helper to insert or update blog in MySQL and JSON backup
 function upsertBlog($id, $body) {
     global $lastDbError;
