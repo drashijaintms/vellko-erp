@@ -44,6 +44,6 @@ Options -Indexes -MultiViews
     RewriteCond %{REQUEST_FILENAME}.html -f
     RewriteRule ^([^/]+)/([^/]+)$ $1/$2.html [L]
 
-    # 8. Dynamic SPA Route (Blog Admin)
-    RewriteRule ^blog/admin(/.*)?$ index.html [L]
+    # 8. Dynamic Blog & Admin SPA Routes (fallback to index.html if pre-rendered .html does not exist)
+    RewriteRule ^blog(/.*)?$ index.html [L]
 </IfModule>

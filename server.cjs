@@ -1030,7 +1030,7 @@ app.use((req, res, next) => {
     return res.sendFile(dirFile);
   }
 
-  if (cleanPath.startsWith('blog/admin')) {
+  if (cleanPath.startsWith('blog')) {
     return res.sendFile(path.join(distDir, 'index.html'));
   }
 
