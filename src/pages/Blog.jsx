@@ -28,8 +28,21 @@ export default function Blog() {
   const navigate = useNavigate();
   const { slug } = useParams();
 
-  const [blogs, setBlogs] = useState(DEFAULT_BLOGS);
+  const [blogs, setBlogs] = useState(() => {
+    try {
+      const cached = localStorage.getItem('vellko_cached_blogs');
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const published = parsed.filter(b => b.status === 'Published');
+          return published.length > 0 ? published : parsed;
+        }
+      }
+    } catch (e) {}
+    return DEFAULT_BLOGS;
+  });
   const [activeCategory, setActiveCategory] = useState('All');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadBlogs = async () => {
@@ -43,6 +56,7 @@ export default function Blog() {
             if (Array.isArray(data) && data.length > 0) {
               setBlogs(data);
               localStorage.setItem('vellko_cached_blogs', JSON.stringify(data));
+              setIsLoading(false);
               return;
             }
           }
@@ -62,6 +76,7 @@ export default function Blog() {
               const published = data.filter(b => b.status === 'Published');
               setBlogs(published.length > 0 ? published : data);
               localStorage.setItem('vellko_cached_blogs', JSON.stringify(data));
+              setIsLoading(false);
               return;
             }
           }
@@ -78,6 +93,7 @@ export default function Blog() {
           if (Array.isArray(parsed) && parsed.length > 0) {
             const published = parsed.filter(b => b.status === 'Published');
             setBlogs(published.length > 0 ? published : parsed);
+            setIsLoading(false);
             return;
           }
         }
@@ -85,21 +101,31 @@ export default function Blog() {
         console.debug('LocalStorage read failed:', e);
       }
 
-      // 4. Default in-memory blogs
-      setBlogs(DEFAULT_BLOGS);
+      setIsLoading(false);
     };
     loadBlogs();
   }, []);
 
   // Derive selected blog from URL slug (matching either custom slug, generated title slug, or ID)
-  const selectedBlog = (slug && slug !== 'admin') 
-    ? blogs.find(b => 
-        (b.slug && b.slug.toLowerCase() === slug.toLowerCase()) || 
-        toSlug(b.title) === slug.toLowerCase() || 
-        String(b.id) === slug || 
-        String(b._id) === slug
-      ) || null 
-    : null;
+  const cleanSlug = useMemo(() => {
+    if (!slug || slug === 'admin') return null;
+    return decodeURIComponent(slug).trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  }, [slug]);
+
+  const selectedBlog = useMemo(() => {
+    if (!cleanSlug) return null;
+    return blogs.find(b => {
+      const bSlug = (b.slug || '').toLowerCase().trim();
+      const bTitleSlug = toSlug(b.title);
+      const bId = String(b.id || b._id || '');
+      return (
+        (bSlug && (bSlug === cleanSlug || toSlug(bSlug) === cleanSlug)) ||
+        bTitleSlug === cleanSlug ||
+        bId === slug ||
+        bId === cleanSlug
+      );
+    }) || null;
+  }, [cleanSlug, blogs, slug]);
 
   // Increment view counter by 1 when article URL is hit
   useEffect(() => {
@@ -139,8 +165,37 @@ export default function Blog() {
   const secondaryBlogs = filteredBlogs.filter(b => b._id !== (featuredBlog ? featuredBlog._id : null)).slice(0, 5);
   const latestBlogs = filteredBlogs.slice(0, 4);
 
-  // Detail View — rendered when URL has a :slug
-  if (selectedBlog) {
+  // Handle specific blog slug routes
+  if (slug && slug !== 'admin') {
+    if (isLoading && !selectedBlog) {
+      return (
+        <div className="blog-page-wrapper" style={{ padding: '100px 20px', textAlign: 'center' }}>
+          <div style={{ maxWidth: '500px', margin: '0 auto' }}>
+            <p style={{ color: '#4b5563', fontSize: '1.1rem', fontWeight: '500' }}>Loading article...</p>
+          </div>
+        </div>
+      );
+    }
+
+    if (!selectedBlog) {
+      return (
+        <div className="blog-page-wrapper" style={{ padding: '80px 20px', textAlign: 'center' }}>
+          <div style={{ maxWidth: '550px', margin: '0 auto', background: '#fff', padding: '40px', borderRadius: '12px', boxShadow: '0 4px 20px rgba(0,0,0,0.06)' }}>
+            <h2 style={{ fontSize: '1.75rem', color: '#111827', marginBottom: '12px', fontWeight: '700' }}>Article Not Found</h2>
+            <p style={{ color: '#6b7280', marginBottom: '24px', lineHeight: '1.6' }}>
+              The article you are looking for may have been moved or is no longer available.
+            </p>
+            <button 
+              onClick={() => navigate('/blog')}
+              style={{ padding: '10px 22px', background: '#DC1436', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600' }}
+            >
+              ← Back to All Articles
+            </button>
+          </div>
+        </div>
+      );
+    }
+
     const recentPosts = blogs.filter(b => b._id !== selectedBlog._id).slice(0, 5);
     const { headings, modifiedHtml } = parseHeadingsWithAnchors(selectedBlog.excerpt || '');
 
