@@ -1,0 +1,102 @@
+[
+  {
+    "id": 1,
+    "name": "Vellko Call Recording",
+    "slug": "vellko-call-recording",
+    "parent": "None",
+    "image": "",
+    "imageAlt": "Vellko Call Recording",
+    "description": "Call logging, audio sync and tele-sales CRM integration modules.",
+    "status": "Approved"
+  },
+  {
+    "id": 2,
+    "name": "ERP Modules",
+    "slug": "erp-modules",
+    "parent": "None",
+    "image": "",
+    "imageAlt": "ERP Modules",
+    "description": "Core modular enterprise resource planning functionality and workflows.",
+    "status": "Approved"
+  },
+  {
+    "id": 3,
+    "name": "Manufacturing",
+    "slug": "manufacturing",
+    "parent": "None",
+    "image": "",
+    "imageAlt": "Manufacturing ERP",
+    "description": "Bill of Materials, shop-floor control, quality check and production management.",
+    "status": "Approved"
+  },
+  {
+    "id": 4,
+    "name": "Retail",
+    "slug": "retail",
+    "parent": "None",
+    "image": "",
+    "imageAlt": "Retail ERP",
+    "description": "POS billing, barcode scanning, multi-counter and customer loyalty management.",
+    "status": "Approved"
+  },
+  {
+    "id": 5,
+    "name": "Distribution",
+    "slug": "distribution",
+    "parent": "None",
+    "image": "",
+    "imageAlt": "Distribution ERP",
+    "description": "Wholesale supply chain, order fulfillment, dispatch logistics and route tracking.",
+    "status": "Approved"
+  },
+  {
+    "id": 6,
+    "name": "Healthcare",
+    "slug": "healthcare",
+    "parent": "None",
+    "image": "",
+    "imageAlt": "Healthcare ERP",
+    "description": "Clinic management, patient records, pharmacy inventory and doctor scheduling.",
+    "status": "Approved"
+  },
+  {
+    "id": 7,
+    "name": "Education",
+    "slug": "education",
+    "parent": "None",
+    "image": "",
+    "imageAlt": "Education ERP",
+    "description": "Student admissions, fee collection, attendance management and examination portals.",
+    "status": "Approved"
+  },
+  {
+    "id": 8,
+    "name": "Real Estate",
+    "slug": "real-estate",
+    "parent": "None",
+    "image": "",
+    "imageAlt": "Real Estate ERP",
+    "description": "Property inventory, construction milestones, broker commissions and client booking.",
+    "status": "Approved"
+  },
+  {
+    "id": 9,
+    "name": "Professional Services",
+    "slug": "professional-services",
+    "parent": "None",
+    "image": "",
+    "imageAlt": "Professional Services ERP",
+    "description": "Time tracking, project billing, client retainer and consulting service workflows.",
+    "status": "Approved"
+  },
+  {
+    "id": 10,
+    "name": "E-Commerce",
+    "slug": "e-commerce",
+    "parent": "None",
+    "image": "",
+    "imageAlt": "E-Commerce ERP",
+    "description": "Multi-channel marketplace sync, automated cataloging and payment reconciliations.",
+    "status": "Approved"
+  }
+]

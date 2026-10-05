@@ -41,10 +41,47 @@ export default function Blog() {
     } catch (e) {}
     return DEFAULT_BLOGS;
   });
+  const [categories, setCategories] = useState(() => {
+    try {
+      const cached = localStorage.getItem('vellko_cached_categories');
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (e) {}
+    return categoriesList.map((c, i) => ({ id: i + 1, name: c, slug: c.toLowerCase().replace(/[^a-z0-9]+/g, '-') }));
+  });
   const [activeCategory, setActiveCategory] = useState('All');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const res = await fetch('/api/categories');
+        if (res.ok) {
+          const text = await res.text();
+          if (text.trim().startsWith('[') || text.trim().startsWith('{')) {
+            const data = JSON.parse(text);
+            if (Array.isArray(data) && data.length > 0) {
+              setCategories(data);
+              try { localStorage.setItem('vellko_cached_categories', JSON.stringify(data)); } catch (e) {}
+              return;
+            }
+          }
+        }
+      } catch (e) {}
+      try {
+        const staticRes = await fetch('/data/categories.json');
+        if (staticRes.ok) {
+          const data = await staticRes.json();
+          if (Array.isArray(data) && data.length > 0) {
+            setCategories(data);
+          }
+        }
+      } catch (e) {}
+    };
+    loadCategories();
+
     const loadBlogs = async () => {
       // 1. Try Live API
       try {
@@ -157,11 +194,19 @@ export default function Blog() {
   };
 
   // Calculate unique categories and their post counts
-  const uniqueCategories = categoriesList;
-  const categoryCounts = categoriesList.reduce((acc, cat) => {
-    acc[cat] = blogs.filter(b => matchCategory(b.category, cat)).length;
-    return acc;
-  }, {});
+  const uniqueCategories = useMemo(() => {
+    if (categories && categories.length > 0) {
+      return categories.map(c => c.name || c);
+    }
+    return categoriesList;
+  }, [categories]);
+
+  const categoryCounts = useMemo(() => {
+    return uniqueCategories.reduce((acc, cat) => {
+      acc[cat] = blogs.filter(b => matchCategory(b.category, cat)).length;
+      return acc;
+    }, {});
+  }, [uniqueCategories, blogs]);
 
   // Filter blogs based on selected category
   const filteredBlogs = activeCategory === 'All'

@@ -26,6 +26,7 @@ Options -Indexes -MultiViews
     RewriteRule ^api/upload/?$ api/upload.php [L,QSA]
     RewriteRule ^api/uploads/?$ api/uploads.php [L,QSA]
     RewriteRule ^api/blogs/?(.*)$ api/blogs.php?path=$1 [L,QSA]
+    RewriteRule ^api/categories/?(.*)$ api/categories.php?path=$1 [L,QSA]
     RewriteRule ^api/contact/?(.*)$ api/contact.php?path=$1 [L,QSA]
 
     # 5. Allow existing physical files and directories directly

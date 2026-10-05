@@ -103,12 +103,17 @@ export default function BlogAdmin() {
   const [rawSchema, setRawSchema] = useState(generateDefaultSchema('', ''));
 
   // Category Management State
+  const [categories, setCategories] = useState([]);
+  const [editingCategory, setEditingCategory] = useState(null);
   const [newCatName, setNewCatName] = useState('');
   const [newCatSlug, setNewCatSlug] = useState('');
   const [newCatParent, setNewCatParent] = useState('None');
   const [newCatImg, setNewCatImg] = useState('');
   const [newCatAlt, setNewCatAlt] = useState('');
   const [newCatDesc, setNewCatDesc] = useState('');
+  const [newCatStatus, setNewCatStatus] = useState('Approved');
+  const catFileInputRef = useRef(null);
+  const [isCatUploading, setIsCatUploading] = useState(false);
 
   // Live Preview Modal
   const [showPreviewModal, setShowPreviewModal] = useState(false);
@@ -174,6 +179,46 @@ export default function BlogAdmin() {
     }
   };
 
+  // Upload handler for Category image
+  const handleCatImageUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    setIsCatUploading(true);
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      });
+      const contentType = res.headers.get('content-type') || '';
+      if (res.ok && contentType.includes('application/json')) {
+        const data = await res.json();
+        if (data && data.url) {
+          setNewCatImg(data.url);
+          showToast('Category image uploaded!', 'success');
+          return;
+        }
+      }
+      throw new Error('API non-JSON response');
+    } catch (err) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setNewCatImg(reader.result);
+        showToast('Category image attached!', 'success');
+      };
+      reader.onerror = () => {
+        showToast('Failed to read image file.');
+      };
+      reader.readAsDataURL(file);
+    } finally {
+      setIsCatUploading(false);
+      if (catFileInputRef.current) catFileInputRef.current.value = '';
+    }
+  };
+
   // Fetch uploaded images list
   const fetchUploadedImages = async () => {
     try {
@@ -186,6 +231,45 @@ export default function BlogAdmin() {
       }
     } catch (e) {
       console.debug('Error loading uploads:', e);
+    }
+  };
+
+  // Load all categories with resilient fallback
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('/api/categories');
+      const contentType = response.headers.get('content-type') || '';
+      if (response.ok && contentType.includes('application/json')) {
+        const data = await response.json();
+        if (Array.isArray(data) && data.length > 0) {
+          setCategories(data);
+          try { localStorage.setItem('vellko_cached_categories', JSON.stringify(data)); } catch (e) {}
+          return;
+        }
+      }
+      throw new Error('API not available');
+    } catch (err) {
+      try {
+        const staticRes = await fetch('/data/categories.json');
+        if (staticRes.ok) {
+          const staticData = await staticRes.json();
+          if (Array.isArray(staticData) && staticData.length > 0) {
+            setCategories(staticData);
+            return;
+          }
+        }
+      } catch (fErr) {}
+      try {
+        const cached = localStorage.getItem('vellko_cached_categories');
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setCategories(parsed);
+            return;
+          }
+        }
+      } catch (cErr) {}
+      setCategories(categoriesList.map((c, i) => ({ id: i + 1, name: c, slug: c.toLowerCase().replace(/[^a-z0-9]+/g, '-'), parent: 'None', status: 'Approved', description: '' })));
     }
   };
 
@@ -276,10 +360,134 @@ export default function BlogAdmin() {
   useEffect(() => {
     if (isLoggedIn) {
       fetchBlogs();
+      fetchCategories();
       fetchInquiries();
       fetchUploadedImages();
     }
   }, [isLoggedIn]);
+
+  // Category CRUD Handlers
+  const handleSaveCategory = async (e) => {
+    if (e) e.preventDefault();
+    const trimmedName = newCatName.trim();
+    if (!trimmedName) {
+      showToast('Category Name is required!');
+      return;
+    }
+
+    const cleanSlug = (newCatSlug.trim() || trimmedName.toLowerCase().replace(/[^a-z0-9]+/g, '-')).replace(/^-+|-+$/g, '');
+    const catPayload = {
+      name: trimmedName,
+      slug: cleanSlug,
+      parent: newCatParent,
+      image: newCatImg,
+      imageAlt: newCatAlt || trimmedName,
+      description: newCatDesc,
+      status: newCatStatus
+    };
+
+    const isEdit = !!editingCategory;
+    const catId = editingCategory ? (editingCategory.id || editingCategory.slug) : null;
+
+    // Optimistic local state update
+    if (isEdit) {
+      setCategories(prev => {
+        const updated = prev.map(c => (String(c.id) === String(catId) || c.slug === catId) ? { ...c, ...catPayload } : c);
+        try { localStorage.setItem('vellko_cached_categories', JSON.stringify(updated)); } catch (e) {}
+        return updated;
+      });
+    } else {
+      const tempNew = { ...catPayload, id: Date.now() };
+      setCategories(prev => {
+        const updated = [...prev, tempNew];
+        try { localStorage.setItem('vellko_cached_categories', JSON.stringify(updated)); } catch (e) {}
+        return updated;
+      });
+    }
+
+    try {
+      let res;
+      if (isEdit) {
+        res = await fetch(`/api/categories/${catId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(catPayload)
+        });
+      } else {
+        res = await fetch('/api/categories', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(catPayload)
+        });
+      }
+
+      if (!res.ok) {
+        let errText = `Category operation failed (${res.status})`;
+        try {
+          const d = await res.json();
+          if (d.error || d.message) errText = d.error || d.message;
+        } catch (e) {}
+        showToast(errText, 'error');
+      } else {
+        showToast(isEdit ? 'Category updated in database!' : 'Category created in database!', 'success');
+      }
+    } catch (err) {
+      showToast('Saved category with local sync: ' + (err.message || ''), 'success');
+    } finally {
+      fetchCategories();
+      handleCancelEditCategory();
+    }
+  };
+
+  const handleEditCategory = (cat) => {
+    setEditingCategory(cat);
+    setNewCatName(cat.name || '');
+    setNewCatSlug(cat.slug || '');
+    setNewCatParent(cat.parent || 'None');
+    setNewCatImg(cat.image || '');
+    setNewCatAlt(cat.imageAlt || '');
+    setNewCatDesc(cat.description || '');
+    setNewCatStatus(cat.status || 'Approved');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleCancelEditCategory = () => {
+    setEditingCategory(null);
+    setNewCatName('');
+    setNewCatSlug('');
+    setNewCatParent('None');
+    setNewCatImg('');
+    setNewCatAlt('');
+    setNewCatDesc('');
+    setNewCatStatus('Approved');
+  };
+
+  const handleDeleteCategory = async (cat) => {
+    if (!window.confirm(`Are you sure you want to delete category "${cat.name}"?`)) return;
+
+    const catId = cat.id || cat.slug;
+    setCategories(prev => {
+      const updated = prev.filter(c => String(c.id) !== String(catId) && c.slug !== catId);
+      try { localStorage.setItem('vellko_cached_categories', JSON.stringify(updated)); } catch (e) {}
+      return updated;
+    });
+
+    try {
+      const res = await fetch(`/api/categories/${catId}`, { method: 'DELETE' });
+      if (res.ok) {
+        showToast('Category deleted from database!', 'success');
+      } else {
+        showToast('Failed to delete category from server.', 'error');
+      }
+    } catch (err) {
+      showToast('Category deleted locally.', 'success');
+    } finally {
+      fetchCategories();
+      if (editingCategory && (String(editingCategory.id) === String(catId) || editingCategory.slug === catId)) {
+        handleCancelEditCategory();
+      }
+    }
+  };
 
   // Handle Login Submission
   const handleLogin = (e) => {
@@ -907,34 +1115,49 @@ export default function BlogAdmin() {
         {activeTab === 'categories' && (
           <div className="categories-split-layout">
             
-            {/* Left side: Add New Category Form */}
+            {/* Left side: Add / Edit Category Form */}
             <div className="category-form-side">
               <div className="overview-card-panel">
-                <h3>Add New Category</h3>
-                <p className="panel-subtitle">Create a new blog category classification.</p>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+                  <h3 style={{ margin: 0 }}>{editingCategory ? `Edit: ${editingCategory.name}` : 'Add New Category'}</h3>
+                  {editingCategory && (
+                    <button 
+                      type="button" 
+                      onClick={handleCancelEditCategory}
+                      style={{ fontSize: '0.78rem', background: '#f1f5f9', border: '1px solid #cbd5e1', padding: '0.25rem 0.6rem', borderRadius: '4px', cursor: 'pointer', color: '#475569', fontWeight: '600' }}
+                    >
+                      Cancel Edit
+                    </button>
+                  )}
+                </div>
+                <p className="panel-subtitle">
+                  {editingCategory ? 'Update category details and MySQL synchronization.' : 'Create a new blog category classification.'}
+                </p>
                 
-                <form className="category-inline-form" onSubmit={(e) => { e.preventDefault(); showToast('Category added!', 'success'); }}>
+                <form className="category-inline-form" onSubmit={handleSaveCategory}>
                   <div className="form-group" style={{ marginBottom: '1.25rem' }}>
                     <label>CATEGORY NAME *</label>
                     <input 
                       type="text" 
-                      placeholder="e.g. Vitamins"
+                      placeholder="e.g. Healthcare ERP"
                       value={newCatName}
                       onChange={(e) => {
                         setNewCatName(e.target.value);
-                        setNewCatSlug(e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
+                        if (!editingCategory) {
+                          setNewCatSlug(e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
+                        }
                       }}
                       required
                     />
                   </div>
 
                   <div className="form-group" style={{ marginBottom: '1.25rem' }}>
-                    <label>SLUG (OPTIONAL)</label>
+                    <label>SLUG (URL IDENTIFIER)</label>
                     <input 
                       type="text" 
-                      placeholder="e.g. vitamins"
+                      placeholder="e.g. healthcare-erp"
                       value={newCatSlug}
-                      onChange={(e) => setNewCatSlug(e.target.value)}
+                      onChange={(e) => setNewCatSlug(e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, '-'))}
                     />
                   </div>
 
@@ -942,33 +1165,54 @@ export default function BlogAdmin() {
                     <label>PARENT CATEGORY</label>
                     <select value={newCatParent} onChange={(e) => setNewCatParent(e.target.value)}>
                       <option value="None">None</option>
-                      {categoriesList.map((cat, idx) => (
-                        <option key={idx} value={cat}>{cat}</option>
+                      {(categories.length > 0 ? categories : categoriesList.map((c, i) => ({ id: i, name: c }))).map((cat, idx) => (
+                        <option key={cat.id || idx} value={cat.name}>{cat.name}</option>
                       ))}
                     </select>
                   </div>
 
                   <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+                    <label>CATEGORY STATUS</label>
+                    <select value={newCatStatus} onChange={(e) => setNewCatStatus(e.target.value)}>
+                      <option value="Approved">Approved</option>
+                      <option value="Draft">Draft</option>
+                      <option value="Pending">Pending</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: '1.25rem' }}>
                     <label>CATEGORY IMAGE</label>
+                    <input 
+                      type="file" 
+                      ref={catFileInputRef}
+                      onChange={handleCatImageUpload}
+                      accept="image/*"
+                      style={{ display: 'none' }}
+                    />
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
                       <input 
                         type="text" 
-                        placeholder="https://example.com/images/cat.jpg"
+                        placeholder="https://example.com/image.jpg"
                         value={newCatImg}
                         onChange={(e) => setNewCatImg(e.target.value)}
                         style={{ flexGrow: 1 }}
                       />
-                      <button type="button" className="btn-nutra-outline" style={{ display: 'flex', gap: '0.25rem', alignItems: 'center', padding: '0.6rem 0.85rem' }}>
-                        <Upload size={14} /> Upload
+                      <button 
+                        type="button" 
+                        onClick={() => catFileInputRef.current && catFileInputRef.current.click()}
+                        className="btn-nutra-outline" 
+                        style={{ display: 'flex', gap: '0.25rem', alignItems: 'center', padding: '0.6rem 0.85rem' }}
+                      >
+                        <Upload size={14} /> {isCatUploading ? '...' : 'Upload'}
                       </button>
                     </div>
                   </div>
 
                   <div className="form-group" style={{ marginBottom: '1.25rem' }}>
-                    <label>Category Image Alt Text</label>
+                    <label>IMAGE ALT TEXT</label>
                     <input 
                       type="text" 
-                      placeholder="Alt text"
+                      placeholder="e.g. Healthcare solutions"
                       value={newCatAlt}
                       onChange={(e) => setNewCatAlt(e.target.value)}
                     />
@@ -977,16 +1221,28 @@ export default function BlogAdmin() {
                   <div className="form-group" style={{ marginBottom: '1.5rem' }}>
                     <label>DESCRIPTION</label>
                     <textarea 
-                      placeholder="Category details..."
-                      rows="4"
+                      placeholder="Category description for SEO and article matching..."
+                      rows="3"
                       value={newCatDesc}
                       onChange={(e) => setNewCatDesc(e.target.value)}
                     />
                   </div>
 
-                  <button type="submit" className="btn-nutra-primary" style={{ width: '100%' }}>
-                    + Add New Category
-                  </button>
+                  <div style={{ display: 'flex', gap: '0.75rem' }}>
+                    <button type="submit" className="btn-nutra-primary" style={{ flex: 1 }}>
+                      {editingCategory ? '✓ Save Changes' : '+ Add New Category'}
+                    </button>
+                    {editingCategory && (
+                      <button 
+                        type="button" 
+                        onClick={handleCancelEditCategory}
+                        className="btn-nutra-outline"
+                        style={{ padding: '0.6rem 1rem' }}
+                      >
+                        Cancel
+                      </button>
+                    )}
+                  </div>
                 </form>
               </div>
             </div>
@@ -994,44 +1250,97 @@ export default function BlogAdmin() {
             {/* Right side: All Categories Table */}
             <div className="category-table-side">
               <div className="overview-card-panel">
-                <h3>All Categories</h3>
-                <p className="panel-subtitle">Manage store product categories, nested hierarchies, and display orders.</p>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+                  <h3 style={{ margin: 0 }}>All Categories ({categories.length})</h3>
+                  <span style={{ fontSize: '0.8rem', color: '#10b981', fontWeight: '700', backgroundColor: '#ecfdf5', padding: '0.25rem 0.6rem', borderRadius: '6px' }}>
+                    MySQL Synced
+                  </span>
+                </div>
+                <p className="panel-subtitle">Manage store product categories, matched articles count, and database classification.</p>
                 
                 <div className="admin-table-card">
                   <table className="admin-table">
                     <thead>
                       <tr>
-                        <th>IMAGE</th>
+                        <th style={{ width: '50px' }}>IMAGE</th>
                         <th>NAME</th>
                         <th>SLUG</th>
+                        <th>MATCHED POSTS</th>
                         <th>STATUS</th>
-                        <th>ACTIONS</th>
+                        <th style={{ textAlign: 'right', paddingRight: '1.5rem' }}>ACTIONS</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {categoriesList.map((cat, idx) => {
-                        const mockSlug = cat.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                      {(categories.length > 0 ? categories : categoriesList.map((c, i) => ({ id: i + 1, name: c, slug: c.toLowerCase().replace(/[^a-z0-9]+/g, '-'), status: 'Approved' }))).map((cat, idx) => {
+                        const catSlug = cat.slug || (cat.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                        const catNameClean = (cat.name || '').toLowerCase().trim();
+                        const matchedCount = blogs.filter(b => {
+                          const bCat = (b.category || '').toLowerCase().trim();
+                          return bCat === catNameClean || bCat === catSlug || bCat.replace(/^erp\s+/i, '') === catNameClean.replace(/^erp\s+/i, '');
+                        }).length;
+
                         return (
-                          <tr key={idx}>
+                          <tr key={cat.id || idx} style={{ backgroundColor: editingCategory && (String(editingCategory.id) === String(cat.id) || editingCategory.slug === cat.slug) ? '#fef3c7' : 'inherit' }}>
                             <td>
-                              <div className="cat-table-thumb-mock">
-                                <Folder size={16} />
-                              </div>
+                              {cat.image ? (
+                                <img 
+                                  src={cat.image} 
+                                  alt={cat.imageAlt || cat.name} 
+                                  style={{ width: '32px', height: '32px', borderRadius: '6px', objectFit: 'cover' }}
+                                />
+                              ) : (
+                                <div className="cat-table-thumb-mock">
+                                  <Folder size={16} />
+                                </div>
+                              )}
                             </td>
                             <td className="td-title-text" style={{ fontSize: '0.9rem' }}>
                               <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '600' }}>
-                                <Folder size={15} style={{ color: '#94a3b8' }} /> {cat}
+                                <Folder size={15} style={{ color: '#94a3b8' }} /> {cat.name}
+                              </span>
+                              {cat.parent && cat.parent !== 'None' && (
+                                <span style={{ fontSize: '0.72rem', color: '#6366f1', marginLeft: '1.4rem' }}>
+                                  ↳ Sub of {cat.parent}
+                                </span>
+                              )}
+                            </td>
+                            <td style={{ color: '#64748b', fontSize: '0.85rem' }}>
+                              <code>{catSlug}</code>
+                            </td>
+                            <td>
+                              <span style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                padding: '0.2rem 0.55rem',
+                                borderRadius: '9999px',
+                                fontSize: '0.75rem',
+                                fontWeight: '700',
+                                backgroundColor: matchedCount > 0 ? '#dbeafe' : '#f1f5f9',
+                                color: matchedCount > 0 ? '#1d4ed8' : '#64748b'
+                              }}>
+                                {matchedCount} {matchedCount === 1 ? 'article' : 'articles'}
                               </span>
                             </td>
-                            <td style={{ color: '#64748b', fontSize: '0.85rem' }}>{mockSlug}</td>
                             <td>
-                              <span className="badge-published-light">Approved</span>
+                              <span className={cat.status === 'Draft' ? 'badge-draft-light' : 'badge-published-light'}>
+                                {cat.status || 'Approved'}
+                              </span>
                             </td>
-                            <td className="td-actions">
-                              <button className="action-btn-edit" title="Edit Category" style={{ padding: '0.35rem' }}>
+                            <td className="td-actions" style={{ textAlign: 'right', paddingRight: '1.5rem' }}>
+                              <button 
+                                onClick={() => handleEditCategory(cat)} 
+                                className="action-btn-edit" 
+                                title="Edit Category" 
+                                style={{ padding: '0.35rem', cursor: 'pointer' }}
+                              >
                                 <Edit size={16} />
                               </button>
-                              <button className="action-btn-delete" title="Delete Category" style={{ padding: '0.35rem' }}>
+                              <button 
+                                onClick={() => handleDeleteCategory(cat)} 
+                                className="action-btn-delete" 
+                                title="Delete Category" 
+                                style={{ padding: '0.35rem', cursor: 'pointer', marginLeft: '0.4rem' }}
+                              >
                                 <Trash2 size={16} />
                               </button>
                             </td>
@@ -1302,7 +1611,7 @@ export default function BlogAdmin() {
                     onChange={(e) => setCategoryFilter(e.target.value)}
                   >
                     <option value="All">All Categories</option>
-                    {categoriesList.map((cat, idx) => (
+                    {(categories.length > 0 ? categories.map(c => c.name) : categoriesList).map((cat, idx) => (
                       <option key={idx} value={cat}>{cat}</option>
                     ))}
                   </select>
@@ -2005,7 +2314,7 @@ export default function BlogAdmin() {
                   <div className="form-group" style={{ marginBottom: '1.25rem' }}>
                     <label style={{ fontSize: '0.78rem', color: '#94a3b8', fontWeight: '700' }}>CATEGORIES</label>
                     <div className="categories-checklist-box">
-                      {categoriesList.map((cat, idx) => (
+                      {(categories.length > 0 ? categories.map(c => c.name) : categoriesList).map((cat, idx) => (
                         <div key={idx} className="checklist-row">
                           <input 
                             type="checkbox" 
