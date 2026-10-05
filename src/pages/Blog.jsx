@@ -148,22 +148,32 @@ export default function Blog() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const matchCategory = (blogCat, targetCat) => {
+    if (!targetCat || targetCat === 'All') return true;
+    if (!blogCat) return false;
+    const c1 = blogCat.toLowerCase().replace(/^erp\s+/i, '').trim();
+    const c2 = targetCat.toLowerCase().replace(/^erp\s+/i, '').trim();
+    return c1 === c2 || blogCat.toLowerCase() === targetCat.toLowerCase();
+  };
+
   // Calculate unique categories and their post counts
-  const categoryCounts = blogs.reduce((acc, b) => {
-    acc[b.category] = (acc[b.category] || 0) + 1;
+  const uniqueCategories = categoriesList;
+  const categoryCounts = categoriesList.reduce((acc, cat) => {
+    acc[cat] = blogs.filter(b => matchCategory(b.category, cat)).length;
     return acc;
   }, {});
-
-  const uniqueCategories = Object.keys(categoryCounts);
 
   // Filter blogs based on selected category
   const filteredBlogs = activeCategory === 'All'
     ? blogs
-    : blogs.filter(b => b.category === activeCategory);
+    : blogs.filter(b => matchCategory(b.category, activeCategory));
 
   const featuredBlog = filteredBlogs.find(b => b.isFeatured) || filteredBlogs[0];
   const secondaryBlogs = filteredBlogs.filter(b => b._id !== (featuredBlog ? featuredBlog._id : null)).slice(0, 5);
-  const latestBlogs = filteredBlogs.slice(0, 4);
+  const displaySecondaryBlogs = secondaryBlogs.length > 0 
+    ? secondaryBlogs 
+    : blogs.filter(b => b._id !== (featuredBlog ? featuredBlog._id : null)).slice(0, 5);
+  const latestBlogs = (filteredBlogs.length > 0 ? filteredBlogs : blogs).slice(0, 4);
 
   // Handle specific blog slug routes
   if (slug && slug !== 'admin') {
@@ -357,8 +367,8 @@ export default function Blog() {
 
               {/* Right Column: Secondary Text Posts */}
               <div className="blog-secondary-list">
-                {secondaryBlogs.length > 0 ? (
-                  secondaryBlogs.map((blog, idx) => (
+                {displaySecondaryBlogs.length > 0 ? (
+                  displaySecondaryBlogs.map((blog, idx) => (
                     <div 
                       key={blog._id || idx} 
                       className="blog-secondary-item"

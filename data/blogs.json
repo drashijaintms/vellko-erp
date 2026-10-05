@@ -145,7 +145,7 @@
   {
     "id": 4,
     "title": "Healthcare compliance and digital record keeping in 2026",
-    "category": "ERP Modules",
+    "category": "Healthcare",
     "readTime": "3 Mins Read",
     "excerpt": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966,",
     "date": "Aug 5, 2026",
@@ -177,7 +177,7 @@
   {
     "id": 6,
     "title": "Lorem Ipsum is simply dummy text of the printing and typesetting industry......",
-    "category": "ERP eCommerce",
+    "category": "E-Commerce",
     "readTime": "6 Mins Read",
     "excerpt": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966,",
     "date": "Aug 5, 2026",
@@ -193,7 +193,7 @@
   {
     "id": 7,
     "title": "Lorem Ipsum is simply dummy text of the printing and typesetting industry......",
-    "category": "ERP Manufacturing",
+    "category": "Manufacturing",
     "readTime": "3 Mins Read",
     "excerpt": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966,",
     "date": "Aug 5, 2026",
@@ -209,7 +209,7 @@
   {
     "id": 8,
     "title": "Lorem Ipsum is simply dummy text of the printing and typesetting industry......",
-    "category": "ERP Real Estate",
+    "category": "Real Estate",
     "readTime": "3 Mins Read",
     "excerpt": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966,",
     "date": "Aug 5, 2026",
@@ -225,7 +225,7 @@
   {
     "id": 9,
     "title": "Lorem Ipsum is simply dummy text of the printing and typesetting industry......",
-    "category": "ERP Healthcare",
+    "category": "Healthcare",
     "readTime": "3 Mins Read",
     "excerpt": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966,",
     "date": "Aug 5, 2026",
