@@ -431,12 +431,24 @@ export default function BlogAdmin() {
         });
       }
 
-      showToast(editingBlog ? 'Blog updated successfully!' : 'Blog created successfully!', 'success');
+      if (!response.ok) {
+        let errMsg = `Save failed (${response.status})`;
+        try {
+          const errData = await response.json();
+          if (errData && (errData.error || errData.message)) {
+            errMsg = errData.error || errData.message;
+          }
+        } catch (e) {}
+        showToast(errMsg, 'error');
+      } else {
+        showToast(editingBlog ? 'Blog updated successfully in database!' : 'Blog created successfully in database!', 'success');
+      }
       fetchBlogs();
       setActiveTab('cms_blogs');
     } catch (err) {
-      console.debug('API call completed with local sync:', err);
-      showToast(editingBlog ? 'Blog updated successfully!' : 'Blog created successfully!', 'success');
+      console.debug('API call network fallback:', err);
+      showToast('Network error saving blog: ' + (err.message || 'unknown'), 'error');
+      fetchBlogs();
       setActiveTab('cms_blogs');
     }
   };

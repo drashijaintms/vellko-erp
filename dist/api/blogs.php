@@ -22,42 +22,66 @@ if (!is_dir($dataDir)) {
     @mkdir($dataDir, 0755, true);
 }
 
+$lastDbError = null;
+
 function getPDO() {
-    global $dbHost, $dbPort, $dbName, $dbUser, $dbPass;
+    global $dbHost, $dbPort, $dbName, $dbUser, $dbPass, $lastDbError;
     static $pdo = null;
     if ($pdo !== null) return $pdo;
 
-    try {
-        $dsn = "mysql:host={$dbHost};port={$dbPort};dbname={$dbName};charset=utf8mb4";
-        $options = [
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES   => false,
-        ];
-        $pdo = new PDO($dsn, $dbUser, $dbPass, $options);
+    $dsnList = [
+        "mysql:host={$dbHost};dbname={$dbName};charset=utf8mb4",
+        "mysql:host=127.0.0.1;port={$dbPort};dbname={$dbName};charset=utf8mb4",
+        "mysql:host={$dbHost};port={$dbPort};dbname={$dbName};charset=utf8mb4",
+        "mysql:unix_socket=/var/lib/mysql/mysql.sock;dbname={$dbName};charset=utf8mb4",
+        "mysql:unix_socket=/tmp/mysql.sock;dbname={$dbName};charset=utf8mb4",
+        "mysql:unix_socket=/var/run/mysqld/mysqld.sock;dbname={$dbName};charset=utf8mb4"
+    ];
 
-        // Ensure table exists
+    $options = [
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES   => false,
+    ];
+
+    foreach ($dsnList as $dsn) {
+        try {
+            $pdo = new PDO($dsn, $dbUser, $dbPass, $options);
+            if ($pdo) break;
+        } catch (Exception $e) {
+            $lastDbError = $e->getMessage();
+            $pdo = null;
+        }
+    }
+
+    if (!$pdo) {
+        error_log('MySQL connection failed in api/blogs.php: ' . $lastDbError);
+        return null;
+    }
+
+    try {
+        // Ensure table exists with flexible varchar/text columns
         $createTableSql = "CREATE TABLE IF NOT EXISTS blogs (
             id BIGINT AUTO_INCREMENT PRIMARY KEY,
             _id VARCHAR(64) UNIQUE NOT NULL,
             slug VARCHAR(255) NOT NULL,
             title VARCHAR(500) NOT NULL,
-            category VARCHAR(100) NOT NULL,
+            category VARCHAR(150) NOT NULL,
             readTime VARCHAR(50) DEFAULT '3 Mins Read',
             excerpt LONGTEXT,
             date VARCHAR(50),
-            status ENUM('Draft', 'Published') DEFAULT 'Published',
+            status VARCHAR(50) DEFAULT 'Published',
             isFeatured TINYINT(1) DEFAULT 0,
             image LONGTEXT,
-            imageAlt VARCHAR(255),
+            imageAlt VARCHAR(500),
             seoTitle VARCHAR(500),
-            metaDesc TEXT,
-            focusKeyword VARCHAR(255),
+            metaDesc LONGTEXT,
+            focusKeyword VARCHAR(500),
             ogTitle VARCHAR(500),
-            ogDesc TEXT,
+            ogDesc LONGTEXT,
             ogImg LONGTEXT,
             twitterTitle VARCHAR(500),
-            twitterDesc TEXT,
+            twitterDesc LONGTEXT,
             twitterCard VARCHAR(100),
             rawSchema LONGTEXT,
             views INT DEFAULT 0,
@@ -109,8 +133,9 @@ function getPDO() {
         }
         return $pdo;
     } catch (Exception $e) {
-        error_log('MySQL connection error in api/blogs.php: ' . $e->getMessage());
-        return null;
+        $lastDbError = $e->getMessage();
+        error_log('MySQL init error in api/blogs.php: ' . $e->getMessage());
+        return $pdo; // return pdo anyway if connection succeeded
     }
 }
 
@@ -294,6 +319,30 @@ function extractAndSaveBase64Images($content, $blogTitle = 'blog') {
 $method = $_SERVER['REQUEST_METHOD'];
 $path = isset($_GET['path']) ? trim($_GET['path'], '/') : '';
 
+// 0. Diagnostic status route: /api/blogs/status or ?action=status
+if ($path === 'status' || (isset($_GET['action']) && $_GET['action'] === 'status')) {
+    $pdo = getPDO();
+    $statusData = [
+        'database_configured' => true,
+        'database_connected' => ($pdo !== null),
+        'last_error' => $lastDbError,
+        'driver' => $pdo ? $pdo->getAttribute(PDO::ATTR_DRIVER_NAME) : null,
+        'server_version' => $pdo ? $pdo->getAttribute(PDO::ATTR_SERVER_VERSION) : null,
+        'total_blogs' => 0
+    ];
+    if ($pdo) {
+        try {
+            $statusData['total_blogs'] = (int)$pdo->query("SELECT COUNT(*) FROM blogs")->fetchColumn();
+        } catch (Exception $e) {
+            $statusData['query_error'] = $e->getMessage();
+        }
+    } else {
+        $statusData['total_blogs'] = count(getBlogsFromJson());
+    }
+    echo json_encode($statusData, JSON_PRETTY_PRINT);
+    exit;
+}
+
 // 1. GET /api/blogs or /api/blogs/:id
 if ($method === 'GET') {
     $pdo = getPDO();
@@ -439,34 +488,41 @@ if ($method === 'POST') {
 
     $pdo = getPDO();
     if ($pdo) {
-        $stmt = $pdo->prepare("INSERT INTO blogs (_id, slug, title, category, readTime, excerpt, date, status, isFeatured, image, imageAlt, seoTitle, metaDesc, focusKeyword, ogTitle, ogDesc, ogImg, twitterTitle, twitterDesc, twitterCard, rawSchema, views, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([
-            $newBlog['_id'],
-            $newBlog['slug'],
-            $newBlog['title'],
-            $newBlog['category'],
-            $newBlog['readTime'],
-            $newBlog['excerpt'],
-            $newBlog['date'],
-            $newBlog['status'],
-            $newBlog['isFeatured'] ? 1 : 0,
-            $newBlog['image'],
-            $newBlog['imageAlt'],
-            $newBlog['seoTitle'],
-            $newBlog['metaDesc'],
-            $newBlog['focusKeyword'],
-            $newBlog['ogTitle'],
-            $newBlog['ogDesc'],
-            $newBlog['ogImg'],
-            $newBlog['twitterTitle'],
-            $newBlog['twitterDesc'],
-            $newBlog['twitterCard'],
-            $newBlog['rawSchema'],
-            0,
-            $createdAt,
-            $updatedAt
-        ]);
-        $newBlog['id'] = (int)$pdo->lastInsertId();
+        try {
+            $stmt = $pdo->prepare("INSERT INTO blogs (_id, slug, title, category, readTime, excerpt, date, status, isFeatured, image, imageAlt, seoTitle, metaDesc, focusKeyword, ogTitle, ogDesc, ogImg, twitterTitle, twitterDesc, twitterCard, rawSchema, views, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([
+                $newBlog['_id'],
+                $newBlog['slug'],
+                $newBlog['title'],
+                $newBlog['category'],
+                $newBlog['readTime'],
+                $newBlog['excerpt'],
+                $newBlog['date'],
+                $newBlog['status'],
+                $newBlog['isFeatured'] ? 1 : 0,
+                $newBlog['image'],
+                $newBlog['imageAlt'],
+                $newBlog['seoTitle'],
+                $newBlog['metaDesc'],
+                $newBlog['focusKeyword'],
+                $newBlog['ogTitle'],
+                $newBlog['ogDesc'],
+                $newBlog['ogImg'],
+                $newBlog['twitterTitle'],
+                $newBlog['twitterDesc'],
+                $newBlog['twitterCard'],
+                $newBlog['rawSchema'],
+                0,
+                $createdAt,
+                $updatedAt
+            ]);
+            $newBlog['id'] = (int)$pdo->lastInsertId();
+        } catch (Exception $e) {
+            error_log('MySQL Insert Error in api/blogs.php: ' . $e->getMessage());
+            http_response_code(500);
+            echo json_encode(['error' => 'Database insert error: ' . $e->getMessage()]);
+            exit;
+        }
     }
 
     $allBlogs = getBlogs();
@@ -513,9 +569,16 @@ if ($method === 'PUT') {
             $values[] = $id;
             $values[] = $id;
 
-            $sql = "UPDATE blogs SET " . implode(', ', $fields) . " WHERE _id = ? OR id = ?";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute($values);
+            try {
+                $sql = "UPDATE blogs SET " . implode(', ', $fields) . " WHERE _id = ? OR id = ?";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute($values);
+            } catch (Exception $e) {
+                error_log('MySQL Update Error in api/blogs.php: ' . $e->getMessage());
+                http_response_code(500);
+                echo json_encode(['error' => 'Database update error: ' . $e->getMessage()]);
+                exit;
+            }
         }
 
         $allBlogs = getBlogs();
@@ -557,8 +620,15 @@ if ($method === 'DELETE') {
     $id = $path;
     $pdo = getPDO();
     if ($pdo) {
-        $stmt = $pdo->prepare("DELETE FROM blogs WHERE _id = ? OR id = ?");
-        $stmt->execute([$id, $id]);
+        try {
+            $stmt = $pdo->prepare("DELETE FROM blogs WHERE _id = ? OR id = ?");
+            $stmt->execute([$id, $id]);
+        } catch (Exception $e) {
+            error_log('MySQL Delete Error in api/blogs.php: ' . $e->getMessage());
+            http_response_code(500);
+            echo json_encode(['error' => 'Database delete error: ' . $e->getMessage()]);
+            exit;
+        }
 
         $allBlogs = getBlogs();
         saveBlogsBackup($allBlogs);
