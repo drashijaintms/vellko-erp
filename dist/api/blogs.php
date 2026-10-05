@@ -60,13 +60,13 @@ function getPDO() {
     }
 
     try {
-        // Ensure table exists with flexible varchar/text columns
+        // 1. Ensure table exists with flexible varchar/text columns
         $createTableSql = "CREATE TABLE IF NOT EXISTS blogs (
             id BIGINT AUTO_INCREMENT PRIMARY KEY,
-            _id VARCHAR(64) UNIQUE NOT NULL,
-            slug VARCHAR(255) NOT NULL,
-            title VARCHAR(500) NOT NULL,
-            category VARCHAR(150) NOT NULL,
+            _id VARCHAR(64) NULL DEFAULT NULL,
+            slug VARCHAR(255) NULL DEFAULT NULL,
+            title VARCHAR(500) NULL DEFAULT NULL,
+            category VARCHAR(150) NULL DEFAULT NULL,
             readTime VARCHAR(50) DEFAULT '3 Mins Read',
             excerpt LONGTEXT,
             date VARCHAR(50),
@@ -82,7 +82,7 @@ function getPDO() {
             ogImg LONGTEXT,
             twitterTitle VARCHAR(500),
             twitterDesc LONGTEXT,
-            twitterCard VARCHAR(100),
+            twitterCard VARCHAR(100) DEFAULT 'Summary Large Image',
             rawSchema LONGTEXT,
             views INT DEFAULT 0,
             createdAt VARCHAR(50),
@@ -93,12 +93,59 @@ function getPDO() {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
         $pdo->exec($createTableSql);
 
+        // 2. Auto-migrate missing columns for existing pre-created table
+        $requiredColumns = [
+            '_id' => "VARCHAR(64) NULL DEFAULT NULL",
+            'slug' => "VARCHAR(255) NULL DEFAULT NULL",
+            'title' => "VARCHAR(500) NULL DEFAULT NULL",
+            'category' => "VARCHAR(150) NULL DEFAULT NULL",
+            'readTime' => "VARCHAR(50) DEFAULT '3 Mins Read'",
+            'excerpt' => "LONGTEXT NULL",
+            'date' => "VARCHAR(50) NULL DEFAULT NULL",
+            'status' => "VARCHAR(50) DEFAULT 'Published'",
+            'isFeatured' => "TINYINT(1) DEFAULT 0",
+            'image' => "LONGTEXT NULL",
+            'imageAlt' => "VARCHAR(500) NULL DEFAULT NULL",
+            'seoTitle' => "VARCHAR(500) NULL DEFAULT NULL",
+            'metaDesc' => "LONGTEXT NULL",
+            'focusKeyword' => "VARCHAR(500) NULL DEFAULT NULL",
+            'ogTitle' => "VARCHAR(500) NULL DEFAULT NULL",
+            'ogDesc' => "LONGTEXT NULL",
+            'ogImg' => "LONGTEXT NULL",
+            'twitterTitle' => "VARCHAR(500) NULL DEFAULT NULL",
+            'twitterDesc' => "LONGTEXT NULL",
+            'twitterCard' => "VARCHAR(100) DEFAULT 'Summary Large Image'",
+            'rawSchema' => "LONGTEXT NULL",
+            'views' => "INT DEFAULT 0",
+            'createdAt' => "VARCHAR(50) NULL DEFAULT NULL",
+            'updatedAt' => "VARCHAR(50) NULL DEFAULT NULL"
+        ];
+
+        $existingColsStmt = $pdo->query("SHOW COLUMNS FROM blogs");
+        $existingCols = $existingColsStmt->fetchAll(PDO::FETCH_COLUMN, 0);
+        $existingColsLower = array_map('strtolower', $existingCols);
+
+        foreach ($requiredColumns as $colName => $colDef) {
+            if (!in_array(strtolower($colName), $existingColsLower)) {
+                try {
+                    $pdo->exec("ALTER TABLE blogs ADD COLUMN `{$colName}` {$colDef}");
+                } catch (Exception $colEx) {
+                    error_log("Failed to add column {$colName}: " . $colEx->getMessage());
+                }
+            }
+        }
+
+        // Fill any null _id or slug for older rows
+        try {
+            $pdo->exec("UPDATE blogs SET _id = CAST(id AS CHAR) WHERE _id IS NULL OR _id = ''");
+        } catch (Exception $e) {}
+
         // Auto-seed table from JSON if empty
         $count = (int)$pdo->query("SELECT COUNT(*) FROM blogs")->fetchColumn();
         if ($count === 0) {
             $jsonBlogs = getBlogsFromJson();
             if (!empty($jsonBlogs)) {
-                $stmt = $pdo->prepare("INSERT IGNORE INTO blogs (_id, slug, title, category, readTime, excerpt, date, status, isFeatured, image, imageAlt, seoTitle, metaDesc, focusKeyword, ogTitle, ogDesc, ogImg, twitterTitle, twitterDesc, twitterCard, rawSchema, views, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt = $pdo->prepare("INSERT INTO blogs (_id, slug, title, category, readTime, excerpt, date, status, isFeatured, image, imageAlt, seoTitle, metaDesc, focusKeyword, ogTitle, ogDesc, ogImg, twitterTitle, twitterDesc, twitterCard, rawSchema, views, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                 foreach ($jsonBlogs as $b) {
                     $title = $b['title'] ?? 'Untitled Article';
                     $slug = $b['slug'] ?? strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $title), '-'));
@@ -322,9 +369,16 @@ $path = isset($_GET['path']) ? trim($_GET['path'], '/') : '';
 // 0. Diagnostic status route: /api/blogs/status or ?action=status
 if ($path === 'status' || (isset($_GET['action']) && $_GET['action'] === 'status')) {
     $pdo = getPDO();
+    $cols = [];
+    if ($pdo) {
+        try {
+            $cols = $pdo->query("SHOW COLUMNS FROM blogs")->fetchAll(PDO::FETCH_COLUMN, 0);
+        } catch (Exception $e) {}
+    }
     $statusData = [
         'database_configured' => true,
         'database_connected' => ($pdo !== null),
+        'columns' => $cols,
         'last_error' => $lastDbError,
         'driver' => $pdo ? $pdo->getAttribute(PDO::ATTR_DRIVER_NAME) : null,
         'server_version' => $pdo ? $pdo->getAttribute(PDO::ATTR_SERVER_VERSION) : null,
