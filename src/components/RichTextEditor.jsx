@@ -1,10 +1,22 @@
 // TinyMCE 6.8.2 CDN Editor with Interactive Modals for FAQs, CTA Boxes (5 Vellko ERP Themed Styles), and Link SEO (nofollow, noopener, noreferrer)
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
-import { X } from 'lucide-react';
+import { X, Plus, HelpCircle, Bookmark, Type } from 'lucide-react';
 
 export default function RichTextEditor({ value, onChange, height = 460 }) {
   const editorRef = useRef(null);
+  const isInternalChangeRef = useRef(false);
+
+  // Synchronize external value changes without resetting cursor or interrupting live typing
+  useEffect(() => {
+    if (editorRef.current && !isInternalChangeRef.current) {
+      const currentContent = editorRef.current.getContent();
+      if (value !== currentContent) {
+        editorRef.current.setContent(value || '');
+      }
+    }
+    isInternalChangeRef.current = false;
+  }, [value]);
 
   // Modal States
   const [showFaqModal, setShowFaqModal] = useState(false);
@@ -208,6 +220,24 @@ export default function RichTextEditor({ value, onChange, height = 460 }) {
     setShowLinkModal(false);
   };
 
+  const handleAppendParagraph = () => {
+    if (editorRef.current) {
+      editorRef.current.focus();
+      editorRef.current.selection.select(editorRef.current.getBody(), true);
+      editorRef.current.selection.collapse(false);
+      editorRef.current.insertContent('<p>Type your new content here...</p>');
+    }
+  };
+
+  const handleAppendHeading = () => {
+    if (editorRef.current) {
+      editorRef.current.focus();
+      editorRef.current.selection.select(editorRef.current.getBody(), true);
+      editorRef.current.selection.collapse(false);
+      editorRef.current.insertContent('<h2>New Section Title</h2><p>Add section explanation...</p>');
+    }
+  };
+
   return (
     <div className="tinymce-cloud-editor-wrapper" style={{
       position: 'relative',
@@ -220,7 +250,7 @@ export default function RichTextEditor({ value, onChange, height = 460 }) {
       <style>{`
         .tox-tinymce {
           border: none !important;
-          border-radius: 16px !important;
+          border-radius: 16px 16px 0 0 !important;
         }
         .tox .tox-menubar {
           background-color: #ffffff !important;
@@ -285,6 +315,7 @@ export default function RichTextEditor({ value, onChange, height = 460 }) {
         }}
         value={value}
         onEditorChange={(content, editor) => {
+          isInternalChangeRef.current = true;
           onChange(content, editor.getContent({ format: 'text' }));
         }}
         init={{
@@ -313,18 +344,25 @@ export default function RichTextEditor({ value, onChange, height = 460 }) {
             'customLink image media table | insertFaqModal insertCtaModal | emoticons charmap | ' +
             'removeformat code fullscreen | help',
           toolbar_mode: 'floating',
+          extended_valid_elements: '*[*]',
+          custom_elements: '~details,~summary',
+          valid_children: '+details[summary|p|div|ul|ol|li|h2|h3|h4|h5|h6|span|a|strong|em|br|img|table|blockquote],+summary[span|strong|em|a|img|#text]',
+          end_container_on_empty_block: true,
+          newline_behavior: 'default',
+          forced_root_block: 'p',
           font_family_formats:
             'Outfit,Helvetica=Outfit,Helvetica,Arial,sans-serif; Inter=Inter,sans-serif; Arial=Arial,sans-serif; Roboto=Roboto,sans-serif; Georgia=Georgia,serif',
           font_size_formats: '8pt 10pt 12pt 14pt 16pt 18pt 24pt 36pt',
           content_style:
             '@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"); ' +
-            'body { font-family: Outfit, Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.7; color: #334155; padding: 18px; margin: 0; } ' +
+            'html, body { min-height: 100%; } ' +
+            'body { font-family: Outfit, Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.7; color: #334155; padding: 18px 18px 140px 18px; margin: 0; cursor: text; } ' +
             'p { margin-bottom: 1.1em; } ' +
             'a { color: #DC1436; } ' +
             '.vellko-faq-accordion summary::-webkit-details-marker { display: none; } ' +
             '.vellko-faq-accordion summary { list-style: none; cursor: pointer; outline: none; } ' +
             '.vellko-faq-accordion[open] summary .faq-chevron { transform: rotate(180deg); } ' +
-            '.vellko-faq-accordion { transition: all 0.2s ease; }',
+            '.vellko-faq-accordion { transition: all 0.2s ease; margin: 18px 0; }',
           branding: true,
           statusbar: true,
           elementpath: true,
@@ -899,6 +937,102 @@ export default function RichTextEditor({ value, onChange, height = 460 }) {
           </div>
         </div>
       )}
+
+      {/* Quick Insert / Append Bar below Editor */}
+      <div style={{
+        padding: '0.65rem 1rem',
+        backgroundColor: '#f8fafc',
+        borderTop: '1px solid #e2e8f0',
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: '0.5rem',
+        fontSize: '0.8rem',
+        color: '#64748b'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: '600' }}>
+          <span>Quick Append:</span>
+          <button
+            type="button"
+            onClick={handleAppendParagraph}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px',
+              padding: '4px 10px',
+              borderRadius: '6px',
+              backgroundColor: '#ffffff',
+              border: '1px solid #cbd5e1',
+              color: '#334155',
+              cursor: 'pointer',
+              fontWeight: '600',
+              fontSize: '0.78rem'
+            }}
+          >
+            <Plus size={13} style={{ color: '#DC1436' }} /> Add Paragraph at End
+          </button>
+          <button
+            type="button"
+            onClick={handleAppendHeading}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px',
+              padding: '4px 10px',
+              borderRadius: '6px',
+              backgroundColor: '#ffffff',
+              border: '1px solid #cbd5e1',
+              color: '#334155',
+              cursor: 'pointer',
+              fontWeight: '600',
+              fontSize: '0.78rem'
+            }}
+          >
+            <Type size={13} style={{ color: '#4f46e5' }} /> Add H2 Heading
+          </button>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <button
+            type="button"
+            onClick={() => setShowFaqModal(true)}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px',
+              padding: '4px 10px',
+              borderRadius: '6px',
+              backgroundColor: '#fff1f2',
+              border: '1px solid #fecdd3',
+              color: '#9f1239',
+              cursor: 'pointer',
+              fontWeight: '600',
+              fontSize: '0.78rem'
+            }}
+          >
+            <HelpCircle size={13} /> + FAQ Block
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowCtaModal(true)}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px',
+              padding: '4px 10px',
+              borderRadius: '6px',
+              backgroundColor: '#f0fdf4',
+              border: '1px solid #bbf7d0',
+              color: '#166534',
+              cursor: 'pointer',
+              fontWeight: '600',
+              fontSize: '0.78rem'
+            }}
+          >
+            <Bookmark size={13} /> + CTA Box
+          </button>
+        </div>
+      </div>
 
     </div>
   );

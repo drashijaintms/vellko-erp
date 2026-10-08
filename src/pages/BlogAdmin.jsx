@@ -2112,6 +2112,7 @@ export default function BlogAdmin() {
                   {/* TinyMCE Self-Hosted Rich Text Editor */}
                   <div style={{ marginTop: '1.5rem' }}>
                     <RichTextEditor
+                      key={editingBlog ? (editingBlog._id || editingBlog.id || editingBlog.slug || 'edit') : 'new'}
                       value={excerpt}
                       onChange={(content, plainText) => {
                         setExcerpt(content);
