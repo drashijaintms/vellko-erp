@@ -2942,14 +2942,291 @@ export const seoRoutes = {
 };
 
 /**
+ * Clean plain-text excerpt extractor
+ * Strips HTML, scripts, styles, collapses whitespace, and truncates at word boundaries.
+ */
+export function extractCleanExcerpt(htmlContent, maxLen = 160) {
+  if (!htmlContent) return '';
+  const cleaned = htmlContent
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (cleaned.length <= maxLen) return cleaned;
+  const truncated = cleaned.slice(0, maxLen);
+  const lastSpace = truncated.lastIndexOf(' ');
+  if (lastSpace > maxLen * 0.7) {
+    return truncated.slice(0, lastSpace).replace(/[,;:\-\s]+$/, '') + '...';
+  }
+  return truncated.replace(/[,;:\-\s]+$/, '') + '...';
+}
+
+/**
+ * Format string or timestamp into valid ISO 8601 date string
+ */
+export function formatIsoDate(dateStr) {
+  if (!dateStr) return new Date().toISOString();
+  try {
+    const d = new Date(dateStr);
+    if (!isNaN(d.getTime())) return d.toISOString();
+  } catch (e) {}
+  return new Date().toISOString();
+}
+
+/**
+ * Extract genuine, visible FAQ items from blog HTML
+ * Supports <details class="vellko-faq-accordion"> or standard <details>/<summary> pairs.
+ */
+export function extractFaqsFromHtml(htmlContent) {
+  if (!htmlContent) return [];
+  const faqs = [];
+  const detailRegex = /<details\b[^>]*>([\s\S]*?)<\/details>/gi;
+  let match;
+  while ((match = detailRegex.exec(htmlContent)) !== null) {
+    const detailHtml = match[1];
+    const sumMatch = detailHtml.match(/<summary\b[^>]*>([\s\S]*?)<\/summary>/i);
+    let question = '';
+    if (sumMatch) {
+      let cleaned = sumMatch[1].replace(/<span\b[^>]*class=["']faq-chevron["'][^>]*>[\s\S]*?<\/span>/gi, '');
+      cleaned = cleaned.replace(/<span\b[^>]*>Q<\/span>/gi, '');
+      question = cleaned.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+    }
+    const body = detailHtml.replace(/<summary\b[^>]*>[\s\S]*?<\/summary>/i, '');
+    const answer = body.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+    if (question && answer) {
+      faqs.push({
+        '@type': 'Question',
+        'name': question,
+        'acceptedAnswer': {
+          '@type': 'Answer',
+          'text': answer
+        }
+      });
+    }
+  }
+  return faqs;
+}
+
+/**
+ * Stable Vellko ERP Organization Schema
+ */
+export const ORGANIZATION_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": `${BASE_URL}/#organization`,
+  "name": "Vellko ERP",
+  "url": `${BASE_URL}/`,
+  "logo": {
+    "@type": "ImageObject",
+    "url": `${BASE_URL}/assets/logo-bAy9mXr5.png`
+  },
+  "telephone": "+91-7880107201",
+  "email": "support@vellkoerp.com",
+  "founder": {
+    "@type": "Person",
+    "name": "Deepak Verma"
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Phoenix Corporate Park, Survey No. 359/2 & 359/3, Back Part 2nd Floor, Narmadapuram Road",
+    "addressLocality": "Bhopal",
+    "addressRegion": "Madhya Pradesh",
+    "postalCode": "462026",
+    "addressCountry": "IN"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer support",
+    "telephone": "+91-7880107201",
+    "email": "support@vellkoerp.com",
+    "areaServed": "IN",
+    "availableLanguage": ["English", "Hindi"]
+  }
+};
+
+/**
+ * Generate full schema suite for an individual blog post:
+ * 1. BlogPosting
+ * 2. BreadcrumbList (Home -> Blog -> Post)
+ * 3. Organization
+ * 4. FAQPage (only if visible FAQs exist)
+ */
+export function generateBlogSchemas(blog, pageUrl) {
+  const headline = (blog.title || blog.seoTitle || 'Vellko ERP Blog').trim();
+  const description = (blog.metaDesc || extractCleanExcerpt(blog.excerpt, 160) || `Read insightful ERP analysis on the Vellko ERP blog.`).trim();
+  const rawImage = blog.ogImg || blog.image || DEFAULT_IMAGE;
+  const imageUrl = rawImage.startsWith('http') ? rawImage : `${BASE_URL}${rawImage.startsWith('/') ? '' : '/'}${rawImage}`;
+  const datePublished = formatIsoDate(blog.createdAt || blog.date);
+  const dateModified = formatIsoDate(blog.updatedAt || blog.createdAt || blog.date);
+
+  const blogPosting = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "@id": `${pageUrl}#blogposting`,
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": pageUrl
+    },
+    "headline": headline,
+    "description": description,
+    "image": [imageUrl],
+    "datePublished": datePublished,
+    "dateModified": dateModified,
+    "author": {
+      "@type": "Organization",
+      "@id": `${BASE_URL}/#organization`,
+      "name": "Vellko ERP",
+      "url": `${BASE_URL}/`
+    },
+    "publisher": ORGANIZATION_SCHEMA,
+    "inLanguage": "en-US"
+  };
+
+  const breadcrumbs = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": `${BASE_URL}/`
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": `${BASE_URL}/blog`
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": headline,
+        "item": pageUrl
+      }
+    ]
+  };
+
+  const schemas = [blogPosting, breadcrumbs, ORGANIZATION_SCHEMA];
+
+  // If blog has raw custom schema entered in admin, respect it or merge
+  if (blog.rawSchema && typeof blog.rawSchema === 'string' && blog.rawSchema.trim().startsWith('{')) {
+    try {
+      const parsed = JSON.parse(blog.rawSchema);
+      if (parsed && typeof parsed === 'object') {
+        // If raw schema is FAQPage, add it
+        if (parsed['@type'] === 'FAQPage' || parsed['@type'] === 'BlogPosting') {
+          // Keep our rich BlogPosting and Breadcrumbs, add parsed
+        }
+      }
+    } catch (e) {}
+  }
+
+  // Automatic FAQPage schema generation only if visible FAQs exist
+  const visibleFaqs = extractFaqsFromHtml(blog.excerpt);
+  if (visibleFaqs.length > 0) {
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": visibleFaqs
+    });
+  }
+
+  return schemas;
+}
+
+/**
+ * Generate complete SEO bundle for a blog post
+ */
+export function generateBlogSeo(blog, pathname) {
+  const cleanPath = (!pathname || pathname === '/') ? '/' : pathname.replace(/\/$/, '');
+  const pageUrl = `${BASE_URL}${cleanPath === '/' ? '/' : cleanPath}`;
+
+  const title = (blog.seoTitle && blog.seoTitle.trim())
+    ? blog.seoTitle.trim()
+    : ((blog.title && blog.title.trim()) ? `${blog.title.trim()} | Vellko ERP Blog` : `${cleanPath.replace('/blog/', '').replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} | Vellko ERP Blog`);
+
+  const description = (blog.metaDesc && blog.metaDesc.trim())
+    ? blog.metaDesc.trim()
+    : (extractCleanExcerpt(blog.excerpt, 160) || `Read insightful ERP analysis on the Vellko ERP blog.`);
+
+  const keywords = blog.focusKeyword || 'ERP blog, business management, cloud ERP insights';
+
+  const rawImage = blog.ogImg || blog.image || DEFAULT_IMAGE;
+  const image = rawImage.startsWith('http') ? rawImage : `${BASE_URL}${rawImage.startsWith('/') ? '' : '/'}${rawImage}`;
+
+  const ogTitle = (blog.ogTitle && blog.ogTitle.trim()) ? blog.ogTitle.trim() : (blog.seoTitle || blog.title || title);
+  const ogDescription = (blog.ogDesc && blog.ogDesc.trim()) ? blog.ogDesc.trim() : description;
+  const ogImage = image;
+
+  const twitterTitle = (blog.twitterTitle && blog.twitterTitle.trim()) ? blog.twitterTitle.trim() : (blog.seoTitle || blog.title || title);
+  const twitterDescription = (blog.twitterDesc && blog.twitterDesc.trim()) ? blog.twitterDesc.trim() : description;
+  const twitterImage = image;
+  const twitterCard = blog.twitterCard ? blog.twitterCard.toLowerCase().replace(/\s+/g, '_') : 'summary_large_image';
+
+  const schema = generateBlogSchemas(blog, pageUrl);
+
+  return {
+    title,
+    description,
+    keywords,
+    image,
+    url: pageUrl,
+    canonical: pageUrl,
+    ogTitle,
+    ogDescription,
+    ogImage,
+    twitterTitle,
+    twitterDescription,
+    twitterImage,
+    twitterCard,
+    schema
+  };
+}
+
+/**
  * Resolver function:
  * Takes the current URL path and returns clean, unified SEO metadata.
  * Automatically mirrors title & description to OG and Twitter tags,
  * and sets canonical and hreflangs to the exact current URL!
  */
-export function getSeoForPath(pathname) {
+export function getSeoForPath(pathname, blogData = null) {
   const normalizedPath = (!pathname || pathname === '/') ? '/' : pathname.replace(/\/$/, '');
   const pageUrl = `${BASE_URL}${normalizedPath === '/' ? '/' : normalizedPath}`;
+
+  if (blogData) {
+    return generateBlogSeo(blogData, normalizedPath);
+  }
+
+  // If this is a blog route and blogData was not passed directly, check window or cache if in browser
+  if (normalizedPath.startsWith('/blog/') && normalizedPath !== '/blog/admin') {
+    const slug = normalizedPath.replace('/blog/', '').trim();
+    if (typeof window !== 'undefined') {
+      if (window.__INITIAL_BLOG__ && (window.__INITIAL_BLOG__.slug === slug || String(window.__INITIAL_BLOG__.id) === slug || String(window.__INITIAL_BLOG__._id) === slug)) {
+        return generateBlogSeo(window.__INITIAL_BLOG__, normalizedPath);
+      }
+      try {
+        const cached = localStorage.getItem('vellko_cached_blogs');
+        if (cached) {
+          const list = JSON.parse(cached);
+          if (Array.isArray(list)) {
+            const found = list.find(b => (b.slug && b.slug === slug) || String(b.id) === slug || String(b._id) === slug);
+            if (found) {
+              return generateBlogSeo(found, normalizedPath);
+            }
+          }
+        }
+      } catch (e) {}
+    }
+  }
 
   const entry = seoRoutes[normalizedPath] || (normalizedPath.startsWith('/blog/') ? {
     title: `${normalizedPath.replace('/blog/', '').replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} | Vellko ERP Blog`,

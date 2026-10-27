@@ -596,18 +596,43 @@ app.post('/api/blogs/:id/view', async (req, res) => {
 // 3. POST /api/blogs - Create a new blog
 app.post('/api/blogs', async (req, res) => {
   try {
-    const { title, category, readTime, excerpt, date, status, isFeatured, image, imageAlt } = req.body;
+    const {
+      title,
+      category,
+      readTime,
+      excerpt,
+      date,
+      status,
+      isFeatured,
+      image,
+      imageAlt,
+      seoTitle,
+      metaDesc,
+      focusKeyword,
+      slug,
+      ogTitle,
+      ogDesc,
+      ogImg,
+      twitterTitle,
+      twitterDesc,
+      twitterCard,
+      rawSchema
+    } = req.body;
+
     if (!title) {
       return res.status(400).json({ message: 'Blog title is required' });
     }
 
     const cleanImage = image ? saveBase64ToDisk(image) : null;
+    const cleanOgImg = ogImg ? saveBase64ToDisk(ogImg) : null;
     const displayDate = date || new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
     const nowId = Date.now();
+    const finalSlug = slug || title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 
     const newBlog = {
       id: nowId,
       _id: nowId.toString(),
+      slug: finalSlug,
       title,
       category: category || 'ERP Modules',
       readTime: readTime || '3 Mins Read',
@@ -617,6 +642,16 @@ app.post('/api/blogs', async (req, res) => {
       isFeatured: !!isFeatured,
       image: cleanImage,
       imageAlt: imageAlt || null,
+      seoTitle: seoTitle || title,
+      metaDesc: metaDesc || '',
+      focusKeyword: focusKeyword || '',
+      ogTitle: ogTitle || title,
+      ogDesc: ogDesc || '',
+      ogImg: cleanOgImg || cleanImage,
+      twitterTitle: twitterTitle || title,
+      twitterDesc: twitterDesc || '',
+      twitterCard: twitterCard || 'Summary Large Image',
+      rawSchema: rawSchema || '',
       views: 0,
       createdAt: new Date().toISOString()
     };
@@ -630,8 +665,8 @@ app.post('/api/blogs', async (req, res) => {
     if (pool) {
       try {
         const sql = `
-          INSERT INTO blogs (title, category, readTime, excerpt, date, status, isFeatured, image, imageAlt, views)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0)
+          INSERT INTO blogs (title, category, readTime, excerpt, date, status, isFeatured, image, imageAlt, seoTitle, metaDesc, focusKeyword, slug, ogTitle, ogDesc, ogImg, twitterTitle, twitterDesc, twitterCard, rawSchema, views)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)
         `;
         const [result] = await pool.query(sql, [
           newBlog.title,
@@ -642,7 +677,18 @@ app.post('/api/blogs', async (req, res) => {
           newBlog.status,
           newBlog.isFeatured ? 1 : 0,
           newBlog.image,
-          newBlog.imageAlt
+          newBlog.imageAlt,
+          newBlog.seoTitle,
+          newBlog.metaDesc,
+          newBlog.focusKeyword,
+          newBlog.slug,
+          newBlog.ogTitle,
+          newBlog.ogDesc,
+          newBlog.ogImg,
+          newBlog.twitterTitle,
+          newBlog.twitterDesc,
+          newBlog.twitterCard,
+          newBlog.rawSchema
         ]);
         if (result && result.insertId) {
           newBlog.id = result.insertId;
@@ -691,7 +737,11 @@ app.put('/api/blogs/:id', async (req, res) => {
       try {
         const fields = [];
         const params = [];
-        const allowedFields = ['title', 'category', 'readTime', 'excerpt', 'date', 'status', 'isFeatured', 'image', 'imageAlt'];
+        const allowedFields = [
+          'title', 'category', 'readTime', 'excerpt', 'date', 'status', 'isFeatured',
+          'image', 'imageAlt', 'seoTitle', 'metaDesc', 'focusKeyword', 'slug',
+          'ogTitle', 'ogDesc', 'ogImg', 'twitterTitle', 'twitterDesc', 'twitterCard', 'rawSchema'
+        ];
         
         allowedFields.forEach(field => {
           if (req.body[field] !== undefined) {
@@ -1028,6 +1078,49 @@ app.use((req, res, next) => {
   const dirFile = path.join(distDir, cleanPath, 'index.html');
   if (fs.existsSync(dirFile)) {
     return res.sendFile(dirFile);
+  }
+
+  if (cleanPath.startsWith('blog/') && cleanPath !== 'blog/admin') {
+    const slug = cleanPath.replace(/^blog\//, '').trim().toLowerCase();
+    const localBlogs = getLocalBlogs();
+    const blog = localBlogs.find(b => {
+      const bSlug = (b.slug || '').toLowerCase().trim();
+      const bTitleSlug = (b.title || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+      const bId = String(b.id || b._id || '');
+      return bSlug === slug || bTitleSlug === slug || bId === slug;
+    });
+
+    if (blog) {
+      try {
+        let indexHtml = fs.readFileSync(path.join(distDir, 'index.html'), 'utf8');
+        const pageUrl = `https://vellkoerp.com/${cleanPath}`;
+        const title = (blog.seoTitle && blog.seoTitle.trim()) ? blog.seoTitle.trim() : `${blog.title} | Vellko ERP Blog`;
+        const cleanDesc = (blog.metaDesc && blog.metaDesc.trim())
+          ? blog.metaDesc.trim()
+          : (blog.excerpt ? blog.excerpt.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 160) : 'Read insightful ERP analysis on the Vellko ERP blog.');
+        const rawImg = blog.ogImg || blog.image || 'https://vellkoerp.com/assets/logo-bAy9mXr5.png';
+        const imgUrl = rawImg.startsWith('http') ? rawImg : `https://vellkoerp.com${rawImg.startsWith('/') ? '' : '/'}${rawImg}`;
+
+        indexHtml = indexHtml.replace(/<title>.*?<\/title>/is, `<title>${title.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</title>`);
+        indexHtml = indexHtml.replace(/<meta name="description" content=".*?"\s*\/?>/is, `<meta name="description" content="${cleanDesc.replace(/"/g, '&quot;')}" />`);
+        indexHtml = indexHtml.replace(/<link rel="canonical" href=".*?"\s*\/?>/is, `<link rel="canonical" href="${pageUrl}" />`);
+        indexHtml = indexHtml.replace(/<meta property="og:title" content=".*?"\s*\/?>/is, `<meta property="og:title" content="${title.replace(/"/g, '&quot;')}" />`);
+        indexHtml = indexHtml.replace(/<meta property="og:description" content=".*?"\s*\/?>/is, `<meta property="og:description" content="${cleanDesc.replace(/"/g, '&quot;')}" />`);
+        indexHtml = indexHtml.replace(/<meta property="og:url" content=".*?"\s*\/?>/is, `<meta property="og:url" content="${pageUrl}" />`);
+        indexHtml = indexHtml.replace(/<meta property="og:image" content=".*?"\s*\/?>/is, `<meta property="og:image" content="${imgUrl}" />`);
+        indexHtml = indexHtml.replace(/<meta property="og:type" content=".*?"\s*\/?>/is, `<meta property="og:type" content="article" />`);
+        indexHtml = indexHtml.replace(/<meta name="twitter:title" content=".*?"\s*\/?>/is, `<meta name="twitter:title" content="${title.replace(/"/g, '&quot;')}" />`);
+        indexHtml = indexHtml.replace(/<meta name="twitter:description" content=".*?"\s*\/?>/is, `<meta name="twitter:description" content="${cleanDesc.replace(/"/g, '&quot;')}" />`);
+        indexHtml = indexHtml.replace(/<meta name="twitter:image" content=".*?"\s*\/?>/is, `<meta name="twitter:image" content="${imgUrl}" />`);
+
+        const initScript = `<script>window.__INITIAL_BLOG__ = ${JSON.stringify(blog).replace(/</g, '\\u003c')};</script>\n`;
+        indexHtml = indexHtml.replace('</head>', `  ${initScript}</head>`);
+
+        return res.send(indexHtml);
+      } catch (err) {
+        console.error('Error rendering dynamic blog in server.cjs:', err.message);
+      }
+    }
   }
 
   if (cleanPath.startsWith('blog')) {

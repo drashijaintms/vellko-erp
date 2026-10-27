@@ -6,6 +6,7 @@ import ContactFormSection from '../components/common/ContactFormSection';
 import TableOfContents, { parseHeadingsWithAnchors } from '../components/TableOfContents';
 
 import { DEFAULT_BLOGS } from '../data/defaultBlogs';
+import { generateBlogSeo } from '../data/seoData';
 
 // Generate URL-friendly slug from blog title
 const toSlug = (title) =>
@@ -177,6 +178,74 @@ export default function Blog() {
         .catch(err => console.debug('View count error:', err));
     }
   }, [selectedBlog?._id]);
+
+  // Update document head, meta tags, and structured data when selected blog changes
+  useEffect(() => {
+    if (selectedBlog && typeof document !== 'undefined') {
+      const seo = generateBlogSeo(selectedBlog, window.location.pathname);
+      const head = document.head;
+
+      document.title = seo.title;
+
+      const setMeta = (attr, key, content) => {
+        if (!content) return;
+        let el = head.querySelector(`meta[${attr}="${key}"]`);
+        if (!el) {
+          el = document.createElement('meta');
+          el.setAttribute(attr, key);
+          head.appendChild(el);
+        }
+        el.setAttribute('content', content);
+      };
+
+      const setLink = (rel, href, extra = {}) => {
+        if (!href) return;
+        let sel = `link[rel="${rel}"]`;
+        if (extra.hreflang) sel += `[hreflang="${extra.hreflang}"]`;
+        let el = head.querySelector(sel);
+        if (!el) {
+          el = document.createElement('link');
+          el.setAttribute('rel', rel);
+          head.appendChild(el);
+        }
+        el.setAttribute('href', href);
+      };
+
+      setMeta('name', 'description', seo.description);
+      setMeta('name', 'keywords', seo.keywords);
+      setLink('canonical', seo.canonical);
+      setLink('alternate', seo.canonical, { hreflang: 'en' });
+      setLink('alternate', seo.canonical, { hreflang: 'x-default' });
+
+      setMeta('property', 'og:title', seo.ogTitle);
+      setMeta('property', 'og:description', seo.ogDescription);
+      setMeta('property', 'og:url', seo.canonical);
+      setMeta('property', 'og:image', seo.ogImage);
+      setMeta('property', 'og:type', 'article');
+      setMeta('property', 'og:site_name', 'Vellko ERP');
+      setMeta('property', 'og:locale', 'en_US');
+
+      setMeta('name', 'twitter:card', seo.twitterCard);
+      setMeta('name', 'twitter:title', seo.twitterTitle);
+      setMeta('name', 'twitter:description', seo.twitterDescription);
+      setMeta('name', 'twitter:image', seo.twitterImage);
+      setMeta('name', 'twitter:site', '@vellkoerp');
+
+      if (seo.schema) {
+        let script = head.querySelector('script[type="application/ld+json"]#seo-schema');
+        if (!script) {
+          script = document.createElement('script');
+          script.setAttribute('type', 'application/ld+json');
+          script.setAttribute('id', 'seo-schema');
+          head.appendChild(script);
+        }
+        script.textContent = JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": seo.schema
+        }, null, 2);
+      }
+    }
+  }, [selectedBlog]);
 
   // Navigate to /blog/:slug (using custom slug if set, otherwise fallback to title slug)
   const openBlog = (blog) => {

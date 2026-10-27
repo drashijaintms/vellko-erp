@@ -15,6 +15,16 @@ function slugify(text) {
     .replace(/^-+|-+$/g, '');
 }
 
+function escapeHtmlAttr(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
 function getBlogs() {
   const blogsPath = path.join(__dirname, '..', 'data', 'blogs.json');
   try {
@@ -47,10 +57,11 @@ async function runPrerender() {
   // Load seoData from source or bundled module
   let seoRoutes = {};
   let defaultSeo = {};
+  let seoModule = {};
   try {
     const seoDataPath = path.resolve(__dirname, '../src/data/seoData.js');
     // We can parse or import seoData from ssr module if exported, or import directly
-    const seoModule = await import('file:///' + seoDataPath.replace(/\\/g, '/'));
+    seoModule = await import('file:///' + seoDataPath.replace(/\\/g, '/'));
     seoRoutes = seoModule.seoRoutes || {};
     defaultSeo = seoModule.defaultSeo || {};
   } catch (e) {
@@ -111,6 +122,14 @@ async function runPrerender() {
       let keywords = defaultSeo.keywords || 'ERP software, cloud ERP, CRM software, HRMS payroll, inventory management';
       let image = DEFAULT_IMAGE;
       let schema = defaultSeo.schema || null;
+      let ogTitle = title;
+      let ogDesc = description;
+      let ogImg = image;
+      let twitterTitle = title;
+      let twitterDesc = description;
+      let twitterImg = image;
+      let twitterCard = 'summary_large_image';
+      let currentBlog = null;
 
       if (seoRoutes[normalizedPath]) {
         const entry = seoRoutes[normalizedPath];
@@ -119,20 +138,51 @@ async function runPrerender() {
         if (entry.keywords) keywords = entry.keywords;
         if (entry.image) image = entry.image;
         if (entry.schema) schema = entry.schema;
+        ogTitle = title;
+        ogDesc = description;
+        ogImg = image;
+        twitterTitle = title;
+        twitterDesc = description;
+        twitterImg = image;
       } else if (blogRouteMap.has(normalizedPath)) {
-        const b = blogRouteMap.get(normalizedPath);
-        title = b.seoTitle || b.title || `${normalizedPath.replace('/blog/', '').replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} | Vellko ERP Blog`;
-        description = b.metaDesc || (b.excerpt ? b.excerpt.replace(/<[^>]+>/g, '').substring(0, 160) : '') || `Read insightful ERP analysis on the Vellko ERP blog.`;
-        keywords = b.focusKeyword || 'ERP blog, business management, cloud ERP insights';
-        image = b.image ? (b.image.startsWith('http') ? b.image : `${BASE_URL}${b.image}`) : DEFAULT_IMAGE;
-        schema = b.rawSchema || {
-          "@context": "https://schema.org",
-          "@type": "BlogPosting",
-          "headline": b.title || title,
-          "image": image,
-          "datePublished": b.createdAt || b.date,
-          "url": pageUrl
-        };
+        currentBlog = blogRouteMap.get(normalizedPath);
+        if (seoModule.generateBlogSeo) {
+          const blogSeo = seoModule.generateBlogSeo(currentBlog, normalizedPath);
+          title = blogSeo.title;
+          description = blogSeo.description;
+          keywords = blogSeo.keywords;
+          image = blogSeo.image;
+          ogTitle = blogSeo.ogTitle;
+          ogDesc = blogSeo.ogDescription;
+          ogImg = blogSeo.ogImage;
+          twitterTitle = blogSeo.twitterTitle;
+          twitterDesc = blogSeo.twitterDescription;
+          twitterImg = blogSeo.twitterImage;
+          twitterCard = blogSeo.twitterCard;
+          schema = {
+            "@context": "https://schema.org",
+            "@graph": blogSeo.schema
+          };
+        } else {
+          title = currentBlog.seoTitle || currentBlog.title || `${normalizedPath.replace('/blog/', '').replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} | Vellko ERP Blog`;
+          description = currentBlog.metaDesc || (currentBlog.excerpt ? currentBlog.excerpt.replace(/<[^>]+>/g, '').substring(0, 160) : '') || `Read insightful ERP analysis on the Vellko ERP blog.`;
+          keywords = currentBlog.focusKeyword || 'ERP blog, business management, cloud ERP insights';
+          image = currentBlog.image ? (currentBlog.image.startsWith('http') ? currentBlog.image : `${BASE_URL}${currentBlog.image}`) : DEFAULT_IMAGE;
+          ogTitle = currentBlog.ogTitle || title;
+          ogDesc = currentBlog.ogDesc || description;
+          ogImg = currentBlog.ogImg || image;
+          twitterTitle = currentBlog.twitterTitle || title;
+          twitterDesc = currentBlog.twitterDesc || description;
+          twitterImg = image;
+          schema = {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": currentBlog.title || title,
+            "image": image,
+            "datePublished": currentBlog.createdAt || currentBlog.date,
+            "url": pageUrl
+          };
+        }
       }
 
       // Convert schema to string
@@ -150,16 +200,16 @@ async function runPrerender() {
       let pageHtml = template;
 
       // 1. Replace Title
-      pageHtml = pageHtml.replace(/<title>.*?<\/title>/is, `<title>${title}</title>`);
+      pageHtml = pageHtml.replace(/<title>.*?<\/title>/is, `<title>${escapeHtmlAttr(title)}</title>`);
 
       // 2. Replace Meta Description
-      pageHtml = pageHtml.replace(/<meta name="description" content=".*?"\s*\/?>/is, `<meta name="description" content="${description.replace(/"/g, '&quot;')}" />`);
+      pageHtml = pageHtml.replace(/<meta name="description" content=".*?"\s*\/?>/is, `<meta name="description" content="${escapeHtmlAttr(description)}" />`);
 
       // 3. Replace Meta Keywords
       if (pageHtml.includes('<meta name="keywords"')) {
-        pageHtml = pageHtml.replace(/<meta name="keywords" content=".*?"\s*\/?>/is, `<meta name="keywords" content="${keywords.replace(/"/g, '&quot;')}" />`);
+        pageHtml = pageHtml.replace(/<meta name="keywords" content=".*?"\s*\/?>/is, `<meta name="keywords" content="${escapeHtmlAttr(keywords)}" />`);
       } else {
-        pageHtml = pageHtml.replace('</head>', `  <meta name="keywords" content="${keywords.replace(/"/g, '&quot;')}" />\n</head>`);
+        pageHtml = pageHtml.replace('</head>', `  <meta name="keywords" content="${escapeHtmlAttr(keywords)}" />\n</head>`);
       }
 
       // 4. Replace Canonical Link
@@ -170,15 +220,19 @@ async function runPrerender() {
       pageHtml = pageHtml.replace(/<link rel="alternate" hreflang="x-default" href=".*?"\s*\/?>/is, `<link rel="alternate" hreflang="x-default" href="${pageUrl}" />`);
 
       // 6. Replace OpenGraph Tags
-      pageHtml = pageHtml.replace(/<meta property="og:title" content=".*?"\s*\/?>/is, `<meta property="og:title" content="${title.replace(/"/g, '&quot;')}" />`);
-      pageHtml = pageHtml.replace(/<meta property="og:description" content=".*?"\s*\/?>/is, `<meta property="og:description" content="${description.replace(/"/g, '&quot;')}" />`);
+      pageHtml = pageHtml.replace(/<meta property="og:title" content=".*?"\s*\/?>/is, `<meta property="og:title" content="${escapeHtmlAttr(ogTitle)}" />`);
+      pageHtml = pageHtml.replace(/<meta property="og:description" content=".*?"\s*\/?>/is, `<meta property="og:description" content="${escapeHtmlAttr(ogDesc)}" />`);
       pageHtml = pageHtml.replace(/<meta property="og:url" content=".*?"\s*\/?>/is, `<meta property="og:url" content="${pageUrl}" />`);
-      pageHtml = pageHtml.replace(/<meta property="og:image" content=".*?"\s*\/?>/is, `<meta property="og:image" content="${image}" />`);
+      pageHtml = pageHtml.replace(/<meta property="og:image" content=".*?"\s*\/?>/is, `<meta property="og:image" content="${escapeHtmlAttr(ogImg)}" />`);
+      if (normalizedPath.startsWith('/blog/') && normalizedPath !== '/blog') {
+        pageHtml = pageHtml.replace(/<meta property="og:type" content=".*?"\s*\/?>/is, `<meta property="og:type" content="article" />`);
+      }
 
       // 7. Replace Twitter Card Tags
-      pageHtml = pageHtml.replace(/<meta name="twitter:title" content=".*?"\s*\/?>/is, `<meta name="twitter:title" content="${title.replace(/"/g, '&quot;')}" />`);
-      pageHtml = pageHtml.replace(/<meta name="twitter:description" content=".*?"\s*\/?>/is, `<meta name="twitter:description" content="${description.replace(/"/g, '&quot;')}" />`);
-      pageHtml = pageHtml.replace(/<meta name="twitter:image" content=".*?"\s*\/?>/is, `<meta name="twitter:image" content="${image}" />`);
+      pageHtml = pageHtml.replace(/<meta name="twitter:card" content=".*?"\s*\/?>/is, `<meta name="twitter:card" content="${escapeHtmlAttr(twitterCard)}" />`);
+      pageHtml = pageHtml.replace(/<meta name="twitter:title" content=".*?"\s*\/?>/is, `<meta name="twitter:title" content="${escapeHtmlAttr(twitterTitle)}" />`);
+      pageHtml = pageHtml.replace(/<meta name="twitter:description" content=".*?"\s*\/?>/is, `<meta name="twitter:description" content="${escapeHtmlAttr(twitterDesc)}" />`);
+      pageHtml = pageHtml.replace(/<meta name="twitter:image" content=".*?"\s*\/?>/is, `<meta name="twitter:image" content="${escapeHtmlAttr(twitterImg)}" />`);
 
       // 8. Replace / Inject JSON-LD Schema
       if (schemaScript) {
@@ -187,6 +241,12 @@ async function runPrerender() {
         } else {
           pageHtml = pageHtml.replace('</head>', `  ${schemaScript}\n</head>`);
         }
+      }
+
+      // 8b. For blog detail routes, inject initial blog JSON state before </head>
+      if (currentBlog) {
+        const blogStateScript = `<script>window.__INITIAL_BLOG__ = ${JSON.stringify(currentBlog).replace(/</g, '\\u003c')};</script>\n`;
+        pageHtml = pageHtml.replace('</head>', `  ${blogStateScript}</head>`);
       }
 
       // 9. Inject Pre-rendered App Content into <div id="root">

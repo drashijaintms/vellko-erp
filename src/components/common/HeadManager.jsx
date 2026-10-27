@@ -68,7 +68,7 @@ export default function HeadManager() {
       return el;
     };
 
-    // Helper: inject JSON-LD Schema (handles both raw JS objects/arrays and raw <script> HTML strings)
+    // Helper: inject JSON-LD Schema (handles arrays as @graph, single objects, and raw strings)
     const setJsonLd = (schemaInput) => {
       if (!schemaInput) return;
       let script = head.querySelector('script[type="application/ld+json"]#seo-schema');
@@ -80,12 +80,16 @@ export default function HeadManager() {
       }
 
       if (typeof schemaInput === 'string') {
-        // If user pasted `<script>...</script>`, extract inner JSON content
         const cleaned = schemaInput
           .replace(/<script[^>]*>/gi, '')
           .replace(/<\/script>/gi, '')
           .trim();
         script.textContent = cleaned;
+      } else if (Array.isArray(schemaInput)) {
+        script.textContent = JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": schemaInput
+        }, null, 2);
       } else {
         script.textContent = JSON.stringify(schemaInput, null, 2);
       }
@@ -104,11 +108,17 @@ export default function HeadManager() {
     // 3. X-UA-Compatible (Optional)
     setMeta('http-equiv', 'X-UA-Compatible', 'IE=edge');
 
-    // 4. Title Tag (Single title used for page tab, OG, Twitter)
-    document.title = seo.title;
+    const isBlogRoute = location.pathname.startsWith('/blog/') && !location.pathname.startsWith('/blog/admin');
 
-    // 5. Meta Description (Single description used for search, OG, Twitter)
-    setMeta('name', 'description', seo.description);
+    // 4. Title Tag
+    if (seo.title) {
+      document.title = seo.title;
+    }
+
+    // 5. Meta Description
+    if (seo.description) {
+      setMeta('name', 'description', seo.description);
+    }
 
     // 6. Meta Keywords (Optional)
     setMeta('name', 'keywords', seo.keywords);
@@ -123,20 +133,20 @@ export default function HeadManager() {
     setLink('alternate', seo.url, { hreflang: 'en' });
     setLink('alternate', seo.url, { hreflang: 'x-default' });
 
-    // 10. Open Graph (OG) Tags (mirrored from single title, desc, image, url)
-    setMeta('property', 'og:title', seo.title);
-    setMeta('property', 'og:description', seo.description);
+    // 10. Open Graph (OG) Tags
+    setMeta('property', 'og:title', seo.ogTitle || seo.title);
+    setMeta('property', 'og:description', seo.ogDescription || seo.description);
     setMeta('property', 'og:url', seo.url);
-    setMeta('property', 'og:image', seo.image);
-    setMeta('property', 'og:type', 'website');
+    setMeta('property', 'og:image', seo.ogImage || seo.image);
+    setMeta('property', 'og:type', isBlogRoute ? 'article' : 'website');
     setMeta('property', 'og:site_name', 'Vellko ERP');
     setMeta('property', 'og:locale', 'en_US');
 
-    // 11. Twitter Card Tags (mirrored from single title, desc, image)
-    setMeta('name', 'twitter:card', 'summary_large_image');
-    setMeta('name', 'twitter:title', seo.title);
-    setMeta('name', 'twitter:description', seo.description);
-    setMeta('name', 'twitter:image', seo.image);
+    // 11. Twitter Card Tags
+    setMeta('name', 'twitter:card', seo.twitterCard || 'summary_large_image');
+    setMeta('name', 'twitter:title', seo.twitterTitle || seo.title);
+    setMeta('name', 'twitter:description', seo.twitterDescription || seo.description);
+    setMeta('name', 'twitter:image', seo.twitterImage || seo.image);
     setMeta('name', 'twitter:site', '@vellkoerp');
 
     // 12. Favicon / Icons

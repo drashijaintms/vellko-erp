@@ -178,6 +178,7 @@ function getBlogs($activeOnly = true) {
             error_log('MySQL select error: ' . $e->getMessage());
         }
     }
+    return getBlogsFromJson();
 }
 
 
