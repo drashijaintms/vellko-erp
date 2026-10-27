@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Clock, Calendar, ArrowLeft } from 'lucide-react';
 import featuredBlogImg from '../assets/images/blog-featured.jpg';
 import ContactFormSection from '../components/common/ContactFormSection';
@@ -11,6 +11,12 @@ import { generateBlogSeo } from '../data/seoData';
 // Generate URL-friendly slug from blog title
 const toSlug = (title) =>
   (title || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+
+const getBlogUrl = (b) => {
+  if (!b) return '/blog';
+  const bSlug = (b.slug || toSlug(b.title)).replace(/^\/+|\/+$/g, '');
+  return `/blog/${bSlug}`;
+};
 
 const categoriesList = [
   "Vellko Call Recording",
@@ -345,6 +351,15 @@ export default function Blog() {
 
     const recentPosts = blogs.filter(b => b._id !== selectedBlog._id).slice(0, 5);
     const { headings, modifiedHtml } = parseHeadingsWithAnchors(selectedBlog.excerpt || '');
+    const cleanedHtml = useMemo(() => {
+      if (!modifiedHtml) return '';
+      return modifiedHtml
+        .replace(/href="\.\.\/([^"]+)"/g, 'href="/$1"')
+        .replace(/href="([^"\/#:]+)"/g, (m, slug) => {
+          if (slug.startsWith('mailto:') || slug.startsWith('tel:') || slug.startsWith('#')) return m;
+          return `href="/blog/${slug}"`;
+        });
+    }, [modifiedHtml]);
 
     return (
       <div className="blog-page-wrapper">
@@ -382,7 +397,7 @@ export default function Blog() {
                   {selectedBlog.excerpt ? (
                     <div
                       className="blog-body-p"
-                      dangerouslySetInnerHTML={{ __html: modifiedHtml }}
+                      dangerouslySetInnerHTML={{ __html: cleanedHtml }}
                       style={{ lineHeight: '1.8', color: '#374151' }}
                     />
                   ) : (
@@ -429,11 +444,16 @@ export default function Blog() {
                   <h4 className="widget-title">Recent Articles</h4>
                   <div className="sidebar-posts-list">
                     {recentPosts.map((post) => (
-                      <div key={post._id} onClick={() => openBlog(post)} className="sidebar-post-item">
+                      <Link 
+                        key={post._id} 
+                        to={getBlogUrl(post)} 
+                        className="sidebar-post-item"
+                        style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
+                      >
                         <span className="sidebar-post-category">{post.category}</span>
                         <h5 className="sidebar-post-title">{post.title}</h5>
                         <span className="sidebar-post-date">{post.date}</span>
-                      </div>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -468,10 +488,10 @@ export default function Blog() {
             <div className="blog-content-grid">
               {/* Left Column: Featured Post Card */}
               {featuredBlog && (
-                <div 
+                <Link 
+                  to={getBlogUrl(featuredBlog)}
                   className="blog-featured-card" 
-                  onClick={() => openBlog(featuredBlog)}
-                  style={{ cursor: 'pointer' }}
+                  style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
                 >
                   <div className="blog-featured-image-wrapper">
                     <img
@@ -493,29 +513,27 @@ export default function Blog() {
                     {featuredBlog.title}
                   </h2>
 
-
-
                   <div className="blog-featured-date-row">
                     <Calendar size={16} className="blog-meta-icon" />
                     {featuredBlog.date}
                   </div>
-                </div>
+                </Link>
               )}
 
               {/* Right Column: Secondary Text Posts */}
               <div className="blog-secondary-list">
                 {displaySecondaryBlogs.length > 0 ? (
                   displaySecondaryBlogs.map((blog, idx) => (
-                    <div 
+                    <Link 
                       key={blog._id || idx} 
+                      to={getBlogUrl(blog)}
                       className="blog-secondary-item"
-                      onClick={() => openBlog(blog)}
-                      style={{ cursor: 'pointer' }}
+                      style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
                     >
                       <p className="blog-secondary-text">
                         {blog.title}
                       </p>
-                    </div>
+                    </Link>
                   ))
                 ) : (
                   <div className="blog-secondary-empty">
@@ -544,11 +562,11 @@ export default function Blog() {
             <h2 className="blog-title-with-bar" style={{ marginBottom: '2.5rem' }}>Latest Blogs</h2>
             <div className="blog-latest-grid">
               {latestBlogs.map((blog, idx) => (
-                <div 
+                <Link 
                   key={blog._id || idx} 
+                  to={getBlogUrl(blog)}
                   className="blog-card"
-                  onClick={() => openBlog(blog)}
-                  style={{ cursor: 'pointer' }}
+                  style={{ textDecoration: 'none', color: 'inherit', display: 'flex' }}
                 >
                   <div className="blog-card-image-wrapper">
                     <img
@@ -569,7 +587,7 @@ export default function Blog() {
                     <Calendar size={14} className="blog-meta-icon" />
                     {blog.date}
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
