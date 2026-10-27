@@ -211,6 +211,7 @@ export default function Blog() {
   // Update document head, meta tags, and structured data when selected blog changes
   useEffect(() => {
     if (selectedBlog && typeof document !== 'undefined') {
+      window.__INITIAL_BLOG__ = selectedBlog;
       const seo = generateBlogSeo(selectedBlog, window.location.pathname);
       const head = document.head;
 

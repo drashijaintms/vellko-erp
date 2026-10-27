@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { getSeoForPath } from '../../data/seoData';
+import { getSeoForPath, generateBlogSeo, findBlogInCollection } from '../../data/seoData';
 
 /**
  * HeadManager Component
@@ -31,7 +31,6 @@ export default function HeadManager() {
   const location = useLocation();
 
   useEffect(() => {
-    const seo = getSeoForPath(location.pathname);
     const head = document.head;
 
     // Helper: set or update meta tag by attribute (name, property, http-equiv)
@@ -95,6 +94,43 @@ export default function HeadManager() {
       }
     };
 
+    const applySeo = (seo, isBlog) => {
+      if (!seo) return;
+      if (seo.title) {
+        document.title = seo.title;
+      }
+      if (seo.description) {
+        setMeta('name', 'description', seo.description);
+      }
+      if (seo.keywords) {
+        setMeta('name', 'keywords', seo.keywords);
+      }
+
+      const targetUrl = seo.canonical || seo.url;
+      setMeta('name', 'robots', 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1');
+      setLink('canonical', targetUrl);
+      setLink('alternate', targetUrl, { hreflang: 'en' });
+      setLink('alternate', targetUrl, { hreflang: 'x-default' });
+
+      setMeta('property', 'og:title', seo.ogTitle || seo.title);
+      setMeta('property', 'og:description', seo.ogDescription || seo.description);
+      setMeta('property', 'og:url', targetUrl);
+      setMeta('property', 'og:image', seo.ogImage || seo.image);
+      setMeta('property', 'og:type', isBlog ? 'article' : 'website');
+      setMeta('property', 'og:site_name', 'Vellko ERP');
+      setMeta('property', 'og:locale', 'en_US');
+
+      setMeta('name', 'twitter:card', seo.twitterCard || 'summary_large_image');
+      setMeta('name', 'twitter:title', seo.twitterTitle || seo.title);
+      setMeta('name', 'twitter:description', seo.twitterDescription || seo.description);
+      setMeta('name', 'twitter:image', seo.twitterImage || seo.image);
+      setMeta('name', 'twitter:site', '@vellkoerp');
+
+      if (seo.schema) {
+        setJsonLd(seo.schema);
+      }
+    };
+
     // 1. Charset
     if (!head.querySelector('meta[charset]')) {
       const charset = document.createElement('meta');
@@ -109,50 +145,28 @@ export default function HeadManager() {
     setMeta('http-equiv', 'X-UA-Compatible', 'IE=edge');
 
     const isBlogRoute = location.pathname.startsWith('/blog/') && !location.pathname.startsWith('/blog/admin');
+    const seo = getSeoForPath(location.pathname);
 
-    // On dynamic blog post routes, never overwrite server-rendered or post-specific head tags with empty/placeholder values
+    // Apply SEO immediately for current path
+    applySeo(seo, isBlogRoute);
+
+    // If dynamic blog route and placeholder was returned, fetch fresh blog in background to update head
     if (isBlogRoute && (seo.isBlogPlaceholder || !seo.title)) {
-      return;
+      const slug = location.pathname.replace('/blog/', '').replace(/\/+$/, '').trim();
+      fetch('/api/blogs?status=Published&active=1')
+        .then(r => r.json())
+        .then(data => {
+          if (Array.isArray(data)) {
+            try { localStorage.setItem('vellko_cached_blogs', JSON.stringify(data)); } catch (e) {}
+            const found = findBlogInCollection(slug, data);
+            if (found) {
+              const freshSeo = generateBlogSeo(found, location.pathname);
+              applySeo(freshSeo, true);
+            }
+          }
+        })
+        .catch(err => console.debug('Async blog SEO fetch failed:', err));
     }
-
-    // 4. Title Tag
-    if (seo.title) {
-      document.title = seo.title;
-    }
-
-    // 5. Meta Description
-    if (seo.description) {
-      setMeta('name', 'description', seo.description);
-    }
-
-    // 6. Meta Keywords (Optional)
-    setMeta('name', 'keywords', seo.keywords);
-
-    // 7. Robots Meta Tag
-    setMeta('name', 'robots', 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1');
-
-    // 8. Canonical Tag (Matching exact page URL)
-    setLink('canonical', seo.url);
-
-    // 9. Hreflang Tags (Matching exact page URL)
-    setLink('alternate', seo.url, { hreflang: 'en' });
-    setLink('alternate', seo.url, { hreflang: 'x-default' });
-
-    // 10. Open Graph (OG) Tags
-    setMeta('property', 'og:title', seo.ogTitle || seo.title);
-    setMeta('property', 'og:description', seo.ogDescription || seo.description);
-    setMeta('property', 'og:url', seo.url);
-    setMeta('property', 'og:image', seo.ogImage || seo.image);
-    setMeta('property', 'og:type', isBlogRoute ? 'article' : 'website');
-    setMeta('property', 'og:site_name', 'Vellko ERP');
-    setMeta('property', 'og:locale', 'en_US');
-
-    // 11. Twitter Card Tags
-    setMeta('name', 'twitter:card', seo.twitterCard || 'summary_large_image');
-    setMeta('name', 'twitter:title', seo.twitterTitle || seo.title);
-    setMeta('name', 'twitter:description', seo.twitterDescription || seo.description);
-    setMeta('name', 'twitter:image', seo.twitterImage || seo.image);
-    setMeta('name', 'twitter:site', '@vellkoerp');
 
     // 12. Favicon / Icons
     setLink('icon', '/favicon.png', { type: 'image/png' });
@@ -172,11 +186,6 @@ export default function HeadManager() {
     // 16. DNS Prefetch Tags
     setLink('dns-prefetch', 'https://fonts.googleapis.com');
     setLink('dns-prefetch', 'https://fonts.gstatic.com');
-
-    // 17. Schema Markup (JSON-LD)
-    if (seo.schema) {
-      setJsonLd(seo.schema);
-    }
 
   }, [location.pathname]);
 

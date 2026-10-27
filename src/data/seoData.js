@@ -18,6 +18,8 @@
  * ==============================================================================
  */
 
+import { DEFAULT_BLOGS } from './defaultBlogs.js';
+
 export const BASE_URL = 'https://vellkoerp.com';
 export const DEFAULT_IMAGE = `${BASE_URL}/assets/logo.png`;
 
@@ -3192,6 +3194,27 @@ export function generateBlogSeo(blog, pathname) {
   };
 }
 
+export function toCleanSlug(str) {
+  return (str || '')
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+export function findBlogInCollection(slug, collection) {
+  if (!slug || !Array.isArray(collection) || collection.length === 0) return null;
+  const target = toCleanSlug(decodeURIComponent(slug));
+  return collection.find(b => {
+    if (!b) return false;
+    const bSlug = toCleanSlug(b.slug);
+    const bTitleSlug = toCleanSlug(b.title);
+    const bId = String(b.id || b._id || '').trim();
+    return (bSlug && bSlug === target) || (bTitleSlug && bTitleSlug === target) || bId === slug || bId === target;
+  }) || null;
+}
+
 /**
  * Resolver function:
  * Takes the current URL path and returns clean, unified SEO metadata.
@@ -3199,40 +3222,51 @@ export function generateBlogSeo(blog, pathname) {
  * and sets canonical and hreflangs to the exact current URL!
  */
 export function getSeoForPath(pathname, blogData = null) {
-  const normalizedPath = (!pathname || pathname === '/') ? '/' : pathname.replace(/\/$/, '');
+  const normalizedPath = (!pathname || pathname === '/') ? '/' : pathname.replace(/\/+$/, '');
   const pageUrl = `${BASE_URL}${normalizedPath === '/' ? '/' : normalizedPath}`;
 
   if (blogData) {
     return generateBlogSeo(blogData, normalizedPath);
   }
 
-  // If this is a blog route and blogData was not passed directly, check window or cache if in browser
+  // If this is a dynamic blog route (/blog/:slug) and not /blog/admin
   if (normalizedPath.startsWith('/blog/') && normalizedPath !== '/blog/admin') {
-    const slug = normalizedPath.replace('/blog/', '').trim();
-    if (typeof window !== 'undefined') {
-      if (window.__INITIAL_BLOG__ && (window.__INITIAL_BLOG__.slug === slug || String(window.__INITIAL_BLOG__.id) === slug || String(window.__INITIAL_BLOG__._id) === slug)) {
-        return generateBlogSeo(window.__INITIAL_BLOG__, normalizedPath);
+    const rawSlug = normalizedPath.replace('/blog/', '').trim();
+
+    // 1. Check window.__INITIAL_BLOG__ if active in browser
+    if (typeof window !== 'undefined' && window.__INITIAL_BLOG__) {
+      const match = findBlogInCollection(rawSlug, [window.__INITIAL_BLOG__]);
+      if (match) {
+        return generateBlogSeo(match, normalizedPath);
       }
+    }
+
+    // 2. Check localStorage cache if active in browser
+    if (typeof window !== 'undefined') {
       try {
         const cached = localStorage.getItem('vellko_cached_blogs');
         if (cached) {
           const list = JSON.parse(cached);
-          if (Array.isArray(list)) {
-            const found = list.find(b => (b.slug && b.slug === slug) || String(b.id) === slug || String(b._id) === slug);
-            if (found) {
-              return generateBlogSeo(found, normalizedPath);
-            }
+          const match = findBlogInCollection(rawSlug, list);
+          if (match) {
+            return generateBlogSeo(match, normalizedPath);
           }
         }
       } catch (e) {}
     }
 
-    // Unresolved blog route: DO NOT return generic placeholder description
-    // that would overwrite server-rendered or post-specific metadata!
+    // 3. Check DEFAULT_BLOGS fallback collection
+    const defaultMatch = findBlogInCollection(rawSlug, DEFAULT_BLOGS);
+    if (defaultMatch) {
+      return generateBlogSeo(defaultMatch, normalizedPath);
+    }
+
+    // 4. For unresolved dynamic blog route (e.g. freshly created blog), construct clean metadata
+    const humanTitle = rawSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
     return {
-      title: null,
-      description: null,
-      keywords: null,
+      title: `${humanTitle} | Vellko ERP Blog`,
+      description: `Read insightful ERP analysis on the Vellko ERP blog.`,
+      keywords: 'ERP software, cloud ERP, CRM software, HRMS payroll, inventory management, business management software, Vellko ERP',
       image: DEFAULT_IMAGE,
       url: pageUrl,
       canonical: pageUrl,

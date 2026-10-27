@@ -264,6 +264,13 @@ async function runPrerender() {
         if (!fs.existsSync(directHtmlDir)) fs.mkdirSync(directHtmlDir, { recursive: true });
         fs.writeFileSync(directHtmlPath, pageHtml, 'utf8');
 
+        // For blog root, also ensure dist/blog/index.html is created so web servers serving the physical directory get the fresh page
+        if (cleanRoute === 'blog') {
+          const blogDir = path.resolve(__dirname, '../dist/blog');
+          if (!fs.existsSync(blogDir)) fs.mkdirSync(blogDir, { recursive: true });
+          fs.writeFileSync(path.join(blogDir, 'index.html'), pageHtml, 'utf8');
+        }
+
         // Remove legacy directory if it exists to avoid web servers (Apache/LiteSpeed) issuing 301 trailing slash redirects
         const legacyDirPath = path.resolve(__dirname, `../dist/${cleanRoute}`);
         if (fs.existsSync(legacyDirPath) && fs.statSync(legacyDirPath).isDirectory() && cleanRoute !== 'blog') {

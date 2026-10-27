@@ -29,6 +29,11 @@ Options -Indexes -MultiViews
     RewriteRule ^api/categories/?(.*)$ api/categories.php?path=$1 [L,QSA]
     RewriteRule ^api/contact/?(.*)$ api/contact.php?path=$1 [L,QSA]
 
+    # Special routes: Admin, Blog listing, and Blog single post handler (prioritize before directory check)
+    RewriteRule ^blog/admin(/.*)?$ index.html [L]
+    RewriteRule ^blog/?$ blog.html [L]
+    RewriteRule ^blog/([^/]+)/?$ blog.php?slug=$1 [L,QSA]
+
     # 5. Allow existing physical files and directories directly
     RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_URI} -f [OR]
     RewriteCond %{REQUEST_FILENAME} -f [OR]
@@ -42,12 +47,7 @@ Options -Indexes -MultiViews
     RewriteCond %{DOCUMENT_ROOT}/$1.html -f
     RewriteRule ^([^/]+)$ $1.html [L]
 
-    # 7. Dynamic Blog Handler & Admin SPA Routes (prioritize dynamic blog handler)
-    RewriteRule ^blog/admin(/.*)?$ index.html [L]
-    RewriteRule ^blog/([^/]+)/?$ blog.php?slug=$1 [L,QSA]
-    RewriteRule ^blog/?$ blog.html [L]
-
-    # 8. Serve Pre-Rendered HTML for nested clean URLs (if any other nested routes exist)
+    # 7. Serve Pre-Rendered HTML for nested clean URLs (if any other nested routes exist)
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME}.html -f [OR]
