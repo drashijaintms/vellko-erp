@@ -1,13 +1,23 @@
 ---
 deployment:
   tasks:
-    - /bin/cp -R dist/assets /home/qqoophoh/vellkoerp.com/
-    - /bin/cp -R dist/api /home/qqoophoh/vellkoerp.com/
-    - /bin/cp -R dist/tinymce /home/qqoophoh/vellkoerp.com/
-    - /bin/cp -R dist/blog /home/qqoophoh/vellkoerp.com/
-    - /bin/cp -f dist/*.html /home/qqoophoh/vellkoerp.com/
-    - /bin/cp -f dist/blog.php /home/qqoophoh/vellkoerp.com/blog.php
-    - /bin/mkdir -p /home/qqoophoh/vellkoerp.com/data
-    - /bin/cp -f dist/data/blogs.json /home/qqoophoh/vellkoerp.com/data/blogs.json
-    - /bin/cp -f dist/sitemap.xml dist/robots.txt dist/site.webmanifest dist/favicon.* dist/icons.svg /home/qqoophoh/vellkoerp.com/
-    - /bin/cp -f dist/.htaccess /home/qqoophoh/vellkoerp.com/.htaccess
+    - /bin/cp -R dist/assets /home/qqoophoh/vellkoerp.com/ || true
+    - /bin/cp -R dist/api /home/qqoophoh/vellkoerp.com/ || true
+    - /bin/cp -R dist/tinymce /home/qqoophoh/vellkoerp.com/ || true
+    - /bin/cp -R dist/blog /home/qqoophoh/vellkoerp.com/ || true
+    - /bin/cp -f dist/*.html /home/qqoophoh/vellkoerp.com/ || true
+    - /bin/cp -f dist/blog.php /home/qqoophoh/vellkoerp.com/blog.php || true
+    - mkdir -p /home/qqoophoh/vellkoerp.com/data || true
+    - /bin/cp -f dist/data/blogs.json /home/qqoophoh/vellkoerp.com/data/blogs.json || true
+    - /bin/cp -f dist/sitemap.xml dist/robots.txt dist/site.webmanifest dist/favicon.* dist/icons.svg /home/qqoophoh/vellkoerp.com/ || true
+    - /bin/cp -f dist/.htaccess /home/qqoophoh/vellkoerp.com/.htaccess || true
+    - /bin/cp -R dist/assets /home/qqoophoh/public_html/ || true
+    - /bin/cp -R dist/api /home/qqoophoh/public_html/ || true
+    - /bin/cp -R dist/tinymce /home/qqoophoh/public_html/ || true
+    - /bin/cp -R dist/blog /home/qqoophoh/public_html/ || true
+    - /bin/cp -f dist/*.html /home/qqoophoh/public_html/ || true
+    - /bin/cp -f dist/blog.php /home/qqoophoh/public_html/blog.php || true
+    - mkdir -p /home/qqoophoh/public_html/data || true
+    - /bin/cp -f dist/data/blogs.json /home/qqoophoh/public_html/data/blogs.json || true
+    - /bin/cp -f dist/sitemap.xml dist/robots.txt dist/site.webmanifest dist/favicon.* dist/icons.svg /home/qqoophoh/public_html/ || true
+    - /bin/cp -f dist/.htaccess /home/qqoophoh/public_html/.htaccess || true
