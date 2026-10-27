@@ -18,6 +18,16 @@ const getBlogUrl = (b) => {
   return `/blog/${bSlug}`;
 };
 
+const normalizeArticleHtml = (html) => {
+  if (!html) return '';
+  return html
+    .replace(/href="\.\.\/([^"]+)"/g, 'href="/$1"')
+    .replace(/href="([^"\/#:]+)"/g, (m, slug) => {
+      if (slug.startsWith('mailto:') || slug.startsWith('tel:') || slug.startsWith('#') || slug.startsWith('http')) return m;
+      return `href="/blog/${slug}"`;
+    });
+};
+
 const categoriesList = [
   "Vellko Call Recording",
   "ERP Modules",
@@ -352,15 +362,7 @@ export default function Blog() {
 
     const recentPosts = blogs.filter(b => b._id !== selectedBlog._id).slice(0, 5);
     const { headings, modifiedHtml } = parseHeadingsWithAnchors(selectedBlog.excerpt || '');
-    const cleanedHtml = useMemo(() => {
-      if (!modifiedHtml) return '';
-      return modifiedHtml
-        .replace(/href="\.\.\/([^"]+)"/g, 'href="/$1"')
-        .replace(/href="([^"\/#:]+)"/g, (m, slug) => {
-          if (slug.startsWith('mailto:') || slug.startsWith('tel:') || slug.startsWith('#')) return m;
-          return `href="/blog/${slug}"`;
-        });
-    }, [modifiedHtml]);
+    const cleanedHtml = normalizeArticleHtml(modifiedHtml);
 
     return (
       <div className="blog-page-wrapper">
