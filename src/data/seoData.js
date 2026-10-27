@@ -3226,18 +3226,22 @@ export function getSeoForPath(pathname, blogData = null) {
         }
       } catch (e) {}
     }
+
+    // Unresolved blog route: DO NOT return generic placeholder description
+    // that would overwrite server-rendered or post-specific metadata!
+    return {
+      title: null,
+      description: null,
+      keywords: null,
+      image: DEFAULT_IMAGE,
+      url: pageUrl,
+      canonical: pageUrl,
+      schema: null,
+      isBlogPlaceholder: true
+    };
   }
 
-  const entry = seoRoutes[normalizedPath] || (normalizedPath.startsWith('/blog/') ? {
-    title: `${normalizedPath.replace('/blog/', '').replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} | Vellko ERP Blog`,
-    description: `Read insightful ERP analysis and practical guides on the Vellko ERP blog.`,
-    schema: {
-      "@context": "https://schema.org",
-      "@type": "BlogPosting",
-      "headline": normalizedPath.replace('/blog/', '').replace(/-/g, ' '),
-      "url": pageUrl
-    }
-  } : defaultSeo);
+  const entry = seoRoutes[normalizedPath] || defaultSeo;
 
   const title = entry.title || defaultSeo.title;
   const description = entry.description || defaultSeo.description;

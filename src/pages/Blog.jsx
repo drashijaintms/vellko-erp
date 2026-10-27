@@ -31,6 +31,20 @@ export default function Blog() {
 
   const [blogs, setBlogs] = useState(() => {
     try {
+      if (typeof window !== 'undefined' && window.__INITIAL_BLOG__) {
+        const init = window.__INITIAL_BLOG__;
+        const cached = localStorage.getItem('vellko_cached_blogs');
+        if (cached !== null) {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed)) {
+            const idx = parsed.findIndex(b => (b.slug && b.slug === init.slug) || String(b.id) === String(init.id));
+            if (idx >= 0) parsed[idx] = init;
+            else parsed.unshift(init);
+            return parsed;
+          }
+        }
+        return [init, ...DEFAULT_BLOGS];
+      }
       const cached = localStorage.getItem('vellko_cached_blogs');
       if (cached !== null) {
         const parsed = JSON.parse(cached);
@@ -152,6 +166,15 @@ export default function Blog() {
 
   const selectedBlog = useMemo(() => {
     if (!cleanSlug) return null;
+    if (typeof window !== 'undefined' && window.__INITIAL_BLOG__) {
+      const init = window.__INITIAL_BLOG__;
+      const initSlug = (init.slug || '').toLowerCase().trim();
+      const initTitleSlug = toSlug(init.title);
+      const initId = String(init.id || init._id || '');
+      if (initSlug === cleanSlug || initTitleSlug === cleanSlug || initId === slug || initId === cleanSlug) {
+        return init;
+      }
+    }
     return blogs.find(b => {
       const bSlug = (b.slug || '').toLowerCase().trim();
       const bTitleSlug = toSlug(b.title);

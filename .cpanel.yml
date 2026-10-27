@@ -7,5 +7,7 @@ deployment:
     - /bin/cp -R dist/blog /home/qqoophoh/vellkoerp.com/
     - /bin/cp -f dist/*.html /home/qqoophoh/vellkoerp.com/
     - /bin/cp -f dist/blog.php /home/qqoophoh/vellkoerp.com/blog.php
+    - /bin/mkdir -p /home/qqoophoh/vellkoerp.com/data
+    - /bin/cp -f dist/data/blogs.json /home/qqoophoh/vellkoerp.com/data/blogs.json
     - /bin/cp -f dist/sitemap.xml dist/robots.txt dist/site.webmanifest dist/favicon.* dist/icons.svg /home/qqoophoh/vellkoerp.com/
     - /bin/cp -f dist/.htaccess /home/qqoophoh/vellkoerp.com/.htaccess

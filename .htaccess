@@ -42,16 +42,20 @@ Options -Indexes -MultiViews
     RewriteCond %{DOCUMENT_ROOT}/$1.html -f
     RewriteRule ^([^/]+)$ $1.html [L]
 
-    # 7. Serve Pre-Rendered HTML for nested clean URLs (e.g. /blog/slug -> blog/slug.html)
+    # 7. Dynamic Blog Handler & Admin SPA Routes (prioritize dynamic blog handler)
+    RewriteRule ^blog/admin(/.*)?$ index.html [L]
+    RewriteRule ^blog/([^/]+)/?$ blog.php?slug=$1 [L,QSA]
+    RewriteRule ^blog/?$ blog.html [L]
+
+    # 8. Serve Pre-Rendered HTML for nested clean URLs (if any other nested routes exist)
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME}.html -f [OR]
     RewriteCond %{DOCUMENT_ROOT}/$1/$2.html -f
     RewriteRule ^([^/]+)/([^/]+)$ $1/$2.html [L]
 
-    # 8. Dynamic Blog Handler & Admin SPA Routes
-    RewriteRule ^blog/admin(/.*)?$ index.html [L]
-    RewriteRule ^blog/([^/]+)/?$ blog.php?slug=$1 [L,QSA]
-    RewriteRule ^blog(/.*)?$ index.html [L]
+    # Fallback to index.html for SPA client-side routing
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.html [L]
 </IfModule>
-

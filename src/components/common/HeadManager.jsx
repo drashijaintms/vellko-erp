@@ -110,6 +110,11 @@ export default function HeadManager() {
 
     const isBlogRoute = location.pathname.startsWith('/blog/') && !location.pathname.startsWith('/blog/admin');
 
+    // On dynamic blog post routes, never overwrite server-rendered or post-specific head tags with empty/placeholder values
+    if (isBlogRoute && (seo.isBlogPlaceholder || !seo.title)) {
+      return;
+    }
+
     // 4. Title Tag
     if (seo.title) {
       document.title = seo.title;
