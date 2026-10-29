@@ -187,6 +187,13 @@ export default function HeadManager() {
     setLink('dns-prefetch', 'https://fonts.googleapis.com');
     setLink('dns-prefetch', 'https://fonts.gstatic.com');
 
+    // 19. Analytics SPA Page View Tracking
+    if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+      window.gtag('config', 'G-R8EQXGZFYM', {
+        page_path: location.pathname + location.search
+      });
+    }
+
   }, [location.pathname]);
 
   return null;

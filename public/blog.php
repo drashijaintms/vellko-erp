@@ -408,10 +408,14 @@ if (strpos($templateHtml, 'id="seo-schema"') !== false) {
     $templateHtml = str_replace('</head>', "  {$schemaScript}\n</head>", $templateHtml);
 }
 
-// Inject Initial Blog JSON for Seamless Client Hydration
+// Inject Initial Blog JSON for Seamless Client Hydration (before Google tag / </head>)
 $blogJsonSafe = str_replace(['<', '>'], ['\\u003c', '\\u003e'], json_encode($blog, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 $initScript = "<script>window.__INITIAL_BLOG__ = {$blogJsonSafe};</script>\n";
-$templateHtml = str_replace('</head>', "  {$initScript}</head>", $templateHtml);
+if (strpos($templateHtml, '<!-- Google tag (gtag.js) -->') !== false) {
+    $templateHtml = str_replace('<!-- Google tag (gtag.js) -->', "{$initScript}  <!-- Google tag (gtag.js) -->", $templateHtml);
+} else {
+    $templateHtml = str_replace('</head>', "  {$initScript}</head>", $templateHtml);
+}
 
 // 7. Render Output
 echo $templateHtml;

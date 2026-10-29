@@ -243,10 +243,14 @@ async function runPrerender() {
         }
       }
 
-      // 8b. For blog detail routes, inject initial blog JSON state before </head>
+      // 8b. For blog detail routes, inject initial blog JSON state before Google tag / </head>
       if (currentBlog) {
         const blogStateScript = `<script>window.__INITIAL_BLOG__ = ${JSON.stringify(currentBlog).replace(/</g, '\\u003c')};</script>\n`;
-        pageHtml = pageHtml.replace('</head>', `  ${blogStateScript}</head>`);
+        if (pageHtml.includes('<!-- Google tag (gtag.js) -->')) {
+          pageHtml = pageHtml.replace('<!-- Google tag (gtag.js) -->', `${blogStateScript}  <!-- Google tag (gtag.js) -->`);
+        } else {
+          pageHtml = pageHtml.replace('</head>', `  ${blogStateScript}</head>`);
+        }
       }
 
       // 9. Inject Pre-rendered App Content into <div id="root">
